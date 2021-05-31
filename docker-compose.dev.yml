@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  ## entry point for treeckle app containers
+  app-reverse-proxy:
+    image: jermytan/treeckle-reverse-proxy
+    volumes:
+      - static-volume:/app/static
+    networks:
+      - frontend
+      - backend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+
+  ## can only be accessed from same network
+  frontend:
+    image: jermytan/treeckle-frontend
+    networks:
+      - frontend
+    restart: always
+
+  ## can only be accessed from same network
+  backend:
+    image: jermytan/treeckle-backend
+    command: sh -c "cd treeckle && gunicorn treeckle.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - static-volume:/app/static
+    networks:
+      - backend
+    restart: always
+    env_file:
+      - ./backend/.env.backend.dev
+
+networks:
+  frontend:
+  backend:
+
+volumes:
+  static-volume:

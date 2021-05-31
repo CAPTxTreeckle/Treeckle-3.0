@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+  Dear {{ name }},<br />
+  <br />
+  You have created a new booking request. Please refer to the details below.<br />
+  <br />
+  <br />
+  Name: {{ name }}<br />
+  <br />
+  Email: {{ email }}<br />
+  <br />
+  Venue: {{ venue }}<br />
+  <br />
+  Created at: {{ created_at }}<br />
+  <br />
+  Booking title: {{ booking_title }}<br />
+  <br />
+  Time slots(s):<br />
+  {% for time_slot in time_slots %} {{ forloop.counter }}. {{ time_slot }}<br />
+  {% endfor %}<br />
+  Status:
+  <b>{{ status|lower|capfirst }}</b
+  ><br />
+  <br />
+  <br />
+  Yours Sincerely,<br />
+  Treeckle Team
+</html>

@@ -1,0 +1,94 @@
+version: "3.8"
+
+services:
+  ## entry point for all containers, can be accessed from public
+  core-reverse-proxy:
+    image: jwilder/nginx-proxy:alpine
+    container_name: core-reverse-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - service
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./core-reverse-proxy/client_max_body_size.conf:/etc/nginx/conf.d/client_max_body_size.conf:ro
+      - nginx-certs:/etc/nginx/certs
+      - nginx-vhost:/etc/nginx/vhost.d
+      - nginx-html:/usr/share/nginx/html
+
+  ## provides SSL
+  ssl-provider:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    networks:
+      - service
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - nginx-certs:/etc/nginx/certs
+      - nginx-vhost:/etc/nginx/vhost.d
+      - nginx-html:/usr/share/nginx/html
+    environment:
+      - DEFAULT_EMAIL=treeckle@googlegroups.com
+      - NGINX_PROXY_CONTAINER=core-reverse-proxy
+
+  ## entry point for treeckle app containers
+  app-reverse-proxy:
+    image: jermytan/treeckle-reverse-proxy:production
+    volumes:
+      - static-volume:/app/static
+    networks:
+      - service
+      - frontend
+      - backend
+    restart: always
+    environment:
+      - VIRTUAL_HOST=treeckle.com
+      - VIRTUAL_PORT=80
+      - LETSENCRYPT_HOST=treeckle.com
+      - LETSENCRYPT_EMAIL=treeckle@googlegroups.com
+
+  ## can only be accessed within frontend network
+  frontend:
+    image: jermytan/treeckle-frontend:production
+    networks:
+      - frontend
+    restart: always
+
+  ## can only be accessed within backend network
+  backend:
+    image: jermytan/treeckle-backend:production
+    command: sh -c "cd treeckle && gunicorn treeckle.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - static-volume:/app/static
+    networks:
+      - backend
+    restart: always
+    env_file:
+      - .env.backend.prod
+    depends_on:
+      - db
+
+  ## can only be accessed within backend network
+  db:
+    image: postgres:13-alpine
+    networks:
+      - backend
+    volumes:
+      - postgres-data:/var/lib/postgresql/data/
+    env_file:
+      - .env.db.prod
+    restart: always
+
+networks:
+  service:
+  frontend:
+  backend:
+
+volumes:
+  nginx-certs:
+  nginx-vhost:
+  nginx-html:
+  postgres-data:
+  static-volume:
