@@ -1,6 +1,6 @@
-# Treeckle 2.0
+# Treeckle 3.0
 
-[![Build Status](https://travis-ci.com/CAPTxTreeckle/Treeckle-2.0.svg?branch=main)](https://travis-ci.com/CAPTxTreeckle/Treeckle-2.0)
+[![Build Status](https://travis-ci.com/CAPTxTreeckle/Treeckle-2.0.svg?branch=main)](https://travis-ci.com/CAPTxTreeckle/Treeckle-3.0)
 
 <p align="center">
   <img src="./assets/treeckle-title-bottom-transparent.png" alt="Treeckle" width="400"/>
