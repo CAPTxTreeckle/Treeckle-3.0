@@ -5,7 +5,6 @@ import { configure } from "axios-hooks";
 import store from "./redux/store";
 import "semantic-ui-css/semantic.min.css";
 import "react-toastify/dist/ReactToastify.min.css";
-import ResponsiveProvider from "./context-providers/responsive-provider";
 import LocalStorageUserManager from "./components/local-storage-user-manager";
 import Routes from "./routes";
 import styles from "./app.module.scss";
@@ -23,10 +22,8 @@ configure({ axios: axios.create({ baseURL: process.env.API_URL }) });
 function App() {
   return (
     <Provider store={store}>
-      <ResponsiveProvider>
-        <LocalStorageUserManager />
-        <Routes />
-      </ResponsiveProvider>
+      <LocalStorageUserManager />
+      <Routes />
     </Provider>
   );
 }

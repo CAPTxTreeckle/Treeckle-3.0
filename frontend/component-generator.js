@@ -15,10 +15,13 @@ const indexFilename = "index.ts";
 const styleClassName = camelCase(componentName);
 
 const componentFileContent = `import styles from "./${styleFilename}";
+
 type Props = {};
+
 function ${componentName}({}: Props) {
   return <div />;
 }
+
 export default ${componentName};
 `;
 const styleFileContent = `.${styleClassName} {}`;

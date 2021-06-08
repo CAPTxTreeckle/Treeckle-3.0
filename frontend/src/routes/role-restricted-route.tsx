@@ -1,13 +1,14 @@
+import isEqual from "lodash.isequal";
 import { Redirect, Route, RouteProps } from "react-router-dom";
 import { useAppSelector } from "../redux/hooks";
-import { getCurrentUserRole } from "../redux/slices/current-user-slice";
+import { getCurrentUserDisplayInfo } from "../redux/slices/current-user-slice";
 import { Role } from "../types/users";
 import { HOME_PATH } from "./paths";
 
 type Props = RouteProps & { allowedRoles: Role[] };
 
 function RoleRestrictedRoute(props: Props) {
-  const role = useAppSelector(getCurrentUserRole);
+  const { role } = useAppSelector(getCurrentUserDisplayInfo, isEqual);
   const { allowedRoles } = props;
 
   return role && allowedRoles.includes(role) ? (

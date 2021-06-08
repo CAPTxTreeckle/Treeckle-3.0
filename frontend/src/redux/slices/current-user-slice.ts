@@ -15,10 +15,12 @@ export const userSlice = createSlice({
 
 export const { updateCurrentUser } = userSlice.actions;
 
-export const getCurrentUserRole = ({ currentUser }: RootState) =>
-  currentUser?.role;
 export const getIsLoggedIn = ({ currentUser }: RootState) =>
   Boolean(currentUser?.access);
 export const getCurrentUser = ({ currentUser }: RootState) => currentUser;
+export const getCurrentUserDisplayInfo = ({ currentUser }: RootState) => {
+  const { access, refresh, ...displayInfo } = { ...currentUser };
+  return displayInfo;
+};
 
 export default userSlice.reducer;
