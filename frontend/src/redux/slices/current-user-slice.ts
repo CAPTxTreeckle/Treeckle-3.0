@@ -19,5 +19,6 @@ export const getCurrentUserRole = ({ currentUser }: RootState) =>
   currentUser?.role;
 export const getIsLoggedIn = ({ currentUser }: RootState) =>
   Boolean(currentUser?.access);
+export const getCurrentUser = ({ currentUser }: RootState) => currentUser;
 
 export default userSlice.reducer;

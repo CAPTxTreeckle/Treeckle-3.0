@@ -1,10 +1,12 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import { loadFromLocalStorage } from "../utils/local-storage-utils";
 import currentUserReducer from "./slices/current-user-slice";
 
 const store = configureStore({
   reducer: {
     currentUser: currentUserReducer,
   },
+  preloadedState: { currentUser: loadFromLocalStorage("user") },
 });
 
 export type AppDispatch = typeof store.dispatch;
