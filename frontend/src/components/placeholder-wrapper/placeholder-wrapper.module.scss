@@ -1,6 +1,6 @@
 .placeholderWrapper {
-  .active.loader:before {
-    background: transparent;
+  :global(.active.loader:before) {
+    background-color: transparent;
   }
 
   .defaultMessage {

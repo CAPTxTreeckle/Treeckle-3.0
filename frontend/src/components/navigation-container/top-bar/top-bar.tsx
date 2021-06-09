@@ -12,7 +12,7 @@ function TopBar({ children }: Props) {
     <Menu
       className={classNames(styles.topBar, styles.important)}
       borderless
-      size="large"
+      size="huge"
     >
       {children}
     </Menu>

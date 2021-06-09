@@ -83,7 +83,7 @@ function NavigationContainer({ children }: Props) {
           </TopBar>
 
           <PageBody className={styles.pageBody} ref={pageBodyRef}>
-            <Segment vertical>
+            <Segment padded vertical>
               <Container>{children}</Container>
             </Segment>
           </PageBody>

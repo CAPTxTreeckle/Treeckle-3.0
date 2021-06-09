@@ -1,0 +1,17 @@
+@use "../../base";
+
+.profileCard {
+  color: black;
+
+  .avatar {
+    border-radius: 500rem;
+  }
+
+  .role {
+    text-transform: capitalize;
+  }
+
+  .infoContainer {
+    @include base.horizontal-space-margin(0.25rem);
+  }
+}

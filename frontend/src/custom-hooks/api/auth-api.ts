@@ -45,7 +45,7 @@ export function useAxiosWithTokenRefresh<T>(
     },
     { manual: true },
   );
-  const [isLoading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const apiCallWithTokenRefresh = useCallback(
     async (
@@ -99,12 +99,12 @@ export function useAxiosWithTokenRefresh<T>(
     [apiCall, tokenRefresh, dispatch],
   );
 
-  return [{ ...responseValues, loading: isLoading }, apiCallWithTokenRefresh];
+  return [{ ...responseValues, loading }, apiCallWithTokenRefresh];
 }
 
 export function useGoogleAuth() {
   const dispatch = useAppDispatch();
-  const [{ loading }, login] = useAxios<AuthenticationData>(
+  const [{ loading: isLoading }, login] = useAxios<AuthenticationData>(
     {
       url: "/gateway/gmail",
       method: "post",
@@ -144,7 +144,7 @@ export function useGoogleAuth() {
 
   return {
     startGoogleAuth: signIn,
-    isLoading: !loaded || loading,
+    isLoading: !loaded || isLoading,
     isUnavailable,
   };
 }
