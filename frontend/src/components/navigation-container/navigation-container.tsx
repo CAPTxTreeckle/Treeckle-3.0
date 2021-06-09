@@ -15,6 +15,7 @@ import FullPageContainer from "../full-page-container";
 import TopBar from "./top-bar";
 import UserTab from "./user-tab";
 import PageBody from "../page-body";
+import styles from "./navigation-container.module.scss";
 
 type Props = {
   children: ReactNode;
@@ -81,7 +82,7 @@ function NavigationContainer({ children }: Props) {
             <UserTab />
           </TopBar>
 
-          <PageBody ref={pageBodyRef}>
+          <PageBody className={styles.pageBody} ref={pageBodyRef}>
             <Segment vertical>
               <Container>{children}</Container>
             </Segment>

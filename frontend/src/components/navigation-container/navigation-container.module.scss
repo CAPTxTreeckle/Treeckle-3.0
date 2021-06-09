@@ -1,0 +1,10 @@
+@use "../../base";
+
+.pageBody {
+  background-color: base.$primary-color;
+  color: white;
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #acacac;
+  }
+}
