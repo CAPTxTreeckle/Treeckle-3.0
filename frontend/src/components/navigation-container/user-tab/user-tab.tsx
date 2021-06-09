@@ -54,9 +54,13 @@ function UserTab() {
             to={currentUserProfilePath}
             active={isShowingCurrentUserProfile}
             text="My Profile"
-            icon="user"
+            icon={<i className="fas fa-user icon" />}
           />
-          <Dropdown.Item onClick={onSignOut} text="Sign Out" icon="sign out" />
+          <Dropdown.Item
+            onClick={onSignOut}
+            text="Sign Out"
+            icon={<i className="fas fa-sign-out-alt icon" />}
+          />
         </Dropdown.Menu>
       </Dropdown>
     </Menu.Menu>
