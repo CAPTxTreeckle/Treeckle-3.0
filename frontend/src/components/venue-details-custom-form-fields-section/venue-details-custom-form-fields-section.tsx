@@ -89,13 +89,14 @@ function VenueDetailsCustomFormFieldsSection() {
         content="Add a new field"
         trigger={
           <Button
+            fluid
             type="button"
             color="green"
             icon="plus"
             onClick={() => append({})}
           />
         }
-        position="right center"
+        position="top center"
         on="hover"
       />
     </>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { DraggableProvidedDragHandleProps } from "react-beautiful-dnd";
-import { useController, useFormContext } from "react-hook-form";
-import { Card, Form, Icon, Popup, Select, Ref } from "semantic-ui-react";
+import { Controller, useFormContext } from "react-hook-form";
+import { Card, Form, Icon, Popup, Select } from "semantic-ui-react";
 import {
   FIELD_LABEL,
   FIELD_TYPE,
@@ -63,20 +63,12 @@ function VenueDetailsCustomFormField({
 }: Props) {
   const { setValue } = useFormContext<VenueFormProps>();
   const [isBooleanField, setBooleanField] = useState(
-    defaultValues[FIELD_TYPE] === FieldType.Boolean,
+    defaultValues.fieldType === FieldType.Boolean,
   );
   const fieldType = `${CUSTOM_VENUE_BOOKING_FORM_FIELDS}.${index}.${FIELD_TYPE}`;
   const fieldLabel = `${CUSTOM_VENUE_BOOKING_FORM_FIELDS}.${index}.${FIELD_LABEL}`;
   const placeholderText = `${CUSTOM_VENUE_BOOKING_FORM_FIELDS}.${index}.${PLACEHOLDER_TEXT}`;
   const requiredField = `${CUSTOM_VENUE_BOOKING_FORM_FIELDS}.${index}.${REQUIRED_FIELD}`;
-
-  const {
-    field: { onChange, onBlur, value, ref },
-  } = useController({
-    name: fieldType,
-    defaultValue: defaultValues,
-    rules: { required: true },
-  });
 
   return (
     <div className="venue-details-custom-form-field-container">
@@ -85,31 +77,36 @@ function VenueDetailsCustomFormField({
           <div className="section left">
             <div className="field-number">{index + 1}</div>
 
-            <Ref innerRef={ref}>
-              <Select
-                value={value}
-                onBlur={onBlur}
-                onChange={(_, { value }) => {
-                  onChange(value);
+            <Controller
+              name={fieldType}
+              defaultValue={defaultValues.fieldType}
+              rules={{ required: true }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Select
+                  value={value}
+                  onBlur={onBlur}
+                  onChange={(_, { value }) => {
+                    onChange(value);
 
-                  if (value === FieldType.Boolean) {
-                    setBooleanField(true);
-                    setValue(
-                      requiredField as "customVenueBookingFormFields.0.requiredField",
-                      false,
-                    );
-                    setValue(
-                      placeholderText as "customVenueBookingFormFields.0.placeholderText",
-                      "",
-                    );
-                  } else {
-                    setBooleanField(false);
-                  }
-                }}
-                className="type-selector"
-                options={typeOptions}
-              />
-            </Ref>
+                    if (value === FieldType.Boolean) {
+                      setBooleanField(true);
+                      setValue(
+                        requiredField as "customVenueBookingFormFields.0.requiredField",
+                        false,
+                      );
+                      setValue(
+                        placeholderText as "customVenueBookingFormFields.0.placeholderText",
+                        "",
+                      );
+                    } else {
+                      setBooleanField(false);
+                    }
+                  }}
+                  className="type-selector"
+                  options={typeOptions}
+                />
+              )}
+            />
           </div>
 
           <div className="section right">

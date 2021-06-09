@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useController, useFormContext } from "react-hook-form";
+import { useController } from "react-hook-form";
 import { CheckboxProps, Form, Ref } from "semantic-ui-react";
 import styles from "./radio-form-field.module.scss";
 
