@@ -1,4 +1,5 @@
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState, useEffect, useRef } from "react";
+import { useHistory } from "react-router-dom";
 import { Sidebar, Menu, Segment, Container } from "semantic-ui-react";
 import { useMediaQuery } from "react-responsive";
 import LogoTab from "./logo-tab";
@@ -8,7 +9,7 @@ import EventsTab from "./events-tab";
 import RoleRestrictedWrapper from "../role-restricted-wrapper";
 import MobileAdminTab from "./mobile-admin-tab";
 import DesktopAdminTab from "./desktop-admin-tab";
-import BurgerTab from "./burger-tab";
+import SidebarTab from "./sidebar-tab";
 import { Role } from "../../types/users";
 import FullPageContainer from "../full-page-container";
 import TopBar from "./top-bar";
@@ -21,16 +22,26 @@ type Props = {
 
 function NavigationContainer({ children }: Props) {
   const [isSidebarOpened, setSidebarOpened] = useState(false);
-  const isComputer = useMediaQuery({ query: "(min-width: 992px)" });
+  const isComputerOrLarger = useMediaQuery({ query: "(min-width: 992px)" });
+  const pageBodyRef = useRef<HTMLDivElement>(null);
+  const history = useHistory();
 
   const closeSidebar = () => setSidebarOpened(false);
   const openSidebar = () => setSidebarOpened(true);
 
   useEffect(() => {
-    if (isComputer) {
+    const unlisten = history.listen(() =>
+      pageBodyRef.current?.scrollTo({ left: 0, top: 0 }),
+    );
+
+    return unlisten;
+  }, [history]);
+
+  useEffect(() => {
+    if (isComputerOrLarger) {
       setSidebarOpened(false);
     }
-  }, [isComputer]);
+  }, [isComputerOrLarger]);
 
   return (
     <Sidebar.Pushable>
@@ -53,7 +64,7 @@ function NavigationContainer({ children }: Props) {
       <Sidebar.Pusher dimmed={isSidebarOpened}>
         <FullPageContainer>
           <TopBar>
-            {isComputer ? (
+            {isComputerOrLarger ? (
               <>
                 <LogoTab />
                 <DashboardTab />
@@ -64,13 +75,13 @@ function NavigationContainer({ children }: Props) {
                 </RoleRestrictedWrapper>
               </>
             ) : (
-              <BurgerTab onTabClick={openSidebar} />
+              <SidebarTab onTabClick={openSidebar} />
             )}
 
             <UserTab />
           </TopBar>
 
-          <PageBody>
+          <PageBody ref={pageBodyRef}>
             <Segment vertical>
               <Container>{children}</Container>
             </Segment>

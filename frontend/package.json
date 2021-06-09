@@ -15,6 +15,7 @@
     "lodash.isequal": "^4.5.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-google-login": "^5.2.2",
     "react-redux": "^7.2.4",
     "react-responsive": "^8.2.0",
     "react-router-dom": "^5.2.0",
@@ -58,7 +59,7 @@
     "eject": "react-scripts eject",
     "format": "prettier --write ./src",
     "lint": "tsc --noEmit && eslint --ext .js,.jsx,.ts,.tsx ./src",
-    "generate-component": "node component-generator.js",
+    "create-component": "node component-creator.js",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "eslintConfig": {

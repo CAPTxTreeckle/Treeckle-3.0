@@ -1,5 +1,6 @@
 import {
   ACCESS,
+  CREATED_AT,
   EMAIL,
   ID,
   NAME,
@@ -28,10 +29,12 @@ export type UserInviteData = BaseData & {
 
 export type UserData = UserInviteData & {
   [NAME]: string;
+  [PROFILE_IMAGE]: string | null;
 };
 
 export type CurrentUser = {
   [ID]: number;
+  [CREATED_AT]: number;
   [NAME]: string;
   [EMAIL]: string;
   [ROLE]: Role;

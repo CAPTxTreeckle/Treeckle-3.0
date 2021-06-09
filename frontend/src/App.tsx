@@ -17,7 +17,7 @@ toast.configure({
   bodyClassName: styles.toastBody,
 });
 
-configure({ axios: axios.create({ baseURL: process.env.API_URL }) });
+configure({ axios: axios.create({ baseURL: process.env.REACT_APP_API_URL }) });
 
 function App() {
   return (

@@ -11,3 +11,23 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.fa,
+.fas,
+.fal,
+.far {
+  font-family: "Font Awesome 5 Pro" !important;
+}
+
+.fa,
+.fas {
+  font-weight: 900 !important;
+}
+
+.fal {
+  font-weight: 300 !important;
+}
+
+.far {
+  font-weight: 400 !important;
+}

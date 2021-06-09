@@ -4,8 +4,8 @@ type Props = {
   onTabClick?: () => void;
 };
 
-function BurgerTab({ onTabClick }: Props) {
+function SidebarTab({ onTabClick }: Props) {
   return <MenuItem onClick={onTabClick} icon="sidebar" />;
 }
 
-export default BurgerTab;
+export default SidebarTab;

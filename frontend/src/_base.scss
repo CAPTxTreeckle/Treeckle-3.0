@@ -1,0 +1,23 @@
+$primary-color: #2c4a66;
+
+@mixin horizontal-space-margin($spacing) {
+  > * {
+    margin-right: $spacing;
+    margin-left: 0;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+@mixin vertical-space-margin($spacing) {
+  > * {
+    margin-bottom: $spacing;
+    margin-top: 0;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}

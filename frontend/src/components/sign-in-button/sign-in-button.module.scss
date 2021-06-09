@@ -1,0 +1,14 @@
+.signInButtonContainer {
+  width: 40%;
+
+  .signInButton.important {
+    color: white;
+    background: transparent;
+    border: solid 1px white;
+
+    &:hover {
+      color: #2185d0;
+      border-color: #2185d0;
+    }
+  }
+}
