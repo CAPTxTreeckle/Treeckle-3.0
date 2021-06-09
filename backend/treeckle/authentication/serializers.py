@@ -1,5 +1,3 @@
-from django.utils.translation import gettext_lazy as _
-
 from rest_framework import serializers, exceptions
 
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
@@ -13,11 +11,11 @@ from .logic import get_gmail_user, authenticate_user, get_authenticated_data
 
 
 class BaseAuthenticationSerializer(serializers.Serializer):
-    default_error_messages = {"invalid_user": _("Invalid user.")}
+    default_error_messages = {"invalid_user": "Invalid user."}
 
     def raiseInvalidUser(self):
         authenticationFailedException = exceptions.AuthenticationFailed(
-            self.error_messages.get("invalid_user"),
+            detail=self.error_messages.get("invalid_user"),
             code="invalid_user",
         )
         raise authenticationFailedException

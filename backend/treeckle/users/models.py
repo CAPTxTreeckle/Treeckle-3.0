@@ -26,12 +26,10 @@ class User(TimestampedModel):
     )
     third_party_id = models.CharField(max_length=100, unique=True)
     role = models.CharField(max_length=50, choices=Role.choices, default=Role.RESIDENT)
+    profile_image = models.URLField(null=True)
 
     def __str__(self):
-        return f"{self.name} ({self.organization})"
-
-    class Meta:
-        ordering = ["name"]
+        return f"{self.name} | {self.email} ({self.organization})"
 
 
 class UserInvite(TimestampedModel):
@@ -41,6 +39,3 @@ class UserInvite(TimestampedModel):
 
     def __str__(self):
         return f"{self.email} ({self.organization})"
-
-    class Meta:
-        ordering = ["email"]

@@ -10,6 +10,7 @@ from treeckle.common.constants import (
     ROLE,
     CREATED_AT,
     UPDATED_AT,
+    PROFILE_IMAGE,
 )
 from treeckle.common.parsers import parse_datetime_to_ms_timestamp
 from organizations.models import Organization
@@ -23,6 +24,7 @@ def user_to_json(user: User) -> dict:
         EMAIL: user.email,
         ORGANIZATION: user.organization.name,
         ROLE: user.role,
+        PROFILE_IMAGE: user.profile_image,
         CREATED_AT: parse_datetime_to_ms_timestamp(user.created_at),
         UPDATED_AT: parse_datetime_to_ms_timestamp(user.updated_at),
     }
@@ -147,19 +149,19 @@ def delete_users(
     return deleted_emails
 
 
-def sanitize_and_convert_data_list_to_dict(
-    data_list: Iterable[dict],
-    key_name: str,
-    fields: Iterable[str],
-) -> dict:
-    fields_set = set(fields)
+# def sanitize_and_convert_data_list_to_dict(
+#     data_list: Iterable[dict],
+#     key_name: str,
+#     fields: Iterable[str],
+# ) -> dict:
+#     fields_set = set(fields)
 
-    return {
-        data[key_name]: {
-            field: field_value
-            for field, field_value in data.items()
-            if field in fields_set
-        }
-        for data in data_list
-        if key_name in data
-    }
+#     return {
+#         data[key_name]: {
+#             field: field_value
+#             for field, field_value in data.items()
+#             if field in fields_set
+#         }
+#         for data in data_list
+#         if key_name in data
+#     }

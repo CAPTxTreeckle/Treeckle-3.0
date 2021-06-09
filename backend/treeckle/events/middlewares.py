@@ -16,7 +16,7 @@ def check_user_event_same_organization(view_method):
 
             if event.creator.organization != requester.organization:
                 raise PermissionDenied(
-                    "User and event are in different organization.",
+                    detail="User and event are in different organization.",
                     code="wrong_organization",
                 )
 
@@ -25,7 +25,7 @@ def check_user_event_same_organization(view_method):
             Event.MultipleObjectsReturned,
             PermissionDenied,
         ) as e:
-            raise NotFound("No event found.", code="no_event_found")
+            raise NotFound(detail="No event found.", code="no_event_found")
 
         return view_method(
             instance, request, requester=requester, event=event, *args, **kwargs
@@ -44,7 +44,7 @@ def check_event_viewer(view_method):
 
         if not has_view_event_permission:
             raise PermissionDenied(
-                "No permission to view event.",
+                detail="No permission to view event.",
                 code="no_view_event_permission",
             )
 
@@ -65,7 +65,7 @@ def check_event_modifier(view_method):
 
         if not has_modify_event_permission:
             raise PermissionDenied(
-                "No permission to modify event.",
+                detail="No permission to modify event.",
                 code="no_modify_event_permission",
             )
 

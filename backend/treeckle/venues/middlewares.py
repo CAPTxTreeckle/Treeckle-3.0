@@ -16,7 +16,7 @@ def check_user_venue_same_organization(view_method):
 
             if venue.organization != requester.organization:
                 raise PermissionDenied(
-                    "User and venue are in different organization.",
+                    detail="User and venue are in different organization.",
                     code="wrong_organization",
                 )
 
@@ -25,7 +25,7 @@ def check_user_venue_same_organization(view_method):
             Venue.MultipleObjectsReturned,
             PermissionDenied,
         ) as e:
-            raise NotFound("No venue found.", code="no_venue_found")
+            raise NotFound(detail="No venue found.", code="no_venue_found")
 
         return view_method(
             instance, request, requester=requester, venue=venue, *args, **kwargs

@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.exceptions import NotFound
 
 
 from treeckle.common.exceptions import BadRequest
@@ -179,3 +180,18 @@ class UsersView(APIView):
         )
 
         return Response(deleted_emails, status=status.HTTP_200_OK)
+
+
+class SingleUserView(APIView):
+    @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
+    def get(self, request, requester: User, user_id: int):
+        try:
+            user = get_users(id=user_id).select_related("organization").get()
+        except (User.DoesNotExist, User.MultipleObjectsReturned) as e:
+            raise NotFound(detail="No user found.", code="no_user_found")
+        except Exception as e:
+            raise BadRequest(e)
+
+        data = user_to_json(user)
+
+        return Response(data, status=status.HTTP_200_OK)

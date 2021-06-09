@@ -1,5 +1,3 @@
-from django.utils.translation import gettext_lazy as _
-
 from rest_framework.exceptions import AuthenticationFailed, PermissionDenied
 
 from .models import User, Role
@@ -18,13 +16,13 @@ def check_access(*allowed_roles: Role):
 
             except (User.DoesNotExist, User.MultipleObjectsReturned) as e:
                 raise AuthenticationFailed(
-                    _("Invalid user."),
+                    detail="Invalid user.",
                     code="invalid_user",
                 )
 
             if requester.role not in allowed_roles:
                 raise PermissionDenied(
-                    _("No permission to access route"), code="invalid_permission"
+                    detail="No permission", code="invalid_permission"
                 )
 
             return view_method(instance, request, requester=requester, *args, **kwargs)
