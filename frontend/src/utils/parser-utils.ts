@@ -1,4 +1,5 @@
 import { format } from "date-fns";
+import { StringifiableRecord } from "query-string";
 import { DATE_TIME_FORMAT } from "../constants";
 
 export function deepTrim<T>(value: T): T {
@@ -22,6 +23,13 @@ export function deepTrim<T>(value: T): T {
   return value;
 }
 
+export function sanitizeArray(strings: string[], unique = true): string[] {
+  if (unique) {
+    return Array.from(new Set(strings.map((s) => s.trim()).filter((s) => s)));
+  }
+  return strings.map((s) => s.trim()).filter((s) => s);
+}
+
 export function displayDateTime(
   inputDateTime: string | number | Date,
   dateTimeFormat: string = DATE_TIME_FORMAT,
@@ -36,4 +44,21 @@ export function displayDateTime(
   } catch {
     return "";
   }
+}
+
+export function changeKeyCase(
+  caseChanger: (input: string) => string,
+  object?: StringifiableRecord,
+) {
+  if (!object) {
+    return object;
+  }
+
+  const newObject: StringifiableRecord = {};
+
+  Object.entries(object).forEach(([key, value]) => {
+    newObject[caseChanger(key)] = value;
+  });
+
+  return newObject;
 }

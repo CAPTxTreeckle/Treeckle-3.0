@@ -1,0 +1,53 @@
+.venue-details-custom-form-field-container {
+  padding: 0.5rem 0;
+
+  .card.venue-details-custom-form-field {
+    .top-bar,
+    .bottom-bar {
+      padding: 0 0 0 0;
+    }
+
+    .section {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .left {
+      float: left;
+    }
+
+    .right {
+      float: right;
+    }
+
+    .field-number {
+      padding: 0.75rem 1.25rem;
+    }
+
+    .type-selector {
+      height: auto;
+      border: none;
+      border-right: 1px solid rgba(34, 36, 38, 0.1);
+      border-left: 1px solid rgba(34, 36, 38, 0.1);
+      border-radius: 0;
+      line-height: inherit;
+    }
+
+    .drag-zone {
+      padding: 0.75rem 1.25rem;
+      border-left: 1px solid rgba(34, 36, 38, 0.1);
+    }
+
+    .required-field-toggler {
+      padding: 0.75rem 1.25rem;
+      border-right: 1px solid rgba(34, 36, 38, 0.1);
+    }
+
+    .delete-button {
+      padding: 0.75rem 1.25rem;
+      border-left: 1px solid rgba(34, 36, 38, 0.1);
+      line-height: 1.5rem;
+    }
+  }
+}
