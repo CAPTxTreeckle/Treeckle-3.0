@@ -44,13 +44,10 @@ export default function useOptionsState(
             text: value,
             value,
           } as DropdownItemProps),
-      );
+      )
+      .concat(defaultOptions);
 
-    if (newOptions.length === 0) {
-      return;
-    }
-
-    setOptions(newOptions.concat(defaultOptions));
+    setOptions(newOptions);
   };
 
   return { options, onSelect };
