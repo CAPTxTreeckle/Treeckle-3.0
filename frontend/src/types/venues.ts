@@ -12,6 +12,7 @@ import {
   IC_NAME,
   NAME,
   FORM_FIELD_DATA,
+  ORGANIZATION,
 } from "../constants";
 
 export type VenueGetQueryParams = { [CATEGORY]?: string | null };
@@ -28,7 +29,10 @@ export type VenuePostData = {
 
 export type VenuePutData = VenuePostData;
 
-export type VenueData = BaseData & VenuePostData;
+export type VenueData = BaseData &
+  VenuePostData & {
+    [ORGANIZATION]: string;
+  };
 
 export enum FieldType {
   Text = "TEXT",
@@ -55,5 +59,6 @@ export type VenueFormProps = {
 };
 
 export type VenueViewProps = BaseData & {
+  [ORGANIZATION]: string;
   venueFormProps: VenueFormProps;
 };

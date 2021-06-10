@@ -1,5 +1,6 @@
 import { format } from "date-fns";
 import { StringifiableRecord } from "query-string";
+import arraySort from "array-sort";
 import { DATE_TIME_FORMAT } from "../constants";
 
 export function deepTrim<T>(value: T): T {
@@ -65,4 +66,14 @@ export function changeKeyCase(
   });
 
   return newObject;
+}
+
+export function sort<T>(
+  array: T[],
+  {
+    props,
+    reverse = false,
+  }: { props?: Parameters<typeof arraySort>["1"]; reverse?: boolean } = {},
+) {
+  return arraySort([...array], props, { reverse });
 }

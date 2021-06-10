@@ -15,7 +15,6 @@ class VenueCategory(TimestampedModel):
                 name="unique_organization_venue_category",
             )
         ]
-        ordering = ["name"]
 
     def __str__(self):
         return f"{self.name} ({self.organization})"
@@ -38,7 +37,6 @@ class Venue(TimestampedModel):
                 name="unique_organization_venue_name",
             )
         ]
-        ordering = ["name"]
 
     def __str__(self):
         return f"{self.name} | {self.category}"

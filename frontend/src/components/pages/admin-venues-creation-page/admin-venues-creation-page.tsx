@@ -34,7 +34,7 @@ function AdminVenuesCreationPage() {
         <Button.Content visible content={<i className="fas fa-times" />} />
       </Button>
 
-      <h1>Venue Creation</h1>
+      <h2>Venue Creation</h2>
 
       <VenueDetailsForm
         onSubmit={onCreateVenue}

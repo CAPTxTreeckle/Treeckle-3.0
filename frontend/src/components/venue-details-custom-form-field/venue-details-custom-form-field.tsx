@@ -1,4 +1,4 @@
-import { SyntheticEvent, useState, useEffect } from "react";
+import { SyntheticEvent, useState } from "react";
 import classNames from "classnames";
 import { DraggableProvidedDragHandleProps } from "react-beautiful-dnd";
 import { useFormContext } from "react-hook-form";
@@ -63,7 +63,7 @@ function VenueDetailsCustomFormField({
   defaultValues = defaultFormProps,
   dragHandleProps,
 }: Props) {
-  const { setValue, setFocus } = useFormContext<VenueFormProps>();
+  const { setValue } = useFormContext<VenueFormProps>();
   const [isBooleanField, setBooleanField] = useState(
     defaultValues.fieldType === FieldType.Boolean,
   );
@@ -90,10 +90,6 @@ function VenueDetailsCustomFormField({
       setBooleanField(false);
     }
   };
-
-  useEffect(() => {
-    setFocus(fieldLabel as "customVenueBookingFormFields.0.fieldLabel");
-  }, [setFocus, fieldLabel]);
 
   return (
     <div className={styles.venueDetailsCustomFormField}>

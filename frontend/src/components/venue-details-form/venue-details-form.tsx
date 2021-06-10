@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Form, Header, Segment, ButtonProps } from "semantic-ui-react";
@@ -22,7 +22,7 @@ import VenueDetailsCustomFormFieldsSection from "../venue-details-custom-form-fi
 import { FieldType, VenueFormProps } from "../../types/venues";
 import { useGetVenueCategories } from "../../custom-hooks/api/venues-api";
 import DropdownSelectorFormField from "../dropdown-selector-form-field";
-import { deepTrim } from "../../utils/parser-utils";
+import { sort, deepTrim } from "../../utils/parser-utils";
 
 const schema = yup.object().shape({
   [NAME]: yup.string().trim().required("Please enter a venue name"),
@@ -71,7 +71,7 @@ const schema = yup.object().shape({
 });
 
 type Props = {
-  onSubmit?: (data: VenueFormProps) => Promise<void>;
+  onSubmit?: (data: VenueFormProps) => Promise<unknown>;
   defaultValues?: VenueFormProps;
   submitButtonProps: ButtonProps;
 };
@@ -99,6 +99,10 @@ function VenueDetailsForm({
   const { handleSubmit } = methods;
   const { venueCategories, isLoading, getVenueCategories } =
     useGetVenueCategories();
+  const sortedVenueCategories = useMemo(
+    () => sort(venueCategories),
+    [venueCategories],
+  );
 
   const [isSubmitting, setSubmitting] = useState(false);
 
@@ -135,7 +139,7 @@ function VenueDetailsForm({
                 required
                 search
                 allowAdditions
-                defaultOptions={venueCategories}
+                defaultOptions={sortedVenueCategories}
                 isLoadingOptions={isLoading}
               />
 
@@ -174,7 +178,7 @@ function VenueDetailsForm({
             <VenueDetailsCustomFormFieldsSection />
           </Segment>
 
-          <Segment className="action-container justify-end">
+          <Segment className="flex-display align-center justify-end">
             <Form.Button
               {...submitButtonProps}
               type="submit"

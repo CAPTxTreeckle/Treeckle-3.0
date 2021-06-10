@@ -10,9 +10,7 @@
       display: none;
     }
 
-    .action-container {
-      display: flex;
-      flex-direction: row;
+    .align-center {
       align-items: center;
     }
 
@@ -25,7 +23,19 @@
     }
 
     .flex-no-grow {
-      flex-grow: 0 !important;
+      flex-grow: 0;
+
+      &.important {
+        flex-grow: 0;
+      }
+    }
+
+    .flex-display {
+      display: flex;
+    }
+
+    .pointer {
+      cursor: pointer;
     }
   }
 }

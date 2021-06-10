@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import classNames from "classnames";
 import { Segment, Loader, LoaderProps } from "semantic-ui-react";
 import styles from "./placeholder-wrapper.module.scss";
 
@@ -21,7 +22,7 @@ function PlaceholderWrapper({
   defaultMessage,
   inverted = false,
   placeholder = false,
-  size = "massive",
+  size = "huge",
 }: Props) {
   return isLoading || showDefaultMessage ? (
     <Segment
@@ -36,11 +37,24 @@ function PlaceholderWrapper({
           active
           inverted={inverted}
           inline
-          content={loadingMessage}
+          content={
+            <div
+              className={classNames(
+                styles.message,
+                inverted && styles.inverted,
+              )}
+            >
+              {loadingMessage}
+            </div>
+          }
         />
       )}
       {!isLoading && showDefaultMessage && defaultMessage && (
-        <h2 className={styles.defaultMessage}>{defaultMessage}</h2>
+        <div
+          className={classNames(styles.message, inverted && styles.inverted)}
+        >
+          {defaultMessage}
+        </div>
       )}
     </Segment>
   ) : (

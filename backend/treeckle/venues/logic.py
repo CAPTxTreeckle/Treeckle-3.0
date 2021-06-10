@@ -14,6 +14,7 @@ from treeckle.common.constants import (
     IC_EMAIL,
     IC_CONTACT_NUMBER,
     FORM_FIELD_DATA,
+    ORGANIZATION,
 )
 from treeckle.common.parsers import parse_datetime_to_ms_timestamp
 from organizations.models import Organization
@@ -25,6 +26,7 @@ def venue_to_json(venue: Venue) -> dict:
         ID: venue.id,
         CREATED_AT: parse_datetime_to_ms_timestamp(venue.created_at),
         UPDATED_AT: parse_datetime_to_ms_timestamp(venue.updated_at),
+        ORGANIZATION: venue.organization.name,
         NAME: venue.name,
         CATEGORY: venue.category.name,
         CAPACITY: str(venue.capacity) if venue.capacity else None,

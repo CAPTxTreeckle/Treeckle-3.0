@@ -3,7 +3,12 @@
     background-color: transparent;
   }
 
-  .defaultMessage {
-    font-weight: normal;
+  .message {
+    font-size: 1.5rem;
+    color: black;
+
+    &.inverted {
+      color: white;
+    }
   }
 }

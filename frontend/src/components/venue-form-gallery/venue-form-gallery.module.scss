@@ -1,0 +1,9 @@
+.venueFormGallery.important {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  margin-bottom: 0;
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #acacac;
+  }
+}

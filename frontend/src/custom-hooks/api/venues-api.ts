@@ -51,12 +51,14 @@ function parseVenueData(venueData: VenueData): VenueViewProps {
     icEmail,
     icContactNumber,
     formFieldData,
+    organization,
   } = venueData;
 
   const venueViewProps: VenueViewProps = {
     id,
     createdAt,
     updatedAt,
+    organization,
     venueFormProps: {
       name,
       category,
@@ -196,17 +198,19 @@ export function useGetSingleVenue() {
   );
 
   const getSingleVenue = useCallback(
-    async (venueId: number) => {
+    async (venueId: number | string) => {
+      const url = `/venues/${venueId}`;
+
       try {
         const { data: venue } = await apiCall({
-          url: `/venues/${venueId}`,
+          url,
         });
-        console.log(`GET /venues/${venueId} success:`, venue);
+        console.log(`GET ${url} success:`, venue);
         const parsedVenue = parseVenueData(venue);
         setVenue(parsedVenue);
         return parsedVenue;
       } catch (error) {
-        console.log(`GET /venues/${venueId} error:`, error, error?.response);
+        console.log(`GET ${url} error:`, error, error?.response);
 
         setVenue(undefined);
         return undefined;
@@ -229,13 +233,14 @@ export function useUpdateVenue() {
   const updateVenue = useMemo(
     () =>
       errorHandlerWrapper(
-        async (venueId: number, venueFormProps: VenueFormProps) => {
+        async (venueId: number | string, venueFormProps: VenueFormProps) => {
+          const url = `/venues/${venueId}`;
           const data: VenuePutData = parseVenueFormProps(venueFormProps);
           const { data: venue } = await apiCall({
-            url: `/venues/${venueId}`,
+            url,
             data,
           });
-          console.log(`PUT /venues/${venueId} success:`, venue);
+          console.log(`PUT ${url} success:`, venue);
 
           return venue;
         },
