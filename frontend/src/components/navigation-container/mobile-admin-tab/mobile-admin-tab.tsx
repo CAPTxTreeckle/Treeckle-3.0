@@ -1,4 +1,5 @@
 import { useState } from "react";
+import classNames from "classnames";
 import { Accordion, MenuItem } from "semantic-ui-react";
 import { useLocation } from "react-router-dom";
 import TabItem from "../tab-item";
@@ -8,6 +9,7 @@ import {
   ADMIN_SETTINGS_PATH,
   ADMIN_VENUES_PATH,
 } from "../../../routes/paths";
+import styles from "./mobile-admin-tab.module.scss";
 
 type Props = {
   onTabClick?: () => void;
@@ -19,11 +21,12 @@ function MobileAdminTab({ onTabClick }: Props) {
 
   return (
     <Accordion
+      className={classNames(styles.mobileAdminTab, styles.important)}
       as={MenuItem}
-      fitted="vertically"
       active={pathname.startsWith("/admin")}
     >
       <Accordion.Title
+        className={classNames(styles.title, styles.important)}
         onClick={() => setExpanded(!isExpanded)}
         active={isExpanded}
         content="Admin"

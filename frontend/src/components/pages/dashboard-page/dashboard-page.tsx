@@ -10,7 +10,7 @@ function DashboardPage() {
       <h2>Welcome, {name}!</h2>
       <h3>Head over to the "Bookings" tab to view/make bookings.</h3>
 
-      <h3>Visit the "Events" tab to see upcoming events!</h3>
+      {/* <h3>Visit the "Events" tab to see upcoming events!</h3> */}
 
       <p>
         <strong>Note:</strong> Treeckle is currently in development and we are

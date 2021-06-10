@@ -5,7 +5,7 @@ import { useMediaQuery } from "react-responsive";
 import LogoTab from "./logo-tab";
 import DashboardTab from "./dashboard-tab";
 import BookingsTab from "./bookings-tab";
-import EventsTab from "./events-tab";
+// import EventsTab from "./events-tab";
 import RoleRestrictedWrapper from "../role-restricted-wrapper";
 import MobileAdminTab from "./mobile-admin-tab";
 import DesktopAdminTab from "./desktop-admin-tab";
@@ -56,7 +56,7 @@ function NavigationContainer({ children }: Props) {
         <LogoTab onTabClick={closeSidebar} />
         <DashboardTab onTabClick={closeSidebar} />
         <BookingsTab onTabClick={closeSidebar} />
-        <EventsTab onTabClick={closeSidebar} />
+        {/* <EventsTab onTabClick={closeSidebar} /> */}
         <RoleRestrictedWrapper allowedRoles={[Role.Admin]}>
           <MobileAdminTab onTabClick={closeSidebar} />
         </RoleRestrictedWrapper>
@@ -70,7 +70,7 @@ function NavigationContainer({ children }: Props) {
                 <LogoTab />
                 <DashboardTab />
                 <BookingsTab />
-                <EventsTab />
+                {/* <EventsTab /> */}
                 <RoleRestrictedWrapper allowedRoles={[Role.Admin]}>
                   <DesktopAdminTab />
                 </RoleRestrictedWrapper>

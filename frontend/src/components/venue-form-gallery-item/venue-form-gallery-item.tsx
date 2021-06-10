@@ -1,4 +1,4 @@
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button } from "semantic-ui-react";
 import { VENUE_ID } from "../../constants";
@@ -14,8 +14,6 @@ type Props = VenueViewProps & {
 };
 
 function VenueFormGalleryItem({ id, venueFormProps, getVenues }: Props) {
-  const history = useHistory();
-
   const { deleteVenue, isLoading } = useDeleteVenue();
 
   const onDelete = async () => {
@@ -28,12 +26,14 @@ function VenueFormGalleryItem({ id, venueFormProps, getVenues }: Props) {
     }
   };
 
-  const onEdit = () => {
-    history.push(ADMIN_VENUES_EDIT_PATH.replace(`:${VENUE_ID}`, `${id}`));
-  };
-
   const actionButtons = [
-    <Button key="edit" content="Edit" onClick={onEdit} color="black" />,
+    <Button
+      key="edit"
+      content="Edit"
+      as={Link}
+      to={ADMIN_VENUES_EDIT_PATH.replace(`:${VENUE_ID}`, `${id}`)}
+      color="black"
+    />,
     <Button
       key="delete"
       content="Delete"
