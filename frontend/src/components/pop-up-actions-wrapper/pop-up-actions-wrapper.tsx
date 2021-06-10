@@ -1,4 +1,11 @@
-import { createContext, ReactNode, useCallback, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useCallback,
+  useState,
+} from "react";
 import {
   Button,
   Divider,
@@ -8,7 +15,7 @@ import {
 } from "semantic-ui-react";
 
 type Props = {
-  children: React.ReactNode;
+  children: ReactNode;
   actionButtons: JSX.Element[];
   offsetRatio?: { widthRatio?: number; heightRatio?: number };
   vertical?: boolean;
@@ -17,8 +24,8 @@ type Props = {
 };
 
 type PopUpActionsWrapperContextType = {
-  extraContent: React.ReactNode;
-  setExtraContent: React.Dispatch<React.SetStateAction<React.ReactNode>>;
+  extraContent: ReactNode;
+  setExtraContent: Dispatch<SetStateAction<ReactNode>>;
   closePopUp: () => void;
 };
 

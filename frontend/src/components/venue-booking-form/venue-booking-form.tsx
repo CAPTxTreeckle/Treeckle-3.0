@@ -33,7 +33,7 @@ function VenueBookingForm({ venueFormProps, readOnly = false }: Props) {
           </Card.Content>
           <Card.Content>
             <PlaceholderWrapper
-              defaultMessage="No custom booking fields"
+              defaultMessage="No form fields"
               showDefaultMessage={fields.length === 0}
               placeholder
             >

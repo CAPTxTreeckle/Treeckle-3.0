@@ -44,16 +44,18 @@ function VenueFormGalleryItem({ id, venueFormProps, getVenues }: Props) {
   ];
 
   return (
-    <PopUpActionsWrapper
-      actionButtons={actionButtons}
-      offsetRatio={{ heightRatio: -2 }}
-    >
-      <div className="flex-display hover-bob pointer ">
-        <div className="flex-display scale-in-center">
-          <VenueBookingForm venueFormProps={venueFormProps} readOnly />
-        </div>
+    <div className="flex-display hover-bob">
+      <div className="flex-display scale-in-center">
+        <PopUpActionsWrapper
+          actionButtons={actionButtons}
+          offsetRatio={{ heightRatio: -2 }}
+        >
+          <div className="flex-display pointer">
+            <VenueBookingForm venueFormProps={venueFormProps} readOnly />
+          </div>
+        </PopUpActionsWrapper>
       </div>
-    </PopUpActionsWrapper>
+    </div>
   );
 }
 
