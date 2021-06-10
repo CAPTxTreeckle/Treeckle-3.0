@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { Segment, Loader, LoaderProps } from "semantic-ui-react";
 import styles from "./placeholder-wrapper.module.scss";
 
@@ -38,21 +38,14 @@ function PlaceholderWrapper({
           inverted={inverted}
           inline
           content={
-            <div
-              className={classNames(
-                styles.message,
-                inverted && styles.inverted,
-              )}
-            >
+            <div className={clsx(styles.message, inverted && styles.inverted)}>
               {loadingMessage}
             </div>
           }
         />
       )}
       {!isLoading && showDefaultMessage && defaultMessage && (
-        <div
-          className={classNames(styles.message, inverted && styles.inverted)}
-        >
+        <div className={clsx(styles.message, inverted && styles.inverted)}>
           {defaultMessage}
         </div>
       )}

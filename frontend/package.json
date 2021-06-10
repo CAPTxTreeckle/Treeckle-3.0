@@ -12,7 +12,7 @@
     "axios": "^0.21.1",
     "axios-hooks": "^2.6.3",
     "change-case": "^4.1.2",
-    "classnames": "^2.3.1",
+    "clsx": "^1.1.1",
     "date-fns": "^2.22.1",
     "http-status-codes": "^2.1.4",
     "lodash.get": "^4.4.2",

@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clsx from "clsx";
 import isEqual from "lodash.isequal";
 import { Link, useLocation } from "react-router-dom";
 import { Dropdown, Menu, Image } from "semantic-ui-react";
@@ -34,7 +34,7 @@ function UserTab() {
       <Menu.Item content={<strong>{name}</strong>} />
 
       <Dropdown
-        className={classNames({ active: isShowingCurrentUserProfile })}
+        className={clsx({ active: isShowingCurrentUserProfile })}
         trigger={
           <Image
             src={profileImage || defaultAvatarImage}

@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clsx from "clsx";
 import { Form, FormFieldProps, Label } from "semantic-ui-react";
 import get from "lodash.get";
 import { useFormContext } from "react-hook-form";
@@ -38,7 +38,7 @@ function FormField({
 
   return (
     <Form.Field
-      className={classNames(hidden && "hidden-display", className)}
+      className={clsx(hidden && "hidden-display", className)}
       required={required}
       error={Boolean(error)}
       width={width}

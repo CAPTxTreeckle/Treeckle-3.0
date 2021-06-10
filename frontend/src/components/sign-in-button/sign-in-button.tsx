@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clsx from "clsx";
 import { useState } from "react";
 import {
   Button,
@@ -22,7 +22,7 @@ function SignInButton() {
     <div className={styles.signInButtonContainer}>
       <Button
         fluid
-        className={classNames(styles.signInButton, styles.important)}
+        className={clsx(styles.signInButton, styles.important)}
         content="Sign In"
         onClick={() => setSignInOptionsOpened(true)}
       />

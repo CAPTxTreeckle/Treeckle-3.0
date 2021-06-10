@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clsx from "clsx";
 import { FormEvent } from "react";
 import { useController } from "react-hook-form";
 import { CheckboxProps, Form, Ref } from "semantic-ui-react";
@@ -36,7 +36,7 @@ function RadioFormField({
   return (
     <Ref innerRef={ref}>
       <Form.Checkbox
-        className={classNames(hidden && "hidden-display", className)}
+        className={clsx(hidden && "hidden-display", className)}
         onBlur={onBlur}
         label={label}
         onChange={(event, data) => {

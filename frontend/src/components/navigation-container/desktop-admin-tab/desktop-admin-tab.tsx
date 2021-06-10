@@ -1,4 +1,4 @@
-import classNames from "classnames";
+import clsx from "clsx";
 import { Link, useLocation } from "react-router-dom";
 import { Dropdown } from "semantic-ui-react";
 import {
@@ -13,7 +13,7 @@ function DesktopAdminTab() {
 
   return (
     <Dropdown
-      className={classNames({ active: pathname.startsWith("/admin") })}
+      className={clsx({ active: pathname.startsWith("/admin") })}
       text="Admin"
       item
       floating

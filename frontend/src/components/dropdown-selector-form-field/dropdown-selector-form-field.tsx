@@ -1,6 +1,6 @@
 import { SyntheticEvent } from "react";
 import { useFormContext, useController } from "react-hook-form";
-import classNames from "classnames";
+import clsx from "clsx";
 import { DropdownItemProps, DropdownProps, Form, Ref } from "semantic-ui-react";
 import get from "lodash.get";
 import useOptionsState from "../../custom-hooks/use-options-state";
@@ -63,7 +63,7 @@ function DropdownSelectorFormField({
   return (
     <Ref innerRef={ref}>
       <Form.Select
-        className={classNames(hidden && "hidden-display", className)}
+        className={clsx(hidden && "hidden-display", className)}
         loading={isLoadingOptions}
         placeholder={placeholder}
         label={label}

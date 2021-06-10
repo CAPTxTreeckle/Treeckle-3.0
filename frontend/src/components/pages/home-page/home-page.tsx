@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { useMediaQuery } from "react-responsive";
 import {
   Transition,
@@ -82,7 +82,7 @@ function HomePage() {
 
       <Segment
         textAlign="center"
-        className={classNames(styles.missionContainer, styles.important)}
+        className={clsx(styles.missionContainer, styles.important)}
         vertical
       >
         <Container className={styles.mission}>
@@ -156,17 +156,14 @@ function HomePage() {
               </p>
             </Grid.Column>
           </Grid>
-          <Divider
-            className={classNames(styles.divider, styles.important)}
-            section
-          />
+          <Divider className={clsx(styles.divider, styles.important)} section />
           <p>© Treeckle 2021</p>
         </Container>
       </Segment>
 
       <Transition visible={showScroller} animation="scale" duration="300">
         <Button
-          className={classNames(styles.scrollToTopButton, styles.important)}
+          className={clsx(styles.scrollToTopButton, styles.important)}
           color="teal"
           onClick={() =>
             window.scrollTo({ top: 0, left: 0, behavior: "smooth" })

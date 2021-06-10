@@ -1,5 +1,5 @@
 import { SyntheticEvent, useState } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { DraggableProvidedDragHandleProps } from "react-beautiful-dnd";
 import { useFormContext } from "react-hook-form";
 import { DropdownProps, Form, Icon, Popup, Segment } from "semantic-ui-react";
@@ -140,7 +140,7 @@ function VenueDetailsCustomFormField({
 
         <Segment.Group className={styles.bottomSection} horizontal>
           <Segment
-            className={classNames(
+            className={clsx(
               isBooleanField && "hidden-display",
               styles.requiredFieldContainer,
             )}
@@ -154,7 +154,7 @@ function VenueDetailsCustomFormField({
           </Segment>
 
           <Segment
-            className={classNames(isBooleanField && styles.removeLeftBorder)}
+            className={clsx(isBooleanField && styles.removeLeftBorder)}
           />
 
           <Popup

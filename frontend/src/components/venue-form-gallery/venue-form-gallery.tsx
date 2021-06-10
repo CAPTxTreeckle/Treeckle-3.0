@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import classNames from "classnames";
+import clsx from "clsx";
 import { Grid } from "semantic-ui-react";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import { useGetVenues } from "../../custom-hooks/api/venues-api";
@@ -28,7 +28,7 @@ function VenueFormGallery() {
       inverted
     >
       <Grid
-        className={classNames(styles.venueFormGallery, styles.important)}
+        className={clsx(styles.venueFormGallery, styles.important)}
         stretched
       >
         {sortedVenues.map((venue) => (
