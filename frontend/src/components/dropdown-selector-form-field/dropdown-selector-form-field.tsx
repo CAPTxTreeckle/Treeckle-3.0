@@ -1,10 +1,10 @@
 import { useFormContext, useController } from "react-hook-form";
 import classNames from "classnames";
-import { DropdownProps, Form, Ref } from "semantic-ui-react";
+import { DropdownItemProps, DropdownProps, Form, Ref } from "semantic-ui-react";
 import get from "lodash.get";
 import useOptionsState from "../../custom-hooks/use-options-state";
 import { sanitizeArray } from "../../utils/parser-utils";
-import styles from "./dropdown-selector-form-field.module.scss";
+import { DEFAULT_ARRAY } from "../../constants";
 
 type Props = {
   className?: string;
@@ -14,7 +14,7 @@ type Props = {
   errorMsg?: string;
   placeholder?: string;
   defaultValue?: string | string[];
-  defaultOptions?: string[];
+  defaultOptions?: string[] | DropdownItemProps[];
   isLoadingOptions?: boolean;
   multiple?: boolean;
   allowAdditions?: boolean;
@@ -35,7 +35,7 @@ function DropdownSelectorFormField({
   errorMsg,
   placeholder,
   defaultValue,
-  defaultOptions = [],
+  defaultOptions = DEFAULT_ARRAY,
   isLoadingOptions = false,
   multiple = false,
   allowAdditions = false,
@@ -62,7 +62,7 @@ function DropdownSelectorFormField({
   return (
     <Ref innerRef={ref}>
       <Form.Select
-        className={classNames(hidden && styles.hidden, className)}
+        className={classNames(hidden && "hidden-display", className)}
         loading={isLoadingOptions}
         placeholder={placeholder}
         label={label}

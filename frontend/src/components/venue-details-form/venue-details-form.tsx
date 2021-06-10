@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Form, Header, Segment, StrictButtonProps } from "semantic-ui-react";
+import { Form, Header, Segment, ButtonProps } from "semantic-ui-react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   CATEGORY,
@@ -22,7 +22,6 @@ import VenueDetailsCustomFormFieldsSection from "../venue-details-custom-form-fi
 import { FieldType, VenueFormProps } from "../../types/venues";
 import { useGetVenueCategories } from "../../custom-hooks/api/venues-api";
 import DropdownSelectorFormField from "../dropdown-selector-form-field";
-import "./venue-details-form.scss";
 import { deepTrim } from "../../utils/parser-utils";
 
 const schema = yup.object().shape({
@@ -72,9 +71,9 @@ const schema = yup.object().shape({
 });
 
 type Props = {
-  onSubmit?: (data: VenueFormProps) => Promise<unknown>;
+  onSubmit?: (data: VenueFormProps) => Promise<void>;
   defaultValues?: VenueFormProps;
-  submitButtonProps: StrictButtonProps;
+  submitButtonProps: ButtonProps;
 };
 
 const defaultFormProps: VenueFormProps = {
@@ -92,44 +91,31 @@ function VenueDetailsForm({
   onSubmit,
   submitButtonProps,
 }: Props) {
-  const isMounted = useRef(true);
   const methods = useForm<VenueFormProps>({
     resolver: yupResolver(schema),
     defaultValues,
     shouldUnregister: true,
   });
   const { handleSubmit } = methods;
-  const {
-    venueCategories: existingCategories,
-    isLoading: isLoadingCategories,
-    getVenueCategories,
-  } = useGetVenueCategories();
+  const { venueCategories, isLoading, getVenueCategories } =
+    useGetVenueCategories();
 
   const [isSubmitting, setSubmitting] = useState(false);
-
-  useEffect(() => {
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
 
   useEffect(() => {
     getVenueCategories();
   }, [getVenueCategories]);
 
-  const _onSubmit = useCallback(
-    async (formData: VenueFormProps) => {
-      setSubmitting(true);
-      await onSubmit?.(deepTrim(formData));
+  const _onSubmit = async (formData: VenueFormProps) => {
+    setSubmitting(true);
+    await onSubmit?.(deepTrim(formData));
 
-      isMounted.current && setSubmitting(false);
-    },
-    [onSubmit],
-  );
+    setSubmitting(false);
+  };
 
   return (
     <FormProvider {...methods}>
-      <Form className="venue-details-form" onSubmit={handleSubmit(_onSubmit)}>
+      <Form onSubmit={handleSubmit(_onSubmit)}>
         <Segment.Group raised>
           <Segment>
             <Header as={Form.Field}>
@@ -149,8 +135,8 @@ function VenueDetailsForm({
                 required
                 search
                 allowAdditions
-                defaultOptions={existingCategories}
-                isLoadingOptions={isLoadingCategories}
+                defaultOptions={venueCategories}
+                isLoadingOptions={isLoading}
               />
 
               <FormField
@@ -188,14 +174,12 @@ function VenueDetailsForm({
             <VenueDetailsCustomFormFieldsSection />
           </Segment>
 
-          <Segment>
-            <div className="action-container justify-end">
-              <Form.Button
-                {...submitButtonProps}
-                type="submit"
-                loading={isSubmitting}
-              />
-            </div>
+          <Segment className="action-container justify-end">
+            <Form.Button
+              {...submitButtonProps}
+              type="submit"
+              loading={isSubmitting}
+            />
           </Segment>
         </Segment.Group>
       </Form>

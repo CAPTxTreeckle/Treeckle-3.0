@@ -52,31 +52,29 @@ function VenueDetailsCustomFormFieldsSection() {
                       requiredField = false,
                     },
                     index,
-                  ) => {
-                    return (
-                      <Draggable
-                        key={id}
-                        index={index}
-                        draggableId={id ?? `${index}`}
-                      >
-                        {({ innerRef, draggableProps, dragHandleProps }) => (
-                          <div ref={innerRef} {...draggableProps}>
-                            <VenueDetailsCustomFormField
-                              index={index}
-                              onDeleteField={() => remove(index)}
-                              defaultValues={{
-                                fieldLabel,
-                                placeholderText,
-                                fieldType,
-                                requiredField,
-                              }}
-                              dragHandleProps={dragHandleProps}
-                            />
-                          </div>
-                        )}
-                      </Draggable>
-                    );
-                  },
+                  ) => (
+                    <Draggable
+                      key={id}
+                      index={index}
+                      draggableId={id ?? `${index}`}
+                    >
+                      {({ innerRef, draggableProps, dragHandleProps }) => (
+                        <div ref={innerRef} {...draggableProps}>
+                          <VenueDetailsCustomFormField
+                            index={index}
+                            onDeleteField={() => remove(index)}
+                            defaultValues={{
+                              fieldLabel,
+                              placeholderText,
+                              fieldType,
+                              requiredField,
+                            }}
+                            dragHandleProps={dragHandleProps}
+                          />
+                        </div>
+                      )}
+                    </Draggable>
+                  ),
                 )}
                 {placeholder}
               </div>
@@ -89,14 +87,13 @@ function VenueDetailsCustomFormFieldsSection() {
         content="Add a new field"
         trigger={
           <Button
-            fluid
             type="button"
             color="green"
             icon="plus"
             onClick={() => append({})}
           />
         }
-        position="top center"
+        position="right center"
         on="hover"
       />
     </>

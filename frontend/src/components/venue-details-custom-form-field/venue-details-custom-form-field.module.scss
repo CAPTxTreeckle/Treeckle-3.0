@@ -1,0 +1,69 @@
+.venueDetailsCustomFormField {
+  padding: 0.5rem 0;
+  color: black;
+
+  .card {
+    background: white;
+
+    .topSection {
+      .fieldNumberContainer {
+        flex-grow: 0;
+        min-width: 3.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .fieldTypeSelectorContainer {
+        padding: 0;
+        flex-grow: 0;
+
+        .selector {
+          height: 100%;
+          > div {
+            height: 100%;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-left: 1rem;
+
+            > i {
+              position: unset;
+              padding: 0;
+            }
+          }
+        }
+      }
+
+      .dragSection {
+        flex-grow: 0;
+        width: 3.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .bottomSection {
+      height: 3.5rem;
+
+      .requiredFieldContainer {
+        flex-grow: 0;
+      }
+
+      .removeLeftBorder {
+        border-left: none;
+      }
+
+      .deleteButtonContainer {
+        flex-grow: 0;
+        width: 3.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+    }
+  }
+}

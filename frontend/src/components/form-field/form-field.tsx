@@ -2,7 +2,6 @@ import classNames from "classnames";
 import { Form, FormFieldProps, Label } from "semantic-ui-react";
 import get from "lodash.get";
 import { useFormContext } from "react-hook-form";
-import styles from "./form-field.module.scss";
 
 type Props = {
   className?: string;
@@ -39,7 +38,7 @@ function FormField({
 
   return (
     <Form.Field
-      className={classNames(hidden && styles.hidden, className)}
+      className={classNames(hidden && "hidden-display", className)}
       required={required}
       error={Boolean(error)}
       width={width}

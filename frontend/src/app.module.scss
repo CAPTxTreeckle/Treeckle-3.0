@@ -3,3 +3,29 @@
   white-space: pre-wrap;
   word-break: break-word;
 }
+
+.app {
+  :global {
+    .hidden-display {
+      display: none;
+    }
+
+    .action-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .justify-end {
+      justify-content: flex-end;
+    }
+
+    .justify-center {
+      justify-content: center;
+    }
+
+    .flex-no-grow {
+      flex-grow: 0 !important;
+    }
+  }
+}

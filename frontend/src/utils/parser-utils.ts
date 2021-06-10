@@ -23,7 +23,11 @@ export function deepTrim<T>(value: T): T {
   return value;
 }
 
-export function sanitizeArray(strings: string[], unique = true): string[] {
+export function sanitizeArray(
+  strings: string[],
+  options: { unique: boolean } = { unique: true },
+): string[] {
+  const { unique } = options;
   if (unique) {
     return Array.from(new Set(strings.map((s) => s.trim()).filter((s) => s)));
   }

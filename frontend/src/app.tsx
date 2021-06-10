@@ -21,10 +21,12 @@ configure({ axios: axios.create({ baseURL: process.env.REACT_APP_API_URL }) });
 
 function App() {
   return (
-    <Provider store={store}>
-      <LocalStorageUserManager />
-      <Routes />
-    </Provider>
+    <div className={styles.app}>
+      <Provider store={store}>
+        <LocalStorageUserManager />
+        <Routes />
+      </Provider>
+    </div>
   );
 }
 

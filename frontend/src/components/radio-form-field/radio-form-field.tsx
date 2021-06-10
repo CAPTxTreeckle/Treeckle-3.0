@@ -1,7 +1,6 @@
 import classNames from "classnames";
 import { useController } from "react-hook-form";
 import { CheckboxProps, Form, Ref } from "semantic-ui-react";
-import styles from "./radio-form-field.module.scss";
 
 type Props = {
   className?: string;
@@ -36,7 +35,7 @@ function RadioFormField({
   return (
     <Ref innerRef={ref}>
       <Form.Checkbox
-        className={classNames(hidden && styles.hidden, className)}
+        className={classNames(hidden && "hidden-display", className)}
         onBlur={onBlur}
         label={label}
         onChange={(event, data) => {

@@ -12,6 +12,7 @@ import {
 import { changeKeyCase } from "../../utils/parser-utils";
 import { errorHandlerWrapper, resolveApiError } from "../../utils/error-utils";
 import { useAxiosWithTokenRefresh } from "./auth-api";
+import { DEFAULT_ARRAY } from "../../constants";
 
 function parseVenueFormProps(
   venueFormProps: VenueFormProps,
@@ -71,7 +72,7 @@ function parseVenueData(venueData: VenueData): VenueViewProps {
 }
 
 export function useGetVenueCategories() {
-  const [{ data: venueCategories = [], loading }, apiCall] =
+  const [{ data: venueCategories = DEFAULT_ARRAY, loading }, apiCall] =
     useAxiosWithTokenRefresh<string[]>(
       {
         url: "/venues/categories",

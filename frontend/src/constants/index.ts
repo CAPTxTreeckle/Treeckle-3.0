@@ -69,3 +69,4 @@ export const END = "end";
 export const START_DATE_TIME_STRING = "startDateTimeString";
 export const END_DATE_TIME_STRING = "endDateTimeString";
 export const PROFILE_IMAGE = "profileImage";
+export const DEFAULT_ARRAY = [];

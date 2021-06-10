@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { SyntheticEvent, useState, useEffect } from "react";
+import classNames from "classnames";
 import { DraggableProvidedDragHandleProps } from "react-beautiful-dnd";
-import { Controller, useFormContext } from "react-hook-form";
-import { Card, Form, Icon, Popup, Select } from "semantic-ui-react";
+import { useFormContext } from "react-hook-form";
+import { DropdownProps, Form, Icon, Popup, Segment } from "semantic-ui-react";
 import {
   FIELD_LABEL,
   FIELD_TYPE,
@@ -16,7 +17,8 @@ import {
 } from "../../types/venues";
 import FormField from "../form-field";
 import RadioFormField from "../radio-form-field";
-import "./venue-details-custom-form-field.scss";
+import DropdownSelectorFormField from "../dropdown-selector-form-field";
+import styles from "./venue-details-custom-form-field.module.scss";
 
 const typeOptions = [
   {
@@ -61,7 +63,7 @@ function VenueDetailsCustomFormField({
   defaultValues = defaultFormProps,
   dragHandleProps,
 }: Props) {
-  const { setValue } = useFormContext<VenueFormProps>();
+  const { setValue, setFocus } = useFormContext<VenueFormProps>();
   const [isBooleanField, setBooleanField] = useState(
     defaultValues.fieldType === FieldType.Boolean,
   );
@@ -70,59 +72,60 @@ function VenueDetailsCustomFormField({
   const placeholderText = `${CUSTOM_VENUE_BOOKING_FORM_FIELDS}.${index}.${PLACEHOLDER_TEXT}`;
   const requiredField = `${CUSTOM_VENUE_BOOKING_FORM_FIELDS}.${index}.${REQUIRED_FIELD}`;
 
+  const onSelect = (
+    _: SyntheticEvent<HTMLElement, Event>,
+    { value }: DropdownProps,
+  ) => {
+    if (value === FieldType.Boolean) {
+      setBooleanField(true);
+      setValue(
+        requiredField as "customVenueBookingFormFields.0.requiredField",
+        false,
+      );
+      setValue(
+        placeholderText as "customVenueBookingFormFields.0.placeholderText",
+        "",
+      );
+    } else {
+      setBooleanField(false);
+    }
+  };
+
+  useEffect(() => {
+    setFocus(fieldLabel as "customVenueBookingFormFields.0.fieldLabel");
+  }, [setFocus, fieldLabel]);
+
   return (
-    <div className="venue-details-custom-form-field-container">
-      <Card className="venue-details-custom-form-field" raised fluid>
-        <Card.Content className="top-bar">
-          <div className="section left">
-            <div className="field-number">{index + 1}</div>
+    <div className={styles.venueDetailsCustomFormField}>
+      <Segment.Group className={styles.card} raised>
+        <Segment.Group className={styles.topSection} horizontal>
+          <Segment className={styles.fieldNumberContainer}>{index + 1}</Segment>
 
-            <Controller
-              name={fieldType}
+          <Segment className={styles.fieldTypeSelectorContainer}>
+            <DropdownSelectorFormField
+              className={styles.selector}
+              inputName={fieldType}
+              defaultOptions={typeOptions}
               defaultValue={defaultValues.fieldType}
-              rules={{ required: true }}
-              render={({ field: { onChange, onBlur, value } }) => (
-                <Select
-                  value={value}
-                  onBlur={onBlur}
-                  onChange={(_, { value }) => {
-                    onChange(value);
-
-                    if (value === FieldType.Boolean) {
-                      setBooleanField(true);
-                      setValue(
-                        requiredField as "customVenueBookingFormFields.0.requiredField",
-                        false,
-                      );
-                      setValue(
-                        placeholderText as "customVenueBookingFormFields.0.placeholderText",
-                        "",
-                      );
-                    } else {
-                      setBooleanField(false);
-                    }
-                  }}
-                  className="type-selector"
-                  options={typeOptions}
-                />
-              )}
+              required
+              onChangeEffect={onSelect}
             />
-          </div>
+          </Segment>
 
-          <div className="section right">
-            <Popup
-              trigger={
-                <div {...dragHandleProps} className="drag-zone">
-                  <Icon name="braille" fitted />
-                </div>
-              }
-              on="hover"
-              content="Drag and move up/down to rearrange the fields"
-            />
-          </div>
-        </Card.Content>
+          <Segment />
 
-        <Card.Content>
+          <Popup
+            trigger={
+              <Segment className={styles.dragSection} {...dragHandleProps}>
+                <i className="fas fa-arrows-v" />
+              </Segment>
+            }
+            on="hover"
+            content="Drag and move up/down to rearrange the fields"
+          />
+        </Segment.Group>
+
+        <Segment>
           <Form.Group widths="equal">
             <FormField
               required
@@ -137,41 +140,41 @@ function VenueDetailsCustomFormField({
               hidden={isBooleanField}
             />
           </Form.Group>
-        </Card.Content>
+        </Segment>
 
-        <Card.Content className="bottom-bar">
-          <div
-            className="section left"
-            style={isBooleanField ? { display: "none" } : undefined}
+        <Segment.Group className={styles.bottomSection} horizontal>
+          <Segment
+            className={classNames(
+              isBooleanField && "hidden-display",
+              styles.requiredFieldContainer,
+            )}
           >
             <RadioFormField
               label="Required Field"
               inputName={requiredField}
               defaultValue={defaultValues.requiredField}
-              className="required-field-toggler"
               type="toggle"
             />
-          </div>
+          </Segment>
 
-          <div className="section right">
-            <div className="delete-button">
-              <Popup
-                content="Delete field"
-                trigger={
-                  <Icon
-                    color="red"
-                    fitted
-                    name="trash alternate outline"
-                    link
-                    onClick={onDeleteField}
-                  />
-                }
-                position="left center"
-              />
-            </div>
-          </div>
-        </Card.Content>
-      </Card>
+          <Segment
+            className={classNames(isBooleanField && styles.removeLeftBorder)}
+          />
+
+          <Popup
+            content="Delete field"
+            trigger={
+              <Segment
+                className={styles.deleteButtonContainer}
+                onClick={onDeleteField}
+              >
+                <Icon color="red" fitted name="trash alternate outline" />
+              </Segment>
+            }
+            position="left center"
+          />
+        </Segment.Group>
+      </Segment.Group>
     </div>
   );
 }

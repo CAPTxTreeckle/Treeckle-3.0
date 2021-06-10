@@ -2,37 +2,55 @@ import { useState, useEffect } from "react";
 import { DropdownItemProps } from "semantic-ui-react";
 import { sanitizeArray } from "../utils/parser-utils";
 
-export default function useOptionsState(existingOptions: string[]) {
+export default function useOptionsState(
+  existingOptions: string[] | DropdownItemProps[],
+) {
   const [defaultOptions, setDefaultOptions] = useState<DropdownItemProps[]>([]);
-  const [uniqueOptions, setUniqueOptions] = useState<Set<string>>(new Set());
+  const [uniqueValues, setUniqueValues] = useState<Set<string>>(new Set());
   const [options, setOptions] = useState<DropdownItemProps[]>([]);
 
   useEffect(() => {
-    const uniqueOptions = sanitizeArray(existingOptions);
-    const defaultOptions = uniqueOptions.map((option) => ({
-      text: option,
-      value: option,
-    }));
+    const defaultOptions: DropdownItemProps[] = (() => {
+      if (typeof existingOptions[0] === "string") {
+        const uniqueValues = sanitizeArray(existingOptions as string[]);
+        setUniqueValues(new Set(uniqueValues));
+        return uniqueValues.map((value) => ({
+          text: value,
+          value,
+        }));
+      }
+
+      setUniqueValues(
+        new Set(
+          (existingOptions as DropdownItemProps[]).flatMap(({ value }) =>
+            value === undefined ? [] : [value as string],
+          ),
+        ),
+      );
+      return existingOptions as DropdownItemProps[];
+    })();
 
     setDefaultOptions(defaultOptions);
-    setUniqueOptions(new Set(uniqueOptions));
     setOptions(defaultOptions);
   }, [existingOptions]);
 
-  const onSelect = (options: string[]) => {
-    console.log("Select:", options);
-    const newOptions = options
-      .filter((option) => !uniqueOptions.has(option))
+  const onSelect = (values: string[]) => {
+    console.log("Select:", values);
+    const newOptions = values
+      .filter((value) => !uniqueValues.has(value))
       .map(
-        (option) =>
+        (value) =>
           ({
-            text: option,
-            value: option,
+            text: value,
+            value,
           } as DropdownItemProps),
-      )
-      .concat(defaultOptions);
+      );
 
-    setOptions(newOptions);
+    if (newOptions.length === 0) {
+      return;
+    }
+
+    setOptions(newOptions.concat(defaultOptions));
   };
 
   return { options, onSelect };

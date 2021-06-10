@@ -8,9 +8,10 @@ import {
   UserPatchData,
 } from "../../types/users";
 import { errorHandlerWrapper, resolveApiError } from "../../utils/error-utils";
+import { DEFAULT_ARRAY } from "../../constants";
 
 export function useGetAllUserInvites() {
-  const [{ data: userInvites = [], loading: isLoading }, apiCall] =
+  const [{ data: userInvites = DEFAULT_ARRAY, loading: isLoading }, apiCall] =
     useAxiosWithTokenRefresh<UserInviteData[]>(
       {
         url: "/users/invite",
@@ -131,7 +132,7 @@ export function useDeleteUserInvites() {
 }
 
 export function useGetAllUsers() {
-  const [{ data: users = [], loading: isLoading }, apiCall] =
+  const [{ data: users = DEFAULT_ARRAY, loading: isLoading }, apiCall] =
     useAxiosWithTokenRefresh<UserData[]>(
       {
         url: "/users/",
