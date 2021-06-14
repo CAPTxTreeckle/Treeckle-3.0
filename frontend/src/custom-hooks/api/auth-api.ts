@@ -104,7 +104,7 @@ export function useAxiosWithTokenRefresh<T>(
 
 export function useGoogleAuth() {
   const dispatch = useAppDispatch();
-  const [{ loading: isLoading }, login] = useAxios<AuthenticationData>(
+  const [{ loading }, login] = useAxios<AuthenticationData>(
     {
       url: "/gateway/gmail",
       method: "post",
@@ -144,7 +144,7 @@ export function useGoogleAuth() {
 
   return {
     startGoogleAuth: signIn,
-    isLoading: !loaded || isLoading,
+    loading: !loaded || loading,
     isUnavailable,
   };
 }

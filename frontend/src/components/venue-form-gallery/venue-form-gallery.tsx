@@ -8,7 +8,7 @@ import { sort } from "../../utils/parser-utils";
 import styles from "./venue-form-gallery.module.scss";
 
 function VenueFormGallery() {
-  const { venues, isLoading, getVenues } = useGetVenues();
+  const { venues, loading, getVenues } = useGetVenues();
   const sortedVenues = useMemo(
     () => sort(venues, { props: "venueFormProps.name" }),
     [venues],
@@ -20,7 +20,7 @@ function VenueFormGallery() {
 
   return (
     <PlaceholderWrapper
-      isLoading={isLoading}
+      loading={loading}
       loadingMessage="Retrieving venues"
       showDefaultMessage={venues.length === 0}
       defaultMessage="No venue found"

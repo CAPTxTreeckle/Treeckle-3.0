@@ -94,7 +94,6 @@ function VenueDetailsCustomFormFieldsSection() {
           />
         }
         position="right center"
-        on="hover"
       />
     </>
   );

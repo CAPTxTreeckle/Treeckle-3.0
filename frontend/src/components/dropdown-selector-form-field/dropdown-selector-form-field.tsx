@@ -2,7 +2,7 @@ import { SyntheticEvent } from "react";
 import { useFormContext, useController } from "react-hook-form";
 import clsx from "clsx";
 import { DropdownItemProps, DropdownProps, Form, Ref } from "semantic-ui-react";
-import get from "lodash.get";
+import get from "lodash/get";
 import useOptionsState from "../../custom-hooks/use-options-state";
 import { sanitizeArray } from "../../utils/parser-utils";
 import { DEFAULT_ARRAY } from "../../constants";
@@ -16,7 +16,7 @@ type Props = {
   placeholder?: string;
   defaultValue?: string | string[];
   defaultOptions?: string[] | DropdownItemProps[];
-  isLoadingOptions?: boolean;
+  loading?: boolean;
   multiple?: boolean;
   allowAdditions?: boolean;
   search?: boolean;
@@ -37,7 +37,7 @@ function DropdownSelectorFormField({
   placeholder,
   defaultValue,
   defaultOptions = DEFAULT_ARRAY,
-  isLoadingOptions = false,
+  loading = false,
   multiple = false,
   allowAdditions = false,
   search = false,
@@ -64,7 +64,7 @@ function DropdownSelectorFormField({
     <Ref innerRef={ref}>
       <Form.Select
         className={clsx(hidden && "hidden-display", className)}
-        loading={isLoadingOptions}
+        loading={loading}
         placeholder={placeholder}
         label={label}
         required={required}

@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import isEqual from "lodash.isequal";
+import isEqual from "lodash/isEqual";
 import { Link, useLocation } from "react-router-dom";
 import { Dropdown, Menu, Image } from "semantic-ui-react";
 import { toast } from "react-toastify";
@@ -54,13 +54,9 @@ function UserTab() {
             to={currentUserProfilePath}
             active={isShowingCurrentUserProfile}
             text="My Profile"
-            icon={<i className="fas fa-user icon" />}
+            icon="user"
           />
-          <Dropdown.Item
-            onClick={onSignOut}
-            text="Sign Out"
-            icon={<i className="fas fa-sign-out-alt icon" />}
-          />
+          <Dropdown.Item onClick={onSignOut} text="Sign Out" icon="sign-out" />
         </Dropdown.Menu>
       </Dropdown>
     </Menu.Menu>

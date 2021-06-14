@@ -1,6 +1,6 @@
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Button } from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 import { useCreateVenue } from "../../../custom-hooks/api/venues-api";
 import { ADMIN_VENUES_PATH } from "../../../routes/paths";
 import { VenueFormProps } from "../../../types/venues";
@@ -31,7 +31,7 @@ function AdminVenuesCreationPage() {
         to={ADMIN_VENUES_PATH}
       >
         <Button.Content hidden content="Cancel Venue Creation" />
-        <Button.Content visible content={<i className="fas fa-times" />} />
+        <Button.Content visible content={<Icon name="times" fitted />} />
       </Button>
 
       <h2>Venue Creation</h2>

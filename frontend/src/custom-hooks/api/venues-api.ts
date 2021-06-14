@@ -97,7 +97,7 @@ export function useGetVenueCategories() {
     }
   }, [apiCall]);
 
-  return { venueCategories, isLoading: loading, getVenueCategories };
+  return { venueCategories, loading, getVenueCategories };
 }
 
 export function useGetVenues() {
@@ -111,10 +111,13 @@ export function useGetVenues() {
 
   const getVenues = useCallback(
     async (queryParams?: VenueGetQueryParams) => {
-      const url = stringifyUrl({
-        url: "/venues/",
-        query: changeKeyCase(snakeCase, queryParams),
-      });
+      const url = stringifyUrl(
+        {
+          url: "/venues/",
+          query: changeKeyCase(snakeCase, queryParams),
+        },
+        { skipNull: true, skipEmptyString: true },
+      );
 
       try {
         return await errorHandlerWrapper(async () => {
@@ -135,7 +138,7 @@ export function useGetVenues() {
     [apiCall],
   );
 
-  return { venues, isLoading: loading, getVenues };
+  return { venues, loading, getVenues };
 }
 
 export function useCreateVenue() {
@@ -161,7 +164,7 @@ export function useCreateVenue() {
     [apiCall],
   );
 
-  return { createVenue, isLoading: loading };
+  return { createVenue, loading };
 }
 
 export function useDeleteVenue() {
@@ -185,7 +188,7 @@ export function useDeleteVenue() {
     [apiCall],
   );
 
-  return { deleteVenue, isLoading: loading };
+  return { deleteVenue, loading };
 }
 
 export function useGetSingleVenue() {
@@ -219,7 +222,7 @@ export function useGetSingleVenue() {
     [apiCall],
   );
 
-  return { venue, isLoading: loading, getSingleVenue };
+  return { venue, loading, getSingleVenue };
 }
 
 export function useUpdateVenue() {
@@ -249,5 +252,5 @@ export function useUpdateVenue() {
     [apiCall],
   );
 
-  return { updateVenue, isLoading: loading };
+  return { updateVenue, loading };
 }

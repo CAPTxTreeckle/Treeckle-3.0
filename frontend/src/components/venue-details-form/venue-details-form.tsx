@@ -97,7 +97,7 @@ function VenueDetailsForm({
     shouldUnregister: true,
   });
   const { handleSubmit } = methods;
-  const { venueCategories, isLoading, getVenueCategories } =
+  const { venueCategories, loading, getVenueCategories } =
     useGetVenueCategories();
   const sortedVenueCategories = useMemo(
     () => sort(venueCategories),
@@ -140,7 +140,7 @@ function VenueDetailsForm({
                 search
                 allowAdditions
                 defaultOptions={sortedVenueCategories}
-                isLoadingOptions={isLoading}
+                loading={loading}
               />
 
               <FormField

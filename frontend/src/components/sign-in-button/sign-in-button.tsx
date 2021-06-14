@@ -13,7 +13,7 @@ import styles from "./sign-in-button.module.scss";
 function SignInButton() {
   const {
     startGoogleAuth,
-    isLoading: googleAuthLoading,
+    loading: googleAuthLoading,
     isUnavailable,
   } = useGoogleAuth();
   const [isSignInOptionsOpened, setSignInOptionsOpened] = useState(false);

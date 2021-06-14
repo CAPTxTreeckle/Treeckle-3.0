@@ -11,7 +11,7 @@ import { errorHandlerWrapper, resolveApiError } from "../../utils/error-utils";
 import { DEFAULT_ARRAY } from "../../constants";
 
 export function useGetAllUserInvites() {
-  const [{ data: userInvites = DEFAULT_ARRAY, loading: isLoading }, apiCall] =
+  const [{ data: userInvites = DEFAULT_ARRAY, loading }, apiCall] =
     useAxiosWithTokenRefresh<UserInviteData[]>(
       {
         url: "/users/invite",
@@ -34,13 +34,11 @@ export function useGetAllUserInvites() {
     }
   }, [apiCall]);
 
-  return { userInvites, isLoading, getAllUserInvites };
+  return { userInvites, loading, getAllUserInvites };
 }
 
 export function useCreateUserInvites() {
-  const [{ loading: isLoading }, apiCall] = useAxiosWithTokenRefresh<
-    UserInviteData[]
-  >(
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<UserInviteData[]>(
     {
       url: "/users/invite",
       method: "post",
@@ -65,15 +63,13 @@ export function useCreateUserInvites() {
   );
 
   return {
-    isLoading,
+    loading,
     createUserInvites,
   };
 }
 
 export function useUpdateUserInvites() {
-  const [{ loading: isLoading }, apiCall] = useAxiosWithTokenRefresh<
-    UserInviteData[]
-  >(
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<UserInviteData[]>(
     {
       url: "/users/invite",
       method: "patch",
@@ -98,11 +94,11 @@ export function useUpdateUserInvites() {
     [apiCall],
   );
 
-  return { isLoading, updateUserInvites };
+  return { loading, updateUserInvites };
 }
 
 export function useDeleteUserInvites() {
-  const [{ loading: isLoading }, apiCall] = useAxiosWithTokenRefresh<string[]>(
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<string[]>(
     {
       url: "/users/invite",
       method: "delete",
@@ -128,11 +124,11 @@ export function useDeleteUserInvites() {
     [apiCall],
   );
 
-  return { isLoading, deleteUserInvites };
+  return { loading, deleteUserInvites };
 }
 
 export function useGetAllUsers() {
-  const [{ data: users = DEFAULT_ARRAY, loading: isLoading }, apiCall] =
+  const [{ data: users = DEFAULT_ARRAY, loading }, apiCall] =
     useAxiosWithTokenRefresh<UserData[]>(
       {
         url: "/users/",
@@ -155,13 +151,11 @@ export function useGetAllUsers() {
     }
   }, [apiCall]);
 
-  return { users, isLoading, getAllUsers };
+  return { users, loading, getAllUsers };
 }
 
 export function useUpdateUsers() {
-  const [{ loading: isLoading }, apiCall] = useAxiosWithTokenRefresh<
-    UserData[]
-  >(
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<UserData[]>(
     {
       url: "/users/",
       method: "patch",
@@ -186,11 +180,11 @@ export function useUpdateUsers() {
     [apiCall],
   );
 
-  return { isLoading, updateUsers };
+  return { loading, updateUsers };
 }
 
 export function useDeleteUsers() {
-  const [{ loading: isLoading }, apiCall] = useAxiosWithTokenRefresh<string[]>(
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<string[]>(
     {
       url: "/users/",
       method: "delete",
@@ -216,17 +210,16 @@ export function useDeleteUsers() {
     [apiCall],
   );
 
-  return { isLoading, deleteUsers };
+  return { loading, deleteUsers };
 }
 
 export function useGetSingleUser() {
-  const [{ data: user, loading: isLoading }, apiCall] =
-    useAxiosWithTokenRefresh<UserData>(
-      {
-        method: "get",
-      },
-      { manual: true },
-    );
+  const [{ data: user, loading }, apiCall] = useAxiosWithTokenRefresh<UserData>(
+    {
+      method: "get",
+    },
+    { manual: true },
+  );
 
   const getSingleUser = useCallback(
     async (userId: number | string) => {
@@ -249,5 +242,5 @@ export function useGetSingleUser() {
     [apiCall],
   );
 
-  return { user, isLoading, getSingleUser };
+  return { user, loading, getSingleUser };
 }

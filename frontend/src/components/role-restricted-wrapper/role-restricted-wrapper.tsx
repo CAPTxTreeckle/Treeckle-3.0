@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import isEqual from "lodash.isequal";
+import isEqual from "lodash/isEqual";
 import { useAppSelector } from "../../redux/hooks";
 import { getCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
 import { Role } from "../../types/users";

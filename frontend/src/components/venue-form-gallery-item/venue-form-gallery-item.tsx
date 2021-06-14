@@ -14,7 +14,7 @@ type Props = VenueViewProps & {
 };
 
 function VenueFormGalleryItem({ id, venueFormProps, getVenues }: Props) {
-  const { deleteVenue, isLoading } = useDeleteVenue();
+  const { deleteVenue, loading } = useDeleteVenue();
 
   const onDelete = async () => {
     try {
@@ -39,7 +39,7 @@ function VenueFormGalleryItem({ id, venueFormProps, getVenues }: Props) {
       content="Delete"
       onClick={onDelete}
       color="red"
-      loading={isLoading}
+      loading={loading}
     />,
   ];
 

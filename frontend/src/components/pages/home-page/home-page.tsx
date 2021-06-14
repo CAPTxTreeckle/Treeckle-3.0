@@ -9,6 +9,7 @@ import {
   Container,
   Divider,
   Grid,
+  Icon,
 } from "semantic-ui-react";
 import { useAppDispatch } from "../../../redux/hooks";
 import { updateCurrentUser } from "../../../redux/slices/current-user-slice";
@@ -108,7 +109,7 @@ function HomePage() {
             <Grid.Column textAlign="center">
               <h1>
                 200+
-                {/* {isLoading ? (
+                {/* {loading ? (
                   <Loader active inline size="medium" />
                 ) : (
                   <div ref={ref}>{value}</div>
@@ -150,7 +151,7 @@ function HomePage() {
               <h2>CONTACT US</h2>
               <p>
                 <a href="mailto:treeckle@googlegroups.com">
-                  <i className="fas fa-envelope icon" />
+                  <Icon name="envelope" />
                   Email
                 </a>
               </p>
@@ -168,7 +169,7 @@ function HomePage() {
           onClick={() =>
             window.scrollTo({ top: 0, left: 0, behavior: "smooth" })
           }
-          icon={<i className="fas fa-arrow-up icon" />}
+          icon="arrow up"
           circular
           size="massive"
           aria-label="scroll to top"

@@ -3,6 +3,11 @@
     background-color: transparent;
   }
 
+  &.fillParent {
+    height: 100%;
+    width: 100%;
+  }
+
   .message {
     font-size: 1.5rem;
     color: black;

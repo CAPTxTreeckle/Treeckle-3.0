@@ -1,0 +1,7 @@
+@use "../../base";
+
+.horizontalLayoutContainer {
+  @include base.horizontal-space-margin(0.75rem);
+  display: flex;
+  align-items: center;
+}

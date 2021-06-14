@@ -1,51 +1,71 @@
 import { ReactNode } from "react";
 import clsx from "clsx";
-import { Segment, Loader, LoaderProps } from "semantic-ui-react";
+import { Segment, Loader, LoaderProps, Dimmer } from "semantic-ui-react";
 import styles from "./placeholder-wrapper.module.scss";
 
 type Props = {
   children?: ReactNode;
-  isLoading?: boolean;
+  loading?: boolean;
   loadingMessage?: string;
   showDefaultMessage?: boolean;
   defaultMessage?: string;
   inverted?: boolean;
   placeholder?: boolean;
   size?: LoaderProps["size"];
+  dimmed?: boolean;
+  fillParent?: boolean;
 };
 
 function PlaceholderWrapper({
   children = null,
-  isLoading = false,
+  loading = false,
   loadingMessage,
   showDefaultMessage = false,
   defaultMessage,
   inverted = false,
   placeholder = false,
   size = "huge",
+  dimmed = false,
+  fillParent = false,
 }: Props) {
-  return isLoading || showDefaultMessage ? (
+  return loading || showDefaultMessage ? (
     <Segment
-      className={styles.placeholderWrapper}
+      className={clsx(
+        styles.placeholderWrapper,
+        fillParent && styles.fillParent,
+      )}
       basic
       placeholder={placeholder}
       textAlign="center"
     >
-      {isLoading && (
+      <Dimmer active={dimmed} />
+
+      {loading && (
         <Loader
           size={size}
           active
-          inverted={inverted}
+          inverted={inverted || dimmed}
           inline
           content={
-            <div className={clsx(styles.message, inverted && styles.inverted)}>
+            <div
+              className={clsx(
+                styles.message,
+                (inverted || dimmed) && styles.inverted,
+              )}
+            >
               {loadingMessage}
             </div>
           }
         />
       )}
-      {!isLoading && showDefaultMessage && defaultMessage && (
-        <div className={clsx(styles.message, inverted && styles.inverted)}>
+
+      {!loading && showDefaultMessage && defaultMessage && (
+        <div
+          className={clsx(
+            styles.message,
+            (inverted || dimmed) && styles.inverted,
+          )}
+        >
           {defaultMessage}
         </div>
       )}

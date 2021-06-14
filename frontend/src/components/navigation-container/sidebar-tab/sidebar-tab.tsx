@@ -5,9 +5,7 @@ type Props = {
 };
 
 function SidebarTab({ onTabClick }: Props) {
-  return (
-    <MenuItem onClick={onTabClick} icon={<i className="fas fa-bars icon" />} />
-  );
+  return <MenuItem onClick={onTabClick} icon="bars" />;
 }
 
 export default SidebarTab;

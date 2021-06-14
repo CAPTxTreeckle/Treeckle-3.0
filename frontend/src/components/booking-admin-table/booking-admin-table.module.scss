@@ -1,0 +1,10 @@
+.bookingAdminTable {
+  min-height: 35rem;
+  height: 70vh;
+  color: black;
+
+  .statusLabel {
+    width: 100%;
+    text-transform: capitalize;
+  }
+}

@@ -1,4 +1,4 @@
-import isEqual from "lodash.isequal";
+import isEqual from "lodash/isEqual";
 import { Redirect, Route, RouteProps } from "react-router-dom";
 import { useAppSelector } from "../redux/hooks";
 import { getCurrentUserDisplayInfo } from "../redux/slices/current-user-slice";

@@ -6,6 +6,12 @@
 
 .app {
   :global {
+    @media only screen and (min-width: 1200px) {
+      .ui.container {
+        width: 90%;
+      }
+    }
+
     .hidden-display {
       display: none;
     }
@@ -20,14 +26,6 @@
 
     .justify-center {
       justify-content: center;
-    }
-
-    .flex-no-grow {
-      flex-grow: 0;
-
-      &.important {
-        flex-grow: 0;
-      }
     }
 
     .flex-display {

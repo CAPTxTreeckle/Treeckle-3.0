@@ -113,7 +113,7 @@ function VenueDetailsCustomFormField({
           <Popup
             trigger={
               <Segment className={styles.dragSection} {...dragHandleProps}>
-                <i className="fas fa-arrows-v" />
+                <Icon name="arrows alternate vertical" />
               </Segment>
             }
             on="hover"

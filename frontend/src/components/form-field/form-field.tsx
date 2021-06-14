@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { Form, FormFieldProps, Label } from "semantic-ui-react";
-import get from "lodash.get";
+import get from "lodash/get";
 import { useFormContext } from "react-hook-form";
 
 type Props = {

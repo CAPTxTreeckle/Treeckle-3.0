@@ -6,7 +6,7 @@ import ProfileCard from "../../profile-card";
 
 function ProfilePage() {
   const { userId } = useParams<{ userId: string }>();
-  const { user, isLoading, getSingleUser } = useGetSingleUser();
+  const { user, loading, getSingleUser } = useGetSingleUser();
 
   useEffect(() => {
     getSingleUser(userId);
@@ -17,7 +17,7 @@ function ProfilePage() {
       inverted
       loadingMessage="Retrieving profile"
       placeholder
-      isLoading={isLoading}
+      loading={loading}
       showDefaultMessage={!user}
       defaultMessage="No user found"
     >

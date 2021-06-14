@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Button } from "semantic-ui-react";
+import { Button, Icon } from "semantic-ui-react";
 import {
   useGetSingleVenue,
   useUpdateVenue,
@@ -15,7 +15,7 @@ import VenueDetailsForm from "../../venue-details-form";
 function AdminVenuesEditPage() {
   const history = useHistory();
   const { venueId } = useParams<{ venueId: string }>();
-  const { venue, isLoading, getSingleVenue } = useGetSingleVenue();
+  const { venue, loading, getSingleVenue } = useGetSingleVenue();
   const { updateVenue } = useUpdateVenue();
 
   useEffect(() => {
@@ -42,11 +42,11 @@ function AdminVenuesEditPage() {
         to={ADMIN_VENUES_PATH}
       >
         <Button.Content hidden content="Cancel Changes" />
-        <Button.Content visible content={<i className="fas fa-times" />} />
+        <Button.Content visible content={<Icon name="times" fitted />} />
       </Button>
 
       <PlaceholderWrapper
-        isLoading={isLoading}
+        loading={loading}
         loadingMessage="Retrieving venue"
         showDefaultMessage={!venue}
         defaultMessage="No venue found"
