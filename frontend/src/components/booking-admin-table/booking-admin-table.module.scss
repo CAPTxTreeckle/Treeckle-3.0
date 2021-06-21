@@ -3,6 +3,24 @@
   height: 70vh;
   color: black;
 
+  .innerTable {
+    font-size: 1rem;
+  }
+
+  .row {
+    padding: 0.75rem 0;
+  }
+
+  .extraContentContainer {
+    width: 100%;
+  }
+
+  .detailsContainer {
+    :global(.row) {
+      padding: 0.5rem 0;
+    }
+  }
+
   .statusLabel {
     width: 100%;
     text-transform: capitalize;
