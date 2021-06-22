@@ -41,13 +41,14 @@ function BookingStatusButton({
           await updateBookingStatuses([{ bookingId, action }])
         )[0];
 
+        getBookings();
+
         if (!updatedBooking) {
           return;
         }
 
         setCurrentStatus(updatedBooking.status);
         toast.success("The booking status has been updated successfully.");
-        getBookings();
       } catch (error) {
         resolveApiError(error);
       }

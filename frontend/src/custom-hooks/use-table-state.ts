@@ -4,7 +4,7 @@ import throttle from "lodash/throttle";
 import { generateSearchEngine } from "../utils/search-utils";
 import { sort } from "../utils/parser-utils";
 
-type SortBy = {
+export type SortBy = {
   key: Key;
   order: SortOrder;
 };

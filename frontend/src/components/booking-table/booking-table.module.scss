@@ -1,0 +1,14 @@
+.bookingTable {
+  min-height: 35rem;
+  height: 70vh;
+
+  .extraContentContainer {
+    width: 100%;
+  }
+
+  .detailsContainer {
+    :global(.row) {
+      padding: 0.5rem 0;
+    }
+  }
+}

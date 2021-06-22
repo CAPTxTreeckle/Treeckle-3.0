@@ -1,11 +1,6 @@
-.bookingAdminTable {
-  min-height: 35rem;
-  height: 70vh;
+.table {
   color: black;
-
-  .innerTable {
-    font-size: 1rem;
-  }
+  font-size: 1rem;
 
   .headerRow {
     > * {
@@ -27,16 +22,6 @@
       &.expanded {
         transform: rotate(-135deg);
       }
-    }
-  }
-
-  .extraContentContainer {
-    width: 100%;
-  }
-
-  .detailsContainer {
-    :global(.row) {
-      padding: 0.5rem 0;
     }
   }
 }
