@@ -1,4 +1,11 @@
-import { Key, ReactNode, useEffect, useMemo, useCallback } from "react";
+import {
+  Key,
+  ReactNode,
+  useEffect,
+  useMemo,
+  useCallback,
+  useState,
+} from "react";
 import clsx from "clsx";
 import BaseTable, {
   Column,
@@ -28,13 +35,14 @@ import useTableState, {
   TableStateOptions,
 } from "../../custom-hooks/use-table-state";
 import { useGetBookings } from "../../custom-hooks/api/bookings-api";
-import { BookingStatusDetails, BookingViewProps } from "../../types/bookings";
+import { BookingViewProps } from "../../types/bookings";
 import { displayDateTime } from "../../utils/parser-utils";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../search-bar";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import LinkifyTextViewer from "../linkify-text-viewer";
 import BookingDetailsView from "../booking-details-view";
+import BookingStatusButton from "../booking-status-button";
 
 import styles from "./booking-admin-table.module.scss";
 import "react-base-table/styles.css";
@@ -129,27 +137,19 @@ const emailRenderer = ({
   rowData: Partial<BookingAdminDisplayProps>;
 }) => (booker ? <LinkifyTextViewer>{booker.email}</LinkifyTextViewer> : null);
 
-const statusButtonRenderer = ({
-  rowData: { status },
-}: {
-  rowData: Partial<BookingAdminDisplayProps>;
-}) =>
-  status ? (
-    <Button
-      compact
-      fluid
-      color={BookingStatusDetails.get(status)?.color}
-      className={styles.statusButton}
-      content={status.toLowerCase()}
-    />
-  ) : null;
-
 function BookingAdminTable() {
-  const { bookings, getBookings, loading } = useGetBookings();
+  const { bookings, getBookings } = useGetBookings();
+  const [loading, setLoading] = useState(false);
+
+  const onRefresh = useCallback(async () => {
+    setLoading(true);
+    await getBookings();
+    setLoading(false);
+  }, [getBookings]);
 
   useEffect(() => {
-    getBookings();
-  }, [getBookings]);
+    onRefresh();
+  }, [onRefresh]);
 
   const bookingAdminDisplayData: BookingAdminDisplayProps[] = useMemo(
     () =>
@@ -183,6 +183,24 @@ function BookingAdminTable() {
     [setSortBy],
   );
 
+  const statusButtonRenderer = useCallback(
+    ({
+      rowData: { status, id },
+    }: {
+      // eslint-disable-next-line react/no-unused-prop-types
+      rowData: Partial<BookingAdminDisplayProps>;
+    }) =>
+      status && id !== undefined ? (
+        <BookingStatusButton
+          bookingId={id}
+          status={status}
+          getBookings={getBookings}
+          adminView
+        />
+      ) : null,
+    [getBookings],
+  );
+
   return (
     <Segment.Group raised>
       <Segment secondary>
@@ -191,11 +209,7 @@ function BookingAdminTable() {
           <Popup
             content="Refresh"
             trigger={
-              <Button
-                icon="redo alternate"
-                color="blue"
-                onClick={() => getBookings()}
-              />
+              <Button icon="redo alternate" color="blue" onClick={onRefresh} />
             }
             position="top center"
           />
@@ -217,7 +231,7 @@ function BookingAdminTable() {
               emptyRenderer={() => (
                 <PlaceholderWrapper
                   showDefaultMessage={!loading}
-                  defaultMessage="No booking request found"
+                  defaultMessage="No booking requests found"
                   placeholder
                 />
               )}
@@ -296,7 +310,7 @@ function BookingAdminTable() {
               <Column<BookingAdminDisplayProps>
                 key={STATUS}
                 title="Status"
-                width={120}
+                width={110}
                 sortable
                 align="center"
                 cellRenderer={statusButtonRenderer}

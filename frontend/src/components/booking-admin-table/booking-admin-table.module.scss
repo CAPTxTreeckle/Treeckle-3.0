@@ -18,14 +18,14 @@
     padding: 0.75rem 0;
 
     .expandIcon {
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       height: auto;
       width: auto;
       transition: transform 0.3s ease-out 0s;
       transform: rotate(0deg);
 
       &.expanded {
-        transform: rotate(135deg);
+        transform: rotate(-135deg);
       }
     }
   }
@@ -38,11 +38,5 @@
     :global(.row) {
       padding: 0.5rem 0;
     }
-  }
-
-  .statusButton {
-    margin: 0;
-    font-size: 0.95rem;
-    text-transform: capitalize;
   }
 }

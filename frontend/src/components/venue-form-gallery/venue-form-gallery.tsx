@@ -23,7 +23,7 @@ function VenueFormGallery() {
       loading={loading}
       loadingMessage="Retrieving venues"
       showDefaultMessage={venues.length === 0}
-      defaultMessage="No venue found"
+      defaultMessage="No venues found"
       placeholder
       inverted
     >
