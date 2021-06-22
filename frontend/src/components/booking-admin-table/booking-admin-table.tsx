@@ -1,11 +1,12 @@
-import { useEffect, useMemo, useRef } from "react";
+import { Key, ReactNode, useEffect, useMemo, useCallback } from "react";
 import clsx from "clsx";
 import BaseTable, {
   Column,
   AutoResizer,
   TableComponents,
+  SortOrder,
 } from "react-base-table";
-import { Button, Label, Popup, Segment } from "semantic-ui-react";
+import { Button, Icon, Popup, Segment } from "semantic-ui-react";
 import {
   NAME,
   START_DATE_TIME_STRING,
@@ -20,6 +21,7 @@ import {
   BOOKER,
   ID,
   USER_ID,
+  ACTION,
 } from "../../constants";
 import { PROFILE_PATH } from "../../routes/paths";
 import useTableState, {
@@ -62,69 +64,88 @@ type BookingAdminDisplayProps = BookingViewProps & {
 };
 
 const tableComponents: TableComponents<BookingAdminDisplayProps> = {
-  TableCell: ({
-    // eslint-disable-next-line react/prop-types
-    className,
-    // eslint-disable-next-line react/prop-types
-    column: { key },
-    // eslint-disable-next-line react/prop-types
-    cellData,
-    // eslint-disable-next-line react/prop-types
-    rowData: {
-      // eslint-disable-next-line react/prop-types
-      booker: { id: bookerId },
-    },
-  }) => {
-    switch (key) {
-      case ID:
-        return <div className={clsx(className, "pointer")}>{cellData}</div>;
-      case BOOKER_NAME:
-        return (
-          <div className={className}>
-            <a
-              href={PROFILE_PATH.replace(`:${USER_ID}`, `${bookerId}`)}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {cellData}
-            </a>
-          </div>
-        );
-      case BOOKER_EMAIL:
-        return (
-          <LinkifyTextViewer>
-            <div className={className}>{cellData}</div>
-          </LinkifyTextViewer>
-        );
-      case STATUS:
-        return (
-          <Label
-            color={BookingStatusDetails.get(cellData)?.color}
-            className={styles.statusLabel}
-            content={<div className={className}>{cellData.toLowerCase()}</div>} // eslint-disable-line react/prop-types
-          />
-        );
-      default:
-        return <div className={className}>{cellData}</div>;
-    }
-  },
   // eslint-disable-next-line react/prop-types
   SortIndicator: ({ sortOrder, className }) => (
     <div className={className}>
-      <i
-        className={clsx(
-          "fas icon",
-          sortOrder === "asc" ? "fa-caret-up" : "fa-caret-down",
-        )}
-      />
+      <Icon name={sortOrder === "asc" ? "caret up" : "caret down"} />
     </div>
   ),
+  // eslint-disable-next-line react/prop-types
+  ExpandIcon: ({ expandable, expanded, onExpand }) => {
+    if (!expandable) {
+      return null;
+    }
+
+    return (
+      <Icon
+        link
+        className={clsx(styles.expandIcon, expanded && styles.expanded)}
+        name="plus circle"
+        onClick={() => {
+          onExpand(!expanded);
+        }}
+        fitted
+      />
+    );
+  },
 };
+
+const rowRenderer = ({
+  rowData: { booking },
+  cells,
+}: {
+  rowData: BookingAdminDisplayProps;
+  cells: ReactNode[];
+}) =>
+  booking ? (
+    <Segment className={styles.extraContentContainer} basic>
+      <BookingDetailsView
+        className={styles.detailsContainer}
+        booking={booking}
+      />
+    </Segment>
+  ) : (
+    cells
+  );
+
+const nameRenderer = ({
+  rowData: { booker },
+}: {
+  rowData: Partial<BookingAdminDisplayProps>;
+}) =>
+  booker ? (
+    <a
+      href={PROFILE_PATH.replace(`:${USER_ID}`, `${booker.id}`)}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      {booker.name}
+    </a>
+  ) : null;
+
+const emailRenderer = ({
+  rowData: { booker },
+}: {
+  rowData: Partial<BookingAdminDisplayProps>;
+}) => (booker ? <LinkifyTextViewer>{booker.email}</LinkifyTextViewer> : null);
+
+const statusButtonRenderer = ({
+  rowData: { status },
+}: {
+  rowData: Partial<BookingAdminDisplayProps>;
+}) =>
+  status ? (
+    <Button
+      compact
+      fluid
+      color={BookingStatusDetails.get(status)?.color}
+      className={styles.statusButton}
+      content={status.toLowerCase()}
+    />
+  ) : null;
 
 function BookingAdminTable() {
   const { bookings, getBookings, loading } = useGetBookings();
-  const tableRef = useRef<BaseTable<BookingAdminDisplayProps>>(null);
-  const table = tableRef.current;
 
   useEffect(() => {
     getBookings();
@@ -149,6 +170,19 @@ function BookingAdminTable() {
     onSearchValueChange,
   } = useTableState(bookingAdminDisplayData, bookingAdminTableStateOptions);
 
+  const onColumnSort = useCallback(
+    ({ key, order }: { key: Key; order: SortOrder }) =>
+      setSortBy((sortBy) =>
+        sortBy?.key === key && sortBy?.order === "desc"
+          ? undefined
+          : {
+              key,
+              order,
+            },
+      ),
+    [setSortBy],
+  );
+
   return (
     <Segment.Group raised>
       <Segment secondary>
@@ -172,9 +206,9 @@ function BookingAdminTable() {
         <AutoResizer>
           {({ width, height }) => (
             <BaseTable<BookingAdminDisplayProps>
-              ref={tableRef}
               className={styles.innerTable}
               rowClassName={styles.row}
+              headerClassName={styles.headerRow}
               data={processedBookings}
               width={width}
               height={height}
@@ -196,75 +230,42 @@ function BookingAdminTable() {
                   loadingMessage="Retrieving booking requests"
                 />
               }
-              onColumnSort={({ key, order }) =>
-                setSortBy((sortBy) =>
-                  sortBy?.key === key && sortBy?.order === "desc"
-                    ? undefined
-                    : {
-                        key,
-                        order,
-                      },
-                )
-              }
+              onColumnSort={onColumnSort}
               sortBy={sortBy}
-              expandColumnKey={ID}
+              expandColumnKey={ACTION}
               components={tableComponents}
-              rowRenderer={({ rowData: { booking }, cells }) =>
-                booking ? (
-                  <Segment className={styles.extraContentContainer} basic>
-                    <BookingDetailsView
-                      className={styles.detailsContainer}
-                      booking={booking}
-                    />
-                  </Segment>
-                ) : (
-                  cells
-                )
-              }
-              cellProps={({ column: { key }, rowData: { id } }) => {
-                if (key !== ID || !table) {
-                  return;
-                }
-
-                const expandedRowKeys = table.getExpandedRowKeys();
-                const newExpandedRowKeys = expandedRowKeys.includes(id)
-                  ? expandedRowKeys.filter((key) => key !== id)
-                  : expandedRowKeys.concat([id]);
-
-                return {
-                  onClick: () => table.setExpandedRowKeys(newExpandedRowKeys),
-                };
-              }}
+              rowRenderer={rowRenderer}
             >
               <Column<BookingAdminDisplayProps>
                 key={ID}
                 dataKey={ID}
                 title="ID"
-                width={75}
+                width={60}
                 resizable
                 sortable
+                align="center"
               />
               <Column<BookingAdminDisplayProps>
                 key={BOOKER_NAME}
-                dataKey={BOOKER_NAME}
                 title="Name"
-                width={175}
+                width={150}
                 resizable
                 sortable
+                cellRenderer={nameRenderer}
               />
               <Column<BookingAdminDisplayProps>
                 key={BOOKER_EMAIL}
-                dataKey={BOOKER_EMAIL}
                 title="Email"
-                width={175}
+                width={160}
                 resizable
                 sortable
+                cellRenderer={emailRenderer}
               />
               <Column<BookingAdminDisplayProps>
                 key={VENUE_NAME}
                 dataKey={VENUE_NAME}
                 title="Venue"
-                width={175}
+                width={180}
                 resizable
                 sortable
               />
@@ -272,7 +273,7 @@ function BookingAdminTable() {
                 key={START_DATE_TIME}
                 dataKey={START_DATE_TIME_STRING}
                 title="Start"
-                width={175}
+                width={160}
                 resizable
                 sortable
               />
@@ -280,7 +281,7 @@ function BookingAdminTable() {
                 key={END_DATE_TIME}
                 dataKey={END_DATE_TIME_STRING}
                 title="End"
-                width={175}
+                width={160}
                 resizable
                 sortable
               />
@@ -288,16 +289,22 @@ function BookingAdminTable() {
                 key={CREATED_AT}
                 dataKey={CREATED_AT_STRING}
                 title="Created at"
-                width={175}
+                width={160}
                 resizable
                 sortable
               />
               <Column<BookingAdminDisplayProps>
                 key={STATUS}
-                dataKey={STATUS}
                 title="Status"
-                width={100}
+                width={120}
                 sortable
+                align="center"
+                cellRenderer={statusButtonRenderer}
+              />
+              <Column<BookingAdminDisplayProps>
+                key={ACTION}
+                title="Action"
+                width={100}
                 align="center"
               />
             </BaseTable>
