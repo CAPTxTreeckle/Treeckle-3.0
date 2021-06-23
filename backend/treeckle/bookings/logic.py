@@ -190,9 +190,14 @@ def update_booking_statuses(actions: Iterable[dict], user: User) -> Sequence[Boo
             continue
 
         if action == BookingStatusAction.CANCEL:
-            booking_to_be_updated.status = BookingStatus.CANCELLED
-            bookings_to_be_updated.append(booking_to_be_updated)
-            id_to_previous_booking_status_mapping[booking_id] = current_booking_status
+            ## can only cancel if booking is created by user
+            if booking_to_be_updated.booker == user:
+                booking_to_be_updated.status = BookingStatus.CANCELLED
+                bookings_to_be_updated.append(booking_to_be_updated)
+                id_to_previous_booking_status_mapping[
+                    booking_id
+                ] = current_booking_status
+
             continue
 
         ## cannot update to other statuses if user is not admin

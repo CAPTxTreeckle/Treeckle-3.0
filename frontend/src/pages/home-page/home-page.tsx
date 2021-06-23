@@ -11,12 +11,12 @@ import {
   Grid,
   Icon,
 } from "semantic-ui-react";
-import { useAppDispatch } from "../../../redux/hooks";
-import { updateCurrentUserAction } from "../../../redux/slices/current-user-slice";
-import useShowScroller from "../../../custom-hooks/use-show-scroller";
-import SignInButton from "../../sign-in-button";
-import treeckleLogo from "../../../assets/treeckle-outline-min.png";
-import treeckleVideo from "../../../assets/utown-video.mp4";
+import { useAppDispatch } from "../../redux/hooks";
+import { updateCurrentUserAction } from "../../redux/slices/current-user-slice";
+import useShowScroller from "../../custom-hooks/use-show-scroller";
+import SignInButton from "../../components/sign-in-button";
+import treeckleLogo from "../../assets/treeckle-outline-min.png";
+import treeckleVideo from "../../assets/utown-video.mp4";
 import styles from "./home-page.module.scss";
 
 function HomePage() {

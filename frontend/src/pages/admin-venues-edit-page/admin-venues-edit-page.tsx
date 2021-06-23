@@ -5,12 +5,12 @@ import { Button, Icon } from "semantic-ui-react";
 import {
   useGetSingleVenue,
   useUpdateVenue,
-} from "../../../custom-hooks/api/venues-api";
-import { ADMIN_VENUES_PATH } from "../../../routes/paths";
-import { VenueFormProps } from "../../../types/venues";
-import { resolveApiError } from "../../../utils/error-utils";
-import PlaceholderWrapper from "../../placeholder-wrapper";
-import VenueDetailsForm from "../../venue-details-form";
+} from "../../custom-hooks/api/venues-api";
+import { ADMIN_VENUES_PATH } from "../../routes/paths";
+import { VenueFormProps } from "../../types/venues";
+import { resolveApiError } from "../../utils/error-utils";
+import PlaceholderWrapper from "../../components/placeholder-wrapper";
+import VenueDetailsForm from "../../components/venue-details-form";
 
 function AdminVenuesEditPage() {
   const history = useHistory();

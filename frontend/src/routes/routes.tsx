@@ -33,23 +33,23 @@ import {
   BOOKINGS_CREATION_PATH,
 } from "./paths";
 import AppLayoutContainer from "../components/app-layout-container";
-import DashboardPage from "../components/pages/dashboard-page";
-import EventsPage from "../components/pages/events-page";
-import BookingsPage from "../components/pages/bookings-page";
-import AdminBookingsPage from "../components/pages/admin-bookings-page";
-import AdminUsersPage from "../components/pages/admin-users-page";
-import AdminSettingsPage from "../components/pages/admin-settings-page";
-import ProfilePage from "../components/pages/profile-page";
-import HomePage from "../components/pages/home-page";
-import AdminVenuesPage from "../components/pages/admin-venues-page";
-import AdminVenuesCreationPage from "../components/pages/admin-venues-creation-page";
-import AdminVenuesEditPage from "../components/pages/admin-venues-edit-page";
-import EventsCreationPage from "../components/pages/events-creation-page";
-import EventsSingleViewPage from "../components/pages/events-single-view-page";
-import EventsEditPage from "../components/pages/events-edit-page";
-import EventsQrCodePage from "../components/pages/events-qr-code-page";
-import AdminUsersCreationPage from "../components/pages/admin-users-creation-page";
-import BookingsCreationPage from "../components/pages/bookings-creation-page";
+import DashboardPage from "../pages/dashboard-page";
+import EventsPage from "../pages/events-page";
+import BookingsPage from "../pages/bookings-page";
+import AdminBookingsPage from "../pages/admin-bookings-page";
+import AdminUsersPage from "../pages/admin-users-page";
+import AdminSettingsPage from "../pages/admin-settings-page";
+import ProfilePage from "../pages/profile-page";
+import HomePage from "../pages/home-page";
+import AdminVenuesPage from "../pages/admin-venues-page";
+import AdminVenuesCreationPage from "../pages/admin-venues-creation-page";
+import AdminVenuesEditPage from "../pages/admin-venues-edit-page";
+import EventsCreationPage from "../pages/events-creation-page";
+import EventsSingleViewPage from "../pages/events-single-view-page";
+import EventsEditPage from "../pages/events-edit-page";
+import EventsQrCodePage from "../pages/events-qr-code-page";
+import AdminUsersCreationPage from "../pages/admin-users-creation-page";
+import BookingsCreationPage from "../pages/bookings-creation-page";
 
 function Routes() {
   const isLoggedIn = useAppSelector(selectIsLoggedIn);

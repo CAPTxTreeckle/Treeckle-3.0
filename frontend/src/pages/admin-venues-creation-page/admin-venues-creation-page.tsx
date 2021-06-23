@@ -1,11 +1,11 @@
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button, Icon } from "semantic-ui-react";
-import { useCreateVenue } from "../../../custom-hooks/api/venues-api";
-import { ADMIN_VENUES_PATH } from "../../../routes/paths";
-import { VenueFormProps } from "../../../types/venues";
-import { resolveApiError } from "../../../utils/error-utils";
-import VenueDetailsForm from "../../venue-details-form";
+import { useCreateVenue } from "../../custom-hooks/api/venues-api";
+import { ADMIN_VENUES_PATH } from "../../routes/paths";
+import { VenueFormProps } from "../../types/venues";
+import { resolveApiError } from "../../utils/error-utils";
+import VenueDetailsForm from "../../components/venue-details-form";
 
 function AdminVenuesCreationPage() {
   const history = useHistory();

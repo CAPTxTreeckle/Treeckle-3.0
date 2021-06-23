@@ -1,4 +1,4 @@
-@use "../../../base";
+@use "../../base";
 
 $dark-color: #111111;
 
@@ -23,7 +23,7 @@ $dark-color: #111111;
   .homeBanner {
     display: flex;
     background-color: $dark-color;
-    background-image: url("../../../assets/utown-day.jpg");
+    background-image: url("../../assets/utown-day.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -118,7 +118,7 @@ $dark-color: #111111;
         transparentize(#8e1d25, 0.75),
         transparentize(#8e1d25, 0.75)
       ),
-      url("../../../assets/utown-day.jpg");
+      url("../../assets/utown-day.jpg");
     background-position: bottom;
     background-repeat: no-repeat;
     background-size: cover;

@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useCallback } from "react";
 import { AutoResizer, Column } from "react-base-table";
 import { Segment } from "semantic-ui-react";
 import Table, { TableProps } from "../table";
@@ -23,7 +23,11 @@ export type BookingViewProps = BookingData & {
   children: [{ [ID]: string; booking: BookingData }];
 };
 
-type Props<T> = Partial<TableProps<T>>;
+type Props<T> = Partial<TableProps<T>> & {
+  adminView?: boolean;
+  defaultStatusColumnWidth?: number;
+  defaultActionColumnWidth?: number;
+};
 
 const rowRenderer = ({
   rowData: { booking },
@@ -43,17 +47,30 @@ const rowRenderer = ({
     cells
   );
 
-const statusButtonRenderer = ({
-  rowData: { status, id },
-}: {
-  // eslint-disable-next-line react/no-unused-prop-types
-  rowData: Partial<BookingViewProps>;
-}) =>
-  status && id !== undefined ? (
-    <BookingStatusButton bookingId={id} status={status} adminView />
-  ) : null;
-
 function BookingTable(props: Props<BookingViewProps>) {
+  const {
+    adminView = false,
+    defaultStatusColumnWidth = 100,
+    defaultActionColumnWidth = 100,
+    ...tableProps
+  } = props;
+  const statusButtonRenderer = useCallback(
+    ({
+      rowData: { status, id },
+    }: {
+      // eslint-disable-next-line react/no-unused-prop-types
+      rowData: Partial<BookingViewProps>;
+    }) =>
+      status && id !== undefined ? (
+        <BookingStatusButton
+          bookingId={id}
+          status={status}
+          adminView={adminView}
+        />
+      ) : null,
+    [adminView],
+  );
+
   return (
     <Segment className={styles.bookingTable}>
       <AutoResizer>
@@ -65,22 +82,24 @@ function BookingTable(props: Props<BookingViewProps>) {
             estimatedRowHeight={50}
             fixed
             expandColumnKey={ACTION}
-            {...props}
+            {...tableProps}
           >
-            {props.children}
+            {tableProps.children}
             <Column<BookingViewProps>
               key={STATUS}
               title="Status"
-              width={110}
+              width={defaultStatusColumnWidth}
               sortable
               align="center"
               cellRenderer={statusButtonRenderer}
+              resizable
             />
             <Column<BookingViewProps>
               key={ACTION}
               title="Action"
-              width={100}
+              width={defaultActionColumnWidth}
               align="center"
+              resizable
             />
           </Table>
         )}

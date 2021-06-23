@@ -1,5 +1,5 @@
-import { useAppDeepEqualSelector } from "../../../redux/hooks";
-import { selectCurrentUserDisplayInfo } from "../../../redux/slices/current-user-slice";
+import { useAppDeepEqualSelector } from "../../redux/hooks";
+import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
 import styles from "./dashboard-page.module.scss";
 
 function DashboardPage() {

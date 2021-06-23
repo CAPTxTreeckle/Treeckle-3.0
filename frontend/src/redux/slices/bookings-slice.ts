@@ -59,7 +59,11 @@ export const bookingsSlice = createSlice({
         [bookingEntity],
       );
 
-      const { users, venues, bookings } = normalizedBookings.entities;
+      const {
+        users = {},
+        venues = {},
+        bookings = {},
+      } = normalizedBookings.entities;
 
       usersAdapter.upsertMany(state.users, users);
       venuesAdapter.upsertMany(state.venues, venues);
@@ -75,6 +79,7 @@ export const { updateBookingsAction } = bookingsSlice.actions;
 const { selectById: selectUserById } = usersAdapter.getSelectors();
 const { selectById: selectVenueById } = venuesAdapter.getSelectors();
 const { selectAll: selectBookings } = bookingsAdapter.getSelectors();
+
 export const selectAllBookings = createSelector(
   ({ bookings }: RootState) => bookings,
   ({ users, venues, bookings }) => {
@@ -89,6 +94,13 @@ export const selectAllBookings = createSelector(
 
     return allBookings;
   },
+);
+
+export const selectBookingsByUserId = createSelector(
+  selectAllBookings,
+  (_: unknown, userId: number) => userId,
+  (allBookings, userId) =>
+    allBookings.filter(({ booker: { id } }) => id === userId),
 );
 
 export default bookingsSlice.reducer;

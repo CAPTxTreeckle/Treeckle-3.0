@@ -1,47 +1,43 @@
-import { useEffect, useMemo, useCallback } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { Column } from "react-base-table";
-import { Button, Popup, Segment } from "semantic-ui-react";
+import { Segment, Popup, Button } from "semantic-ui-react";
 import {
+  VENUE,
   NAME,
+  ID,
   START_DATE_TIME_STRING,
   END_DATE_TIME_STRING,
   CREATED_AT_STRING,
-  START_DATE_TIME,
-  END_DATE_TIME,
-  CREATED_AT,
   STATUS,
-  EMAIL,
-  BOOKER,
-  ID,
-  USER_ID,
-  VENUE,
+  CREATED_AT,
+  END_DATE_TIME,
+  START_DATE_TIME,
 } from "../../constants";
-import { PROFILE_PATH } from "../../routes/paths";
+import { useGetBookings } from "../../custom-hooks/api/bookings-api";
 import useTableState, {
   TableStateOptions,
 } from "../../custom-hooks/use-table-state";
-import { useGetBookings } from "../../custom-hooks/api/bookings-api";
-import { displayDateTime } from "../../utils/parser-utils";
-import PlaceholderWrapper from "../placeholder-wrapper";
-import SearchBar from "../search-bar";
-import HorizontalLayoutContainer from "../horizontal-layout-container";
-import LinkifyTextViewer from "../linkify-text-viewer";
-import BookingTable, { BookingViewProps } from "../booking-table";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
-  selectAllBookings,
+  useAppSelector,
+  useAppDispatch,
+  useAppDeepEqualSelector,
+} from "../../redux/hooks";
+import {
+  selectBookingsByUserId,
   updateBookingsAction,
 } from "../../redux/slices/bookings-slice";
+import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
+import { displayDateTime } from "../../utils/parser-utils";
+import BookingTable, { BookingViewProps } from "../booking-table";
+import HorizontalLayoutContainer from "../horizontal-layout-container";
+import PlaceholderWrapper from "../placeholder-wrapper";
+import SearchBar from "../search-bar";
 
-const BOOKER_NAME = `${BOOKER}.${NAME}`;
-const BOOKER_EMAIL = `${BOOKER}.${EMAIL}`;
 const VENUE_NAME = `${VENUE}.${NAME}`;
 
 const bookingAdminTableStateOptions: TableStateOptions = {
   searchKeys: [
     ID,
-    BOOKER_NAME,
-    BOOKER_EMAIL,
     VENUE_NAME,
     START_DATE_TIME_STRING,
     END_DATE_TIME_STRING,
@@ -50,36 +46,18 @@ const bookingAdminTableStateOptions: TableStateOptions = {
   ],
 };
 
-const nameRenderer = ({
-  rowData: { booker },
-}: {
-  rowData: Partial<BookingViewProps>;
-}) =>
-  booker ? (
-    <a
-      href={PROFILE_PATH.replace(`:${USER_ID}`, `${booker.id}`)}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {booker.name}
-    </a>
-  ) : null;
-
-const emailRenderer = ({
-  rowData: { booker },
-}: {
-  rowData: Partial<BookingViewProps>;
-}) => (booker ? <LinkifyTextViewer>{booker.email}</LinkifyTextViewer> : null);
-
-function BookingAdminTable() {
+function BookingUserTable() {
   const { getBookings: _getBookings, loading } = useGetBookings();
-  const allBookings = useAppSelector(selectAllBookings);
+  const { id: userId } = useAppDeepEqualSelector(selectCurrentUserDisplayInfo);
+  const allBookings = useAppSelector((state) =>
+    selectBookingsByUserId(state, userId ?? 0),
+  );
   const dispatch = useAppDispatch();
 
   const getBookings = useCallback(async () => {
-    const bookings = await _getBookings();
+    const bookings = await _getBookings({ userId });
     dispatch(updateBookingsAction(bookings));
-  }, [_getBookings, dispatch]);
+  }, [_getBookings, dispatch, userId]);
 
   useEffect(() => {
     getBookings();
@@ -144,38 +122,22 @@ function BookingAdminTable() {
         sortBy={sortBy}
         setSortBy={setSortBy}
         defaultStatusColumnWidth={110}
-        adminView
+        defaultActionColumnWidth={150}
       >
         <Column<BookingViewProps>
           key={ID}
           dataKey={ID}
           title="ID"
-          width={60}
+          width={80}
           resizable
           sortable
           align="center"
         />
         <Column<BookingViewProps>
-          key={BOOKER_NAME}
-          title="Name"
-          width={150}
-          resizable
-          sortable
-          cellRenderer={nameRenderer}
-        />
-        <Column<BookingViewProps>
-          key={BOOKER_EMAIL}
-          title="Email"
-          width={160}
-          resizable
-          sortable
-          cellRenderer={emailRenderer}
-        />
-        <Column<BookingViewProps>
           key={VENUE_NAME}
           dataKey={VENUE_NAME}
           title="Venue"
-          width={180}
+          width={200}
           resizable
           sortable
         />
@@ -183,7 +145,7 @@ function BookingAdminTable() {
           key={START_DATE_TIME}
           dataKey={START_DATE_TIME_STRING}
           title="Start"
-          width={160}
+          width={180}
           resizable
           sortable
         />
@@ -191,7 +153,7 @@ function BookingAdminTable() {
           key={END_DATE_TIME}
           dataKey={END_DATE_TIME_STRING}
           title="End"
-          width={160}
+          width={180}
           resizable
           sortable
         />
@@ -199,7 +161,7 @@ function BookingAdminTable() {
           key={CREATED_AT}
           dataKey={CREATED_AT_STRING}
           title="Created at"
-          width={160}
+          width={180}
           resizable
           sortable
         />
@@ -208,4 +170,4 @@ function BookingAdminTable() {
   );
 }
 
-export default BookingAdminTable;
+export default BookingUserTable;
