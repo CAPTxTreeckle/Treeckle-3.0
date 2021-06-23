@@ -1,26 +1,37 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import { CurrentUser } from "../../types/users";
 
 type CurrentUserState = CurrentUser | null;
 
-export const userSlice = createSlice({
-  name: "user",
-  initialState: null as CurrentUserState,
+const initialState: CurrentUserState = null as CurrentUserState;
+
+export const currentUserSlice = createSlice({
+  name: "currentUser",
+  initialState,
   reducers: {
-    updateCurrentUser: (_, { payload }: PayloadAction<CurrentUser | null>) =>
-      payload,
+    updateCurrentUserAction: (
+      _,
+      { payload }: PayloadAction<CurrentUser | null>,
+    ) => payload,
   },
 });
 
-export const { updateCurrentUser } = userSlice.actions;
+// action creators
+export const { updateCurrentUserAction } = currentUserSlice.actions;
 
-export const getIsLoggedIn = ({ currentUser }: RootState) =>
-  Boolean(currentUser?.access);
-export const getCurrentUser = ({ currentUser }: RootState) => currentUser;
-export const getCurrentUserDisplayInfo = ({ currentUser }: RootState) => {
-  const { access, refresh, ...displayInfo } = { ...currentUser };
-  return displayInfo;
-};
+// selectors
+export const selectCurrentUser = ({ currentUser }: RootState) => currentUser;
+export const selectIsLoggedIn = createSelector(
+  selectCurrentUser,
+  (currentUser) => Boolean(currentUser?.access),
+);
+export const selectCurrentUserDisplayInfo = createSelector(
+  selectCurrentUser,
+  (currentUser) => {
+    const { access, refresh, ...displayInfo } = { ...currentUser };
+    return displayInfo;
+  },
+);
 
-export default userSlice.reducer;
+export default currentUserSlice.reducer;

@@ -10,12 +10,13 @@ from treeckle.common.constants import (
     CREATED_AT,
     UPDATED_AT,
     TITLE,
-    VENUE_NAME,
+    VENUE,
     BOOKER,
     START_DATE_TIME,
     END_DATE_TIME,
     STATUS,
     FORM_RESPONSE_DATA,
+    NAME,
 )
 from treeckle.common.parsers import parse_datetime_to_ms_timestamp
 from organizations.models import Organization
@@ -65,7 +66,7 @@ def booking_to_json(booking: Booking):
         UPDATED_AT: parse_datetime_to_ms_timestamp(booking.updated_at),
         TITLE: booking.title,
         BOOKER: user_to_json(booking.booker),
-        VENUE_NAME: booking.venue.name,
+        VENUE: {ID: booking.venue.id, NAME: booking.venue.name},
         START_DATE_TIME: parse_datetime_to_ms_timestamp(booking.start_date_time),
         END_DATE_TIME: parse_datetime_to_ms_timestamp(booking.end_date_time),
         STATUS: booking.status,
@@ -236,7 +237,10 @@ def update_booking_statuses(actions: Iterable[dict], user: User) -> Sequence[Boo
 
             ## update all clashing pending/approved bookings to rejected
             clashing_bookings = (
-                get_bookings(status=BookingStatus.PENDING, venue=booking.venue)
+                get_bookings(
+                    Q(status=BookingStatus.PENDING) | Q(status=BookingStatus.APPROVED),
+                    venue=booking.venue,
+                )
                 .exclude(id=booking.id)
                 .exclude(end_date_time__lte=booking.start_date_time)
                 .exclude(start_date_time__gte=booking.end_date_time)

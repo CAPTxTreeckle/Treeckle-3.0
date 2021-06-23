@@ -16,6 +16,9 @@ import {
   VENUE_NAME,
   IDS,
   USER_ID,
+  VENUE,
+  ID,
+  NAME,
 } from "../constants";
 import { BaseData } from "./base";
 import { UserData } from "./users";
@@ -47,7 +50,7 @@ export type DateTimeRange = {
 export type BookingData = BaseData & {
   [TITLE]: string;
   [BOOKER]: UserData;
-  [VENUE_NAME]: string;
+  [VENUE]: { [ID]: number; [NAME]: string };
   [START_DATE_TIME]: number;
   [END_DATE_TIME]: number;
   [STATUS]: BookingStatus;
@@ -109,5 +112,3 @@ export type BookingFormProps = {
   [TITLE]: string;
   [CUSTOM_VENUE_BOOKING_FORM_RESPONSES]?: CustomVenueBookingFormResponseProps[];
 };
-
-export type BookingViewProps = BookingData;

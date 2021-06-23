@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useCallback, useState } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 import { Column } from "react-base-table";
 import { Button, Popup, Segment } from "semantic-ui-react";
 import {
@@ -6,7 +6,6 @@ import {
   START_DATE_TIME_STRING,
   END_DATE_TIME_STRING,
   CREATED_AT_STRING,
-  VENUE_NAME,
   START_DATE_TIME,
   END_DATE_TIME,
   CREATED_AT,
@@ -15,6 +14,7 @@ import {
   BOOKER,
   ID,
   USER_ID,
+  VENUE,
 } from "../../constants";
 import { PROFILE_PATH } from "../../routes/paths";
 import useTableState, {
@@ -26,11 +26,16 @@ import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../search-bar";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import LinkifyTextViewer from "../linkify-text-viewer";
-import BookingStatusButton from "../booking-status-button";
-import BookingTable, { BookingDisplayProps } from "../booking-table";
+import BookingTable, { BookingViewProps } from "../booking-table";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import {
+  selectAllBookings,
+  updateBookingsAction,
+} from "../../redux/slices/bookings-slice";
 
 const BOOKER_NAME = `${BOOKER}.${NAME}`;
 const BOOKER_EMAIL = `${BOOKER}.${EMAIL}`;
+const VENUE_NAME = `${VENUE}.${NAME}`;
 
 const bookingAdminTableStateOptions: TableStateOptions = {
   searchKeys: [
@@ -48,7 +53,7 @@ const bookingAdminTableStateOptions: TableStateOptions = {
 const nameRenderer = ({
   rowData: { booker },
 }: {
-  rowData: Partial<BookingDisplayProps>;
+  rowData: Partial<BookingViewProps>;
 }) =>
   booker ? (
     <a
@@ -63,33 +68,33 @@ const nameRenderer = ({
 const emailRenderer = ({
   rowData: { booker },
 }: {
-  rowData: Partial<BookingDisplayProps>;
+  rowData: Partial<BookingViewProps>;
 }) => (booker ? <LinkifyTextViewer>{booker.email}</LinkifyTextViewer> : null);
 
 function BookingAdminTable() {
-  const { bookings, getBookings } = useGetBookings();
-  const [loading, setLoading] = useState(false);
+  const { getBookings: _getBookings, loading } = useGetBookings();
+  const allBookings = useAppSelector(selectAllBookings);
+  const dispatch = useAppDispatch();
 
-  const onRefresh = useCallback(async () => {
-    setLoading(true);
-    await getBookings();
-    setLoading(false);
-  }, [getBookings]);
+  const getBookings = useCallback(async () => {
+    const bookings = await _getBookings();
+    dispatch(updateBookingsAction(bookings));
+  }, [_getBookings, dispatch]);
 
   useEffect(() => {
-    onRefresh();
-  }, [onRefresh]);
+    getBookings();
+  }, [getBookings]);
 
-  const bookingAdminDisplayData: BookingDisplayProps[] = useMemo(
+  const bookingAdminDisplayData: BookingViewProps[] = useMemo(
     () =>
-      bookings.map((booking) => ({
+      allBookings.map((booking) => ({
         ...booking,
         [START_DATE_TIME_STRING]: displayDateTime(booking.startDateTime),
         [END_DATE_TIME_STRING]: displayDateTime(booking.endDateTime),
         [CREATED_AT_STRING]: displayDateTime(booking.createdAt),
         children: [{ [ID]: `${booking.id}-details`, booking }],
       })),
-    [bookings],
+    [allBookings],
   );
 
   const {
@@ -99,24 +104,6 @@ function BookingAdminTable() {
     onSearchValueChange,
   } = useTableState(bookingAdminDisplayData, bookingAdminTableStateOptions);
 
-  const statusButtonRenderer = useCallback(
-    ({
-      rowData: { status, id },
-    }: {
-      // eslint-disable-next-line react/no-unused-prop-types
-      rowData: Partial<BookingDisplayProps>;
-    }) =>
-      status && id !== undefined ? (
-        <BookingStatusButton
-          bookingId={id}
-          status={status}
-          getBookings={getBookings}
-          adminView
-        />
-      ) : null,
-    [getBookings],
-  );
-
   return (
     <Segment.Group raised>
       <Segment secondary>
@@ -125,7 +112,11 @@ function BookingAdminTable() {
           <Popup
             content="Refresh"
             trigger={
-              <Button icon="redo alternate" color="blue" onClick={onRefresh} />
+              <Button
+                icon="redo alternate"
+                color="blue"
+                onClick={getBookings}
+              />
             }
             position="top center"
           />
@@ -153,7 +144,7 @@ function BookingAdminTable() {
         sortBy={sortBy}
         setSortBy={setSortBy}
       >
-        <Column<BookingDisplayProps>
+        <Column<BookingViewProps>
           key={ID}
           dataKey={ID}
           title="ID"
@@ -162,7 +153,7 @@ function BookingAdminTable() {
           sortable
           align="center"
         />
-        <Column<BookingDisplayProps>
+        <Column<BookingViewProps>
           key={BOOKER_NAME}
           title="Name"
           width={150}
@@ -170,7 +161,7 @@ function BookingAdminTable() {
           sortable
           cellRenderer={nameRenderer}
         />
-        <Column<BookingDisplayProps>
+        <Column<BookingViewProps>
           key={BOOKER_EMAIL}
           title="Email"
           width={160}
@@ -178,7 +169,7 @@ function BookingAdminTable() {
           sortable
           cellRenderer={emailRenderer}
         />
-        <Column<BookingDisplayProps>
+        <Column<BookingViewProps>
           key={VENUE_NAME}
           dataKey={VENUE_NAME}
           title="Venue"
@@ -186,7 +177,7 @@ function BookingAdminTable() {
           resizable
           sortable
         />
-        <Column<BookingDisplayProps>
+        <Column<BookingViewProps>
           key={START_DATE_TIME}
           dataKey={START_DATE_TIME_STRING}
           title="Start"
@@ -194,7 +185,7 @@ function BookingAdminTable() {
           resizable
           sortable
         />
-        <Column<BookingDisplayProps>
+        <Column<BookingViewProps>
           key={END_DATE_TIME}
           dataKey={END_DATE_TIME_STRING}
           title="End"
@@ -202,21 +193,13 @@ function BookingAdminTable() {
           resizable
           sortable
         />
-        <Column<BookingDisplayProps>
+        <Column<BookingViewProps>
           key={CREATED_AT}
           dataKey={CREATED_AT_STRING}
           title="Created at"
           width={160}
           resizable
           sortable
-        />
-        <Column<BookingDisplayProps>
-          key={STATUS}
-          title="Status"
-          width={110}
-          sortable
-          align="center"
-          cellRenderer={statusButtonRenderer}
         />
       </BookingTable>
     </Segment.Group>

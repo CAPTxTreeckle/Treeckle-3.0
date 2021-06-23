@@ -1,9 +1,9 @@
-import { useAppSelector } from "../../../redux/hooks";
-import { getCurrentUserDisplayInfo } from "../../../redux/slices/current-user-slice";
+import { useAppDeepEqualSelector } from "../../../redux/hooks";
+import { selectCurrentUserDisplayInfo } from "../../../redux/slices/current-user-slice";
 import styles from "./dashboard-page.module.scss";
 
 function DashboardPage() {
-  const { name } = useAppSelector(getCurrentUserDisplayInfo);
+  const { name } = useAppDeepEqualSelector(selectCurrentUserDisplayInfo);
 
   return (
     <div className={styles.dashboardPage}>

@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState } from "react";
 import clsx from "clsx";
 import { toast } from "react-toastify";
 import { Button, Popup, Label } from "semantic-ui-react";
@@ -9,46 +9,37 @@ import {
   BookingStatusActionType,
 } from "../../types/bookings";
 import { resolveApiError } from "../../utils/error-utils";
+import { useAppDispatch } from "../../redux/hooks";
+import { updateBookingsAction } from "../../redux/slices/bookings-slice";
 import styles from "./booking-status-button.module.scss";
 
 type Props = {
   bookingId: number;
   status: BookingStatus;
-  getBookings: () => Promise<unknown>;
   adminView?: boolean;
 };
 
-function BookingStatusButton({
-  bookingId,
-  status,
-  getBookings,
-  adminView,
-}: Props) {
+function BookingStatusButton({ bookingId, status, adminView }: Props) {
   const { updateBookingStatuses, loading } = useUpdateBookingStatuses();
   const [isOpened, setOpened] = useState(false);
-  const [currentStatus, setCurrentStatus] = useState(status);
-
-  useEffect(() => {
-    setCurrentStatus(status);
-  }, [status]);
+  const dispatch = useAppDispatch();
 
   const actionButtons = useMemo(() => {
     const onUpdateStatus = async (action: BookingStatusActionType) => {
       setOpened(false);
 
       try {
-        const updatedBooking = (
-          await updateBookingStatuses([{ bookingId, action }])
-        )[0];
+        const updatedBookings = await updateBookingStatuses([
+          { bookingId, action },
+        ]);
 
-        getBookings();
+        dispatch(updateBookingsAction(updatedBookings));
 
-        if (!updatedBooking) {
-          return;
-        }
-
-        setCurrentStatus(updatedBooking.status);
-        toast.success("The booking status has been updated successfully.");
+        toast.success(
+          updatedBookings.length > 1
+            ? "Booking statuses updated successfully."
+            : "The booking status has been updated successfully.",
+        );
       } catch (error) {
         resolveApiError(error);
       }
@@ -91,13 +82,13 @@ function BookingStatusButton({
     );
 
     if (!adminView) {
-      return currentStatus === BookingStatus.Cancelled ||
-        currentStatus === BookingStatus.Rejected
+      return status === BookingStatus.Cancelled ||
+        status === BookingStatus.Rejected
         ? []
         : [cancelButton];
     }
 
-    switch (currentStatus) {
+    switch (status) {
       case BookingStatus.Pending:
         return [approveButton, rejectButton];
       case BookingStatus.Approved:
@@ -108,7 +99,7 @@ function BookingStatusButton({
       default:
         return [];
     }
-  }, [bookingId, currentStatus, getBookings, adminView, updateBookingStatuses]);
+  }, [bookingId, status, adminView, updateBookingStatuses, dispatch]);
 
   return (
     <Popup
@@ -116,12 +107,12 @@ function BookingStatusButton({
         <Label
           as={Button}
           fluid
-          color={BookingStatusDetails.get(currentStatus)?.color}
+          color={BookingStatusDetails.get(status)?.color}
           className={clsx(styles.bookingStatusButton, styles.important)}
-          content={currentStatus.toLowerCase()}
+          content={status.toLowerCase()}
           disabled={
-            currentStatus === BookingStatus.Cancelled ||
-            (!adminView && currentStatus === BookingStatus.Rejected)
+            status === BookingStatus.Cancelled ||
+            (!adminView && status === BookingStatus.Rejected)
           }
           loading={loading}
         />

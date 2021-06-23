@@ -1,12 +1,12 @@
 import React from "react";
 import { Grid } from "semantic-ui-react";
-import { BookingViewProps } from "../../types/bookings";
+import { BookingData } from "../../types/bookings";
 import { FieldType } from "../../types/venues";
 import LinkifyTextViewer from "../linkify-text-viewer";
 
 type Props = {
   className?: string;
-  booking: BookingViewProps;
+  booking: BookingData;
 };
 
 function BookingDetailsView({

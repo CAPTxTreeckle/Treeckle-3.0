@@ -7,7 +7,7 @@ import {
 import { LastLocationProvider } from "react-router-last-location";
 import { Role } from "../types/users";
 import { useAppSelector } from "../redux/hooks";
-import { getIsLoggedIn } from "../redux/slices/current-user-slice";
+import { selectIsLoggedIn } from "../redux/slices/current-user-slice";
 import RoleRestrictedRoute from "./role-restricted-route";
 import {
   DASHBOARD_PATH,
@@ -52,7 +52,7 @@ import AdminUsersCreationPage from "../components/pages/admin-users-creation-pag
 import BookingsCreationPage from "../components/pages/bookings-creation-page";
 
 function Routes() {
-  const isLoggedIn = useAppSelector(getIsLoggedIn);
+  const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
   return (
     <Router>

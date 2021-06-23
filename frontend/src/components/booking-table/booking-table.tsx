@@ -2,23 +2,25 @@ import { ReactNode } from "react";
 import { AutoResizer, Column } from "react-base-table";
 import { Segment } from "semantic-ui-react";
 import Table, { TableProps } from "../table";
-import { BookingViewProps } from "../../types/bookings";
+import { BookingData } from "../../types/bookings";
 import {
   START_DATE_TIME_STRING,
   END_DATE_TIME_STRING,
   CREATED_AT_STRING,
   ID,
   ACTION,
+  STATUS,
 } from "../../constants";
 import BookingDetailsView from "../booking-details-view";
+import BookingStatusButton from "../booking-status-button";
 import styles from "./booking-table.module.scss";
 
-export type BookingDisplayProps = BookingViewProps & {
+export type BookingViewProps = BookingData & {
   [START_DATE_TIME_STRING]: string;
   [END_DATE_TIME_STRING]: string;
   [CREATED_AT_STRING]: string;
-  booking?: BookingViewProps;
-  children: [{ [ID]: string; booking: BookingViewProps }];
+  booking?: BookingData;
+  children: [{ [ID]: string; booking: BookingData }];
 };
 
 type Props<T> = Partial<TableProps<T>>;
@@ -27,7 +29,7 @@ const rowRenderer = ({
   rowData: { booking },
   cells,
 }: {
-  rowData: BookingDisplayProps;
+  rowData: BookingViewProps;
   cells: ReactNode[];
 }) =>
   booking ? (
@@ -41,12 +43,22 @@ const rowRenderer = ({
     cells
   );
 
-function BookingTable(props: Props<BookingDisplayProps>) {
+const statusButtonRenderer = ({
+  rowData: { status, id },
+}: {
+  // eslint-disable-next-line react/no-unused-prop-types
+  rowData: Partial<BookingViewProps>;
+}) =>
+  status && id !== undefined ? (
+    <BookingStatusButton bookingId={id} status={status} adminView />
+  ) : null;
+
+function BookingTable(props: Props<BookingViewProps>) {
   return (
     <Segment className={styles.bookingTable}>
       <AutoResizer>
         {({ width, height }) => (
-          <Table<BookingDisplayProps>
+          <Table<BookingViewProps>
             width={width}
             height={height}
             rowRenderer={rowRenderer}
@@ -56,7 +68,15 @@ function BookingTable(props: Props<BookingDisplayProps>) {
             {...props}
           >
             {props.children}
-            <Column<BookingDisplayProps>
+            <Column<BookingViewProps>
+              key={STATUS}
+              title="Status"
+              width={110}
+              sortable
+              align="center"
+              cellRenderer={statusButtonRenderer}
+            />
+            <Column<BookingViewProps>
               key={ACTION}
               title="Action"
               width={100}

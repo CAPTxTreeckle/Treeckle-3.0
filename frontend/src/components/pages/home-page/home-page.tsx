@@ -12,7 +12,7 @@ import {
   Icon,
 } from "semantic-ui-react";
 import { useAppDispatch } from "../../../redux/hooks";
-import { updateCurrentUser } from "../../../redux/slices/current-user-slice";
+import { updateCurrentUserAction } from "../../../redux/slices/current-user-slice";
 import useShowScroller from "../../../custom-hooks/use-show-scroller";
 import SignInButton from "../../sign-in-button";
 import treeckleLogo from "../../../assets/treeckle-outline-min.png";
@@ -25,7 +25,7 @@ function HomePage() {
   const { showScroller } = useShowScroller(300);
 
   useEffect(() => {
-    dispatch(updateCurrentUser(null));
+    dispatch(updateCurrentUserAction(null));
   }, [dispatch]);
 
   return (

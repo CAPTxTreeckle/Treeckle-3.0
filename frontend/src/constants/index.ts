@@ -62,6 +62,7 @@ export const UPDATED_AT = "updatedAt";
 export const USER = "user";
 export const USER_ID = "userId";
 export const UUID = "uuid";
+export const VENUE = "venue";
 export const VENUE_ID = "venueId";
 export const VENUE_NAME = "venueName";
 export const START = "start";

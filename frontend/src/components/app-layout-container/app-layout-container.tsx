@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { useAppSelector } from "../../redux/hooks";
-import { getIsLoggedIn } from "../../redux/slices/current-user-slice";
+import { selectIsLoggedIn } from "../../redux/slices/current-user-slice";
 import NavigationContainer from "../navigation-container";
 
 type Props = {
@@ -8,7 +8,7 @@ type Props = {
 };
 
 function AppLayoutContainer({ children }: Props) {
-  const isLoggedIn = useAppSelector(getIsLoggedIn);
+  const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
   return (
     <>

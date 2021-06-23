@@ -1,21 +1,19 @@
 import clsx from "clsx";
-import isEqual from "lodash/isEqual";
 import { Link, useLocation } from "react-router-dom";
 import { Dropdown, Menu, Image } from "semantic-ui-react";
 import { toast } from "react-toastify";
 import { PROFILE_PATH } from "../../../routes/paths";
 import { USER_ID } from "../../../constants";
-import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
+import { useAppDispatch, useAppDeepEqualSelector } from "../../../redux/hooks";
 import {
-  updateCurrentUser,
-  getCurrentUserDisplayInfo,
+  updateCurrentUserAction,
+  selectCurrentUserDisplayInfo,
 } from "../../../redux/slices/current-user-slice";
 import defaultAvatarImage from "../../../assets/avatar.png";
 
 function UserTab() {
-  const { id, name, profileImage } = useAppSelector(
-    getCurrentUserDisplayInfo,
-    isEqual,
+  const { id, name, profileImage } = useAppDeepEqualSelector(
+    selectCurrentUserDisplayInfo,
   );
   const dispatch = useAppDispatch();
   const { pathname } = useLocation();
@@ -25,7 +23,7 @@ function UserTab() {
   );
 
   const onSignOut = () => {
-    dispatch(updateCurrentUser(null));
+    dispatch(updateCurrentUserAction(null));
     toast.success("Signed out successfully.");
   };
 

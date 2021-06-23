@@ -11,8 +11,8 @@ import { AuthenticationData } from "../../types/auth";
 import { isForbiddenOrNotAuthenticated } from "../../utils/error-utils";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
-  updateCurrentUser,
-  getCurrentUser,
+  updateCurrentUserAction,
+  selectCurrentUser,
 } from "../../redux/slices/current-user-slice";
 
 export function useAxiosWithTokenRefresh<T>(
@@ -22,7 +22,7 @@ export function useAxiosWithTokenRefresh<T>(
   ResponseValues<T, Error>,
   (config?: AxiosRequestConfig, options?: RefetchOptions) => AxiosPromise<T>,
 ] {
-  const { access, refresh } = { ...useAppSelector(getCurrentUser) };
+  const { access, refresh } = { ...useAppSelector(selectCurrentUser) };
   const dispatch = useAppDispatch();
   const [responseValues, apiCall] = useAxios<T>(
     {
@@ -77,14 +77,14 @@ export function useAxiosWithTokenRefresh<T>(
           );
 
           const { updatedAt, ...currentUser } = data;
-          dispatch(updateCurrentUser(currentUser));
+          dispatch(updateCurrentUserAction(currentUser));
 
           return response;
         } catch (error) {
           console.log("Error after token refresh:", error, error?.response);
           if (isForbiddenOrNotAuthenticated(error)) {
             // kick user out
-            dispatch(updateCurrentUser(null));
+            dispatch(updateCurrentUserAction(null));
             throw new Error(
               "Your current session has expired. Please log in again.",
             );
@@ -125,7 +125,7 @@ export function useGoogleAuth() {
         console.log("POST /gateway/gmail success:", data);
 
         const { updatedAt, ...currentUser } = data;
-        dispatch(updateCurrentUser(currentUser));
+        dispatch(updateCurrentUserAction(currentUser));
 
         toast.success("Signed in successfully.");
       } catch (error) {

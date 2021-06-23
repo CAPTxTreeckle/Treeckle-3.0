@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
-import isEqual from "lodash/isEqual";
-import { useAppSelector } from "../../redux/hooks";
-import { getCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
+import { useAppDeepEqualSelector } from "../../redux/hooks";
+import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
 import { Role } from "../../types/users";
 
 type Props = {
@@ -15,7 +14,7 @@ function RoleRestrictedWrapper({
   allowedRoles,
   defaultRender = null,
 }: Props) {
-  const { role } = useAppSelector(getCurrentUserDisplayInfo, isEqual);
+  const { role } = useAppDeepEqualSelector(selectCurrentUserDisplayInfo);
 
   return <>{role && allowedRoles.includes(role) ? children : defaultRender}</>;
 }
