@@ -71,7 +71,7 @@ function Table<T>(tableProps: TableProps<T>) {
     <BaseTable<T>
       onColumnSort={onColumnSort}
       {...props}
-      className={clsx(styles.table, className)}
+      className={clsx(styles.table, styles.important, className)}
       rowClassName={clsx(styles.row, rowClassName)}
       headerClassName={clsx(styles.headerRow, headerClassName)}
       components={{ ...tableComponents, ...components }}
