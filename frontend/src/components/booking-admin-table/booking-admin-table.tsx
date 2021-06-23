@@ -30,7 +30,7 @@ import BookingTable, { BookingViewProps } from "../booking-table";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   selectAllBookings,
-  updateBookingsAction,
+  setBookingsAction,
 } from "../../redux/slices/bookings-slice";
 
 const BOOKER_NAME = `${BOOKER}.${NAME}`;
@@ -78,7 +78,7 @@ function BookingAdminTable() {
 
   const getBookings = useCallback(async () => {
     const bookings = await _getBookings();
-    dispatch(updateBookingsAction(bookings));
+    dispatch(setBookingsAction(bookings));
   }, [_getBookings, dispatch]);
 
   useEffect(() => {

@@ -42,6 +42,20 @@ const bookingsAdapter = createEntityAdapter<BookingEntityType>({
   sortComparer: (a, b) => b.createdAt - a.createdAt,
 });
 
+const normalizeBookings = (data: BookingData[]) => {
+  const normalizedBookings = normalize<BookingEntityType, Entities>(data, [
+    bookingEntity,
+  ]);
+
+  const {
+    users = {},
+    venues = {},
+    bookings = {},
+  } = normalizedBookings.entities;
+
+  return { users, venues, bookings };
+};
+
 export const bookingsSlice = createSlice({
   name: "bookings",
   initialState: {
@@ -50,20 +64,18 @@ export const bookingsSlice = createSlice({
     bookings: bookingsAdapter.getInitialState(),
   },
   reducers: {
+    setBookingsAction: (state, { payload }: PayloadAction<BookingData[]>) => {
+      const { users, venues, bookings } = normalizeBookings(payload);
+
+      usersAdapter.setAll(state.users, users);
+      venuesAdapter.setAll(state.venues, venues);
+      bookingsAdapter.setAll(state.bookings, bookings);
+    },
     updateBookingsAction: (
       state,
       { payload }: PayloadAction<BookingData[]>,
     ) => {
-      const normalizedBookings = normalize<BookingEntityType, Entities>(
-        payload,
-        [bookingEntity],
-      );
-
-      const {
-        users = {},
-        venues = {},
-        bookings = {},
-      } = normalizedBookings.entities;
+      const { users, venues, bookings } = normalizeBookings(payload);
 
       usersAdapter.upsertMany(state.users, users);
       venuesAdapter.upsertMany(state.venues, venues);
@@ -73,7 +85,8 @@ export const bookingsSlice = createSlice({
 });
 
 // action creators
-export const { updateBookingsAction } = bookingsSlice.actions;
+export const { setBookingsAction, updateBookingsAction } =
+  bookingsSlice.actions;
 
 // selectors
 const { selectById: selectUserById } = usersAdapter.getSelectors();

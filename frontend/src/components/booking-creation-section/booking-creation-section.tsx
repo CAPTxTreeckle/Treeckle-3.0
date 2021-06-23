@@ -1,4 +1,4 @@
-import styles from "./booking-creation-section.module.scss";
+// import styles from "./booking-creation-section.module.scss";
 
 function BookingCreationSection() {
   return <div />;

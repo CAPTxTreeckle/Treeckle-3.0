@@ -24,7 +24,7 @@ import {
 } from "../../redux/hooks";
 import {
   selectBookingsByUserId,
-  updateBookingsAction,
+  setBookingsAction,
 } from "../../redux/slices/bookings-slice";
 import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
 import { displayDateTime } from "../../utils/parser-utils";
@@ -56,7 +56,7 @@ function BookingUserTable() {
 
   const getBookings = useCallback(async () => {
     const bookings = await _getBookings({ userId });
-    dispatch(updateBookingsAction(bookings));
+    dispatch(setBookingsAction(bookings));
   }, [_getBookings, dispatch, userId]);
 
   useEffect(() => {
