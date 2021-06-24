@@ -33,19 +33,17 @@ function ProfileCard({
           <Divider hidden />
 
           <p>
-            <strong className={styles.label}>Email:</strong>
-            <span>{email}</span>
+            <strong>Email:</strong> <span>{email}</span>
           </p>
           <p>
-            <strong className={styles.label}>Organization:</strong>
-            <span>{organization}</span>
+            <strong>Organization:</strong> <span>{organization}</span>
           </p>
           <p>
-            <strong className={styles.label}>Role:</strong>
+            <strong>Role:</strong>{" "}
             <span className={styles.role}>{role?.toLowerCase() ?? role}</span>
           </p>
           <p>
-            <strong className={styles.label}>Joined in:</strong>
+            <strong>Joined in:</strong>{" "}
             <span>{displayDateTime(createdAt, "MMMM yyyy")}</span>
           </p>
         </Grid.Column>

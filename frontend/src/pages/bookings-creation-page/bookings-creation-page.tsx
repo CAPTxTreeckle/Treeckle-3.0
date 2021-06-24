@@ -17,7 +17,7 @@ function BookingsCreationPage() {
         <Button.Content visible content={<Icon name="close" fitted />} />
       </Button>
 
-      <h2>Booking Creation</h2>
+      <h1>Booking Creation</h1>
       <BookingCreationSection />
     </>
   );

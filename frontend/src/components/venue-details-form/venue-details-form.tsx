@@ -32,7 +32,7 @@ const schema = yup.object().shape({
     .required("Please select an existing category or add a new one"),
   [CAPACITY]: yup
     .number()
-    .positive("Capacity must be positive")
+    .positive("Capacity must be a positive number")
     .integer("Capacity must be an integer")
     .transform((value, originalValue) =>
       typeof originalValue === "string" && originalValue === "" ? null : value,

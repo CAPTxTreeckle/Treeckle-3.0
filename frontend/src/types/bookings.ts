@@ -88,7 +88,7 @@ export enum BookingStatus {
   Cancelled = "CANCELLED",
 }
 
-export const BookingStatusDetails = new Map<
+export const BOOKING_STATUS_DETAILS = new Map<
   BookingStatus,
   { color: StrictLabelProps["color"] }
 >([
@@ -112,3 +112,12 @@ export type BookingFormProps = {
   [TITLE]: string;
   [CUSTOM_VENUE_BOOKING_FORM_RESPONSES]?: CustomVenueBookingFormResponseProps[];
 };
+
+export enum BookingCreationStep {
+  Category = 0,
+  Venue,
+  TimeSlot,
+  Form,
+  Finalize,
+  __length,
+}

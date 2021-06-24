@@ -5,7 +5,7 @@ import { Button, Popup, Label } from "semantic-ui-react";
 import { useUpdateBookingStatuses } from "../../custom-hooks/api/bookings-api";
 import {
   BookingStatus,
-  BookingStatusDetails,
+  BOOKING_STATUS_DETAILS,
   BookingStatusActionType,
 } from "../../types/bookings";
 import { resolveApiError } from "../../utils/error-utils";
@@ -107,7 +107,7 @@ function BookingStatusButton({ bookingId, status, adminView }: Props) {
         <Label
           as={Button}
           fluid
-          color={BookingStatusDetails.get(status)?.color}
+          color={BOOKING_STATUS_DETAILS.get(status)?.color}
           className={clsx(styles.bookingStatusButton, styles.important)}
           content={status.toLowerCase()}
           disabled={

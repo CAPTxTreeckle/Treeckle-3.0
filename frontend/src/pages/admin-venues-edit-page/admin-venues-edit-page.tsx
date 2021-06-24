@@ -53,7 +53,7 @@ function AdminVenuesEditPage() {
         inverted
         placeholder
       >
-        <h2>Venue Update</h2>
+        <h1>Venue Update</h1>
 
         <VenueDetailsForm
           onSubmit={onSaveChanges}

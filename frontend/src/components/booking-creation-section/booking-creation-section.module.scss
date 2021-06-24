@@ -1,2 +1,16 @@
 .bookingCreationSection {
+  color: black;
+
+  .progressBarContainer {
+    padding: 0;
+
+    .progressBar {
+      margin: 0;
+      border-radius: 0;
+
+      > div {
+        border-radius: 0;
+      }
+    }
+  }
 }

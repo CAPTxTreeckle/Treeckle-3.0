@@ -34,7 +34,7 @@ function AdminVenuesCreationPage() {
         <Button.Content visible content={<Icon name="times" fitted />} />
       </Button>
 
-      <h2>Venue Creation</h2>
+      <h1>Venue Creation</h1>
 
       <VenueDetailsForm
         onSubmit={onCreateVenue}

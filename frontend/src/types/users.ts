@@ -70,7 +70,7 @@ export enum UserCreationStatus {
 
 export const userCreationStatuses = Object.values(UserCreationStatus);
 
-export const UserCreationStatusDetails = new Map<
+export const USER_CREATION_STATUS_DETAILS = new Map<
   UserCreationStatus,
   { description: string; classType: string }
 >([

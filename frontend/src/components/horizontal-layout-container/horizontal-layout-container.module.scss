@@ -4,4 +4,16 @@
   @include base.horizontal-space-margin(0.75rem);
   display: flex;
   align-items: center;
+
+  &.center {
+    justify-content: center;
+  }
+
+  &.end {
+    justify-content: flex-end;
+  }
+
+  &.between {
+    justify-content: space-between;
+  }
 }

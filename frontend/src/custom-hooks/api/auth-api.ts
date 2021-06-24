@@ -11,9 +11,10 @@ import { AuthenticationData } from "../../types/auth";
 import { isForbiddenOrNotAuthenticated } from "../../utils/error-utils";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
-  updateCurrentUserAction,
+  setCurrentUserAction,
   selectCurrentUser,
 } from "../../redux/slices/current-user-slice";
+import { resetReduxState } from "../../redux/store";
 
 export function useAxiosWithTokenRefresh<T>(
   config: AxiosRequestConfig,
@@ -77,14 +78,14 @@ export function useAxiosWithTokenRefresh<T>(
           );
 
           const { updatedAt, ...currentUser } = data;
-          dispatch(updateCurrentUserAction(currentUser));
+          dispatch(setCurrentUserAction(currentUser));
 
           return response;
         } catch (error) {
           console.log("Error after token refresh:", error, error?.response);
           if (isForbiddenOrNotAuthenticated(error)) {
             // kick user out
-            dispatch(updateCurrentUserAction(null));
+            resetReduxState(dispatch);
             throw new Error(
               "Your current session has expired. Please log in again.",
             );
@@ -125,7 +126,7 @@ export function useGoogleAuth() {
         console.log("POST /gateway/gmail success:", data);
 
         const { updatedAt, ...currentUser } = data;
-        dispatch(updateCurrentUserAction(currentUser));
+        dispatch(setCurrentUserAction(currentUser));
 
         toast.success("Signed in successfully.");
       } catch (error) {

@@ -5,10 +5,8 @@ import { toast } from "react-toastify";
 import { PROFILE_PATH } from "../../../routes/paths";
 import { USER_ID } from "../../../constants";
 import { useAppDispatch, useAppDeepEqualSelector } from "../../../redux/hooks";
-import {
-  updateCurrentUserAction,
-  selectCurrentUserDisplayInfo,
-} from "../../../redux/slices/current-user-slice";
+import { selectCurrentUserDisplayInfo } from "../../../redux/slices/current-user-slice";
+import { resetReduxState } from "../../../redux/store";
 import defaultAvatarImage from "../../../assets/avatar.png";
 
 function UserTab() {
@@ -23,7 +21,7 @@ function UserTab() {
   );
 
   const onSignOut = () => {
-    dispatch(updateCurrentUserAction(null));
+    resetReduxState(dispatch);
     toast.success("Signed out successfully.");
   };
 
