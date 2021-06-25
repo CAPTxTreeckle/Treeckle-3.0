@@ -5,7 +5,6 @@ import {
   TransitionablePortal,
   Modal,
   Button,
-  Header,
 } from "semantic-ui-react";
 import { useModal } from "react-modal-hook";
 import { BookingCreationStep } from "../../types/bookings";
