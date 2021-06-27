@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "events",
     "venues",
     "bookings",
+    "comments"
 ]
 
 if DEBUG:
