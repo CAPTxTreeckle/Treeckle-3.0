@@ -37,8 +37,8 @@ To install all app dependencies.
 
 ## Create migration
 
-**`python treeckle/manage.py makemigrations treeckle`**
+**`python treeckle/manage.py makemigrations`**
 
 ## Run migration
 
-**`python treeckle/manage.py migrate treeckle`**
+**`python treeckle/manage.py migrate`**
