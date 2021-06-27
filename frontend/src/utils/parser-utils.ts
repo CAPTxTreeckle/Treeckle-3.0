@@ -1,7 +1,7 @@
-import { format } from "date-fns";
+import { format, isSameDay } from "date-fns";
 import { StringifiableRecord } from "query-string";
 import arraySort from "array-sort";
-import { DATE_TIME_FORMAT } from "../constants";
+import { DATE_FORMAT, DATE_TIME_FORMAT, TIME_FORMAT } from "../constants";
 
 export function deepTrim<T>(value: T): T {
   const unknownValue = value as unknown;
@@ -49,6 +49,27 @@ export function displayDateTime(
   } catch {
     return "";
   }
+}
+
+export function displayDateTimeRange(
+  inputStartDateTime: string | number | Date,
+  inputEndDateTime: string | number | Date,
+) {
+  const startDateTime =
+    typeof inputStartDateTime === "string"
+      ? parseInt(inputStartDateTime, 10)
+      : inputStartDateTime;
+  const endDateTime =
+    typeof inputEndDateTime === "string"
+      ? parseInt(inputEndDateTime, 10)
+      : inputEndDateTime;
+
+  return isSameDay(startDateTime, endDateTime)
+    ? `${displayDateTime(startDateTime, DATE_FORMAT)} ${displayDateTime(
+        startDateTime,
+        TIME_FORMAT,
+      )} - ${displayDateTime(endDateTime, TIME_FORMAT)}`
+    : `${displayDateTime(startDateTime)} - ${displayDateTime(endDateTime)}`;
 }
 
 export function changeKeyCase(

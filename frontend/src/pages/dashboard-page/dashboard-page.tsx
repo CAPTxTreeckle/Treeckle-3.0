@@ -1,10 +1,10 @@
-import { useAppDeepEqualSelector } from "../../redux/hooks";
+import { useDeepEqualAppSelector } from "../../redux/hooks";
 import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
 import LinkifyTextViewer from "../../components/linkify-text-viewer";
 import styles from "./dashboard-page.module.scss";
 
 function DashboardPage() {
-  const { name } = useAppDeepEqualSelector(selectCurrentUserDisplayInfo);
+  const { name } = useDeepEqualAppSelector(selectCurrentUserDisplayInfo);
 
   return (
     <div className={styles.dashboardPage}>

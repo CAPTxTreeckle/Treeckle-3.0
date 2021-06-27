@@ -1,5 +1,5 @@
 import { Redirect, Route, RouteProps } from "react-router-dom";
-import { useAppDeepEqualSelector } from "../redux/hooks";
+import { useDeepEqualAppSelector } from "../redux/hooks";
 import { selectCurrentUserDisplayInfo } from "../redux/slices/current-user-slice";
 import { Role } from "../types/users";
 import { HOME_PATH } from "./paths";
@@ -7,7 +7,7 @@ import { HOME_PATH } from "./paths";
 type Props = RouteProps & { allowedRoles: Role[] };
 
 function RoleRestrictedRoute(props: Props) {
-  const { role } = useAppDeepEqualSelector(selectCurrentUserDisplayInfo);
+  const { role } = useDeepEqualAppSelector(selectCurrentUserDisplayInfo);
   const { allowedRoles } = props;
 
   return role && allowedRoles.includes(role) ? (

@@ -8,7 +8,7 @@ type Props = {
   loading?: boolean;
   loadingMessage?: string;
   showDefaultMessage?: boolean;
-  defaultMessage?: string;
+  defaultMessage?: ReactNode | (() => ReactNode);
   inverted?: boolean;
   placeholder?: boolean;
   size?: LoaderProps["size"];
@@ -66,7 +66,9 @@ function PlaceholderWrapper({
             (inverted || dimmed) && styles.inverted,
           )}
         >
-          {defaultMessage}
+          {typeof defaultMessage === "function"
+            ? defaultMessage()
+            : defaultMessage}
         </div>
       )}
     </Segment>

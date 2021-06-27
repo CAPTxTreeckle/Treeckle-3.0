@@ -35,9 +35,8 @@ export function errorHandlerWrapper<T extends unknown[], R = unknown>(
 
       if (error?.isAxiosError) {
         const axiosError = error as AxiosError;
-        const { detail = "An unknown error has occurred." } = {
-          ...axiosError?.response?.data,
-        };
+        const { detail = "An unknown error has occurred." } =
+          axiosError?.response?.data ?? {};
         throw new ApiResponseError(detail, "error");
       } else if (error?.toString() !== "Cancel") {
         throw new ApiResponseError(

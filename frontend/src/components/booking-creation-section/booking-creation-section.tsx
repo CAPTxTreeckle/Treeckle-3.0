@@ -87,9 +87,7 @@ const AlertExistingBookingModal = ({
         <Modal.Header align="center">Draft Booking Found</Modal.Header>
 
         <Modal.Content>
-          <Modal.Description>
-            You have an unsubmitted draft booking. Do you want to continue?
-          </Modal.Description>
+          You have a previously unsubmitted booking. Do you want to continue?
         </Modal.Content>
 
         <Modal.Actions>
@@ -120,9 +118,8 @@ const AlertExistingBookingModal = ({
 
 function BookingCreationSection() {
   const currentCreationStep = useAppSelector(selectCurrentCreationStep);
-  const { headerContent, component } = {
-    ...BOOKING_CREATION_STEP_DETAILS.get(currentCreationStep),
-  };
+  const { headerContent, component } =
+    BOOKING_CREATION_STEP_DETAILS.get(currentCreationStep) ?? {};
   const hasIncompletedBookingsRef = useRef(
     currentCreationStep !== BookingCreationStep.Category,
   );

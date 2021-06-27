@@ -26,7 +26,7 @@ class User(TimestampedModel):
     )
     third_party_id = models.CharField(max_length=100, unique=True)
     role = models.CharField(max_length=50, choices=Role.choices, default=Role.RESIDENT)
-    profile_image = models.URLField(null=True)
+    profile_image = models.URLField(blank=True)
 
     def __str__(self):
         return f"{self.name} | {self.email} ({self.organization})"

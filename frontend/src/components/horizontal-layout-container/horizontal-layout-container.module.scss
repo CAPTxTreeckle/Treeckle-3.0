@@ -1,9 +1,16 @@
 @use "../../base";
 
 .horizontalLayoutContainer {
-  @include base.horizontal-space-margin(0.75rem);
   display: flex;
   align-items: center;
+
+  &.normal {
+    @include base.horizontal-space-margin(0.75rem);
+  }
+
+  &.compact {
+    @include base.horizontal-space-margin(0.5rem);
+  }
 
   &.center {
     justify-content: center;
@@ -13,7 +20,7 @@
     justify-content: flex-end;
   }
 
-  &.between {
+  &.spaceBetween {
     justify-content: space-between;
   }
 }

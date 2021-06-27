@@ -12,6 +12,11 @@
       }
     }
 
+    .text-viewer {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
     .hidden-display {
       display: none;
     }

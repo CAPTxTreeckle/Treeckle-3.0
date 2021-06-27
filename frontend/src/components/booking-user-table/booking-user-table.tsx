@@ -20,7 +20,7 @@ import useTableState, {
 import {
   useAppSelector,
   useAppDispatch,
-  useAppDeepEqualSelector,
+  useDeepEqualAppSelector,
 } from "../../redux/hooks";
 import {
   selectBookingsByUserId,
@@ -48,7 +48,7 @@ const bookingAdminTableStateOptions: TableStateOptions = {
 
 function BookingUserTable() {
   const { getBookings: _getBookings, loading } = useGetBookings();
-  const { id: userId } = useAppDeepEqualSelector(selectCurrentUserDisplayInfo);
+  const { id: userId } = useDeepEqualAppSelector(selectCurrentUserDisplayInfo);
   const allBookings = useAppSelector((state) =>
     selectBookingsByUserId(state, userId ?? 0),
   );

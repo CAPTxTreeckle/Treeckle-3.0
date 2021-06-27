@@ -1,0 +1,9 @@
+@use "../../base";
+
+.bookingCreationErrorAlert {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  @include base.vertical-space-margin(1rem);
+}

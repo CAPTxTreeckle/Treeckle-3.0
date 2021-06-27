@@ -22,9 +22,7 @@ const HelpModal = ({
     icName,
     icEmail,
     icContactNumber,
-  } = {
-    ...selectedVenue?.venueFormProps,
-  };
+  } = selectedVenue?.venueFormProps ?? {};
 
   return (
     <TransitionablePortal

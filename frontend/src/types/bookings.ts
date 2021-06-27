@@ -4,7 +4,7 @@ import {
   ACTIONS,
   BOOKER,
   BOOKING_ID,
-  CUSTOM_VENUE_BOOKING_FORM_RESPONSES,
+  BOOKING_FORM_RESPONSES,
   DATE_TIME_RANGES,
   END_DATE_TIME,
   RESPONSE,
@@ -22,10 +22,7 @@ import {
 } from "../constants";
 import { BaseData } from "./base";
 import { UserData } from "./users";
-import { CustomVenueBookingFormFieldProps } from "./venues";
-
-export type CustomVenueBookingFormData = CustomVenueBookingFormFieldProps &
-  CustomVenueBookingFormResponseProps;
+import { BookingFormFieldProps } from "./venues";
 
 export type BookingGetQueryParams = {
   [USER_ID]?: number | string | null;
@@ -39,7 +36,7 @@ export type BookingPostData = {
   [TITLE]: string;
   [VENUE_ID]: number;
   [DATE_TIME_RANGES]: DateTimeRange[];
-  [FORM_RESPONSE_DATA]: CustomVenueBookingFormData[];
+  [FORM_RESPONSE_DATA]: BookingFormResponse[];
 };
 
 export type DateTimeRange = {
@@ -54,11 +51,16 @@ export type BookingData = BaseData & {
   [START_DATE_TIME]: number;
   [END_DATE_TIME]: number;
   [STATUS]: BookingStatus;
-  [FORM_RESPONSE_DATA]: CustomVenueBookingFormData[];
+  [FORM_RESPONSE_DATA]: BookingFormResponse[];
 };
 
-export type CustomVenueBookingFormResponseProps = {
+export type BookingFormResponse = BookingFormFieldProps & {
   [RESPONSE]: string | boolean;
+};
+
+export type BookingFormProps = {
+  [TITLE]: string;
+  [BOOKING_FORM_RESPONSES]: BookingFormResponse[];
 };
 
 export type BookingPatchData = {
@@ -107,11 +109,6 @@ export const BOOKING_STATUS_DETAILS = new Map<
     },
   ],
 ]);
-
-export type BookingFormProps = {
-  [TITLE]: string;
-  [CUSTOM_VENUE_BOOKING_FORM_RESPONSES]?: CustomVenueBookingFormResponseProps[];
-};
 
 export enum BookingCreationStep {
   Category = 0,

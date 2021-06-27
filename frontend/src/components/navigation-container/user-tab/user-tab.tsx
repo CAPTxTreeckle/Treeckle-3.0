@@ -4,13 +4,13 @@ import { Dropdown, Menu, Image } from "semantic-ui-react";
 import { toast } from "react-toastify";
 import { PROFILE_PATH } from "../../../routes/paths";
 import { USER_ID } from "../../../constants";
-import { useAppDispatch, useAppDeepEqualSelector } from "../../../redux/hooks";
+import { useAppDispatch, useDeepEqualAppSelector } from "../../../redux/hooks";
 import { selectCurrentUserDisplayInfo } from "../../../redux/slices/current-user-slice";
 import { resetReduxState } from "../../../redux/store";
 import defaultAvatarImage from "../../../assets/avatar.png";
 
 function UserTab() {
-  const { id, name, profileImage } = useAppDeepEqualSelector(
+  const { id, name, profileImage } = useDeepEqualAppSelector(
     selectCurrentUserDisplayInfo,
   );
   const dispatch = useAppDispatch();

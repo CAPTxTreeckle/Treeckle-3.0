@@ -22,10 +22,11 @@ export function useAxiosWithTokenRefresh<T>(
 ): [
   ResponseValues<T, Error>,
   (config?: AxiosRequestConfig, options?: RefetchOptions) => AxiosPromise<T>,
+  () => void,
 ] {
-  const { access, refresh } = { ...useAppSelector(selectCurrentUser) };
+  const { access, refresh } = useAppSelector(selectCurrentUser) ?? {};
   const dispatch = useAppDispatch();
-  const [responseValues, apiCall] = useAxios<T>(
+  const [responseValues, apiCall, cancel] = useAxios<T>(
     {
       ...config,
       headers: {
@@ -100,7 +101,7 @@ export function useAxiosWithTokenRefresh<T>(
     [apiCall, tokenRefresh, dispatch],
   );
 
-  return [{ ...responseValues, loading }, apiCallWithTokenRefresh];
+  return [{ ...responseValues, loading }, apiCallWithTokenRefresh, cancel];
 }
 
 export function useGoogleAuth() {
@@ -138,8 +139,13 @@ export function useGoogleAuth() {
       console.log("Google Client error:", error, error?.response);
       if (error?.error === "idpiframe_initialization_failed") {
         setUnavailable(true);
+      } else if (error?.error === "popup_closed_by_user") {
+        return;
       }
-      toast.error(error?.details ?? "An unknown error has occurred.");
+
+      toast.error(
+        error?.details || error?.error || "An unknown error has occurred.",
+      );
     },
   });
 

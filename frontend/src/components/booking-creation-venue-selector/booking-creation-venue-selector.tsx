@@ -3,7 +3,7 @@ import { Segment, Grid, Card, Header, Button } from "semantic-ui-react";
 import { useGetVenues } from "../../custom-hooks/api/venues-api";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
-  backFromVenueSelectionAction,
+  resetBookingCreationAction,
   chooseVenueAction,
   selectSelectedCategory,
 } from "../../redux/slices/booking-creation-slice";
@@ -32,7 +32,7 @@ function BookingCreationVenueSelector() {
           loadingMessage="Retrieving venues"
           loading={loading}
           showDefaultMessage={sortedVenues.length === 0}
-          defaultMessage="There are no available venues"
+          defaultMessage="No venues found"
         >
           <Grid columns="3" stackable stretched centered padded>
             {sortedVenues.map((venue) => (
@@ -72,7 +72,7 @@ function BookingCreationVenueSelector() {
           <Button
             color="black"
             content="Back"
-            onClick={() => dispatch(backFromVenueSelectionAction())}
+            onClick={() => dispatch(resetBookingCreationAction())}
           />
         </HorizontalLayoutContainer>
       </Segment>

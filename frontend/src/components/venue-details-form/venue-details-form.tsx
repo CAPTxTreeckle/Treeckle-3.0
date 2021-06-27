@@ -11,7 +11,7 @@ import {
   PLACEHOLDER_TEXT,
   CAPACITY,
   REQUIRED_FIELD,
-  CUSTOM_VENUE_BOOKING_FORM_FIELDS,
+  BOOKING_FORM_FIELDS,
   IC_CONTACT_NUMBER,
   IC_EMAIL,
   IC_NAME,
@@ -49,7 +49,7 @@ const schema = yup.object().shape({
     .trim()
     .matches(PHONE_NUM_REGEX, "Input must be a valid phone number")
     .notRequired(),
-  [CUSTOM_VENUE_BOOKING_FORM_FIELDS]: yup
+  [BOOKING_FORM_FIELDS]: yup
     .array(
       yup
         .object()
@@ -67,7 +67,7 @@ const schema = yup.object().shape({
         })
         .required(),
     )
-    .notRequired(),
+    .required(),
 });
 
 type Props = {
@@ -83,7 +83,7 @@ const defaultFormProps: VenueFormProps = {
   [IC_NAME]: "",
   [IC_EMAIL]: "",
   [IC_CONTACT_NUMBER]: "",
-  [CUSTOM_VENUE_BOOKING_FORM_FIELDS]: [],
+  [BOOKING_FORM_FIELDS]: [],
 };
 
 function VenueDetailsForm({
