@@ -1,6 +1,11 @@
 from django.urls import path
 
-from .views import TotalBookingCountView, PendingBookingCountView, BookingsView
+from .views import (
+    TotalBookingCountView,
+    PendingBookingCountView,
+    BookingsView,
+    SingleBookingsView,
+)
 from comments.views import BookingCommentsView
 
 urlpatterns = [
@@ -9,6 +14,7 @@ urlpatterns = [
     path(
         "pendingcount", PendingBookingCountView.as_view(), name="pending_booking_count"
     ),
+    path("<int:booking_id>", SingleBookingsView.as_view(), name="single_booking"),
     path(
         "<int:booking_id>/comments",
         BookingCommentsView.as_view(),

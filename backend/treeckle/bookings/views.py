@@ -21,7 +21,8 @@ from .serializers import (
     PatchBookingSerializer,
     DeleteBookingSerializer,
 )
-from .models import BookingStatus
+from .models import Booking, BookingStatus
+from .middlewares import check_booking_exists
 from .logic import (
     get_bookings,
     get_requested_bookings,
@@ -165,5 +166,14 @@ class BookingsView(APIView):
         )
 
         data = [booking_to_json(booking) for booking in deleted_bookings]
+
+        return Response(data, status=status.HTTP_200_OK)
+
+
+class SingleBookingsView(APIView):
+    @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
+    @check_booking_exists
+    def get(self, request, requester: User, booking: Booking):
+        data = booking_to_json(booking)
 
         return Response(data, status=status.HTTP_200_OK)
