@@ -3,7 +3,7 @@ import BookingAdminTable from "../../components/booking-admin-table";
 function AdminBookingsPage() {
   return (
     <>
-      <h2>Booking Requests</h2>
+      <h1>Booking Requests</h1>
 
       <BookingAdminTable />
     </>

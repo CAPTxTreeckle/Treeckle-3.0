@@ -8,11 +8,11 @@ import {
   FIELD_TYPE,
   PLACEHOLDER_TEXT,
   REQUIRED_FIELD,
-  CUSTOM_VENUE_BOOKING_FORM_FIELDS,
+  BOOKING_FORM_FIELDS,
 } from "../../constants";
 import {
   FieldType,
-  CustomVenueBookingFormFieldProps,
+  BookingFormFieldProps,
   VenueFormProps,
 } from "../../types/venues";
 import FormField from "../form-field";
@@ -46,14 +46,14 @@ const typeOptions = [
 type Props = {
   index: number;
   onDeleteField: () => void;
-  defaultValues?: CustomVenueBookingFormFieldProps;
+  defaultValues?: BookingFormFieldProps;
   dragHandleProps?: DraggableProvidedDragHandleProps;
 };
 
-const defaultFormProps: CustomVenueBookingFormFieldProps = {
+const defaultFormProps: BookingFormFieldProps = {
   [FIELD_TYPE]: FieldType.Text,
   [FIELD_LABEL]: "",
-  [REQUIRED_FIELD]: false,
+  [REQUIRED_FIELD]: true,
   [PLACEHOLDER_TEXT]: "",
 };
 
@@ -67,10 +67,12 @@ function VenueDetailsCustomFormField({
   const [isBooleanField, setBooleanField] = useState(
     defaultValues.fieldType === FieldType.Boolean,
   );
-  const fieldType = `${CUSTOM_VENUE_BOOKING_FORM_FIELDS}.${index}.${FIELD_TYPE}`;
-  const fieldLabel = `${CUSTOM_VENUE_BOOKING_FORM_FIELDS}.${index}.${FIELD_LABEL}`;
-  const placeholderText = `${CUSTOM_VENUE_BOOKING_FORM_FIELDS}.${index}.${PLACEHOLDER_TEXT}`;
-  const requiredField = `${CUSTOM_VENUE_BOOKING_FORM_FIELDS}.${index}.${REQUIRED_FIELD}`;
+  const fieldType = `${BOOKING_FORM_FIELDS}.${index}.${FIELD_TYPE}` as const;
+  const fieldLabel = `${BOOKING_FORM_FIELDS}.${index}.${FIELD_LABEL}` as const;
+  const placeholderText =
+    `${BOOKING_FORM_FIELDS}.${index}.${PLACEHOLDER_TEXT}` as const;
+  const requiredField =
+    `${BOOKING_FORM_FIELDS}.${index}.${REQUIRED_FIELD}` as const;
 
   const onSelect = (
     _: SyntheticEvent<HTMLElement, Event>,
@@ -78,14 +80,8 @@ function VenueDetailsCustomFormField({
   ) => {
     if (value === FieldType.Boolean) {
       setBooleanField(true);
-      setValue(
-        requiredField as "customVenueBookingFormFields.0.requiredField",
-        false,
-      );
-      setValue(
-        placeholderText as "customVenueBookingFormFields.0.placeholderText",
-        "",
-      );
+      setValue(requiredField, true);
+      setValue(placeholderText, "");
     } else {
       setBooleanField(false);
     }

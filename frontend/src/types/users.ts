@@ -29,7 +29,7 @@ export type UserInviteData = BaseData & {
 
 export type UserData = UserInviteData & {
   [NAME]: string;
-  [PROFILE_IMAGE]: string | null;
+  [PROFILE_IMAGE]: string;
 };
 
 export type CurrentUser = {
@@ -41,7 +41,7 @@ export type CurrentUser = {
   [ORGANIZATION]: string;
   [ACCESS]: string;
   [REFRESH]: string;
-  [PROFILE_IMAGE]: string | null;
+  [PROFILE_IMAGE]: string;
 };
 
 export type UserInvitePostData = {
@@ -70,7 +70,7 @@ export enum UserCreationStatus {
 
 export const userCreationStatuses = Object.values(UserCreationStatus);
 
-export const UserCreationStatusDetails = new Map<
+export const USER_CREATION_STATUS_DETAILS = new Map<
   UserCreationStatus,
   { description: string; classType: string }
 >([

@@ -13,11 +13,11 @@ function BookingsPage() {
         as={Link}
         to={BOOKINGS_CREATION_PATH}
       >
-        <Button.Content hidden content="Create New Bookings" />
+        <Button.Content hidden content="Create New Booking" />
         <Button.Content visible content={<Icon name="plus" fitted />} />
       </Button>
 
-      <h2>My Bookings</h2>
+      <h1>My Bookings</h1>
 
       <BookingUserTable />
     </>

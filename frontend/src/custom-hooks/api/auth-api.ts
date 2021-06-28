@@ -11,9 +11,10 @@ import { AuthenticationData } from "../../types/auth";
 import { isForbiddenOrNotAuthenticated } from "../../utils/error-utils";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
-  updateCurrentUserAction,
+  setCurrentUserAction,
   selectCurrentUser,
 } from "../../redux/slices/current-user-slice";
+import { resetReduxState } from "../../redux/store";
 
 export function useAxiosWithTokenRefresh<T>(
   config: AxiosRequestConfig,
@@ -21,10 +22,11 @@ export function useAxiosWithTokenRefresh<T>(
 ): [
   ResponseValues<T, Error>,
   (config?: AxiosRequestConfig, options?: RefetchOptions) => AxiosPromise<T>,
+  () => void,
 ] {
-  const { access, refresh } = { ...useAppSelector(selectCurrentUser) };
+  const { access, refresh } = useAppSelector(selectCurrentUser) ?? {};
   const dispatch = useAppDispatch();
-  const [responseValues, apiCall] = useAxios<T>(
+  const [responseValues, apiCall, cancel] = useAxios<T>(
     {
       ...config,
       headers: {
@@ -77,14 +79,14 @@ export function useAxiosWithTokenRefresh<T>(
           );
 
           const { updatedAt, ...currentUser } = data;
-          dispatch(updateCurrentUserAction(currentUser));
+          dispatch(setCurrentUserAction(currentUser));
 
           return response;
         } catch (error) {
           console.log("Error after token refresh:", error, error?.response);
           if (isForbiddenOrNotAuthenticated(error)) {
             // kick user out
-            dispatch(updateCurrentUserAction(null));
+            resetReduxState(dispatch);
             throw new Error(
               "Your current session has expired. Please log in again.",
             );
@@ -99,7 +101,7 @@ export function useAxiosWithTokenRefresh<T>(
     [apiCall, tokenRefresh, dispatch],
   );
 
-  return [{ ...responseValues, loading }, apiCallWithTokenRefresh];
+  return [{ ...responseValues, loading }, apiCallWithTokenRefresh, cancel];
 }
 
 export function useGoogleAuth() {
@@ -125,7 +127,7 @@ export function useGoogleAuth() {
         console.log("POST /gateway/gmail success:", data);
 
         const { updatedAt, ...currentUser } = data;
-        dispatch(updateCurrentUserAction(currentUser));
+        dispatch(setCurrentUserAction(currentUser));
 
         toast.success("Signed in successfully.");
       } catch (error) {
@@ -137,8 +139,13 @@ export function useGoogleAuth() {
       console.log("Google Client error:", error, error?.response);
       if (error?.error === "idpiframe_initialization_failed") {
         setUnavailable(true);
+      } else if (error?.error === "popup_closed_by_user") {
+        return;
       }
-      toast.error(error?.details ?? "An unknown error has occurred.");
+
+      toast.error(
+        error?.details || error?.error || "An unknown error has occurred.",
+      );
     },
   });
 

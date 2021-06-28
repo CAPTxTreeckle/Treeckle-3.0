@@ -17,7 +17,7 @@ function AdminVenuesPage() {
         <Button.Content visible content={<Icon name="plus" fitted />} />
       </Button>
 
-      <h2>All Venues</h2>
+      <h1>All Venues</h1>
 
       <VenueFormGallery />
     </>

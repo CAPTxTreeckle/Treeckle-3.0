@@ -12,7 +12,7 @@ import {
   Icon,
 } from "semantic-ui-react";
 import { useAppDispatch } from "../../redux/hooks";
-import { updateCurrentUserAction } from "../../redux/slices/current-user-slice";
+import { resetReduxState } from "../../redux/store";
 import useShowScroller from "../../custom-hooks/use-show-scroller";
 import SignInButton from "../../components/sign-in-button";
 import treeckleLogo from "../../assets/treeckle-outline-min.png";
@@ -25,7 +25,7 @@ function HomePage() {
   const { showScroller } = useShowScroller(300);
 
   useEffect(() => {
-    dispatch(updateCurrentUserAction(null));
+    resetReduxState(dispatch);
   }, [dispatch]);
 
   return (
@@ -150,9 +150,12 @@ function HomePage() {
             <Grid.Column textAlign="center">
               <h2>CONTACT US</h2>
               <p>
-                <a href="mailto:treeckle@googlegroups.com">
+                <a
+                  href="mailto:treeckle@googlegroups.com"
+                  rel="noopener noreferrer"
+                >
                   <Icon name="envelope" />
-                  Email
+                  treeckle@googlegroups.com
                 </a>
               </p>
             </Grid.Column>

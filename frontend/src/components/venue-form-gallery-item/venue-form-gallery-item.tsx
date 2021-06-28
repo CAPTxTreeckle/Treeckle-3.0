@@ -7,7 +7,7 @@ import { ADMIN_VENUES_EDIT_PATH } from "../../routes/paths";
 import { VenueViewProps } from "../../types/venues";
 import { resolveApiError } from "../../utils/error-utils";
 import PopUpActionsWrapper from "../pop-up-actions-wrapper";
-import VenueBookingForm from "../venue-booking-form";
+import VenueBookingDisplayForm from "../venue-booking-display-form";
 
 type Props = VenueViewProps & {
   getVenues: () => Promise<unknown>;
@@ -44,14 +44,14 @@ function VenueFormGalleryItem({ id, venueFormProps, getVenues }: Props) {
   ];
 
   return (
-    <div className="flex-display hover-bob">
-      <div className="flex-display scale-in-center">
+    <div className="flex-display hover-bob pointer">
+      <div className="flex-display full-width scale-in-center">
         <PopUpActionsWrapper
           actionButtons={actionButtons}
           offsetRatio={{ heightRatio: -2 }}
         >
-          <div className="flex-display pointer">
-            <VenueBookingForm venueFormProps={venueFormProps} readOnly />
+          <div className="flex-display full-width">
+            <VenueBookingDisplayForm venueFormProps={venueFormProps} />
           </div>
         </PopUpActionsWrapper>
       </div>

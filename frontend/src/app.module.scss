@@ -12,6 +12,11 @@
       }
     }
 
+    .text-viewer {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
     .hidden-display {
       display: none;
     }
@@ -34,6 +39,16 @@
 
     .pointer {
       cursor: pointer;
+    }
+
+    .full-width {
+      width: 100%;
+    }
+
+    .hover-dimming {
+      :hover {
+        background-color: rgb(240, 240, 240);
+      }
     }
   }
 }

@@ -56,14 +56,17 @@ const normalizeBookings = (data: BookingData[]) => {
   return { users, venues, bookings };
 };
 
+const initialState = {
+  users: usersAdapter.getInitialState(),
+  venues: venuesAdapter.getInitialState(),
+  bookings: bookingsAdapter.getInitialState(),
+};
+
 export const bookingsSlice = createSlice({
   name: "bookings",
-  initialState: {
-    users: usersAdapter.getInitialState(),
-    venues: venuesAdapter.getInitialState(),
-    bookings: bookingsAdapter.getInitialState(),
-  },
+  initialState,
   reducers: {
+    resetBookingsAction: () => initialState,
     setBookingsAction: (state, { payload }: PayloadAction<BookingData[]>) => {
       const { users, venues, bookings } = normalizeBookings(payload);
 
@@ -85,7 +88,7 @@ export const bookingsSlice = createSlice({
 });
 
 // action creators
-export const { setBookingsAction, updateBookingsAction } =
+export const { resetBookingsAction, setBookingsAction, updateBookingsAction } =
   bookingsSlice.actions;
 
 // selectors

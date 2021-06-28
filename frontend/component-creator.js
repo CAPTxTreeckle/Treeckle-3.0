@@ -7,6 +7,10 @@ const argv = yargs(hideBin(process.argv)).argv;
 
 const componentName = pascalCase(argv.name.trim());
 
+if (!componentName) {
+  throw new Error("Empty component name");
+}
+
 const componentFoldername = paramCase(componentName);
 const componentFilename = `${componentFoldername}.tsx`;
 const styleFilename = `${componentFoldername}.module.scss`;

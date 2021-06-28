@@ -1,4 +1,3 @@
-import React from "react";
 import { Grid } from "semantic-ui-react";
 import { BookingData } from "../../types/bookings";
 import { FieldType } from "../../types/venues";
@@ -35,10 +34,12 @@ function BookingDetailsView({
             return displayedResponse
               ? [
                   <Grid.Row key={`${index}-${fieldLabel}`}>
-                    <Grid.Column width="4">
+                    <Grid.Column className="text-viewer" width="4">
                       <strong>{fieldLabel}:</strong>
                     </Grid.Column>
-                    <Grid.Column width="12">{displayedResponse}</Grid.Column>
+                    <Grid.Column className="text-viewer" width="12">
+                      {displayedResponse}
+                    </Grid.Column>
                   </Grid.Row>,
                 ]
               : [];
