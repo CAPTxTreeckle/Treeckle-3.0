@@ -49,7 +49,7 @@ const schema = yup.object().shape({
         })
         .required(),
     )
-    .required(),
+    .notRequired(),
 });
 
 function BookingCreationCustomForm() {

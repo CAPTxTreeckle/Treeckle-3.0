@@ -33,7 +33,7 @@ function parseVenueFormProps(
     icName,
     icEmail,
     icContactNumber,
-    formFieldData: bookingFormFields,
+    formFieldData: bookingFormFields ?? [],
   };
 
   return data;

@@ -55,7 +55,7 @@ export type VenueFormProps = {
   [IC_NAME]: string;
   [IC_EMAIL]: string;
   [IC_CONTACT_NUMBER]: string;
-  [BOOKING_FORM_FIELDS]: BookingFormFieldProps[];
+  [BOOKING_FORM_FIELDS]?: BookingFormFieldProps[];
 };
 
 export type VenueViewProps = BaseData & {
