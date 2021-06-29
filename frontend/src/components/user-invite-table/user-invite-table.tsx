@@ -74,7 +74,7 @@ function UserInviteTable() {
         emptyRenderer={() => (
           <PlaceholderWrapper
             showDefaultMessage={!loading}
-            defaultMessage="No existing users found"
+            defaultMessage="No pending registration users found"
             placeholder
           />
         )}
@@ -84,7 +84,7 @@ function UserInviteTable() {
             placeholder
             loading={loading}
             fillParent
-            loadingMessage="Retrieving existing users"
+            loadingMessage="Retrieving pending registration users"
           />
         }
         sortBy={sortBy}

@@ -1,18 +1,9 @@
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button, Icon } from "semantic-ui-react";
-import {
-  ADMIN_USERS_CREATION_PATH,
-  ADMIN_USERS_PATH,
-  ADMIN_USERS_PENDING_REGISTRATION_PATH,
-} from "../../routes/paths";
+import { ADMIN_USERS_CREATION_PATH } from "../../routes/paths";
 import Tab, { TabOption } from "../../components/tab";
 import UserTable from "../../components/user-table";
 import UserInviteTable from "../../components/user-invite-table";
-
-const adminUsersCategoryPaths = [
-  ADMIN_USERS_PATH,
-  ADMIN_USERS_PENDING_REGISTRATION_PATH,
-];
 
 const options: TabOption[] = [
   {
@@ -28,25 +19,6 @@ const options: TabOption[] = [
 ];
 
 function AdminUsersPage() {
-  const history = useHistory();
-  const { pathname } = useLocation();
-
-  const activeIndex = (() => {
-    const activeIndex = adminUsersCategoryPaths.indexOf(pathname);
-
-    return activeIndex >= 0 ? activeIndex : 0;
-  })();
-
-  const onChange = (selectedIndex: number) => {
-    const newPath = adminUsersCategoryPaths[selectedIndex] ?? ADMIN_USERS_PATH;
-
-    if (selectedIndex === activeIndex) {
-      return;
-    }
-
-    history.push(newPath);
-  };
-
   return (
     <>
       <Button
@@ -60,7 +32,7 @@ function AdminUsersPage() {
         <Button.Content visible content={<Icon name="add" fitted />} />
       </Button>
 
-      <Tab activeIndex={activeIndex} onChange={onChange} options={options} />
+      <Tab options={options} />
     </>
   );
 }
