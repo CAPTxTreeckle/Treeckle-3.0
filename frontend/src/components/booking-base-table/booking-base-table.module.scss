@@ -1,6 +1,7 @@
-.bookingTable {
-  min-height: 35rem;
-  height: 70vh;
+@use "../../base";
+
+.bookingBaseTable {
+  @include base.table;
 
   .extraContentContainer {
     width: 100%;

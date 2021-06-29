@@ -13,10 +13,8 @@ import {
   EMAIL,
   BOOKER,
   ID,
-  USER_ID,
   VENUE,
 } from "../../constants";
-import { PROFILE_PATH } from "../../routes/paths";
 import useTableState, {
   TableStateOptions,
 } from "../../custom-hooks/use-table-state";
@@ -25,8 +23,9 @@ import { displayDateTime } from "../../utils/parser-utils";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../search-bar";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
-import LinkifyTextViewer from "../linkify-text-viewer";
-import BookingTable, { BookingViewProps } from "../booking-table";
+import UserNameRenderer from "../user-name-renderer";
+import UserEmailRenderer from "../user-email-renderer";
+import BookingBaseTable, { BookingViewProps } from "../booking-base-table";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   selectAllBookings,
@@ -49,27 +48,6 @@ const bookingAdminTableStateOptions: TableStateOptions = {
     STATUS,
   ],
 };
-
-const nameRenderer = ({
-  rowData: { booker },
-}: {
-  rowData: Partial<BookingViewProps>;
-}) =>
-  booker ? (
-    <a
-      href={PROFILE_PATH.replace(`:${USER_ID}`, `${booker.id}`)}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {booker.name}
-    </a>
-  ) : null;
-
-const emailRenderer = ({
-  rowData: { booker },
-}: {
-  rowData: Partial<BookingViewProps>;
-}) => (booker ? <LinkifyTextViewer>{booker.email}</LinkifyTextViewer> : null);
 
 function BookingAdminTable() {
   const { getBookings: _getBookings, loading } = useGetBookings();
@@ -123,7 +101,7 @@ function BookingAdminTable() {
         </HorizontalLayoutContainer>
       </Segment>
 
-      <BookingTable
+      <BookingBaseTable
         data={processedBookings}
         emptyRenderer={() => (
           <PlaceholderWrapper
@@ -157,19 +135,21 @@ function BookingAdminTable() {
         />
         <Column<BookingViewProps>
           key={BOOKER_NAME}
+          dataKey={BOOKER}
           title="Name"
           width={150}
           resizable
           sortable
-          cellRenderer={nameRenderer}
+          cellRenderer={UserNameRenderer}
         />
         <Column<BookingViewProps>
           key={BOOKER_EMAIL}
+          dataKey={BOOKER}
           title="Email"
-          width={160}
+          width={180}
           resizable
           sortable
-          cellRenderer={emailRenderer}
+          cellRenderer={UserEmailRenderer}
         />
         <Column<BookingViewProps>
           key={VENUE_NAME}
@@ -203,7 +183,7 @@ function BookingAdminTable() {
           resizable
           sortable
         />
-      </BookingTable>
+      </BookingBaseTable>
     </Segment.Group>
   );
 }

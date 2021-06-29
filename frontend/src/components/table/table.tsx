@@ -42,14 +42,8 @@ const tableComponents: TableComponents = {
 };
 
 function Table<T>(tableProps: TableProps<T>) {
-  const {
-    setSortBy,
-    className,
-    rowClassName,
-    headerClassName,
-    components,
-    ...props
-  } = tableProps;
+  const { setSortBy, className, rowClassName, components, ...props } =
+    tableProps;
 
   const onColumnSort = useMemo(
     () =>
@@ -73,7 +67,6 @@ function Table<T>(tableProps: TableProps<T>) {
       {...props}
       className={clsx(styles.table, styles.important, className)}
       rowClassName={clsx(styles.row, rowClassName)}
-      headerClassName={clsx(styles.headerRow, headerClassName)}
       components={{ ...tableComponents, ...components }}
     />
   );

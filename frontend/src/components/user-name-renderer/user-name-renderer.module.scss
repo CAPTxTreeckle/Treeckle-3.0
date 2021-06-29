@@ -1,0 +1,5 @@
+@use "../../base";
+
+.userNameRenderer {
+  @include base.truncate-text;
+}

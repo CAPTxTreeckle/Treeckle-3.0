@@ -21,3 +21,14 @@ $primary-color: #2c4a66;
     }
   }
 }
+
+@mixin table {
+  min-height: 35rem;
+  height: 70vh;
+}
+
+@mixin truncate-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

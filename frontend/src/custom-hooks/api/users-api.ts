@@ -10,7 +10,7 @@ import {
 import { errorHandlerWrapper, resolveApiError } from "../../utils/error-utils";
 import { DEFAULT_ARRAY } from "../../constants";
 
-export function useGetAllUserInvites() {
+export function useGetUserInvites() {
   const [{ data: userInvites = DEFAULT_ARRAY, loading }, apiCall] =
     useAxiosWithTokenRefresh<UserInviteData[]>(
       {
@@ -20,7 +20,7 @@ export function useGetAllUserInvites() {
       { manual: true },
     );
 
-  const getAllUserInvites = useCallback(async () => {
+  const getUserInvites = useCallback(async () => {
     try {
       return await errorHandlerWrapper(async () => {
         const { data: userInvites = [] } = await apiCall();
@@ -34,7 +34,7 @@ export function useGetAllUserInvites() {
     }
   }, [apiCall]);
 
-  return { userInvites, loading, getAllUserInvites };
+  return { userInvites, loading, getUserInvites };
 }
 
 export function useCreateUserInvites() {
@@ -127,7 +127,7 @@ export function useDeleteUserInvites() {
   return { loading, deleteUserInvites };
 }
 
-export function useGetAllUsers() {
+export function useGetUsers() {
   const [{ data: users = DEFAULT_ARRAY, loading }, apiCall] =
     useAxiosWithTokenRefresh<UserData[]>(
       {
@@ -137,7 +137,7 @@ export function useGetAllUsers() {
       { manual: true },
     );
 
-  const getAllUsers = useCallback(async () => {
+  const getUsers = useCallback(async () => {
     try {
       return await errorHandlerWrapper(async () => {
         const { data: users = [] } = await apiCall();
@@ -151,7 +151,7 @@ export function useGetAllUsers() {
     }
   }, [apiCall]);
 
-  return { users, loading, getAllUsers };
+  return { users, loading, getUsers };
 }
 
 export function useUpdateUsers() {

@@ -24,7 +24,6 @@ export default function useTableState<T>(
   const searchEngine = useMemo(
     () =>
       generateSearchEngine(data, {
-        minMatchCharLength: 2,
         keys: searchKeys,
         threshold: 0,
         ignoreLocation: true,
@@ -40,7 +39,7 @@ export default function useTableState<T>(
   const filteredData = useMemo(() => {
     const filter = (data: T[]) => {
       if (
-        activeSearchValue.length < 2 ||
+        activeSearchValue.length === 0 ||
         !searchKeys ||
         searchKeys.length === 0 ||
         data.length === 0

@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { useModal } from "react-modal-hook";
 import { Button, Modal, Popup, TransitionablePortal } from "semantic-ui-react";
 import { useAppSelector } from "../../redux/hooks";
@@ -82,21 +81,23 @@ function BookingCreationHelpButton() {
     [selectedVenue],
   );
 
-  return selectedVenue ? (
-    <Popup
-      trigger={
-        <Button
-          icon="help"
-          color="black"
-          circular
-          compact
-          onClick={showModal}
-        />
-      }
-      position="top center"
-      content="Help"
-    />
-  ) : null;
+  return (
+    selectedVenue && (
+      <Popup
+        trigger={
+          <Button
+            icon="help"
+            color="black"
+            circular
+            compact
+            onClick={showModal}
+          />
+        }
+        position="top center"
+        content="Help"
+      />
+    )
+  );
 }
 
-export default memo(BookingCreationHelpButton);
+export default BookingCreationHelpButton;

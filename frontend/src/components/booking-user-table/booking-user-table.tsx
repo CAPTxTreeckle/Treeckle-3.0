@@ -28,7 +28,7 @@ import {
 } from "../../redux/slices/bookings-slice";
 import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
 import { displayDateTime } from "../../utils/parser-utils";
-import BookingTable, { BookingViewProps } from "../booking-table";
+import BookingBaseTable, { BookingViewProps } from "../booking-base-table";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../search-bar";
@@ -101,7 +101,7 @@ function BookingUserTable() {
         </HorizontalLayoutContainer>
       </Segment>
 
-      <BookingTable
+      <BookingBaseTable
         data={processedBookings}
         emptyRenderer={() => (
           <PlaceholderWrapper
@@ -137,7 +137,7 @@ function BookingUserTable() {
           key={VENUE_NAME}
           dataKey={VENUE_NAME}
           title="Venue"
-          width={200}
+          width={230}
           resizable
           sortable
         />
@@ -145,7 +145,7 @@ function BookingUserTable() {
           key={START_DATE_TIME}
           dataKey={START_DATE_TIME_STRING}
           title="Start"
-          width={180}
+          width={230}
           resizable
           sortable
         />
@@ -153,7 +153,7 @@ function BookingUserTable() {
           key={END_DATE_TIME}
           dataKey={END_DATE_TIME_STRING}
           title="End"
-          width={180}
+          width={230}
           resizable
           sortable
         />
@@ -161,11 +161,11 @@ function BookingUserTable() {
           key={CREATED_AT}
           dataKey={CREATED_AT_STRING}
           title="Created at"
-          width={180}
+          width={230}
           resizable
           sortable
         />
-      </BookingTable>
+      </BookingBaseTable>
     </Segment.Group>
   );
 }

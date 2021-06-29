@@ -3,9 +3,10 @@ import Linkify from "react-linkify";
 
 type Props = {
   children: ReactNode;
+  className?: string;
 };
 
-function LinkifyTextViewer({ children }: Props) {
+function LinkifyTextViewer({ children, className }: Props) {
   return (
     <Linkify
       componentDecorator={(decoratedHref, decoratedText, key) => {
@@ -13,6 +14,7 @@ function LinkifyTextViewer({ children }: Props) {
 
         return (
           <a
+            className={className}
             target={isEmail ? undefined : "_blank"}
             rel="noopener noreferrer"
             href={decoratedHref}

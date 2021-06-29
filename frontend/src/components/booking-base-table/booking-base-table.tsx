@@ -13,7 +13,7 @@ import {
 } from "../../constants";
 import BookingDetailsView from "../booking-details-view";
 import BookingStatusButton from "../booking-status-button";
-import styles from "./booking-table.module.scss";
+import styles from "./booking-base-table.module.scss";
 
 export type BookingViewProps = BookingData & {
   [START_DATE_TIME_STRING]: string;
@@ -23,7 +23,7 @@ export type BookingViewProps = BookingData & {
   children: [{ [ID]: string; booking: BookingData }];
 };
 
-type Props<T> = Partial<TableProps<T>> & {
+type Props = Partial<TableProps<BookingViewProps>> & {
   adminView?: boolean;
   defaultStatusColumnWidth?: number;
   defaultActionColumnWidth?: number;
@@ -47,7 +47,7 @@ const rowRenderer = ({
     cells
   );
 
-function BookingTable(props: Props<BookingViewProps>) {
+function BookingBaseTable(props: Props) {
   const {
     adminView = false,
     defaultStatusColumnWidth = 100,
@@ -61,18 +61,19 @@ function BookingTable(props: Props<BookingViewProps>) {
       // eslint-disable-next-line react/no-unused-prop-types
       rowData: Partial<BookingViewProps>;
     }) =>
-      status && id !== undefined ? (
+      status &&
+      id !== undefined && (
         <BookingStatusButton
           bookingId={id}
           status={status}
           adminView={adminView}
         />
-      ) : null,
+      ),
     [adminView],
   );
 
   return (
-    <Segment className={styles.bookingTable}>
+    <Segment className={styles.bookingBaseTable}>
       <AutoResizer>
         {({ width, height }) => (
           <Table<BookingViewProps>
@@ -108,4 +109,4 @@ function BookingTable(props: Props<BookingViewProps>) {
   );
 }
 
-export default BookingTable;
+export default BookingBaseTable;

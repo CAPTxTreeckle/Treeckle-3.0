@@ -38,7 +38,7 @@ function PlaceholderWrapper({
       placeholder={placeholder}
       textAlign="center"
     >
-      <Dimmer active={dimmed} />
+      <Dimmer className={styles.dimmer} active={dimmed} />
 
       {loading && (
         <Loader
