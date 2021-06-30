@@ -8,6 +8,10 @@
     width: 100%;
   }
 
+  .dimmer {
+    z-index: 10;
+  }
+
   .message {
     font-size: 1.5rem;
     color: black;

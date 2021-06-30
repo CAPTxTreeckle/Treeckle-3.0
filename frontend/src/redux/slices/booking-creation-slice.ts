@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
 import equal from "fast-deep-equal";
-import { DEFAULT_ARRAY } from "../../constants";
 import {
   BookingCreationStep,
   BookingData,
@@ -89,14 +88,14 @@ export const bookingCreationSlice = createSlice({
       state.bookingFormProps = {
         title: state.bookingFormProps?.title ?? "",
         bookingFormResponses:
-          selectedVenue?.venueFormProps.bookingFormFields.map(
+          selectedVenue?.venueFormProps.bookingFormFields?.map(
             (fields, index) => ({
               ...fields,
               response:
-                state.bookingFormProps?.bookingFormResponses[index]?.response ??
-                "",
+                state.bookingFormProps?.bookingFormResponses?.[index]
+                  ?.response ?? "",
             }),
-          ) ?? DEFAULT_ARRAY,
+          ),
       };
     },
     completeBookingFormAction: (

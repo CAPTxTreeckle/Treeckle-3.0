@@ -60,7 +60,7 @@ export type BookingFormResponse = BookingFormFieldProps & {
 
 export type BookingFormProps = {
   [TITLE]: string;
-  [BOOKING_FORM_RESPONSES]: BookingFormResponse[];
+  [BOOKING_FORM_RESPONSES]?: BookingFormResponse[];
 };
 
 export type BookingPatchData = {

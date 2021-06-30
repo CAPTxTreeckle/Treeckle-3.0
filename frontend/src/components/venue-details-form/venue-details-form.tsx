@@ -67,7 +67,7 @@ const schema = yup.object().shape({
         })
         .required(),
     )
-    .required(),
+    .notRequired(),
 });
 
 type Props = {

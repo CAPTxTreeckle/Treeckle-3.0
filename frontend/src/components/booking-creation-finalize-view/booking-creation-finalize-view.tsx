@@ -33,17 +33,13 @@ function BookingCreationFinalizeView() {
   const { venueFormProps } = selectedVenue ?? {};
   const { title, bookingFormResponses } = bookingFormProps ?? {};
   const isValid =
-    selectedVenue &&
-    newBookingPeriods &&
-    newBookingPeriods.length > 0 &&
-    bookingFormProps;
+    selectedVenue && newBookingPeriods && newBookingPeriods.length > 0 && title;
 
   const onSubmit = async () => {
     if (
-      !title ||
-      !bookingFormResponses ||
       selectedVenue?.id === undefined ||
       !newBookingPeriods ||
+      !title ||
       loading
     ) {
       return;
@@ -54,7 +50,7 @@ function BookingCreationFinalizeView() {
         title,
         venueId: selectedVenue.id,
         dateTimeRanges: newBookingPeriods,
-        formResponseData: bookingFormResponses,
+        formResponseData: bookingFormResponses ?? [],
       });
 
       toast.success("New booking(s) created successfully.");
@@ -95,7 +91,7 @@ function BookingCreationFinalizeView() {
                     </Grid.Column>
                   </Grid.Row>
 
-                  {newBookingPeriods?.flatMap(
+                  {newBookingPeriods.flatMap(
                     ({ startDateTime, endDateTime }, index) => {
                       const label = `${index + 1}. ${displayDateTimeRange(
                         startDateTime,

@@ -11,7 +11,9 @@ import { FieldType, VenueFormProps } from "../../types/venues";
 import VenueDetailsCustomFormField from "../venue-details-custom-form-field";
 
 function VenueDetailsCustomFormFieldsSection() {
-  const { fields, append, remove, move } = useFieldArray<VenueFormProps>({
+  const { fields, append, remove, move } = useFieldArray<
+    Required<VenueFormProps>
+  >({
     name: BOOKING_FORM_FIELDS,
   });
 

@@ -1,0 +1,5 @@
+@use "../../base";
+
+.userBaseTable {
+  @include base.table;
+}
