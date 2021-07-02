@@ -29,6 +29,7 @@ import { FieldType } from "../../types/venues";
 import { useGetSingleVenue } from "../../custom-hooks/api/venues-api";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import BookingCreationErrorAlert from "../booking-creation-error-alert";
+import { deepTrim } from "../../utils/parser-utils";
 
 const schema = yup.object().shape({
   [TITLE]: yup.string().trim().required("Please enter a short booking title"),
@@ -83,8 +84,8 @@ function BookingCreationCustomForm() {
     }
   }, [reset, bookingFormProps]);
 
-  const onSubmit = (data: BookingFormProps) =>
-    dispatch(completeBookingFormAction(data));
+  const onSubmit = (formData: BookingFormProps) =>
+    dispatch(completeBookingFormAction(deepTrim(formData)));
 
   return (
     <>

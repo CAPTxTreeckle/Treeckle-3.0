@@ -141,12 +141,12 @@ function BookingCreationSection() {
   return (
     <Segment.Group className={styles.bookingCreationSection} raised>
       <Segment>
-        <h2>
-          <HorizontalLayoutContainer>
-            <div>{headerContent}</div>
-            <BookingCreationHelpButton />
-          </HorizontalLayoutContainer>
-        </h2>
+        <HorizontalLayoutContainer>
+          <div>
+            <h2>{headerContent}</h2>
+          </div>
+          <BookingCreationHelpButton />
+        </HorizontalLayoutContainer>
       </Segment>
       <Segment className={styles.progressBarContainer}>
         <Progress

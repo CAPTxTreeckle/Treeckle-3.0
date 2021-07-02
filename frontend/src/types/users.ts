@@ -9,7 +9,6 @@ import {
   REFRESH,
   ROLE,
   STATUS,
-  UUID,
 } from "../constants";
 import { BaseData } from "./base";
 
@@ -101,7 +100,7 @@ export const USER_CREATION_STATUS_DETAILS = new Map<
 ]);
 
 export type PendingCreationUser = {
-  [UUID]: string;
+  [ID]: number;
   [EMAIL]: string;
   [ROLE]: Role;
   [STATUS]: UserCreationStatus;

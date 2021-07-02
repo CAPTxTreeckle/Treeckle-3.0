@@ -1,4 +1,4 @@
-import { StrictLabelProps } from "semantic-ui-react";
+import { LabelProps } from "semantic-ui-react";
 import {
   ACTION,
   ACTIONS,
@@ -92,7 +92,7 @@ export enum BookingStatus {
 
 export const BOOKING_STATUS_DETAILS = new Map<
   BookingStatus,
-  { color: StrictLabelProps["color"] }
+  { color: LabelProps["color"] }
 >([
   [
     BookingStatus.Approved,

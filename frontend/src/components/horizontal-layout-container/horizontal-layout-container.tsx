@@ -3,6 +3,7 @@ import clsx from "clsx";
 import styles from "./horizontal-layout-container.module.scss";
 
 type Props = {
+  className?: string;
   justify?: "start" | "center" | "end" | "space between";
   spacing?: "normal" | "compact";
   children: ReactNode;
@@ -10,6 +11,7 @@ type Props = {
 
 function HorizontalLayoutContainer({
   children,
+  className,
   justify = "start",
   spacing = "normal",
 }: Props) {
@@ -26,6 +28,7 @@ function HorizontalLayoutContainer({
           [styles.normal]: spacing === "normal",
           [styles.compact]: spacing === "compact",
         },
+        className,
       )}
     >
       {children}

@@ -94,7 +94,6 @@ function VenueDetailsForm({
   const methods = useForm<VenueFormProps>({
     resolver: yupResolver(schema),
     defaultValues,
-    shouldUnregister: true,
   });
   const { handleSubmit } = methods;
   const { venueCategories, loading, getVenueCategories } =

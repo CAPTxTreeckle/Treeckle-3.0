@@ -1,0 +1,11 @@
+@use "../../base";
+
+.inputContainer {
+  color: black;
+
+  .column {
+    display: flex !important;
+    flex-direction: column;
+    @include base.vertical-space-margin(1rem);
+  }
+}

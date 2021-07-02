@@ -1,7 +1,7 @@
 import clsx from "clsx";
-import { Form, FormFieldProps, Label } from "semantic-ui-react";
+import { Form, FormFieldProps, Ref } from "semantic-ui-react";
 import get from "lodash/get";
-import { useFormContext } from "react-hook-form";
+import { useController, useFormContext } from "react-hook-form";
 
 type Props = {
   className?: string;
@@ -32,34 +32,40 @@ function FormField({
 }: Props) {
   const {
     formState: { errors },
-    register,
   } = useFormContext();
   const error = get(errors, inputName);
 
+  const {
+    field: { onChange, onBlur, value, ref },
+  } = useController({
+    name: inputName,
+    defaultValue,
+    rules: { required },
+  });
+
   return (
-    <Form.Field
-      className={clsx(hidden && "hidden-display", className)}
-      required={required}
-      error={Boolean(error)}
-      width={width}
-    >
-      {label && <label>{label}</label>}
-      {error && (
-        <Label
-          basic
-          color="red"
-          content={errorMsg ?? error?.message}
-          pointing="below"
-        />
-      )}
-      <input
-        placeholder={placeholder}
+    <Ref innerRef={ref}>
+      <Form.Input
+        className={clsx(hidden && "hidden-display", className)}
+        required={required}
+        error={
+          error && {
+            basic: true,
+            color: "red",
+            content: errorMsg ?? error?.message,
+            pointing: "below",
+          }
+        }
+        label={label}
         type={type}
-        {...register(inputName, { required })}
-        defaultValue={defaultValue}
+        placeholder={placeholder}
+        onChange={onChange}
+        onBlur={onBlur}
+        value={value}
         readOnly={readOnly}
+        width={width}
       />
-    </Form.Field>
+    </Ref>
   );
 }
 

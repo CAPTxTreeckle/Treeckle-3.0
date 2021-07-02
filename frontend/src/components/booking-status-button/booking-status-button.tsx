@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import clsx from "clsx";
+import { capitalCase } from "change-case";
 import { toast } from "react-toastify";
 import { Button, Popup, Label } from "semantic-ui-react";
 import { useUpdateBookingStatuses } from "../../custom-hooks/api/bookings-api";
@@ -108,8 +108,7 @@ function BookingStatusButton({ bookingId, status, adminView }: Props) {
           as={Button}
           fluid
           color={BOOKING_STATUS_DETAILS.get(status)?.color}
-          className={clsx(styles.bookingStatusButton, styles.important)}
-          content={status.toLowerCase()}
+          content={capitalCase(status)}
           disabled={
             status === BookingStatus.Cancelled ||
             (!adminView && status === BookingStatus.Rejected)

@@ -6,9 +6,29 @@
 
 .app {
   :global {
+    .ui.message p {
+      opacity: 1;
+    }
+
     @media only screen and (min-width: 1200px) {
       .ui.container {
         width: 90%;
+      }
+    }
+
+    @media only screen and (max-width: 767px) {
+      .ui.icon.message {
+        flex-direction: column;
+      }
+
+      .ui.message {
+        > .icon {
+          margin-right: 0;
+        }
+
+        > .icon:first-child {
+          margin-bottom: 0.6rem;
+        }
       }
     }
 
