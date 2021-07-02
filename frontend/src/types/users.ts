@@ -2,6 +2,7 @@ import {
   ACCESS,
   CREATED_AT,
   EMAIL,
+  EMAILS,
   ID,
   NAME,
   ORGANIZATION,
@@ -105,3 +106,10 @@ export type PendingCreationUser = {
   [ROLE]: Role;
   [STATUS]: UserCreationStatus;
 };
+
+export type UserCreationFormProps = {
+  [ROLE]: Role.Resident;
+  [EMAILS]: string;
+};
+
+export type UserCreationCsvRowData = [string, string];

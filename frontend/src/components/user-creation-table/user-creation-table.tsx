@@ -1,4 +1,4 @@
-import { Segment } from "semantic-ui-react";
+import { Button, Segment } from "semantic-ui-react";
 import { AutoResizer, Column } from "react-base-table";
 import { PendingCreationUser } from "../../types/users";
 import Table from "../table";
@@ -8,20 +8,24 @@ import useTableState, {
   TableStateOptions,
 } from "../../custom-hooks/use-table-state";
 import styles from "./user-creation-table.module.scss";
-
-const data: PendingCreationUser[] = [];
+import PlaceholderWrapper from "../placeholder-wrapper";
+import HorizontalLayoutContainer from "../horizontal-layout-container";
+import { useAppSelector } from "../../redux/hooks";
+import { selectPendingCreationUsers } from "../../redux/slices/user-creation-slice";
 
 const userCreationTableStateOptions: TableStateOptions = {
   searchKeys: [ID, EMAIL, ROLE, STATUS],
 };
 
 function UserCreationTable() {
+  const pendingCreationUsers = useAppSelector(selectPendingCreationUsers);
+
   const {
     processedData: processedBookings,
     sortBy,
     setSortBy,
     onSearchValueChange,
-  } = useTableState(data, userCreationTableStateOptions);
+  } = useTableState(pendingCreationUsers, userCreationTableStateOptions);
 
   return (
     <Segment.Group raised>
@@ -34,6 +38,13 @@ function UserCreationTable() {
           {({ width, height }) => (
             <Table<PendingCreationUser>
               data={processedBookings}
+              emptyRenderer={() => (
+                <PlaceholderWrapper
+                  showDefaultMessage
+                  defaultMessage="No pending creation users found"
+                  placeholder
+                />
+              )}
               width={width}
               height={height}
               fixed
@@ -87,6 +98,18 @@ function UserCreationTable() {
             </Table>
           )}
         </AutoResizer>
+      </Segment>
+
+      <Segment secondary>
+        <HorizontalLayoutContainer justify="end">
+          <Button
+            content="Create Users"
+            color="blue"
+            // onClick={onCreateUsers}
+            // loading={isSubmitting}
+            // disabled={newPendingCreationUsers.length === 0}
+          />
+        </HorizontalLayoutContainer>
       </Segment>
     </Segment.Group>
   );

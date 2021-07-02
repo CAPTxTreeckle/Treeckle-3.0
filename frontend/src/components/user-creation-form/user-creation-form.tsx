@@ -5,14 +5,11 @@ import { toast } from "react-toastify";
 import { Form } from "semantic-ui-react";
 import * as yup from "yup";
 import { ROLE, EMAILS } from "../../constants";
-import { Role, userRoles } from "../../types/users";
+import { useAppDispatch } from "../../redux/hooks";
+import { addPendingCreationUsersFromInputData } from "../../redux/slices/user-creation-slice";
+import { Role, UserCreationFormProps, userRoles } from "../../types/users";
 import DropdownSelectorFormField from "../dropdown-selector-form-field";
 import TextAreaFormField from "../text-area-form-field";
-
-type UserCreationFormProps = {
-  [ROLE]: Role.Resident;
-  [EMAILS]: string;
-};
 
 const schema = yup.object().shape({
   [ROLE]: yup.mixed<Role>().oneOf(userRoles).required("Please choose a role"),
@@ -34,10 +31,13 @@ function UserCreationForm() {
     resolver: yupResolver(schema),
     defaultValues,
   });
+  const dispatch = useAppDispatch();
 
   const { handleSubmit, reset } = methods;
 
   const onSubmit = (formData: UserCreationFormProps) => {
+    dispatch(addPendingCreationUsersFromInputData(formData));
+
     const { role } = formData;
     reset({ emails: "", role });
     toast.info("The input has been successfully parsed.");

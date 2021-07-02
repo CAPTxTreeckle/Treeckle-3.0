@@ -4,6 +4,9 @@ import papaparse from "papaparse";
 import { toast } from "react-toastify";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import FileUploader from "../file-uploader";
+import { UserCreationCsvRowData } from "../../types/users";
+import { useAppDispatch } from "../../redux/hooks";
+import { addPendingCreationUsersFromCsvData } from "../../redux/slices/user-creation-slice";
 
 const userCreationCsvTemplate = new Blob(
   [
@@ -24,6 +27,8 @@ const onDownloadCsvTemplate = () =>
   saveAs(userCreationCsvTemplate, "user creation template.csv");
 
 function UserCreationCsvUploader() {
+  const dispatch = useAppDispatch();
+
   const onAcceptCsvFile = (files: File[]) => {
     const csvFile = files[0];
 
@@ -31,7 +36,7 @@ function UserCreationCsvUploader() {
       return;
     }
 
-    papaparse.parse<[string, string]>(csvFile, {
+    papaparse.parse<UserCreationCsvRowData>(csvFile, {
       worker: true,
       error: (error) => {
         console.log("Parse CSV file error:", error, error.message);
@@ -41,7 +46,7 @@ function UserCreationCsvUploader() {
         // removes column headers
         data.shift();
 
-        console.log(data);
+        dispatch(addPendingCreationUsersFromCsvData(data));
 
         toast.info("The CSV file content has been successfully parsed.");
       },

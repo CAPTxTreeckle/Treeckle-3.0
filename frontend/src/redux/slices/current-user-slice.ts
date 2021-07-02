@@ -6,7 +6,7 @@ type CurrentUserState = CurrentUser | null;
 
 const initialState: CurrentUserState = null as CurrentUserState;
 
-export const currentUserSlice = createSlice({
+const currentUserSlice = createSlice({
   name: "currentUser",
   initialState,
   reducers: {

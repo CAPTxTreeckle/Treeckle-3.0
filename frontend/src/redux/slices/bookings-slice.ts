@@ -62,7 +62,7 @@ const initialState = {
   bookings: bookingsAdapter.getInitialState(),
 };
 
-export const bookingsSlice = createSlice({
+const bookingsSlice = createSlice({
   name: "bookings",
   initialState,
   reducers: {

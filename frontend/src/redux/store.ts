@@ -7,12 +7,16 @@ import bookingsReducer, { resetBookingsAction } from "./slices/bookings-slice";
 import bookingCreationReducer, {
   resetBookingCreationAction,
 } from "./slices/booking-creation-slice";
+import userCreationReducer, {
+  resetUserCreationAction,
+} from "./slices/user-creation-slice";
 
 const store = configureStore({
   reducer: {
     currentUser: currentUserReducer,
     bookings: bookingsReducer,
     bookingCreation: bookingCreationReducer,
+    userCreation: userCreationReducer,
   },
   preloadedState: {
     currentUser: loadFromLocalStorage("user"),
@@ -32,6 +36,7 @@ export type AppThunk<ReturnType = void> = ThunkAction<
 export const resetReduxState = (dispatch: AppDispatch) => {
   dispatch(resetBookingsAction());
   dispatch(resetBookingCreationAction());
+  dispatch(resetUserCreationAction());
   dispatch(setCurrentUserAction(null));
 };
 
