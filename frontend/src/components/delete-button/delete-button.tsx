@@ -40,7 +40,7 @@ function DeleteButton({
       <ConfirmationModal
         open={open}
         onExited={onExited}
-        hideModal={hideModal}
+        onClose={hideModal}
         {...{
           ...defaultGetDeleteModalProps({ hideModal }),
           ...getDeleteModalProps?.({ open, onExited, hideModal }),

@@ -61,7 +61,13 @@ function UserTable() {
           <Popup
             content="Refresh"
             trigger={
-              <Button icon="redo alternate" color="blue" onClick={getUsers} />
+              <Button
+                icon="redo alternate"
+                color="blue"
+                onClick={getUsers}
+                disabled={loading}
+                loading={loading}
+              />
             }
             position="top center"
           />

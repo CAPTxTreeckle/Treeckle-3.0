@@ -6,7 +6,7 @@ import HorizontalLayoutContainer from "../horizontal-layout-container";
 import FileUploader from "../file-uploader";
 import { UserCreationCsvRowData } from "../../types/users";
 import { useAppDispatch } from "../../redux/hooks";
-import { addPendingCreationUsersFromCsvData } from "../../redux/slices/user-creation-slice";
+import { addPendingCreationUsersFromCsvDataAction } from "../../redux/slices/user-creation-slice";
 
 const userCreationCsvTemplate = new Blob(
   [
@@ -46,7 +46,7 @@ function UserCreationCsvUploader() {
         // removes column headers
         data.shift();
 
-        dispatch(addPendingCreationUsersFromCsvData(data));
+        dispatch(addPendingCreationUsersFromCsvDataAction(data));
 
         toast.info("The CSV file content has been successfully parsed.");
       },

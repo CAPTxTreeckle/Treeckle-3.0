@@ -6,7 +6,7 @@ import { Form } from "semantic-ui-react";
 import * as yup from "yup";
 import { ROLE, EMAILS } from "../../constants";
 import { useAppDispatch } from "../../redux/hooks";
-import { addPendingCreationUsersFromInputData } from "../../redux/slices/user-creation-slice";
+import { addPendingCreationUsersFromInputDataAction } from "../../redux/slices/user-creation-slice";
 import { Role, UserCreationFormProps, userRoles } from "../../types/users";
 import DropdownSelectorFormField from "../dropdown-selector-form-field";
 import TextAreaFormField from "../text-area-form-field";
@@ -36,7 +36,7 @@ function UserCreationForm() {
   const { handleSubmit, reset } = methods;
 
   const onSubmit = (formData: UserCreationFormProps) => {
-    dispatch(addPendingCreationUsersFromInputData(formData));
+    dispatch(addPendingCreationUsersFromInputDataAction(formData));
 
     const { role } = formData;
     reset({ emails: "", role });

@@ -62,6 +62,8 @@ function UserInviteTable() {
                 icon="redo alternate"
                 color="blue"
                 onClick={getUserInvites}
+                disabled={loading}
+                loading={loading}
               />
             }
             position="top center"

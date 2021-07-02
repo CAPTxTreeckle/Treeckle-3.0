@@ -1,10 +1,13 @@
-import { useCallback } from "react";
+import { useCallback, useMemo, useEffect } from "react";
 import clsx from "clsx";
 import { capitalCase } from "change-case";
-import { Button, Segment } from "semantic-ui-react";
+import { toast } from "react-toastify";
+import { useModal } from "react-modal-hook";
+import { Button, List, Segment } from "semantic-ui-react";
 import { AutoResizer, Column } from "react-base-table";
 import {
   PendingCreationUser,
+  UserCreationStatus,
   USER_CREATION_STATUS_DETAILS,
 } from "../../types/users";
 import Table, { TableProps } from "../table";
@@ -16,11 +19,19 @@ import useTableState, {
 import PlaceholderWrapper from "../placeholder-wrapper";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import DeleteButton, { DeleteModalPropsGetter } from "../delete-button";
+import BaseModal from "../base-modal";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
+  removePendingCreationUserAction,
+  resetUnsuccessfullyCreatedUsers,
   resetUserCreationAction,
   selectPendingCreationUsers,
+  selectUnsuccessfullyCreatedUsers,
+  updateNewPendingCreationUsersToCreatedAction,
+  updateUnsuccessfullyCreatedUsersAction,
 } from "../../redux/slices/user-creation-slice";
+import { useCreateUserInvites } from "../../custom-hooks/api/users-api";
+import { resolveApiError } from "../../utils/error-utils";
 import styles from "./user-creation-table.module.scss";
 
 const userCreationTableStateOptions: TableStateOptions = {
@@ -39,9 +50,58 @@ const rowClassNameGetter: TableProps<PendingCreationUser>["rowClassName"] = ({
   });
 };
 
+const SingleUserDeleteButton = ({ id }: { id: number }) => {
+  const dispatch = useAppDispatch();
+  return (
+    <DeleteButton
+      compact
+      onClick={() => dispatch(removePendingCreationUserAction(id))}
+      showDeleteModal={false}
+      popUpContent="Delete entry"
+    />
+  );
+};
+
 function UserCreationTable() {
   const pendingCreationUsers = useAppSelector(selectPendingCreationUsers);
+  const unsuccessfullyCreatedUsers = useAppSelector(
+    selectUnsuccessfullyCreatedUsers,
+  );
   const dispatch = useAppDispatch();
+  const { createUserInvites, loading } = useCreateUserInvites();
+
+  const [showModal, hideModal] = useModal(
+    ({ in: open, onExited }) => (
+      <BaseModal
+        open={open}
+        onExited={onExited}
+        onClose={() => {
+          hideModal();
+          dispatch(resetUnsuccessfullyCreatedUsers());
+        }}
+        title="Invalid New Users"
+        content={
+          <>
+            <h3>{`The following user${
+              unsuccessfullyCreatedUsers.length === 1 ? " was" : "s were"
+            } not created successfully:`}</h3>
+            <List ordered>
+              {unsuccessfullyCreatedUsers.map(({ email }, index) => (
+                <List.Item key={`${index}-${email}`}>{email}</List.Item>
+              ))}
+            </List>
+          </>
+        }
+      />
+    ),
+    [unsuccessfullyCreatedUsers],
+  );
+
+  useEffect(() => {
+    if (unsuccessfullyCreatedUsers.length > 0) {
+      showModal();
+    }
+  }, [unsuccessfullyCreatedUsers, showModal]);
 
   const {
     processedData: processedBookings,
@@ -49,6 +109,14 @@ function UserCreationTable() {
     setSortBy,
     onSearchValueChange,
   } = useTableState(pendingCreationUsers, userCreationTableStateOptions);
+
+  const newPendingCreationUsers = useMemo(
+    () =>
+      pendingCreationUsers.filter(
+        ({ status }) => status === UserCreationStatus.New,
+      ),
+    [pendingCreationUsers],
+  );
 
   const getClearAllModalProps: DeleteModalPropsGetter = useCallback(
     ({ hideModal }) => ({
@@ -61,6 +129,24 @@ function UserCreationTable() {
     }),
     [dispatch],
   );
+
+  const onCreateUsers = async () => {
+    try {
+      const createdUserInvites = await createUserInvites(
+        newPendingCreationUsers.map(({ email, role }) => ({ email, role })),
+      );
+
+      dispatch(
+        updateNewPendingCreationUsersToCreatedAction(createdUserInvites),
+      );
+
+      toast.success("New user(s) created successfully.");
+    } catch (error) {
+      resolveApiError(error);
+    } finally {
+      dispatch(updateUnsuccessfullyCreatedUsersAction());
+    }
+  };
 
   return (
     <Segment.Group raised>
@@ -86,6 +172,7 @@ function UserCreationTable() {
               fixed
               sortBy={sortBy}
               setSortBy={setSortBy}
+              estimatedRowHeight={50}
             >
               <Column<PendingCreationUser>
                 key={ID}
@@ -126,10 +213,14 @@ function UserCreationTable() {
 
               <Column<PendingCreationUser>
                 key={ACTION}
+                dataKey={ID}
                 title="Action"
                 width={150}
                 resizable
                 align="center"
+                cellRenderer={({ cellData }) => (
+                  <SingleUserDeleteButton id={cellData as number} />
+                )}
               />
             </Table>
           )}
@@ -148,9 +239,9 @@ function UserCreationTable() {
           <Button
             content="Create Users"
             color="blue"
-            // onClick={onCreateUsers}
-            // loading={isSubmitting}
-            // disabled={newPendingCreationUsers.length === 0}
+            onClick={onCreateUsers}
+            loading={loading}
+            disabled={newPendingCreationUsers.length === 0 || loading}
           />
         </HorizontalLayoutContainer>
       </Segment>

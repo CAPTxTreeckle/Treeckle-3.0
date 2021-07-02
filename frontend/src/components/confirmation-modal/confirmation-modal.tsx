@@ -4,18 +4,18 @@ import { TransitionablePortal, Modal, Header, Button } from "semantic-ui-react";
 export type ConfirmationModalProps = {
   open: boolean;
   onExited: () => void;
-  hideModal: () => void;
+  onClose: () => void;
   onYes: () => void;
   onNo: () => void;
   icon?: ReactNode;
-  title: string;
-  content: string;
+  title: ReactNode;
+  content: ReactNode;
 };
 
 function ConfirmationModal({
   open,
   onExited,
-  hideModal,
+  onClose,
   onYes,
   onNo,
   icon,
@@ -28,7 +28,7 @@ function ConfirmationModal({
       open={open}
       onHide={onExited}
     >
-      <Modal size="tiny" basic open onClose={hideModal}>
+      <Modal size="tiny" basic open onClose={onClose}>
         <Header icon={Boolean(icon)} align="center">
           {icon}
           {title}

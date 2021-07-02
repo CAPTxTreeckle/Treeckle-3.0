@@ -32,9 +32,7 @@ const tableComponents: TableComponents = {
         link
         className={clsx(styles.expandIcon, expanded && styles.expanded)}
         name="plus circle"
-        onClick={() => {
-          onExpand(!expanded);
-        }}
+        onClick={() => onExpand(!expanded)}
         fitted
       />
     );

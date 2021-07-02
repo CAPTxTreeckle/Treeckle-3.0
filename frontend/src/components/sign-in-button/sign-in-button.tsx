@@ -55,7 +55,7 @@ function SignInButton() {
                   content="Sign in with Google"
                   fluid
                   loading={googleAuthLoading}
-                  disabled={isUnavailable}
+                  disabled={isUnavailable || googleAuthLoading}
                 />
               </Grid.Column>
             </Grid>

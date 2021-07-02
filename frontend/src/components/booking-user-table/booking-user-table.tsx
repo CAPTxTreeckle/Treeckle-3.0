@@ -94,6 +94,8 @@ function BookingUserTable() {
                 icon="redo alternate"
                 color="blue"
                 onClick={getBookings}
+                loading={loading}
+                disabled={loading}
               />
             }
             position="top center"

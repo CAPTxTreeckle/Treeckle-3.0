@@ -74,7 +74,7 @@ function BookingCreationSection() {
     <ConfirmationModal
       open={open}
       onExited={onExited}
-      hideModal={hideModal}
+      onClose={hideModal}
       onYes={hideModal}
       onNo={() => {
         hideModal();

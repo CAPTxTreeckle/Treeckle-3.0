@@ -182,6 +182,7 @@ function VenueDetailsForm({
               {...submitButtonProps}
               type="submit"
               loading={isSubmitting}
+              disabled={isSubmitting}
             />
           </Segment>
         </Segment.Group>
