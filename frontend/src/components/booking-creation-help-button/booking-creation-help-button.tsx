@@ -69,6 +69,7 @@ function BookingCreationHelpButton() {
         }
         position="top center"
         content="Help"
+        hideOnScroll
       />
     )
   );

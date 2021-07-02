@@ -99,6 +99,7 @@ function BookingAdminTable() {
               />
             }
             position="top center"
+            hideOnScroll
           />
         </HorizontalLayoutContainer>
       </Segment>

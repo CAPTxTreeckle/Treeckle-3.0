@@ -14,11 +14,13 @@ import type { RootState } from "../store";
 type UserCreationState = {
   pendingCreationUsers: PendingCreationUser[];
   unsuccessfullyCreatedUsers: PendingCreationUser[];
+  showUnsuccessfullyCreatedUsers: boolean;
 };
 
 const initialState: UserCreationState = {
   pendingCreationUsers: [],
   unsuccessfullyCreatedUsers: [],
+  showUnsuccessfullyCreatedUsers: false,
 } as UserCreationState;
 
 const parseToPendingCreationUsers = <T>(
@@ -64,9 +66,11 @@ const userCreationSlice = createSlice({
   initialState,
   reducers: {
     resetUserCreationAction: () => initialState,
-    resetUnsuccessfullyCreatedUsers: (state) => {
-      state.unsuccessfullyCreatedUsers =
-        initialState.unsuccessfullyCreatedUsers;
+    toggleUnsuccessfullyCreatedUsersAction: (
+      state,
+      { payload }: PayloadAction<boolean>,
+    ) => {
+      state.showUnsuccessfullyCreatedUsers = payload;
     },
     addPendingCreationUsersFromInputDataAction: (
       state,
@@ -149,35 +153,43 @@ const userCreationSlice = createSlice({
           : user,
       );
     },
-    updateUnsuccessfullyCreatedUsersAction: (state) =>
-      state.pendingCreationUsers.reduce(
-        ({ unsuccessfullyCreatedUsers, pendingCreationUsers }, user) => {
-          if (user.status !== UserCreationStatus.New) {
-            pendingCreationUsers.push(user);
-          } else {
-            const invalidUser = {
-              ...user,
-              status: UserCreationStatus.Invalid,
-            };
+    updateUnsuccessfullyCreatedUsersAction: (state) => {
+      const { unsuccessfullyCreatedUsers, pendingCreationUsers } =
+        state.pendingCreationUsers.reduce(
+          ({ unsuccessfullyCreatedUsers, pendingCreationUsers }, user) => {
+            if (user.status !== UserCreationStatus.New) {
+              pendingCreationUsers.push(user);
+            } else {
+              const invalidUser = {
+                ...user,
+                status: UserCreationStatus.Invalid,
+              };
 
-            unsuccessfullyCreatedUsers.push(invalidUser);
-            pendingCreationUsers.push(invalidUser);
-          }
+              unsuccessfullyCreatedUsers.push(invalidUser);
+              pendingCreationUsers.push(invalidUser);
+            }
 
-          return { unsuccessfullyCreatedUsers, pendingCreationUsers };
-        },
-        {
-          unsuccessfullyCreatedUsers: [] as PendingCreationUser[],
-          pendingCreationUsers: [] as PendingCreationUser[],
-        },
-      ),
+            return { unsuccessfullyCreatedUsers, pendingCreationUsers };
+          },
+          {
+            unsuccessfullyCreatedUsers: [] as PendingCreationUser[],
+            pendingCreationUsers: [] as PendingCreationUser[],
+          },
+        );
+
+      return {
+        pendingCreationUsers,
+        unsuccessfullyCreatedUsers,
+        showUnsuccessfullyCreatedUsers: unsuccessfullyCreatedUsers.length > 0,
+      };
+    },
   },
 });
 
 // action creators
 export const {
   resetUserCreationAction,
-  resetUnsuccessfullyCreatedUsers,
+  toggleUnsuccessfullyCreatedUsersAction,
   addPendingCreationUsersFromInputDataAction,
   addPendingCreationUsersFromCsvDataAction,
   removePendingCreationUserAction,
@@ -194,6 +206,10 @@ export const selectPendingCreationUsers = createSelector(
 export const selectUnsuccessfullyCreatedUsers = createSelector(
   selectUserCreation,
   ({ unsuccessfullyCreatedUsers }) => unsuccessfullyCreatedUsers,
+);
+export const selectShowUnsuccessfullyCreatedUsers = createSelector(
+  selectUserCreation,
+  ({ showUnsuccessfullyCreatedUsers }) => showUnsuccessfullyCreatedUsers,
 );
 
 export default userCreationSlice.reducer;

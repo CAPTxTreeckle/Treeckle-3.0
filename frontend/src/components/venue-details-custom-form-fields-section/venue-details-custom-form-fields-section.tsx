@@ -91,6 +91,7 @@ function VenueDetailsCustomFormFieldsSection() {
           />
         }
         position="right center"
+        hideOnScroll
       />
     </>
   );

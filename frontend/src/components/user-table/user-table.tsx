@@ -70,6 +70,7 @@ function UserTable() {
               />
             }
             position="top center"
+            hideOnScroll
           />
         </HorizontalLayoutContainer>
       </Segment>

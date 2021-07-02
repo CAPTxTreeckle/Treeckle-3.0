@@ -66,6 +66,7 @@ function DeleteButton({
           {...props}
         />
       }
+      hideOnScroll
     />
   );
 }

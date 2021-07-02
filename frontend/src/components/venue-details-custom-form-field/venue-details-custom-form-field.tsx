@@ -121,6 +121,7 @@ function VenueDetailsCustomFormField({
             }
             on="hover"
             content="Drag and move up/down to rearrange the fields"
+            hideOnScroll
           />
         </Segment.Group>
 
@@ -171,6 +172,7 @@ function VenueDetailsCustomFormField({
               </Segment>
             }
             position="left center"
+            hideOnScroll
           />
         </Segment.Group>
       </Segment.Group>

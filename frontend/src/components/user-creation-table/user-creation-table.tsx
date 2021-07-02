@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { capitalCase } from "change-case";
 import { toast } from "react-toastify";
 import { useModal } from "react-modal-hook";
-import { Button, List, Segment } from "semantic-ui-react";
+import { Button, List, Popup, Segment } from "semantic-ui-react";
 import { AutoResizer, Column } from "react-base-table";
 import {
   PendingCreationUser,
@@ -23,12 +23,13 @@ import BaseModal from "../base-modal";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   removePendingCreationUserAction,
-  resetUnsuccessfullyCreatedUsers,
+  toggleUnsuccessfullyCreatedUsersAction,
   resetUserCreationAction,
   selectPendingCreationUsers,
   selectUnsuccessfullyCreatedUsers,
   updateNewPendingCreationUsersToCreatedAction,
   updateUnsuccessfullyCreatedUsersAction,
+  selectShowUnsuccessfullyCreatedUsers,
 } from "../../redux/slices/user-creation-slice";
 import { useCreateUserInvites } from "../../custom-hooks/api/users-api";
 import { resolveApiError } from "../../utils/error-utils";
@@ -67,6 +68,9 @@ function UserCreationTable() {
   const unsuccessfullyCreatedUsers = useAppSelector(
     selectUnsuccessfullyCreatedUsers,
   );
+  const showUnsuccessfullyCreatedUsers = useAppSelector(
+    selectShowUnsuccessfullyCreatedUsers,
+  );
   const dispatch = useAppDispatch();
   const { createUserInvites, loading } = useCreateUserInvites();
 
@@ -77,9 +81,9 @@ function UserCreationTable() {
         onExited={onExited}
         onClose={() => {
           hideModal();
-          dispatch(resetUnsuccessfullyCreatedUsers());
+          dispatch(toggleUnsuccessfullyCreatedUsersAction(false));
         }}
-        title="Invalid New Users"
+        title="Unsuccessfully created users"
         content={
           <>
             <h3>{`The following user${
@@ -98,10 +102,13 @@ function UserCreationTable() {
   );
 
   useEffect(() => {
-    if (unsuccessfullyCreatedUsers.length > 0) {
+    if (
+      showUnsuccessfullyCreatedUsers &&
+      unsuccessfullyCreatedUsers.length > 0
+    ) {
       showModal();
     }
-  }, [unsuccessfullyCreatedUsers, showModal]);
+  }, [unsuccessfullyCreatedUsers, showUnsuccessfullyCreatedUsers, showModal]);
 
   const {
     processedData: processedBookings,
@@ -151,7 +158,23 @@ function UserCreationTable() {
   return (
     <Segment.Group raised>
       <Segment secondary>
-        <SearchBar fluid onSearchValueChange={onSearchValueChange} />
+        <HorizontalLayoutContainer>
+          <SearchBar fluid onSearchValueChange={onSearchValueChange} />
+          <Popup
+            content="View unsuccessfully created users"
+            wide
+            trigger={
+              <Button
+                icon="eye"
+                color="blue"
+                onClick={() =>
+                  dispatch(toggleUnsuccessfullyCreatedUsersAction(true))
+                }
+                disabled={unsuccessfullyCreatedUsers.length === 0}
+              />
+            }
+          />
+        </HorizontalLayoutContainer>
       </Segment>
 
       <Segment className={styles.userCreationTable}>

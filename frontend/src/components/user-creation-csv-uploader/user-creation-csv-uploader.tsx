@@ -77,6 +77,7 @@ function UserCreationCsvUploader() {
           }
           position="top center"
           on="hover"
+          hideOnScroll
         />
       </HorizontalLayoutContainer>
 

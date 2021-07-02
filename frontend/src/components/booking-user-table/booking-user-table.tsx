@@ -99,6 +99,7 @@ function BookingUserTable() {
               />
             }
             position="top center"
+            hideOnScroll
           />
         </HorizontalLayoutContainer>
       </Segment>

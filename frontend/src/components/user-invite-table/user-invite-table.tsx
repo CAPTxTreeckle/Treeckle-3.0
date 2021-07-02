@@ -67,6 +67,7 @@ function UserInviteTable() {
               />
             }
             position="top center"
+            hideOnScroll
           />
         </HorizontalLayoutContainer>
       </Segment>
