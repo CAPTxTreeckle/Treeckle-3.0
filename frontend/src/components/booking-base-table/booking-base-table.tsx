@@ -47,13 +47,14 @@ const rowRenderer = ({
     cells
   );
 
-function BookingBaseTable(props: Props) {
-  const {
-    adminView = false,
-    defaultStatusColumnWidth = 100,
-    defaultActionColumnWidth = 100,
-    ...tableProps
-  } = props;
+function BookingBaseTable({
+  adminView = false,
+  defaultStatusColumnWidth = 100,
+  defaultActionColumnWidth = 100,
+  // eslint-disable-next-line react/prop-types
+  children,
+  ...props
+}: Props) {
   const statusButtonRenderer = useCallback(
     ({
       rowData: { status, id },
@@ -83,9 +84,9 @@ function BookingBaseTable(props: Props) {
             estimatedRowHeight={50}
             fixed
             expandColumnKey={ACTION}
-            {...tableProps}
+            {...props}
           >
-            {tableProps.children}
+            {children}
             <Column<BookingViewProps>
               key={STATUS}
               title="Status"

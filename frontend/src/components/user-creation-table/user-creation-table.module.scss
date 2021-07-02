@@ -2,4 +2,19 @@
 
 .userCreationTable {
   @include base.table;
+
+  .negative {
+    background-color: #fff6f6;
+    color: #9f3a38;
+  }
+
+  .positive {
+    background-color: #fcfff5;
+    color: #2c662d;
+  }
+
+  .warning {
+    background-color: #fffaf3;
+    color: #573a08;
+  }
 }

@@ -41,10 +41,13 @@ const tableComponents: TableComponents = {
   },
 };
 
-function Table<T>(tableProps: TableProps<T>) {
-  const { setSortBy, className, rowClassName, components, ...props } =
-    tableProps;
-
+function Table<T>({
+  setSortBy,
+  className,
+  rowClassName,
+  components,
+  ...props
+}: TableProps<T>) {
   const onColumnSort = useMemo(
     () =>
       setSortBy
@@ -66,7 +69,14 @@ function Table<T>(tableProps: TableProps<T>) {
       onColumnSort={onColumnSort}
       {...props}
       className={clsx(styles.table, styles.important, className)}
-      rowClassName={clsx(styles.row, rowClassName)}
+      rowClassName={(props) =>
+        clsx(
+          styles.row,
+          !rowClassName || typeof rowClassName === "string"
+            ? rowClassName
+            : rowClassName(props),
+        )
+      }
       components={{ ...tableComponents, ...components }}
     />
   );

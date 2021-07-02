@@ -1,11 +1,5 @@
 import { ReactNode, useRef, useEffect } from "react";
-import {
-  Segment,
-  Progress,
-  TransitionablePortal,
-  Modal,
-  Button,
-} from "semantic-ui-react";
+import { Segment, Progress } from "semantic-ui-react";
 import { useModal } from "react-modal-hook";
 import { BookingCreationStep } from "../../types/bookings";
 import BookingCreationHelpButton from "../booking-creation-help-button";
@@ -15,6 +9,7 @@ import BookingCreationTimeSlotSelector from "../booking-creation-time-slot-selec
 import BookingCreationCustomForm from "../booking-creation-custom-form";
 import BookingCreationFinalizeView from "../booking-creation-finalize-view";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
+import ConfirmationModal from "../confirmation-modal";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   resetBookingCreationAction,
@@ -66,58 +61,9 @@ const BOOKING_CREATION_STEP_DETAILS = new Map<
   ],
 ]);
 
-const AlertExistingBookingModal = ({
-  open,
-  onExited,
-  hideModal,
-}: {
-  open: boolean;
-  onExited: () => void;
-  hideModal: () => void;
-}) => {
-  const dispatch = useAppDispatch();
-
-  return (
-    <TransitionablePortal
-      transition={{ animation: "fade down" }}
-      open={open}
-      onHide={onExited}
-    >
-      <Modal size="tiny" basic open onClose={hideModal}>
-        <Modal.Header align="center">Draft Booking Found</Modal.Header>
-
-        <Modal.Content>
-          You have a previously unsubmitted booking. Do you want to continue?
-        </Modal.Content>
-
-        <Modal.Actions>
-          <Button
-            onClick={() => {
-              hideModal();
-              dispatch(resetBookingCreationAction());
-            }}
-            basic
-            color="red"
-            inverted
-            icon="times"
-            content="No"
-          />
-          <Button
-            onClick={hideModal}
-            basic
-            color="green"
-            inverted
-            icon="checkmark"
-            content="Yes"
-          />
-        </Modal.Actions>
-      </Modal>
-    </TransitionablePortal>
-  );
-};
-
 function BookingCreationSection() {
   const currentCreationStep = useAppSelector(selectCurrentCreationStep);
+  const dispatch = useAppDispatch();
   const { headerContent, component } =
     BOOKING_CREATION_STEP_DETAILS.get(currentCreationStep) ?? {};
   const hasIncompletedBookingsRef = useRef(
@@ -125,10 +71,17 @@ function BookingCreationSection() {
   );
 
   const [showModal, hideModal] = useModal(({ in: open, onExited }) => (
-    <AlertExistingBookingModal
+    <ConfirmationModal
       open={open}
       onExited={onExited}
       hideModal={hideModal}
+      onYes={hideModal}
+      onNo={() => {
+        hideModal();
+        dispatch(resetBookingCreationAction());
+      }}
+      title="Draft Booking Found"
+      content="You have a previously unsubmitted booking. Do you want to continue?"
     />
   ));
 

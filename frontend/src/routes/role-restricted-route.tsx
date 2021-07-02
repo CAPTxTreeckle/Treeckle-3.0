@@ -6,9 +6,8 @@ import { HOME_PATH } from "./paths";
 
 type Props = RouteProps & { allowedRoles: Role[] };
 
-function RoleRestrictedRoute(props: Props) {
+function RoleRestrictedRoute({ allowedRoles, ...props }: Props) {
   const { role } = useDeepEqualAppSelector(selectCurrentUserDisplayInfo);
-  const { allowedRoles } = props;
 
   return role && allowedRoles.includes(role) ? (
     <Route {...props} />
