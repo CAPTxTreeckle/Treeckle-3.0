@@ -1,8 +1,9 @@
-import { EVENT_ID, USER_ID, VENUE_ID } from "../constants";
+import { EVENT_ID, USER_ID, VENUE_ID, BOOKING_ID } from "../constants";
 
 export const HOME_PATH = "/";
 export const DASHBOARD_PATH = "/dashboard";
 export const BOOKINGS_PATH = "/bookings";
+export const BOOKING_SINGLE_VIEW_PATH = `/bookings/:${BOOKING_ID}`;
 export const BOOKINGS_CREATION_PATH = "/bookings/create";
 export const EVENTS_PATH = "/events";
 export const EVENTS_SIGNED_UP_PATH = "/events/signedup";

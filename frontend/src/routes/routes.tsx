@@ -31,6 +31,7 @@ import {
   ADMIN_USERS_CREATION_PATH,
   ADMIN_USERS_PENDING_REGISTRATION_PATH,
   BOOKINGS_CREATION_PATH,
+  BOOKING_SINGLE_VIEW_PATH,
 } from "./paths";
 import AppLayoutContainer from "../components/app-layout-container";
 import DashboardPage from "../pages/dashboard-page";
@@ -50,6 +51,7 @@ import EventsEditPage from "../pages/events-edit-page";
 import EventsQrCodePage from "../pages/events-qr-code-page";
 import AdminUsersCreationPage from "../pages/admin-users-creation-page";
 import BookingsCreationPage from "../pages/bookings-creation-page";
+import BookingSingleViewPage from "../pages/booking-single-view-page";
 
 function Routes() {
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
@@ -75,6 +77,10 @@ function Routes() {
 
             <Route path={BOOKINGS_CREATION_PATH} exact strict>
               <BookingsCreationPage />
+            </Route>
+
+            <Route path={BOOKING_SINGLE_VIEW_PATH} exact strict>
+              <BookingSingleViewPage />
             </Route>
 
             <Route path={PROFILE_PATH} exact strict>

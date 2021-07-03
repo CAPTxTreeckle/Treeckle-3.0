@@ -1,5 +1,5 @@
 import useAxios from "axios-hooks";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { stringifyUrl } from "query-string";
 import { snakeCase } from "change-case";
 import { useAxiosWithTokenRefresh } from "./auth-api";
@@ -7,6 +7,7 @@ import {
   BookingData,
   BookingDeleteData,
   BookingGetQueryParams,
+  SingleBookingGetQueryParams,
   BookingPatchData,
   BookingPostData,
   BookingStatusAction,
@@ -68,6 +69,41 @@ export function useGetPendingBookingCount() {
   }, [apiCall]);
 
   return { pendingCount, loading, getPendingBookingCount };
+}
+
+export function useGetSingleBooking() {
+  const [booking, setBooking] = useState<BookingData>();
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<BookingData>(
+    {
+      method: "get",
+    },
+    { manual: true },
+  );
+
+  const getSingleBooking = useCallback(
+    async (bookingId: number | string) => {
+      const url = `/bookings/${bookingId}`;
+
+      try {
+        const { data: booking } = await apiCall({
+          url,
+        });
+        console.log(`GET ${url} success:`, booking);
+        // TODO: replace with some way to parse
+        const parsedBooking = booking;
+        setBooking(parsedBooking);
+        return parsedBooking;
+      } catch (error) {
+        console.log(`GET ${url} error:`, error, error?.response);
+
+        setBooking(undefined);
+        return undefined;
+      }
+    },
+    [apiCall],
+  );
+
+  return { booking, loading, getSingleBooking };
 }
 
 export function useGetBookings() {
