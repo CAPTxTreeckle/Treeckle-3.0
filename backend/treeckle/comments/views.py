@@ -7,7 +7,8 @@ from users.permission_middlewares import check_access
 from users.models import Role, User
 from .serializers import PostCommentSerializer
 from .models import Booking, Comment
-from .middlewares import check_user_is_booker_or_admin, check_user_is_commenter
+from .middlewares import check_user_is_commenter
+from bookings.middlewares import check_user_is_booker_or_admin
 from .logic import (
     create_booking_comment,
     get_booking_comments,

@@ -22,7 +22,7 @@ from .serializers import (
     DeleteBookingSerializer,
 )
 from .models import Booking, BookingStatus
-from .middlewares import check_booking_exists
+from .middlewares import check_user_is_booker_or_admin
 from .logic import (
     get_bookings,
     get_requested_bookings,
@@ -172,7 +172,7 @@ class BookingsView(APIView):
 
 class SingleBookingsView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
-    @check_booking_exists
+    @check_user_is_booker_or_admin
     def get(self, request, requester: User, booking: Booking):
         data = booking_to_json(booking)
 
