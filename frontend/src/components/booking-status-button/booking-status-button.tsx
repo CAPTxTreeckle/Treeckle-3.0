@@ -17,9 +17,15 @@ type Props = {
   bookingId: number;
   status: BookingStatus;
   adminView?: boolean;
+  fluid?: boolean;
 };
 
-function BookingStatusButton({ bookingId, status, adminView }: Props) {
+function BookingStatusButton({
+  bookingId,
+  status,
+  adminView = false,
+  fluid = false,
+}: Props) {
   const { updateBookingStatuses, loading } = useUpdateBookingStatuses();
   const [isPopupOpened, setPopupOpened] = useState(false);
   const dispatch = useAppDispatch();
@@ -105,7 +111,7 @@ function BookingStatusButton({ bookingId, status, adminView }: Props) {
       trigger={
         <Label
           as={Button}
-          fluid
+          fluid={fluid}
           color={BOOKING_STATUS_DETAILS.get(status)?.color}
           content={capitalCase(status)}
           disabled={

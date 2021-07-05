@@ -32,10 +32,6 @@ export type BookingGetQueryParams = {
   [STATUS]?: BookingStatus | null;
 };
 
-export type SingleBookingGetQueryParams = {
-  [BOOKING_ID]: number;
-};
-
 export type BookingPostData = {
   [TITLE]: string;
   [VENUE_ID]: number;

@@ -1,2 +1,11 @@
+@use "../../base";
+
 .bookingSingleViewPage {
+  @include base.table;
+}
+
+.detailsContainer {
+  :global(.row) {
+    padding: 0.5rem 0;
+  }
 }

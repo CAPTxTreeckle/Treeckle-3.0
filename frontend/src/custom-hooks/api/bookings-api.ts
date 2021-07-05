@@ -7,7 +7,6 @@ import {
   BookingData,
   BookingDeleteData,
   BookingGetQueryParams,
-  SingleBookingGetQueryParams,
   BookingPatchData,
   BookingPostData,
   BookingStatusAction,
