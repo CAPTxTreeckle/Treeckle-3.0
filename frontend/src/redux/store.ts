@@ -10,6 +10,10 @@ import bookingCreationReducer, {
 import userCreationReducer, {
   resetUserCreationAction,
 } from "./slices/user-creation-slice";
+import usersReducer, { resetUsersAction } from "./slices/users-slice";
+import userInvitesReducer, {
+  resetUserInvitesAction,
+} from "./slices/user-invites-slice";
 
 const store = configureStore({
   reducer: {
@@ -17,6 +21,8 @@ const store = configureStore({
     bookings: bookingsReducer,
     bookingCreation: bookingCreationReducer,
     userCreation: userCreationReducer,
+    users: usersReducer,
+    userInvites: userInvitesReducer,
   },
   preloadedState: {
     currentUser: loadFromLocalStorage("user"),
@@ -37,6 +43,8 @@ export const resetReduxState = (dispatch: AppDispatch) => {
   dispatch(resetBookingsAction());
   dispatch(resetBookingCreationAction());
   dispatch(resetUserCreationAction());
+  dispatch(resetUsersAction());
+  dispatch(resetUserInvitesAction());
   dispatch(setCurrentUserAction(null));
 };
 

@@ -19,7 +19,13 @@ function UserBaseTable<T extends UserViewProps>({
     <Segment className={styles.userBaseTable}>
       <AutoResizer>
         {({ width, height }) => (
-          <Table<T> width={width} height={height} fixed {...props}>
+          <Table<T>
+            width={width}
+            height={height}
+            fixed
+            estimatedRowHeight={50}
+            {...props}
+          >
             {children}
           </Table>
         )}

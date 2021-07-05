@@ -1,13 +1,10 @@
 import {
-  ACCESS,
-  CREATED_AT,
   EMAIL,
   EMAILS,
   ID,
   NAME,
   ORGANIZATION,
   PROFILE_IMAGE,
-  REFRESH,
   ROLE,
   STATUS,
 } from "../constants";
@@ -32,30 +29,16 @@ export type UserData = UserInviteData & {
   [PROFILE_IMAGE]: string;
 };
 
-export type CurrentUser = {
-  [ID]: number;
-  [CREATED_AT]: number;
-  [NAME]: string;
-  [EMAIL]: string;
-  [ROLE]: Role;
-  [ORGANIZATION]: string;
-  [ACCESS]: string;
-  [REFRESH]: string;
-  [PROFILE_IMAGE]: string;
-};
-
 export type UserInvitePostData = {
   [EMAIL]: string;
   [ROLE]: Role;
 };
 
 export type UserInvitePatchData = {
-  [ID]: number;
-  [ROLE]?: Role;
+  [ROLE]: Role;
 };
 
 export type UserPatchData = {
-  [ID]: number;
   [NAME]?: string;
   [EMAIL]?: string;
   [ROLE]?: Role;

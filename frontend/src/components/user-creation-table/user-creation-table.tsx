@@ -51,14 +51,13 @@ const rowClassNameGetter: TableProps<PendingCreationUser>["rowClassName"] = ({
   });
 };
 
-const SingleUserDeleteButton = ({ id }: { id: number }) => {
+const ActionButton = ({ id }: { id: number }) => {
   const dispatch = useAppDispatch();
   return (
     <DeleteButton
       compact
       onClick={() => dispatch(removePendingCreationUserAction(id))}
       showDeleteModal={false}
-      popUpContent="Delete entry"
     />
   );
 };
@@ -83,7 +82,7 @@ function UserCreationTable() {
           hideModal();
           dispatch(toggleUnsuccessfullyCreatedUsersAction(false));
         }}
-        title="Unsuccessfully created users"
+        title="Unsuccessfully Created Users"
         content={
           <>
             <h3>{`The following user${
@@ -242,7 +241,7 @@ function UserCreationTable() {
                 resizable
                 align="center"
                 cellRenderer={({ cellData }) => (
-                  <SingleUserDeleteButton id={cellData as number} />
+                  <ActionButton id={cellData as number} />
                 )}
               />
             </Table>
@@ -254,7 +253,7 @@ function UserCreationTable() {
         <HorizontalLayoutContainer justify="end">
           <DeleteButton
             icon={null}
-            popUpContent={null}
+            popupContent={null}
             content="Clear All"
             disabled={pendingCreationUsers.length === 0}
             getDeleteModalProps={getClearAllModalProps}

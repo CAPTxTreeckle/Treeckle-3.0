@@ -11,7 +11,7 @@ export type DeleteModalPropsGetter = (props: {
 }) => Partial<ConfirmationModalProps>;
 
 type Props = ButtonProps & {
-  popUpContent?: string | null;
+  popupContent?: string | null;
   showDeleteModal?: boolean;
   getDeleteModalProps?: DeleteModalPropsGetter;
 };
@@ -29,7 +29,7 @@ const defaultGetDeleteModalProps = ({
 });
 
 function DeleteButton({
-  popUpContent = "Delete",
+  popupContent = "Delete",
   showDeleteModal = true,
   getDeleteModalProps,
   onClick,
@@ -52,9 +52,9 @@ function DeleteButton({
 
   return (
     <Popup
-      content={popUpContent}
+      content={popupContent}
       position="top center"
-      disabled={!popUpContent}
+      disabled={!popupContent}
       trigger={
         <Button
           icon="trash alternate"

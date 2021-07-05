@@ -9,7 +9,7 @@ from users.permission_middlewares import check_access
 from users.models import Role, User
 from .serializers import VenueSerializer
 from .models import Venue, VenueCategory
-from .middlewares import check_user_venue_same_organization
+from .middlewares import check_requester_venue_same_organization
 from .logic import (
     venue_to_json,
     get_venue_categories,
@@ -84,14 +84,14 @@ class VenuesView(APIView):
 
 class SingleVenueView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
-    @check_user_venue_same_organization
+    @check_requester_venue_same_organization
     def get(self, request, requester: User, venue: Venue):
         data = venue_to_json(venue)
 
         return Response(data, status=status.HTTP_200_OK)
 
     @check_access(Role.ADMIN)
-    @check_user_venue_same_organization
+    @check_requester_venue_same_organization
     def put(self, request, requester: User, venue: Venue):
         serializer = VenueSerializer(data=request.data)
 
@@ -120,7 +120,7 @@ class SingleVenueView(APIView):
         return Response(data, status=status.HTTP_200_OK)
 
     @check_access(Role.ADMIN)
-    @check_user_venue_same_organization
+    @check_requester_venue_same_organization
     def delete(self, request, requester: User, venue: Venue):
         venue.delete()
         delete_unused_venue_categories(organization=venue.organization)

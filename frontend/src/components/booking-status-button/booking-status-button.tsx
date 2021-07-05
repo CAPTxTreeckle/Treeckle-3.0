@@ -21,14 +21,13 @@ type Props = {
 
 function BookingStatusButton({ bookingId, status, adminView }: Props) {
   const { updateBookingStatuses, loading } = useUpdateBookingStatuses();
-  const [isOpened, setOpened] = useState(false);
+  const [isPopupOpened, setPopupOpened] = useState(false);
   const dispatch = useAppDispatch();
 
   const actionButtons = useMemo(() => {
     const onUpdateStatus = async (action: BookingStatusActionType) => {
-      setOpened(false);
-
       try {
+        setPopupOpened(false);
         const updatedBookings = await updateBookingStatuses([
           { bookingId, action },
         ]);
@@ -128,9 +127,9 @@ function BookingStatusButton({ bookingId, status, adminView }: Props) {
       }
       hoverable
       on="click"
-      open={isOpened}
-      onOpen={() => setOpened(true)}
-      onClose={() => setOpened(false)}
+      open={isPopupOpened}
+      onOpen={() => setPopupOpened(true)}
+      onClose={() => setPopupOpened(false)}
       hideOnScroll
       disabled={loading}
     />

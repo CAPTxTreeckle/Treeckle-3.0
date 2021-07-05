@@ -6,7 +6,7 @@ import { useDeleteVenue } from "../../custom-hooks/api/venues-api";
 import { ADMIN_VENUES_EDIT_PATH } from "../../routes/paths";
 import { VenueViewProps } from "../../types/venues";
 import { resolveApiError } from "../../utils/error-utils";
-import PopUpActionsWrapper from "../pop-up-actions-wrapper";
+import PopupActionsWrapper from "../pop-up-actions-wrapper";
 import VenueBookingDisplayForm from "../venue-booking-display-form";
 
 type Props = VenueViewProps & {
@@ -46,14 +46,14 @@ function VenueFormGalleryItem({ id, venueFormProps, getVenues }: Props) {
   return (
     <div className="flex-display hover-bob pointer">
       <div className="flex-display full-width scale-in-center">
-        <PopUpActionsWrapper
+        <PopupActionsWrapper
           actionButtons={actionButtons}
           offsetRatio={{ heightRatio: -2 }}
         >
           <div className="flex-display full-width">
             <VenueBookingDisplayForm venueFormProps={venueFormProps} />
           </div>
-        </PopUpActionsWrapper>
+        </PopupActionsWrapper>
       </div>
     </div>
   );

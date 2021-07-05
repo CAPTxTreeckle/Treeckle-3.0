@@ -1,6 +1,7 @@
 import { capitalCase } from "change-case";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { Column } from "react-base-table";
+import { toast } from "react-toastify";
 import { Segment, Popup, Button } from "semantic-ui-react";
 import {
   CREATED_AT_STRING,
@@ -10,16 +11,29 @@ import {
   ROLE,
   ACTIONS,
 } from "../../constants";
-import { useGetUserInvites } from "../../custom-hooks/api/users-api";
+import {
+  useGetUserInvites,
+  useUpdateUserInvite,
+} from "../../custom-hooks/api/users-api";
 import useTableState, {
   TableStateOptions,
 } from "../../custom-hooks/use-table-state";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import {
+  selectUserInvites,
+  setUserInvitesAction,
+  updateUserInviteAction,
+} from "../../redux/slices/user-invites-slice";
+import { Role } from "../../types/users";
+import { resolveApiError } from "../../utils/error-utils";
 import { displayDateTime } from "../../utils/parser-utils";
+import DeleteButton from "../delete-button";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../search-bar";
 import UserBaseTable, { UserViewProps } from "../user-base-table";
 import UserEmailRenderer from "../user-email-renderer";
+import UserRoleChangeButton from "../user-role-change-button";
 
 type UserInviteViewProps = UserViewProps;
 
@@ -27,8 +41,46 @@ const userTableStateOptions: TableStateOptions = {
   searchKeys: [ID, EMAIL, CREATED_AT_STRING, ROLE],
 };
 
+const ActionButtons = ({ id, role }: { id: number; role: Role }) => {
+  const { updateUserInvite: _updateUserInvite } = useUpdateUserInvite();
+  const dispatch = useAppDispatch();
+
+  const updateUserInvite = useCallback(
+    async (data: Parameters<typeof _updateUserInvite>["1"]) => {
+      try {
+        const updatedUserInvite = await _updateUserInvite(id, data);
+
+        toast.success("The user's role has been updated successfully.");
+        dispatch(updateUserInviteAction(updatedUserInvite));
+      } catch (error) {
+        resolveApiError(error);
+      }
+    },
+    [dispatch, _updateUserInvite, id],
+  );
+
+  return (
+    <>
+      <UserRoleChangeButton
+        userId={id}
+        role={role}
+        updateRole={updateUserInvite}
+        compact
+      />
+      <DeleteButton compact />
+    </>
+  );
+};
+
 function UserInviteTable() {
-  const { userInvites, loading, getUserInvites } = useGetUserInvites();
+  const { loading, getUserInvites: _getUserInvites } = useGetUserInvites();
+  const userInvites = useAppSelector(selectUserInvites);
+  const dispatch = useAppDispatch();
+
+  const getUserInvites = useCallback(async () => {
+    const userInvites = await _getUserInvites();
+    dispatch(setUserInvitesAction(userInvites));
+  }, [_getUserInvites, dispatch]);
 
   useEffect(() => {
     getUserInvites();
@@ -132,6 +184,9 @@ function UserInviteTable() {
           align="center"
           resizable
           width={150}
+          cellRenderer={({ rowData: { id, role } }) => (
+            <ActionButtons id={id} role={role} />
+          )}
         />
       </UserBaseTable>
     </Segment.Group>
