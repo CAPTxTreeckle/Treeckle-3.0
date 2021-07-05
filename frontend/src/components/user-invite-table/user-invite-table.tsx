@@ -12,6 +12,7 @@ import {
   ACTIONS,
 } from "../../constants";
 import {
+  useDeleteUserInvite,
   useGetUserInvites,
   useUpdateUserInvite,
 } from "../../custom-hooks/api/users-api";
@@ -20,14 +21,14 @@ import useTableState, {
 } from "../../custom-hooks/use-table-state";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
+  deleteUserInviteAction,
   selectUserInvites,
   setUserInvitesAction,
   updateUserInviteAction,
 } from "../../redux/slices/user-invites-slice";
-import { Role } from "../../types/users";
 import { resolveApiError } from "../../utils/error-utils";
 import { displayDateTime } from "../../utils/parser-utils";
-import DeleteButton from "../delete-button";
+import DeleteButton, { DeleteModalPropsGetter } from "../delete-button";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../search-bar";
@@ -41,8 +42,9 @@ const userTableStateOptions: TableStateOptions = {
   searchKeys: [ID, EMAIL, CREATED_AT_STRING, ROLE],
 };
 
-const ActionButtons = ({ id, role }: { id: number; role: Role }) => {
+const ActionButtons = ({ id, role, email }: UserInviteViewProps) => {
   const { updateUserInvite: _updateUserInvite } = useUpdateUserInvite();
+  const { deleteUserInvite, loading } = useDeleteUserInvite();
   const dispatch = useAppDispatch();
 
   const updateUserInvite = useCallback(
@@ -59,6 +61,29 @@ const ActionButtons = ({ id, role }: { id: number; role: Role }) => {
     [dispatch, _updateUserInvite, id],
   );
 
+  const getDeleteUserInviteModalProps: DeleteModalPropsGetter = useCallback(
+    ({ hideModal }) => ({
+      title: "Delete Pending Registration User",
+      content: `Are you sure you want to delete pending registration user (${email})?`,
+      yesButtonProps: {
+        disabled: loading,
+        loading,
+        onClick: async () => {
+          try {
+            const { id: deletedUserInviteId } = await deleteUserInvite(id);
+
+            dispatch(deleteUserInviteAction(deletedUserInviteId));
+            toast.success("The user has been deleted successfully.");
+            hideModal();
+          } catch (error) {
+            resolveApiError(error);
+          }
+        },
+      },
+    }),
+    [email, loading, id, deleteUserInvite, dispatch],
+  );
+
   return (
     <>
       <UserRoleChangeButton
@@ -67,7 +92,10 @@ const ActionButtons = ({ id, role }: { id: number; role: Role }) => {
         updateRole={updateUserInvite}
         compact
       />
-      <DeleteButton compact />
+      <DeleteButton
+        getDeleteModalProps={getDeleteUserInviteModalProps}
+        compact
+      />
     </>
   );
 };
@@ -184,9 +212,7 @@ function UserInviteTable() {
           align="center"
           resizable
           width={150}
-          cellRenderer={({ rowData: { id, role } }) => (
-            <ActionButtons id={id} role={role} />
-          )}
+          cellRenderer={({ rowData }) => <ActionButtons {...rowData} />}
         />
       </UserBaseTable>
     </Segment.Group>

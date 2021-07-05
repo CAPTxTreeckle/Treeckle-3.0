@@ -53,11 +53,11 @@ const rowClassNameGetter: TableProps<PendingCreationUser>["rowClassName"] = ({
 
 const ActionButton = ({ id }: { id: number }) => {
   const dispatch = useAppDispatch();
+
   return (
     <DeleteButton
       compact
       onClick={() => dispatch(removePendingCreationUserAction(id))}
-      showDeleteModal={false}
     />
   );
 };

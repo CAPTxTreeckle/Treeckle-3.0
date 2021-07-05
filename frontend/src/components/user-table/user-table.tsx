@@ -12,11 +12,15 @@ import {
   NAME,
   ROLE,
 } from "../../constants";
-import { useGetUsers, useUpdateUser } from "../../custom-hooks/api/users-api";
+import {
+  useDeleteUser,
+  useGetUsers,
+  useUpdateUser,
+} from "../../custom-hooks/api/users-api";
 import useTableState, {
   TableStateOptions,
 } from "../../custom-hooks/use-table-state";
-import { Role, UserData } from "../../types/users";
+import { UserData } from "../../types/users";
 import { displayDateTime } from "../../utils/parser-utils";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import PlaceholderWrapper from "../placeholder-wrapper";
@@ -25,9 +29,10 @@ import UserBaseTable, { UserViewProps } from "../user-base-table";
 import UserEmailRenderer from "../user-email-renderer";
 import UserNameRenderer from "../user-name-renderer";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import DeleteButton from "../delete-button";
+import DeleteButton, { DeleteModalPropsGetter } from "../delete-button";
 import UserRoleChangeButton from "../user-role-change-button";
 import {
+  deleteUserAction,
   selectUsers,
   setUsersAction,
   updateUserAction,
@@ -41,8 +46,9 @@ const userTableStateOptions: TableStateOptions = {
   searchKeys: [ID, NAME, EMAIL, CREATED_AT_STRING, ROLE],
 };
 
-const ActionButtons = ({ id, role }: { id: number; role: Role }) => {
+const ActionButtons = ({ id, role, email }: ExistingUserViewProps) => {
   const { updateUser: _updateUser } = useUpdateUser();
+  const { deleteUser, loading } = useDeleteUser();
   const userId = useAppSelector(selectCurrentUserId);
   const dispatch = useAppDispatch();
 
@@ -60,6 +66,29 @@ const ActionButtons = ({ id, role }: { id: number; role: Role }) => {
     [dispatch, _updateUser, id],
   );
 
+  const getDeleteUserModalProps: DeleteModalPropsGetter = useCallback(
+    ({ hideModal }) => ({
+      title: "Delete Existing User",
+      content: `Are you sure you want to delete existing user (${email})?`,
+      yesButtonProps: {
+        disabled: loading,
+        loading,
+        onClick: async () => {
+          try {
+            const { id: deletedUserId } = await deleteUser(id);
+
+            dispatch(deleteUserAction(deletedUserId));
+            toast.success("The user has been deleted successfully.");
+            hideModal();
+          } catch (error) {
+            resolveApiError(error);
+          }
+        },
+      },
+    }),
+    [email, loading, id, deleteUser, dispatch],
+  );
+
   return (
     <>
       <UserRoleChangeButton
@@ -69,7 +98,11 @@ const ActionButtons = ({ id, role }: { id: number; role: Role }) => {
         compact
         disabled={userId === id}
       />
-      <DeleteButton compact />
+      <DeleteButton
+        getDeleteModalProps={getDeleteUserModalProps}
+        compact
+        disabled={userId === id}
+      />
     </>
   );
 };
@@ -194,9 +227,7 @@ function UserTable() {
           align="center"
           resizable
           width={150}
-          cellRenderer={({ rowData: { id, role } }) => (
-            <ActionButtons id={id} role={role} />
-          )}
+          cellRenderer={({ rowData }) => <ActionButtons {...rowData} />}
         />
       </UserBaseTable>
     </Segment.Group>

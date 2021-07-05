@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { Button, ButtonProps, Popup } from "semantic-ui-react";
 import { Role, UserInvitePatchData, UserPatchData } from "../../types/users";
 
@@ -60,7 +60,7 @@ function UserRoleChangeButton({ role, updateRole, ...buttonProps }: Props) {
       default:
         return [];
     }
-  }, [updateRole, role]);
+  }, [role, updateRole]);
 
   return (
     <Popup
@@ -89,4 +89,4 @@ function UserRoleChangeButton({ role, updateRole, ...buttonProps }: Props) {
   );
 }
 
-export default UserRoleChangeButton;
+export default memo(UserRoleChangeButton);

@@ -1,12 +1,18 @@
 import { ReactNode } from "react";
-import { TransitionablePortal, Modal, Header, Button } from "semantic-ui-react";
+import {
+  TransitionablePortal,
+  Modal,
+  Header,
+  Button,
+  ButtonProps,
+} from "semantic-ui-react";
 
 export type ConfirmationModalProps = {
   open: boolean;
   onExited: () => void;
   onClose: () => void;
-  onYes: () => void;
-  onNo: () => void;
+  yesButtonProps?: ButtonProps;
+  noButtonProps?: ButtonProps;
   icon?: ReactNode;
   title: ReactNode;
   content: ReactNode;
@@ -16,8 +22,8 @@ function ConfirmationModal({
   open,
   onExited,
   onClose,
-  onYes,
-  onNo,
+  yesButtonProps,
+  noButtonProps,
   icon,
   title,
   content,
@@ -38,20 +44,20 @@ function ConfirmationModal({
 
         <Modal.Actions>
           <Button
-            onClick={onNo}
             basic
             color="red"
             inverted
             icon="times"
             content="No"
+            {...noButtonProps}
           />
           <Button
-            onClick={onYes}
             basic
             color="green"
             inverted
             icon="checkmark"
             content="Yes"
+            {...yesButtonProps}
           />
         </Modal.Actions>
       </Modal>

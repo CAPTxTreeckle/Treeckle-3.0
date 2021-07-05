@@ -75,10 +75,12 @@ function BookingCreationSection() {
       open={open}
       onExited={onExited}
       onClose={hideModal}
-      onYes={hideModal}
-      onNo={() => {
-        hideModal();
-        dispatch(resetBookingCreationAction());
+      yesButtonProps={{ onClick: hideModal }}
+      noButtonProps={{
+        onClick: () => {
+          hideModal();
+          dispatch(resetBookingCreationAction());
+        },
       }}
       title="Draft Booking Found"
       content="You have a previously unsubmitted booking. Do you want to continue?"
