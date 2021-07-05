@@ -1,5 +1,5 @@
-import { ReactNode, useCallback } from "react";
-import { AutoResizer, Column } from "react-base-table";
+import { useCallback } from "react";
+import { AutoResizer, Column, ColumnShape } from "react-base-table";
 import { Segment } from "semantic-ui-react";
 import Table, { TableProps } from "../table";
 import { BookingData } from "../../types/bookings";
@@ -29,12 +29,11 @@ type Props = Partial<TableProps<BookingViewProps>> & {
   defaultActionColumnWidth?: number;
 };
 
-const rowRenderer = ({
+const RowRenderer: TableProps<BookingViewProps>["rowRenderer"] = ({
+  // eslint-disable-next-line react/prop-types
   rowData: { booking },
+  // eslint-disable-next-line react/prop-types
   cells,
-}: {
-  rowData: BookingViewProps;
-  cells: ReactNode[];
 }) =>
   booking ? (
     <Segment className={styles.extraContentContainer} basic>
@@ -47,30 +46,27 @@ const rowRenderer = ({
     cells
   );
 
-function BookingBaseTable(props: Props) {
-  const {
-    adminView = false,
-    defaultStatusColumnWidth = 100,
-    defaultActionColumnWidth = 100,
-    ...tableProps
-  } = props;
-  const statusButtonRenderer = useCallback(
-    ({
-      rowData: { status, id },
-    }: {
-      // eslint-disable-next-line react/no-unused-prop-types
-      rowData: Partial<BookingViewProps>;
-    }) =>
-      status &&
-      id !== undefined && (
-        <BookingStatusButton
-          bookingId={id}
-          status={status}
-          adminView={adminView}
-        />
-      ),
-    [adminView],
-  );
+function BookingBaseTable({
+  adminView = false,
+  defaultStatusColumnWidth = 100,
+  defaultActionColumnWidth = 100,
+  // eslint-disable-next-line react/prop-types
+  children,
+  ...props
+}: Props) {
+  const StatusButtonRenderer: ColumnShape<BookingViewProps>["cellRenderer"] =
+    useCallback(
+      ({ rowData: { status, id } }) =>
+        status &&
+        id !== undefined && (
+          <BookingStatusButton
+            bookingId={id}
+            status={status}
+            adminView={adminView}
+          />
+        ),
+      [adminView],
+    );
 
   return (
     <Segment className={styles.bookingBaseTable}>
@@ -79,20 +75,20 @@ function BookingBaseTable(props: Props) {
           <Table<BookingViewProps>
             width={width}
             height={height}
-            rowRenderer={rowRenderer}
+            rowRenderer={RowRenderer}
             estimatedRowHeight={50}
             fixed
             expandColumnKey={ACTION}
-            {...tableProps}
+            {...props}
           >
-            {tableProps.children}
+            {children}
             <Column<BookingViewProps>
               key={STATUS}
               title="Status"
               width={defaultStatusColumnWidth}
               sortable
               align="center"
-              cellRenderer={statusButtonRenderer}
+              cellRenderer={StatusButtonRenderer}
               resizable
             />
             <Column<BookingViewProps>

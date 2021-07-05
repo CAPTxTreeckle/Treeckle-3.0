@@ -1,6 +1,7 @@
+import clsx from "clsx";
 import get from "lodash/get";
-import { useFormContext } from "react-hook-form";
-import { Form, Label, StrictFormFieldProps } from "semantic-ui-react";
+import { useController, useFormContext } from "react-hook-form";
+import { Form, FormFieldProps, Ref } from "semantic-ui-react";
 
 type Props = {
   className?: string;
@@ -13,7 +14,7 @@ type Props = {
   readOnly?: boolean;
   rows?: number;
   hidden?: boolean;
-  width?: StrictFormFieldProps["width"];
+  width?: FormFieldProps["width"];
 };
 
 function TextAreaFormField({
@@ -31,35 +32,40 @@ function TextAreaFormField({
 }: Props) {
   const {
     formState: { errors },
-    register,
   } = useFormContext();
   const error = get(errors, inputName);
 
+  const {
+    field: { onChange, onBlur, value, ref },
+  } = useController({
+    name: inputName,
+    defaultValue,
+    rules: { required },
+  });
+
   return (
-    <Form.Field
-      className={className}
-      required={required}
-      error={!!error}
-      style={hidden ? { display: "none" } : undefined}
-      width={width}
-    >
-      {label && <label>{label}</label>}
-      {error && (
-        <Label
-          basic
-          color="red"
-          content={errorMsg ?? error?.message}
-          pointing="below"
-        />
-      )}
-      <textarea
+    <Ref innerRef={ref}>
+      <Form.TextArea
+        className={clsx(hidden && "hidden-display", className)}
+        required={required}
+        error={
+          error && {
+            basic: true,
+            color: "red",
+            content: errorMsg ?? error?.message,
+            pointing: "below",
+          }
+        }
+        label={label}
         placeholder={placeholder}
-        {...register(inputName, { required })}
-        defaultValue={defaultValue}
+        onChange={onChange}
+        onBlur={onBlur}
+        value={value}
         readOnly={readOnly}
         rows={rows}
+        width={width}
       />
-    </Form.Field>
+    </Ref>
   );
 }
 

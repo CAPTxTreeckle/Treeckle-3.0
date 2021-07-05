@@ -16,27 +16,27 @@ import {
 
 type Props = {
   children: ReactNode;
-  actionButtons: JSX.Element[];
+  actionButtons: ReactNode[];
   offsetRatio?: { widthRatio?: number; heightRatio?: number };
   vertical?: boolean;
-  popUpPosition?: PopupProps["position"];
+  popupPosition?: PopupProps["position"];
   inverted?: boolean;
 };
 
-type PopUpActionsWrapperContextType = {
+type PopupActionsWrapperContextType = {
   extraContent: ReactNode;
   setExtraContent: Dispatch<SetStateAction<ReactNode>>;
-  closePopUp: () => void;
+  closePopup: () => void;
 };
 
-export const PopUpActionsWrapperContext =
-  createContext<PopUpActionsWrapperContextType>({
+export const PopupActionsWrapperContext =
+  createContext<PopupActionsWrapperContextType>({
     extraContent: null,
     setExtraContent: () => new Error("setExtraContent not defined."),
-    closePopUp: () => new Error("setPopUpOpen not defined."),
+    closePopup: () => new Error("setPopupOpen not defined."),
   });
 
-function PopUpActionsWrapper({
+function PopupActionsWrapper({
   children,
   actionButtons,
   offsetRatio: { widthRatio = 0, heightRatio = 0 } = {
@@ -44,26 +44,26 @@ function PopUpActionsWrapper({
     widthRatio: 0,
   },
   vertical = false,
-  popUpPosition = "top center",
+  popupPosition = "top center",
   inverted = false,
 }: Props) {
-  const [isPopUpOpen, setPopUpOpen] = useState(false);
+  const [isPopupOpen, setPopupOpen] = useState(false);
   const [extraContent, setExtraContent] = useState<ReactNode>(null);
 
-  const closePopUp = useCallback(() => {
+  const closePopup = useCallback(() => {
     setExtraContent(null);
-    setPopUpOpen(false);
+    setPopupOpen(false);
   }, []);
 
   return (
-    <PopUpActionsWrapperContext.Provider
-      value={{ extraContent, setExtraContent, closePopUp }}
+    <PopupActionsWrapperContext.Provider
+      value={{ extraContent, setExtraContent, closePopup }}
     >
       <Popup
         inverted={inverted}
         trigger={children}
-        position={popUpPosition}
-        on={["click"]}
+        position={popupPosition}
+        on="click"
         hideOnScroll
         size="huge"
         offset={({ popper: { width, height } }) => [
@@ -71,9 +71,9 @@ function PopUpActionsWrapper({
           height * heightRatio,
         ]}
         popperDependencies={[extraContent]}
-        onClose={closePopUp}
-        onOpen={() => setPopUpOpen(true)}
-        open={isPopUpOpen}
+        onClose={closePopup}
+        onOpen={() => setPopupOpen(true)}
+        open={isPopupOpen}
       >
         {extraContent && (
           <>
@@ -90,8 +90,8 @@ function PopUpActionsWrapper({
           {actionButtons}
         </Button.Group>
       </Popup>
-    </PopUpActionsWrapperContext.Provider>
+    </PopupActionsWrapperContext.Provider>
   );
 }
 
-export default PopUpActionsWrapper;
+export default PopupActionsWrapper;

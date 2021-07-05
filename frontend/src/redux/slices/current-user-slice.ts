@@ -1,17 +1,19 @@
 import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-import { CurrentUser } from "../../types/users";
+import { AuthenticationData } from "../../types/auth";
 
-type CurrentUserState = CurrentUser | null;
+type CurrentUserState = AuthenticationData | null;
 
 const initialState: CurrentUserState = null as CurrentUserState;
 
-export const currentUserSlice = createSlice({
+const currentUserSlice = createSlice({
   name: "currentUser",
   initialState,
   reducers: {
-    setCurrentUserAction: (_, { payload }: PayloadAction<CurrentUser | null>) =>
-      payload,
+    setCurrentUserAction: (
+      _,
+      { payload }: PayloadAction<AuthenticationData | null>,
+    ) => payload,
   },
 });
 
@@ -23,6 +25,10 @@ export const selectCurrentUser = ({ currentUser }: RootState) => currentUser;
 export const selectIsLoggedIn = createSelector(
   selectCurrentUser,
   (currentUser) => Boolean(currentUser?.access),
+);
+export const selectCurrentUserId = createSelector(
+  selectCurrentUser,
+  (currentUser) => currentUser?.id,
 );
 export const selectCurrentUserDisplayInfo = createSelector(
   selectCurrentUser,

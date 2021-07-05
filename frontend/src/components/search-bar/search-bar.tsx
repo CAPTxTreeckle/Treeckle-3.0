@@ -14,6 +14,7 @@ function SearchBar({ className, onSearchValueChange, fluid = false }: Props) {
 
   return (
     <Input
+      fluid={fluid}
       className={clsx(fluid && styles.fluid, className)}
       icon={
         value ? (

@@ -1,21 +1,12 @@
 import { useModal } from "react-modal-hook";
-import { Button, Modal, Popup, TransitionablePortal } from "semantic-ui-react";
+import { Button, Popup } from "semantic-ui-react";
 import { useAppSelector } from "../../redux/hooks";
 import { selectSelectedVenue } from "../../redux/slices/booking-creation-slice";
-import { VenueViewProps } from "../../types/venues";
+import BaseModal from "../base-modal";
 import LinkifyTextViewer from "../linkify-text-viewer";
 
-const HelpModal = ({
-  open,
-  onExited,
-  hideModal,
-  selectedVenue,
-}: {
-  open: boolean;
-  onExited: () => void;
-  hideModal: () => void;
-  selectedVenue: VenueViewProps | null;
-}) => {
+function BookingCreationHelpButton() {
+  const selectedVenue = useAppSelector(selectSelectedVenue);
   const {
     name: venueName,
     icName,
@@ -23,17 +14,15 @@ const HelpModal = ({
     icContactNumber,
   } = selectedVenue?.venueFormProps ?? {};
 
-  return (
-    <TransitionablePortal
-      transition={{ animation: "fade down" }}
-      open={open}
-      onHide={onExited}
-    >
-      <Modal size="tiny" closeIcon open onClose={hideModal}>
-        <LinkifyTextViewer>
-          <Modal.Header>{`${venueName} Help Info`}</Modal.Header>
-
-          <Modal.Content>
+  const [showModal, hideModal] = useModal(
+    ({ in: open, onExited }) => (
+      <BaseModal
+        open={open}
+        onExited={onExited}
+        onClose={hideModal}
+        title={`${venueName} Help Info`}
+        content={
+          <LinkifyTextViewer>
             <h3>For any queries, do contact:</h3>
 
             {icName || icEmail || icContactNumber ? (
@@ -59,26 +48,11 @@ const HelpModal = ({
                 <strong>Email:</strong> treeckle@googlegroups.com
               </p>
             )}
-          </Modal.Content>
-        </LinkifyTextViewer>
-      </Modal>
-    </TransitionablePortal>
-  );
-};
-
-function BookingCreationHelpButton() {
-  const selectedVenue = useAppSelector(selectSelectedVenue);
-
-  const [showModal, hideModal] = useModal(
-    ({ in: open, onExited }) => (
-      <HelpModal
-        open={open}
-        onExited={onExited}
-        hideModal={hideModal}
-        selectedVenue={selectedVenue}
+          </LinkifyTextViewer>
+        }
       />
     ),
-    [selectedVenue],
+    [venueName, icName, icEmail, icContactNumber],
   );
 
   return (
@@ -95,6 +69,7 @@ function BookingCreationHelpButton() {
         }
         position="top center"
         content="Help"
+        hideOnScroll
       />
     )
   );

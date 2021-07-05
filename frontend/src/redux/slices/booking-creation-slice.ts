@@ -27,7 +27,7 @@ const initialState: BookingCreationState = {
   createdBookings: null,
 } as BookingCreationState;
 
-export const bookingCreationSlice = createSlice({
+const bookingCreationSlice = createSlice({
   name: "bookingCreation",
   initialState,
   reducers: {

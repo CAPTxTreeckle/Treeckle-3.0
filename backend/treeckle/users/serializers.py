@@ -18,34 +18,19 @@ class PostUserInviteSerializer(serializers.Serializer):
 
 
 class PatchSingleUserInviteSerializer(serializers.ModelSerializer):
-    ## needed to access id field
-    id = serializers.IntegerField()
     ## needed to make role required
     role = serializers.ChoiceField(Role.choices)
 
     class Meta:
         model = UserInvite
-        fields = ["id", "role"]
-
-
-class PatchUserInviteSerializer(serializers.Serializer):
-    users = PatchSingleUserInviteSerializer(many=True)
-
-
-class EmailListSerializer(serializers.Serializer):
-    emails = serializers.ListField(child=serializers.EmailField())
+        fields = ["role"]
 
 
 class PatchSingleUserSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField()
     name = serializers.CharField(max_length=255, required=False)
     email = serializers.CharField(required=False)
     role = serializers.ChoiceField(Role.choices, required=False)
 
     class Meta:
         model = User
-        fields = ["id", "name", "email", "role"]
-
-
-class PatchUserSerializer(serializers.Serializer):
-    users = PatchSingleUserSerializer(many=True)
+        fields = ["name", "email", "role"]

@@ -2,7 +2,14 @@ import { SyntheticEvent, useState } from "react";
 import clsx from "clsx";
 import { DraggableProvidedDragHandleProps } from "react-beautiful-dnd";
 import { useFormContext } from "react-hook-form";
-import { DropdownProps, Form, Icon, Popup, Segment } from "semantic-ui-react";
+import {
+  DropdownItemProps,
+  DropdownProps,
+  Form,
+  Icon,
+  Popup,
+  Segment,
+} from "semantic-ui-react";
 import {
   FIELD_LABEL,
   FIELD_TYPE,
@@ -20,7 +27,7 @@ import RadioFormField from "../radio-form-field";
 import DropdownSelectorFormField from "../dropdown-selector-form-field";
 import styles from "./venue-details-custom-form-field.module.scss";
 
-const typeOptions = [
+const typeOptions: DropdownItemProps[] = [
   {
     value: FieldType.Text,
     text: "Single-line Input",
@@ -39,7 +46,7 @@ const typeOptions = [
   {
     value: FieldType.Boolean,
     text: "Yes / No",
-    icon: "radio",
+    icon: "check square",
   },
 ];
 
@@ -114,6 +121,7 @@ function VenueDetailsCustomFormField({
             }
             on="hover"
             content="Drag and move up/down to rearrange the fields"
+            hideOnScroll
           />
         </Segment.Group>
 
@@ -164,6 +172,7 @@ function VenueDetailsCustomFormField({
               </Segment>
             }
             position="left center"
+            hideOnScroll
           />
         </Segment.Group>
       </Segment.Group>

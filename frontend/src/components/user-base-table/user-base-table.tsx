@@ -11,15 +11,22 @@ export type UserViewProps = UserInviteData & {
 
 type Props<T> = Partial<TableProps<T>>;
 
-function UserBaseTable<T extends UserViewProps>(props: Props<T>) {
-  const tableProps = props;
-
+function UserBaseTable<T extends UserViewProps>({
+  children,
+  ...props
+}: Props<T>) {
   return (
     <Segment className={styles.userBaseTable}>
       <AutoResizer>
         {({ width, height }) => (
-          <Table<T> width={width} height={height} fixed {...tableProps}>
-            {tableProps.children}
+          <Table<T>
+            width={width}
+            height={height}
+            fixed
+            estimatedRowHeight={50}
+            {...props}
+          >
+            {children}
           </Table>
         )}
       </AutoResizer>

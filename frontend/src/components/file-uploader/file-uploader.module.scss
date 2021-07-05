@@ -1,0 +1,27 @@
+.fileUploader {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  border: 0.25rem dashed #eeeeee;
+  border-radius: 0.28571429rem;
+  background-color: #fafafa;
+  color: rgba(0, 0, 0, 0.7);
+  outline: none;
+  transition: border 0.24s ease-in-out;
+  cursor: pointer;
+
+  &.focused {
+    border-color: #2196f3;
+  }
+
+  &.accepted {
+    border-color: #00e676;
+  }
+
+  &.rejected {
+    border-color: #ff1744;
+  }
+}

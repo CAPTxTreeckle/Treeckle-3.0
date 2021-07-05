@@ -22,7 +22,7 @@ from events.logic.event import (
 from events.logic.sign_up import get_event_sign_ups, event_sign_up_to_json
 from events.models import Event, EventCategory
 from events.middlewares import (
-    check_user_event_same_organization,
+    check_requester_event_same_organization,
     check_event_viewer,
     check_event_modifier,
 )
@@ -159,7 +159,7 @@ class PublishedEventsView(APIView):
 
 class SingleEventView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
-    @check_user_event_same_organization
+    @check_requester_event_same_organization
     @check_event_viewer
     def get(self, request, requester: User, event: Event):
         sign_ups = get_event_sign_ups(event=event).select_related("user__organization")
@@ -172,7 +172,7 @@ class SingleEventView(APIView):
         return Response(data, status=status.HTTP_200_OK)
 
     @check_access(Role.ORGANIZER, Role.ADMIN)
-    @check_user_event_same_organization
+    @check_requester_event_same_organization
     @check_event_modifier
     def put(self, request, requester: User, event: Event):
         serializer = EventSerializer(data=request.data)
@@ -210,7 +210,7 @@ class SingleEventView(APIView):
         return Response(data, status=status.HTTP_200_OK)
 
     @check_access(Role.ORGANIZER, Role.ADMIN)
-    @check_user_event_same_organization
+    @check_requester_event_same_organization
     @check_event_modifier
     def delete(self, request, requester: User, event: Event):
         event.delete()

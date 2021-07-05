@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import clsx from "clsx";
+import { capitalCase } from "change-case";
 import { toast } from "react-toastify";
 import { Button, Popup, Label } from "semantic-ui-react";
 import { useUpdateBookingStatuses } from "../../custom-hooks/api/bookings-api";
@@ -21,14 +21,13 @@ type Props = {
 
 function BookingStatusButton({ bookingId, status, adminView }: Props) {
   const { updateBookingStatuses, loading } = useUpdateBookingStatuses();
-  const [isOpened, setOpened] = useState(false);
+  const [isPopupOpened, setPopupOpened] = useState(false);
   const dispatch = useAppDispatch();
 
   const actionButtons = useMemo(() => {
     const onUpdateStatus = async (action: BookingStatusActionType) => {
-      setOpened(false);
-
       try {
+        setPopupOpened(false);
         const updatedBookings = await updateBookingStatuses([
           { bookingId, action },
         ]);
@@ -108,8 +107,7 @@ function BookingStatusButton({ bookingId, status, adminView }: Props) {
           as={Button}
           fluid
           color={BOOKING_STATUS_DETAILS.get(status)?.color}
-          className={clsx(styles.bookingStatusButton, styles.important)}
-          content={status.toLowerCase()}
+          content={capitalCase(status)}
           disabled={
             status === BookingStatus.Cancelled ||
             (!adminView && status === BookingStatus.Rejected)
@@ -129,9 +127,9 @@ function BookingStatusButton({ bookingId, status, adminView }: Props) {
       }
       hoverable
       on="click"
-      open={isOpened}
-      onOpen={() => setOpened(true)}
-      onClose={() => setOpened(false)}
+      open={isPopupOpened}
+      onOpen={() => setPopupOpened(true)}
+      onClose={() => setPopupOpened(false)}
       hideOnScroll
       disabled={loading}
     />

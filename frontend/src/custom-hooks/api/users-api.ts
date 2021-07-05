@@ -68,63 +68,61 @@ export function useCreateUserInvites() {
   };
 }
 
-export function useUpdateUserInvites() {
-  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<UserInviteData[]>(
+export function useUpdateUserInvite() {
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<UserInviteData>(
     {
-      url: "/users/invite",
       method: "patch",
     },
     { manual: true },
   );
 
-  const updateUserInvites = useMemo(
+  const updateUserInvite = useMemo(
     () =>
-      errorHandlerWrapper(async (users: UserInvitePatchData[]) => {
-        const { data: updatedUserInvites = [] } = await apiCall({
-          data: { users },
-        });
-        console.log("PATCH /users/invite success:", updatedUserInvites);
+      errorHandlerWrapper(
+        async (userInviteId: number | string, data: UserInvitePatchData) => {
+          const url = `/users/invite/${userInviteId}`;
 
-        if (updatedUserInvites.length === 0) {
-          throw new Error("No pending registration users were updated.");
-        }
+          const { data: updatedUserInvite } = await apiCall({
+            url,
+            data,
+          });
+          console.log(`PATCH ${url} success:`, updatedUserInvite);
 
-        return updatedUserInvites;
-      }, "PATCH /users/invite error:"),
+          return updatedUserInvite;
+        },
+        "PATCH /users/invite/:userInviteId error:",
+      ),
     [apiCall],
   );
 
-  return { loading, updateUserInvites };
+  return { loading, updateUserInvite };
 }
 
-export function useDeleteUserInvites() {
-  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<string[]>(
+export function useDeleteUserInvite() {
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<UserInviteData>(
     {
-      url: "/users/invite",
       method: "delete",
     },
     { manual: true },
   );
 
-  const deleteUserInvites = useMemo(
+  const deleteUserInvite = useMemo(
     () =>
-      errorHandlerWrapper(async (emails: string[]) => {
-        const { data: deletedEmails = [] } = await apiCall({
-          data: { emails },
+      errorHandlerWrapper(async (userInviteId: number | string) => {
+        const url = `/users/invite/${userInviteId}`;
+
+        const { data: deletedUserInvite } = await apiCall({
+          url,
         });
 
-        console.log("DELETE /users/invite success:", deletedEmails);
+        console.log(`DELETE ${url} success:`, deletedUserInvite);
 
-        if (deletedEmails.length === 0) {
-          throw new Error("No pending registration users were deleted.");
-        }
-
-        return deletedEmails;
-      }, "DELETE /users/invite error:"),
+        return deletedUserInvite;
+      }, "DELETE /users/invite/:userInviteId error:"),
     [apiCall],
   );
 
-  return { loading, deleteUserInvites };
+  return { loading, deleteUserInvite };
 }
 
 export function useGetUsers() {
@@ -152,65 +150,6 @@ export function useGetUsers() {
   }, [apiCall]);
 
   return { users, loading, getUsers };
-}
-
-export function useUpdateUsers() {
-  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<UserData[]>(
-    {
-      url: "/users/",
-      method: "patch",
-    },
-    { manual: true },
-  );
-
-  const updateUsers = useMemo(
-    () =>
-      errorHandlerWrapper(async (users: UserPatchData[]) => {
-        const { data: updatedUsers = [] } = await apiCall({
-          data: { users },
-        });
-        console.log("PATCH /users/ success:", updatedUsers);
-
-        if (updatedUsers.length === 0) {
-          throw new Error("No existing users were updated.");
-        }
-
-        return updatedUsers;
-      }, "PATCH /users/ error:"),
-    [apiCall],
-  );
-
-  return { loading, updateUsers };
-}
-
-export function useDeleteUsers() {
-  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<string[]>(
-    {
-      url: "/users/",
-      method: "delete",
-    },
-    { manual: true },
-  );
-
-  const deleteUsers = useMemo(
-    () =>
-      errorHandlerWrapper(async (emails: string[]) => {
-        const { data: deletedEmails = [] } = await apiCall({
-          data: { emails },
-        });
-
-        console.log("DELETE /users/ success:", deletedEmails);
-
-        if (deletedEmails.length === 0) {
-          throw new Error("No existing users were deleted.");
-        }
-
-        return deletedEmails;
-      }, "DELETE /users/ error:"),
-    [apiCall],
-  );
-
-  return { loading, deleteUsers };
 }
 
 export function useGetSingleUser() {
@@ -243,4 +182,62 @@ export function useGetSingleUser() {
   );
 
   return { user, loading, getSingleUser };
+}
+
+export function useUpdateUser() {
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<UserData>(
+    {
+      method: "patch",
+    },
+    { manual: true },
+  );
+
+  const updateUser = useMemo(
+    () =>
+      errorHandlerWrapper(
+        async (userId: number | string, data: UserPatchData) => {
+          const url = `/users/${userId}`;
+
+          const { data: updatedUser } = await apiCall({
+            url,
+            data,
+          });
+          console.log(`PATCH ${url} success:`, updatedUser);
+
+          return updatedUser;
+        },
+        "PATCH /users/:userId error:",
+      ),
+    [apiCall],
+  );
+
+  return { loading, updateUser };
+}
+
+export function useDeleteUser() {
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<UserData>(
+    {
+      url: "/users/",
+      method: "delete",
+    },
+    { manual: true },
+  );
+
+  const deleteUser = useMemo(
+    () =>
+      errorHandlerWrapper(async (userId: number | string) => {
+        const url = `/users/${userId}`;
+
+        const { data: deletedUser } = await apiCall({
+          url,
+        });
+
+        console.log(`DELETE ${url} success:`, deletedUser);
+
+        return deletedUser;
+      }, "DELETE /users/:userId error:"),
+    [apiCall],
+  );
+
+  return { loading, deleteUser };
 }

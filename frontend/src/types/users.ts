@@ -1,15 +1,12 @@
 import {
-  ACCESS,
-  CREATED_AT,
   EMAIL,
+  EMAILS,
   ID,
   NAME,
   ORGANIZATION,
   PROFILE_IMAGE,
-  REFRESH,
   ROLE,
   STATUS,
-  UUID,
 } from "../constants";
 import { BaseData } from "./base";
 
@@ -32,30 +29,16 @@ export type UserData = UserInviteData & {
   [PROFILE_IMAGE]: string;
 };
 
-export type CurrentUser = {
-  [ID]: number;
-  [CREATED_AT]: number;
-  [NAME]: string;
-  [EMAIL]: string;
-  [ROLE]: Role;
-  [ORGANIZATION]: string;
-  [ACCESS]: string;
-  [REFRESH]: string;
-  [PROFILE_IMAGE]: string;
-};
-
 export type UserInvitePostData = {
   [EMAIL]: string;
   [ROLE]: Role;
 };
 
 export type UserInvitePatchData = {
-  [ID]: number;
-  [ROLE]?: Role;
+  [ROLE]: Role;
 };
 
 export type UserPatchData = {
-  [ID]: number;
   [NAME]?: string;
   [EMAIL]?: string;
   [ROLE]?: Role;
@@ -101,8 +84,15 @@ export const USER_CREATION_STATUS_DETAILS = new Map<
 ]);
 
 export type PendingCreationUser = {
-  [UUID]: string;
+  [ID]: number;
   [EMAIL]: string;
   [ROLE]: Role;
   [STATUS]: UserCreationStatus;
 };
+
+export type UserCreationFormProps = {
+  [ROLE]: Role.Resident;
+  [EMAILS]: string;
+};
+
+export type UserCreationCsvRowData = [string, string];

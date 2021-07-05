@@ -1,46 +1,23 @@
-import {
-  createSlice,
-  createEntityAdapter,
-  PayloadAction,
-  createSelector,
-} from "@reduxjs/toolkit";
-import { normalize, schema } from "normalizr";
+import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
+import { normalize } from "normalizr";
 import { BookingData } from "../../types/bookings";
 import { VENUE, BOOKER } from "../../constants";
-import { UserData } from "../../types/users";
+import {
+  UserEntityType,
+  VenueEntityType,
+  BookingEntityType,
+  bookingEntity,
+  usersAdapter,
+  venuesAdapter,
+  bookingsAdapter,
+} from "../entities";
 import type { RootState } from "../store";
-
-export type UserEntityType = UserData;
-
-export type VenueEntityType = BookingData["venue"];
-
-export type BookingEntityType = Omit<
-  BookingData,
-  typeof VENUE | typeof BOOKER
-> & {
-  [VENUE]: number;
-  [BOOKER]: number;
-};
-
-// Define normalizr entity schemas
-export const userEntity = new schema.Entity<UserEntityType>("users");
-export const venueEntity = new schema.Entity<VenueEntityType>("venues");
-export const bookingEntity = new schema.Entity<BookingEntityType>("bookings", {
-  booker: userEntity,
-  venue: venueEntity,
-});
 
 type Entities = {
   users: { [key: string]: UserEntityType };
   venues: { [key: string]: VenueEntityType };
   bookings: { [key: string]: BookingEntityType };
 };
-
-const usersAdapter = createEntityAdapter<UserEntityType>();
-const venuesAdapter = createEntityAdapter<VenueEntityType>();
-const bookingsAdapter = createEntityAdapter<BookingEntityType>({
-  sortComparer: (a, b) => b.createdAt - a.createdAt,
-});
 
 const normalizeBookings = (data: BookingData[]) => {
   const normalizedBookings = normalize<BookingEntityType, Entities>(data, [
@@ -62,7 +39,7 @@ const initialState = {
   bookings: bookingsAdapter.getInitialState(),
 };
 
-export const bookingsSlice = createSlice({
+const bookingsSlice = createSlice({
   name: "bookings",
   initialState,
   reducers: {

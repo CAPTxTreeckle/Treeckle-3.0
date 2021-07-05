@@ -78,8 +78,7 @@ export function useAxiosWithTokenRefresh<T>(
             options,
           );
 
-          const { updatedAt, ...currentUser } = data;
-          dispatch(setCurrentUserAction(currentUser));
+          dispatch(setCurrentUserAction(data));
 
           return response;
         } catch (error) {
@@ -126,8 +125,7 @@ export function useGoogleAuth() {
         const { data } = await login({ data: { tokenId } });
         console.log("POST /gateway/gmail success:", data);
 
-        const { updatedAt, ...currentUser } = data;
-        dispatch(setCurrentUserAction(currentUser));
+        dispatch(setCurrentUserAction(data));
 
         toast.success("Signed in successfully.");
       } catch (error) {

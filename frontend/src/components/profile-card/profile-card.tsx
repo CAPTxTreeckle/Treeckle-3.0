@@ -1,3 +1,4 @@
+import { capitalCase } from "change-case";
 import { Grid, Segment, Image, Divider } from "semantic-ui-react";
 import { displayDateTime } from "../../utils/parser-utils";
 import { UserData } from "../../types/users";
@@ -33,18 +34,17 @@ function ProfileCard({
           <Divider hidden />
 
           <p>
-            <strong>Email:</strong> <span>{email}</span>
+            <strong>Email:</strong> {email}
           </p>
           <p>
-            <strong>Organization:</strong> <span>{organization}</span>
+            <strong>Organization:</strong> {organization}
           </p>
           <p>
-            <strong>Role:</strong>{" "}
-            <span className={styles.role}>{role?.toLowerCase() ?? role}</span>
+            <strong>Role:</strong> {capitalCase(role)}
           </p>
           <p>
             <strong>Joined in:</strong>{" "}
-            <span>{displayDateTime(createdAt, "MMMM yyyy")}</span>
+            {displayDateTime(createdAt, "MMMM yyyy")}
           </p>
         </Grid.Column>
       </Grid>

@@ -17,16 +17,12 @@ import { useGetBookings } from "../../custom-hooks/api/bookings-api";
 import useTableState, {
   TableStateOptions,
 } from "../../custom-hooks/use-table-state";
-import {
-  useAppSelector,
-  useAppDispatch,
-  useDeepEqualAppSelector,
-} from "../../redux/hooks";
+import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 import {
   selectBookingsByUserId,
   setBookingsAction,
 } from "../../redux/slices/bookings-slice";
-import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
+import { selectCurrentUserId } from "../../redux/slices/current-user-slice";
 import { displayDateTime } from "../../utils/parser-utils";
 import BookingBaseTable, { BookingViewProps } from "../booking-base-table";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
@@ -48,7 +44,7 @@ const bookingAdminTableStateOptions: TableStateOptions = {
 
 function BookingUserTable() {
   const { getBookings: _getBookings, loading } = useGetBookings();
-  const { id: userId } = useDeepEqualAppSelector(selectCurrentUserDisplayInfo);
+  const userId = useAppSelector(selectCurrentUserId);
   const allBookings = useAppSelector((state) =>
     selectBookingsByUserId(state, userId ?? 0),
   );
@@ -94,9 +90,12 @@ function BookingUserTable() {
                 icon="redo alternate"
                 color="blue"
                 onClick={getBookings}
+                loading={loading}
+                disabled={loading}
               />
             }
             position="top center"
+            hideOnScroll
           />
         </HorizontalLayoutContainer>
       </Segment>

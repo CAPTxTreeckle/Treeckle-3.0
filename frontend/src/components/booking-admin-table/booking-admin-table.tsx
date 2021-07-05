@@ -134,9 +134,12 @@ function BookingAdminTable() {
                 icon="redo alternate"
                 color="blue"
                 onClick={getBookings}
+                loading={loading}
+                disabled={loading}
               />
             }
             position="top center"
+            hideOnScroll
           />
         </HorizontalLayoutContainer>
       </Segment>

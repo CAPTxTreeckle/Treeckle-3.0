@@ -5,7 +5,7 @@ from .models import Venue
 from .logic import get_venues
 
 
-def check_user_venue_same_organization(view_method):
+def check_requester_venue_same_organization(view_method):
     def _arguments_wrapper(
         instance, request, requester: User, venue_id: int, *args, **kwargs
     ):

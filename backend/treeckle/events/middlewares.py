@@ -5,7 +5,7 @@ from events.models import Event
 from events.logic.event import get_events
 
 
-def check_user_event_same_organization(view_method):
+def check_requester_event_same_organization(view_method):
     def _arguments_wrapper(
         instance, request, requester: User, event_id: int, *args, **kwargs
     ):
