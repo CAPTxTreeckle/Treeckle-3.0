@@ -1,7 +1,13 @@
-import { SyntheticEvent } from "react";
+import { ReactNode, SyntheticEvent } from "react";
 import { useFormContext, useController } from "react-hook-form";
 import clsx from "clsx";
-import { DropdownItemProps, DropdownProps, Form, Ref } from "semantic-ui-react";
+import {
+  DropdownItemProps,
+  DropdownProps,
+  Form,
+  FormSelectProps,
+  Ref,
+} from "semantic-ui-react";
 import get from "lodash/get";
 import useOptionsState from "../../custom-hooks/use-options-state";
 import { sanitizeArray } from "../../utils/parser-utils";
@@ -10,7 +16,7 @@ import { DEFAULT_ARRAY } from "../../constants";
 type Props = {
   className?: string;
   required?: boolean;
-  label?: string;
+  label?: ReactNode;
   inputName: string;
   errorMsg?: string;
   placeholder?: string;
@@ -26,6 +32,8 @@ type Props = {
     data: DropdownProps,
   ) => void;
   hidden?: boolean;
+  width?: FormSelectProps["width"];
+  fluid?: boolean;
 };
 
 function DropdownSelectorFormField({
@@ -44,6 +52,8 @@ function DropdownSelectorFormField({
   clearable = false,
   onChangeEffect,
   hidden = false,
+  width,
+  fluid = false,
 }: Props) {
   const { options, onSelect } = useOptionsState(defaultOptions);
   const {
@@ -64,6 +74,7 @@ function DropdownSelectorFormField({
     <Ref innerRef={ref}>
       <Form.Select
         className={clsx(hidden && "hidden-display", className)}
+        fluid={fluid}
         loading={loading}
         placeholder={placeholder}
         label={label}
@@ -74,6 +85,7 @@ function DropdownSelectorFormField({
         onBlur={onBlur}
         multiple={multiple}
         clearable={clearable}
+        width={width}
         onChange={(event, data) => {
           const { value } = data;
           const trimmedValue = sanitizeArray(

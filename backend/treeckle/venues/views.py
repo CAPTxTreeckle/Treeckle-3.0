@@ -7,13 +7,14 @@ from rest_framework.views import APIView
 from treeckle.common.exceptions import Conflict, BadRequest
 from users.permission_middlewares import check_access
 from users.models import Role, User
-from .serializers import VenueSerializer
+from .serializers import GetVenueSerializer, VenueSerializer
 from .models import Venue, VenueCategory
 from .middlewares import check_requester_venue_same_organization
 from .logic import (
     venue_to_json,
     get_venue_categories,
     get_venues,
+    get_requested_venues,
     create_venue,
     update_venue,
     delete_unused_venue_categories,
@@ -39,18 +40,22 @@ class VenueCategoriesView(APIView):
 class VenuesView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
     def get(self, request, requester: User):
-        same_organization_venues = get_venues(
-            organization=requester.organization
-        ).select_related("category")
+        serializer = GetVenueSerializer(data=request.query_params.dict())
 
-        category_filter = request.query_params.dict().get("category")
+        serializer.is_valid(raise_exception=True)
+        validated_data = serializer.validated_data
 
-        if category_filter:
-            same_organization_venues = same_organization_venues.filter(
-                category__name=category_filter
-            )
+        venues = get_requested_venues(
+            organization=requester.organization,
+            category=validated_data.get("category", None),
+        )
 
-        data = [venue_to_json(venue) for venue in same_organization_venues]
+        full_details = validated_data.get("full_details", True)
+
+        if full_details:
+            venues = venues.select_related("category")
+
+        data = [venue_to_json(venue, full_details=full_details) for venue in venues]
 
         return Response(data, status=status.HTTP_200_OK)
 

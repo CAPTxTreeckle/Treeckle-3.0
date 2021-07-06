@@ -9,7 +9,6 @@ from django.utils.html import strip_tags
 
 from treeckle.common.constants import DATE_TIME_FORMAT
 from organizations.models import Organization
-from organizations.logic import get_organization_listeners
 from users.models import UserInvite
 from bookings.models import Booking, BookingStatus
 
@@ -87,8 +86,8 @@ def send_created_booking_emails(
 
     subject = f"[{venue_name}] Your booking request has been created"
     cc_emails = [
-        listener.email
-        for listener in get_organization_listeners(organization=organization)
+        # listener.email
+        # for listener in get_organization_listeners(organization=organization)
     ]
 
     email = EmailMultiAlternatives(
@@ -109,8 +108,8 @@ def send_updated_booking_emails(
         return
 
     cc_emails = [
-        listener.email
-        for listener in get_organization_listeners(organization=organization)
+        # listener.email
+        # for listener in get_organization_listeners(organization=organization)
     ]
 
     emails = []

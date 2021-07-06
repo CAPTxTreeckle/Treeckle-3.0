@@ -33,6 +33,7 @@ import {
 } from "../../redux/slices/user-creation-slice";
 import { useCreateUserInvites } from "../../custom-hooks/api/users-api";
 import { resolveApiError } from "../../utils/error-utils";
+import UserCreationTableDescriptionSection from "../user-creation-table-description-section";
 import styles from "./user-creation-table.module.scss";
 
 const userCreationTableStateOptions: TableStateOptions = {
@@ -156,6 +157,8 @@ function UserCreationTable() {
 
   return (
     <Segment.Group raised>
+      <UserCreationTableDescriptionSection />
+
       <Segment secondary>
         <HorizontalLayoutContainer>
           <SearchBar fluid onSearchValueChange={onSearchValueChange} />
@@ -172,6 +175,7 @@ function UserCreationTable() {
                 disabled={unsuccessfullyCreatedUsers.length === 0}
               />
             }
+            on="hover"
           />
         </HorizontalLayoutContainer>
       </Segment>

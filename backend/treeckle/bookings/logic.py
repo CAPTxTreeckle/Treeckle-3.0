@@ -23,6 +23,7 @@ from organizations.models import Organization
 from users.logic import user_to_json
 from users.models import User, Role
 from venues.models import Venue
+from venues.logic import venue_to_json
 from .models import Booking, BookingStatusAction, BookingStatus
 
 DateTimeInterval = namedtuple(
@@ -66,7 +67,7 @@ def booking_to_json(booking: Booking):
         UPDATED_AT: parse_datetime_to_ms_timestamp(booking.updated_at),
         TITLE: booking.title,
         BOOKER: user_to_json(booking.booker),
-        VENUE: {ID: booking.venue.id, NAME: booking.venue.name},
+        VENUE: venue_to_json(booking.venue, full_details=False),
         START_DATE_TIME: parse_datetime_to_ms_timestamp(booking.start_date_time),
         END_DATE_TIME: parse_datetime_to_ms_timestamp(booking.end_date_time),
         STATUS: booking.status,

@@ -1,11 +1,11 @@
+import { FormEvent, ReactNode } from "react";
 import clsx from "clsx";
-import { FormEvent } from "react";
 import { useController } from "react-hook-form";
 import { CheckboxProps, Form, Ref } from "semantic-ui-react";
 
 type Props = {
   className?: string;
-  label?: string;
+  label?: ReactNode;
   inputName: string;
   type: "slider" | "toggle" | "checkbox";
   defaultValue?: boolean;

@@ -8,9 +8,7 @@ class GetBookingSerializer(serializers.Serializer):
     venue_name = serializers.CharField(max_length=255, required=False)
     start_date_time = serializers.IntegerField(min_value=0, required=False)
     end_date_time = serializers.IntegerField(min_value=0, required=False)
-    status = status = serializers.ChoiceField(
-        choices=BookingStatus.choices, required=False
-    )
+    status = serializers.ChoiceField(choices=BookingStatus.choices, required=False)
 
     def validate(self, data):
         """

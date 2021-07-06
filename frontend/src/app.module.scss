@@ -1,3 +1,5 @@
+@use "./base";
+
 .toastBody {
   text-align: center;
   white-space: pre-wrap;
@@ -32,9 +34,13 @@
       }
     }
 
+    .ui.vertical.menu .item > i.icon {
+      float: none;
+      margin: 0 0.5rem 0 0;
+    }
+
     .text-viewer {
-      white-space: pre-wrap;
-      word-break: break-word;
+      @include base.text-viewer;
     }
 
     .hidden-display {

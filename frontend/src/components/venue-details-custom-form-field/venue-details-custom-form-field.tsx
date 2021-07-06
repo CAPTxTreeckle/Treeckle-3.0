@@ -26,6 +26,7 @@ import FormField from "../form-field";
 import RadioFormField from "../radio-form-field";
 import DropdownSelectorFormField from "../dropdown-selector-form-field";
 import styles from "./venue-details-custom-form-field.module.scss";
+import TextAreaFormField from "../text-area-form-field";
 
 const typeOptions: DropdownItemProps[] = [
   {
@@ -127,12 +128,14 @@ function VenueDetailsCustomFormField({
 
         <Segment>
           <Form.Group widths="equal">
-            <FormField
+            <TextAreaFormField
               required
               label="Field Label"
               inputName={fieldLabel}
               defaultValue={defaultValues.fieldLabel}
+              rows={isBooleanField ? 8 : 1}
             />
+
             <FormField
               label="Placeholder Text"
               inputName={placeholderText}

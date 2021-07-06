@@ -6,9 +6,10 @@ type Props = {
   label: ReactNode;
   redirectPath: string;
   onTabClick?: () => void;
+  icon?: ReactNode;
 };
 
-function TabItem({ label, redirectPath, onTabClick }: Props) {
+function TabItem({ label, redirectPath, onTabClick, icon }: Props) {
   const { pathname } = useLocation();
 
   return (
@@ -18,6 +19,7 @@ function TabItem({ label, redirectPath, onTabClick }: Props) {
       active={pathname.startsWith(redirectPath)}
       content={label}
       onClick={onTabClick}
+      icon={icon}
     />
   );
 }

@@ -37,21 +37,25 @@ function MobileAdminTab({ onTabClick }: Props) {
           label="Bookings"
           redirectPath={ADMIN_BOOKINGS_PATH}
           onTabClick={onTabClick}
+          icon="book"
         />
         <TabItem
           label="Venues"
           redirectPath={ADMIN_VENUES_PATH}
           onTabClick={onTabClick}
+          icon="building"
         />
         <TabItem
           label="Users"
           redirectPath={ADMIN_USERS_PATH}
           onTabClick={onTabClick}
+          icon="users"
         />
         <TabItem
           label="Settings"
           redirectPath={ADMIN_SETTINGS_PATH}
           onTabClick={onTabClick}
+          icon="settings"
         />
       </Accordion.Content>
     </Accordion>

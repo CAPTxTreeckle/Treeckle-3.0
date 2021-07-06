@@ -1,7 +1,14 @@
-.venueFormGallery.important {
-  flex-wrap: nowrap;
+@use "../../base";
+
+.venueFormGallery {
+  display: flex;
   overflow-x: auto;
-  margin-bottom: 0;
+  @include base.vertical-space-margin(0);
+
+  @media only screen and (max-width: 991px) {
+    flex-direction: column;
+    overflow-x: unset;
+  }
 
   &::-webkit-scrollbar-thumb {
     background-color: #acacac;

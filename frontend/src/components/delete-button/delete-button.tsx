@@ -68,6 +68,7 @@ function DeleteButton({
         />
       }
       hideOnScroll
+      on="hover"
     />
   );
 }

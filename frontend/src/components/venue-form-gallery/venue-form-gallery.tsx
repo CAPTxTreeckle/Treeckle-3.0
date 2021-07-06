@@ -1,6 +1,4 @@
 import { useEffect, useMemo } from "react";
-import clsx from "clsx";
-import { Grid } from "semantic-ui-react";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import { useGetVenues } from "../../custom-hooks/api/venues-api";
 import VenueFormGalleryItem from "../venue-form-gallery-item";
@@ -27,16 +25,15 @@ function VenueFormGallery() {
       placeholder
       inverted
     >
-      <Grid
-        className={clsx(styles.venueFormGallery, styles.important)}
-        stretched
-      >
+      <div className={styles.venueFormGallery}>
         {sortedVenues.map((venue) => (
-          <Grid.Column key={venue.id} width="16">
-            <VenueFormGalleryItem {...venue} getVenues={getVenues} />
-          </Grid.Column>
+          <VenueFormGalleryItem
+            key={venue.id}
+            {...venue}
+            getVenues={getVenues}
+          />
         ))}
-      </Grid>
+      </div>
     </PlaceholderWrapper>
   );
 }

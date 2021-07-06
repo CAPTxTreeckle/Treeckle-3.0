@@ -24,24 +24,28 @@ function DesktopAdminTab() {
           to={ADMIN_BOOKINGS_PATH}
           active={pathname.startsWith(ADMIN_BOOKINGS_PATH)}
           text="Bookings"
+          icon="book"
         />
         <Dropdown.Item
           as={Link}
           to={ADMIN_VENUES_PATH}
           active={pathname.startsWith(ADMIN_VENUES_PATH)}
           text="Venues"
+          icon="building"
         />
         <Dropdown.Item
           as={Link}
           to={ADMIN_USERS_PATH}
           active={pathname.startsWith(ADMIN_USERS_PATH)}
           text="Users"
+          icon="users"
         />
         <Dropdown.Item
           as={Link}
           to={ADMIN_SETTINGS_PATH}
           active={pathname.startsWith(ADMIN_SETTINGS_PATH)}
           text="Settings"
+          icon="settings"
         />
       </Dropdown.Menu>
     </Dropdown>

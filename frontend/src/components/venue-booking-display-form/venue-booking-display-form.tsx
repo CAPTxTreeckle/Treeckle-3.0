@@ -1,6 +1,5 @@
 import { Card, Form, Header } from "semantic-ui-react";
 import { useForm, FormProvider } from "react-hook-form";
-import clsx from "clsx";
 import { BookingFormFieldProps, VenueFormProps } from "../../types/venues";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import { BOOKING_FORM_FIELDS } from "../../constants";
@@ -18,8 +17,8 @@ function VenueBookingDisplayForm({ venueFormProps }: Props) {
   return (
     <FormProvider {...methods}>
       <Form className={styles.venueBookingForm}>
-        <Card raised>
-          <Card.Content className={clsx(styles.formHeader, styles.important)}>
+        <Card className={styles.card} centered raised>
+          <Card.Content className={styles.header}>
             <Header textAlign="center">
               {name}
               <Header.Subheader>{category}</Header.Subheader>

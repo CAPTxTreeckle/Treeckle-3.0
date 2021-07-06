@@ -17,12 +17,12 @@ import {
   IDS,
   USER_ID,
   VENUE,
-  ID,
   NAME,
+  EMAIL,
 } from "../constants";
 import { BaseData } from "./base";
 import { UserData } from "./users";
-import { BookingFormFieldProps } from "./venues";
+import { BookingFormFieldProps, VenueData } from "./venues";
 
 export type BookingGetQueryParams = {
   [USER_ID]?: number | string | null;
@@ -47,7 +47,7 @@ export type DateTimeRange = {
 export type BookingData = BaseData & {
   [TITLE]: string;
   [BOOKER]: UserData;
-  [VENUE]: { [ID]: number; [NAME]: string };
+  [VENUE]: VenueData;
   [START_DATE_TIME]: number;
   [END_DATE_TIME]: number;
   [STATUS]: BookingStatus;
@@ -118,3 +118,15 @@ export enum BookingCreationStep {
   Finalize,
   __length,
 }
+
+export type BookingNotificationSubscriptionData = {
+  [NAME]: string;
+  [EMAIL]: string;
+  [VENUE]: VenueData;
+};
+
+export type BookingNotificationSubscriptionPostData = {
+  [NAME]: string;
+  [EMAIL]: string;
+  [VENUE_ID]: number | string;
+};

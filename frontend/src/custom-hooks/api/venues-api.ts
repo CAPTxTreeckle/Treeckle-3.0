@@ -45,13 +45,13 @@ function parseVenueData(venueData: VenueData): VenueViewProps {
     createdAt,
     updatedAt,
     name,
-    category,
+    category = "",
     capacity,
-    icName,
-    icEmail,
-    icContactNumber,
+    icName = "",
+    icEmail = "",
+    icContactNumber = "",
     formFieldData,
-    organization,
+    organization = "",
   } = venueData;
 
   const venueViewProps: VenueViewProps = {

@@ -40,3 +40,20 @@ class Venue(TimestampedModel):
 
     def __str__(self):
         return f"{self.name} | {self.category}"
+
+
+class VenueBookingNotificationSubscription(TimestampedModel):
+    name = models.CharField(max_length=255)
+    email = models.EmailField()
+    venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["email", "venue_id"],
+                name="unique_email_venue_subscription",
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.name} | {self.email} | {self.venue}"

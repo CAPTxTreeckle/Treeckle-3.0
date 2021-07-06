@@ -21,20 +21,28 @@ from organizations.models import Organization
 from .models import VenueCategory, Venue
 
 
-def venue_to_json(venue: Venue) -> dict:
-    return {
+def venue_to_json(venue: Venue, full_details: bool = True) -> dict:
+    data = {
         ID: venue.id,
         CREATED_AT: parse_datetime_to_ms_timestamp(venue.created_at),
         UPDATED_AT: parse_datetime_to_ms_timestamp(venue.updated_at),
-        ORGANIZATION: venue.organization.name,
         NAME: venue.name,
-        CATEGORY: venue.category.name,
-        CAPACITY: str(venue.capacity) if venue.capacity else None,
-        IC_NAME: venue.ic_name,
-        IC_EMAIL: venue.ic_email,
-        IC_CONTACT_NUMBER: venue.ic_contact_number,
-        FORM_FIELD_DATA: venue.form_field_data,
     }
+
+    if full_details:
+        data.update(
+            {
+                ORGANIZATION: venue.organization.name,
+                CATEGORY: venue.category.name,
+                CAPACITY: str(venue.capacity) if venue.capacity else None,
+                IC_NAME: venue.ic_name,
+                IC_EMAIL: venue.ic_email,
+                IC_CONTACT_NUMBER: venue.ic_contact_number,
+                FORM_FIELD_DATA: venue.form_field_data,
+            }
+        )
+
+    return data
 
 
 def get_venue_categories(*args, **kwargs) -> QuerySet[VenueCategory]:
@@ -43,6 +51,17 @@ def get_venue_categories(*args, **kwargs) -> QuerySet[VenueCategory]:
 
 def get_venues(*args, **kwargs) -> QuerySet[Venue]:
     return Venue.objects.filter(*args, **kwargs)
+
+
+def get_requested_venues(
+    organization: Organization, category: Optional[str]
+) -> QuerySet[Venue]:
+    filtered_venues = get_venues(organization=organization)
+
+    if category is not None:
+        filtered_venues = filtered_venues.filter(category__name=category)
+
+    return filtered_venues
 
 
 def get_or_create_venue_category(
