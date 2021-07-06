@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Venue
+from .models import Venue, VenueBookingNotificationSubscription
 
 
 class GetVenueSerializer(serializers.Serializer):
@@ -22,3 +22,9 @@ class VenueSerializer(serializers.ModelSerializer):
             "ic_contact_number",
             "form_field_data",
         ]
+
+
+class PostBookingNotificationSubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VenueBookingNotificationSubscription
+        fields = ["name", "email"]

@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState, useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Form, Header } from "semantic-ui-react";
 import * as yup from "yup";
@@ -12,7 +12,9 @@ import DropdownSelectorFormField from "../dropdown-selector-form-field";
 import styles from "./booking-notification-subscription-form.module.scss";
 
 type BookingNotificationSubscriptionFormProps =
-  BookingNotificationSubscriptionPostData;
+  BookingNotificationSubscriptionPostData & {
+    [VENUE_ID]: string;
+  };
 
 const schema = yup.object().shape({
   [NAME]: yup.string().trim().required("Please enter a name"),

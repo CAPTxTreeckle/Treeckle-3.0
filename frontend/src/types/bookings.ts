@@ -128,5 +128,4 @@ export type BookingNotificationSubscriptionData = {
 export type BookingNotificationSubscriptionPostData = {
   [NAME]: string;
   [EMAIL]: string;
-  [VENUE_ID]: number | string;
 };

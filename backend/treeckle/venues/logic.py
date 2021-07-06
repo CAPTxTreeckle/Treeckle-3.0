@@ -15,10 +15,12 @@ from treeckle.common.constants import (
     IC_CONTACT_NUMBER,
     FORM_FIELD_DATA,
     ORGANIZATION,
+    EMAIL,
+    VENUE,
 )
 from treeckle.common.parsers import parse_datetime_to_ms_timestamp
 from organizations.models import Organization
-from .models import VenueCategory, Venue
+from .models import VenueCategory, Venue, VenueBookingNotificationSubscription
 
 
 def venue_to_json(venue: Venue, full_details: bool = True) -> dict:
@@ -45,12 +47,31 @@ def venue_to_json(venue: Venue, full_details: bool = True) -> dict:
     return data
 
 
+def booking_notification_subscription_to_json(
+    subscription: VenueBookingNotificationSubscription,
+) -> dict:
+    return {
+        ID: subscription.id,
+        CREATED_AT: parse_datetime_to_ms_timestamp(subscription.created_at),
+        UPDATED_AT: parse_datetime_to_ms_timestamp(subscription.updated_at),
+        NAME: subscription.name,
+        EMAIL: subscription.email,
+        VENUE: venue_to_json(subscription.venue, full_details=False),
+    }
+
+
 def get_venue_categories(*args, **kwargs) -> QuerySet[VenueCategory]:
     return VenueCategory.objects.filter(*args, **kwargs)
 
 
 def get_venues(*args, **kwargs) -> QuerySet[Venue]:
     return Venue.objects.filter(*args, **kwargs)
+
+
+def get_booking_notification_subscriptions(
+    *args, **kwargs
+) -> QuerySet[VenueBookingNotificationSubscription]:
+    return VenueBookingNotificationSubscription.objects.filter(*args, **kwargs)
 
 
 def get_requested_venues(

@@ -168,7 +168,7 @@ export function useCreateVenue() {
 }
 
 export function useDeleteVenue() {
-  const [{ loading }, apiCall] = useAxiosWithTokenRefresh(
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<VenueData>(
     {
       method: "delete",
     },
@@ -178,12 +178,12 @@ export function useDeleteVenue() {
   const deleteVenue = useMemo(
     () =>
       errorHandlerWrapper(async (venueId: number) => {
-        const response = await apiCall({
+        const { data: deletedVenue } = await apiCall({
           url: `/venues/${venueId}`,
         });
-        console.log(`DELETE /venues/${venueId} success:`, response);
+        console.log(`DELETE /venues/${venueId} success:`, deletedVenue);
 
-        return true;
+        return deletedVenue;
       }, `DELETE /venues/:venueId error:`),
     [apiCall],
   );
