@@ -47,7 +47,12 @@ function SignInButton() {
               stretched
             >
               <Grid.Column>
-                <Button content="Sign in with NUSNET" color="blue" fluid />
+                <Button
+                  content="Sign in with NUSNET"
+                  color="blue"
+                  fluid
+                  disabled
+                />
               </Grid.Column>
               <Grid.Column>
                 <Button
