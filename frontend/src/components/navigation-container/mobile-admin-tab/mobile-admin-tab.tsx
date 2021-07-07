@@ -1,5 +1,4 @@
 import { useState } from "react";
-import clsx from "clsx";
 import { Accordion, MenuItem } from "semantic-ui-react";
 import { useLocation } from "react-router-dom";
 import TabItem from "../tab-item";
@@ -9,7 +8,9 @@ import {
   ADMIN_SETTINGS_PATH,
   ADMIN_VENUES_PATH,
 } from "../../../routes/paths";
+import PendingBookingCountLabel from "../../pending-booking-count-label";
 import styles from "./mobile-admin-tab.module.scss";
+import HorizontalLayoutContainer from "../../horizontal-layout-container";
 
 type Props = {
   onTabClick?: () => void;
@@ -20,16 +21,18 @@ function MobileAdminTab({ onTabClick }: Props) {
   const { pathname } = useLocation();
 
   return (
-    <Accordion
-      className={clsx(styles.mobileAdminTab, styles.important)}
-      as={MenuItem}
-      active={pathname.startsWith("/admin")}
-    >
+    <Accordion as={MenuItem} active={pathname.startsWith("/admin")}>
       <Accordion.Title
-        className={clsx(styles.title, styles.important)}
+        className={styles.title}
         onClick={() => setExpanded(!isExpanded)}
         active={isExpanded}
-        content="Admin"
+        content={
+          <HorizontalLayoutContainer spacing="compact">
+            <span>Admin</span>
+
+            <PendingBookingCountLabel />
+          </HorizontalLayoutContainer>
+        }
       />
 
       <Accordion.Content active={isExpanded}>
@@ -38,6 +41,7 @@ function MobileAdminTab({ onTabClick }: Props) {
           redirectPath={ADMIN_BOOKINGS_PATH}
           onTabClick={onTabClick}
           icon="book"
+          extra={<PendingBookingCountLabel />}
         />
         <TabItem
           label="Venues"

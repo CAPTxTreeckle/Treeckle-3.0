@@ -1,5 +1,5 @@
-.mobileAdminTab.important {
-  .title.important {
-    padding: 0.25rem 0;
-  }
+.title {
+  padding: 0.25rem 0 !important;
+  display: flex;
+  align-items: center;
 }

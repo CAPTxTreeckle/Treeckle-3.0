@@ -11,6 +11,7 @@ import {
 import { resolveApiError } from "../../utils/error-utils";
 import { useAppDispatch } from "../../redux/hooks";
 import { updateBookingsAction } from "../../redux/slices/bookings-slice";
+import { refreshPendingBookingCountThunk } from "../../redux/slices/pending-booking-count-slice";
 import styles from "./booking-status-button.module.scss";
 
 type Props = {
@@ -37,6 +38,10 @@ function BookingStatusButton({ bookingId, status, adminView }: Props) {
         );
 
         dispatch(updateBookingsAction(updatedBookings));
+
+        if (action !== BookingStatusAction.Cancel) {
+          dispatch(refreshPendingBookingCountThunk());
+        }
       } catch (error) {
         resolveApiError(error);
       }

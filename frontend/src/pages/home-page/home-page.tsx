@@ -11,7 +11,6 @@ import {
   Grid,
   Icon,
 } from "semantic-ui-react";
-import { useAppDispatch } from "../../redux/hooks";
 import { resetReduxState } from "../../redux/store";
 import useShowScroller from "../../custom-hooks/use-show-scroller";
 import TotalBookingCounter from "../../components/total-booking-counter";
@@ -21,13 +20,12 @@ import treeckleVideo from "../../assets/utown-video.mp4";
 import styles from "./home-page.module.scss";
 
 function HomePage() {
-  const dispatch = useAppDispatch();
   const isTabletOrLarger = useMediaQuery({ query: "(min-width: 768px)" });
   const { showScroller } = useShowScroller(300);
 
   useEffect(() => {
-    resetReduxState(dispatch);
-  }, [dispatch]);
+    resetReduxState();
+  }, []);
 
   return (
     <div className={styles.homePage}>

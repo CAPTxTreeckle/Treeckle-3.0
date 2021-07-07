@@ -1,6 +1,6 @@
 import { useEffect, MutableRefObject, memo } from "react";
 import { useInView } from "react-intersection-observer";
-import { Loader } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import CountUp from "react-countup";
 import { useGetTotalBookingCount } from "../../custom-hooks/api/bookings-api";
 
@@ -32,19 +32,30 @@ const CounterViewer = ({
 function TotalBookingCounter() {
   const { totalBookingCount, loading, getTotalBookingCount } =
     useGetTotalBookingCount();
+  const { ref, inView } = useInView({ triggerOnce: true });
 
   useEffect(() => {
-    getTotalBookingCount();
-  }, [getTotalBookingCount]);
+    if (inView) {
+      getTotalBookingCount();
+    }
+  }, [inView, getTotalBookingCount]);
 
-  return loading ? (
-    <Loader active inline size="medium" />
-  ) : (
-    <CountUp start={0} end={totalBookingCount} duration={4}>
-      {({ countUpRef, start, reset }) => (
-        <CounterViewer start={start} reset={reset} countUpRef={countUpRef} />
+  return (
+    <div ref={ref}>
+      {loading ? (
+        <Icon name="spinner" loading fitted />
+      ) : (
+        <CountUp start={0} end={totalBookingCount} duration={4}>
+          {({ countUpRef, start, reset }) => (
+            <CounterViewer
+              start={start}
+              reset={reset}
+              countUpRef={countUpRef}
+            />
+          )}
+        </CountUp>
       )}
-    </CountUp>
+    </div>
   );
 }
 

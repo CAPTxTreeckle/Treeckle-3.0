@@ -31,6 +31,7 @@ import {
   selectAllBookings,
   setBookingsAction,
 } from "../../redux/slices/bookings-slice";
+import { refreshPendingBookingCountThunk } from "../../redux/slices/pending-booking-count-slice";
 
 const BOOKER_NAME = `${BOOKER}.${NAME}`;
 const BOOKER_EMAIL = `${BOOKER}.${EMAIL}`;
@@ -57,6 +58,7 @@ function BookingAdminTable() {
   const getBookings = useCallback(async () => {
     const bookings = await _getBookings();
     dispatch(setBookingsAction(bookings));
+    dispatch(refreshPendingBookingCountThunk());
   }, [_getBookings, dispatch]);
 
   useEffect(() => {

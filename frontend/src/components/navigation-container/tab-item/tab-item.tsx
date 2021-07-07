@@ -1,15 +1,16 @@
 import { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { MenuItem } from "semantic-ui-react";
+import { MenuItem, Icon, IconProps } from "semantic-ui-react";
 
 type Props = {
   label: ReactNode;
   redirectPath: string;
   onTabClick?: () => void;
   icon?: ReactNode;
+  extra?: ReactNode;
 };
 
-function TabItem({ label, redirectPath, onTabClick, icon }: Props) {
+function TabItem({ label, redirectPath, onTabClick, icon, extra }: Props) {
   const { pathname } = useLocation();
 
   return (
@@ -17,10 +18,16 @@ function TabItem({ label, redirectPath, onTabClick, icon }: Props) {
       as={Link}
       to={redirectPath}
       active={pathname.startsWith(redirectPath)}
-      content={label}
       onClick={onTabClick}
-      icon={icon}
-    />
+    >
+      {typeof icon === "string" ? (
+        <Icon name={icon as IconProps["name"]} />
+      ) : (
+        icon
+      )}
+      {label}
+      {extra}
+    </MenuItem>
   );
 }
 

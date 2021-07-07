@@ -85,7 +85,7 @@ export function useAxiosWithTokenRefresh<T>(
           console.log("Error after token refresh:", error, error?.response);
           if (isForbiddenOrNotAuthenticated(error)) {
             // kick user out
-            resetReduxState(dispatch);
+            resetReduxState();
             throw new Error(
               "Your current session has expired. Please log in again.",
             );
