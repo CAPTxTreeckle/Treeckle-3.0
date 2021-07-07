@@ -118,9 +118,7 @@ class BookingsView(APIView):
         except Exception as e:
             raise BadRequest(e)
 
-        send_created_booking_emails(
-            bookings=new_bookings, organization=requester.organization
-        )
+        send_created_booking_emails(bookings=new_bookings)
 
         data = [booking_to_json(booking) for booking in new_bookings]
 
@@ -145,7 +143,6 @@ class BookingsView(APIView):
         send_updated_booking_emails(
             bookings=updated_bookings,
             id_to_previous_booking_status_mapping=id_to_previous_booking_status_mapping,
-            organization=requester.organization,
         )
 
         data = [booking_to_json(booking) for booking in updated_bookings]

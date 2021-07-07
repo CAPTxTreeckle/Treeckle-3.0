@@ -9,6 +9,7 @@ from django.utils.html import strip_tags
 
 from treeckle.common.constants import DATE_TIME_FORMAT
 from organizations.models import Organization
+from venues.logic import get_booking_notification_subscriptions
 from users.models import UserInvite
 from bookings.models import Booking, BookingStatus
 
@@ -47,16 +48,13 @@ def send_user_invite_emails(user_invites: Iterable[UserInvite]) -> None:
     connection.send_messages(emails)
 
 
-def send_created_booking_emails(
-    bookings: Iterable[Booking], organization: Organization
-) -> None:
+def send_created_booking_emails(bookings: Iterable[Booking]) -> None:
     if not bookings:
         return
 
     booking = bookings[0]
-    booker_name = booking.booker.name
-    booker_email = booking.booker.email
-    venue_name = booking.venue.name
+    booker = booking.booker
+    venue = booking.venue
     created_at = (booking.created_at + timedelta(hours=8)).strftime(DATE_TIME_FORMAT)
     booking_title = booking.title
     status = booking.status
@@ -73,9 +71,10 @@ def send_created_booking_emails(
     html_message = render_to_string(
         "created_booking_email_template.html",
         context={
-            "name": booker_name,
-            "email": booker_email,
-            "venue": venue_name,
+            "name": booker.name,
+            "email": booker.email,
+            "organization": venue.organization.name,
+            "venue": venue.name,
             "created_at": created_at,
             "booking_title": booking_title,
             "time_slots": time_slots,
@@ -84,14 +83,14 @@ def send_created_booking_emails(
     )
     plain_message = strip_tags(html_message)
 
-    subject = f"[{venue_name}] Your booking request has been created"
+    subject = f"[{venue.name}] Your booking request has been created"
     cc_emails = [
-        # listener.email
-        # for listener in get_organization_listeners(organization=organization)
+        subscription.email
+        for subscription in get_booking_notification_subscriptions(venue_id=venue.id)
     ]
 
     email = EmailMultiAlternatives(
-        subject=subject, body=plain_message, to=[booker_email], cc=cc_emails
+        subject=subject, body=plain_message, to=[booker.email], cc=cc_emails
     )
     email.attach_alternative(html_message, "text/html")
 
@@ -102,22 +101,15 @@ def send_created_booking_emails(
 def send_updated_booking_emails(
     bookings: Iterable[Booking],
     id_to_previous_booking_status_mapping: dict[int:BookingStatus],
-    organization=Organization,
 ) -> None:
     if not bookings:
         return
 
-    cc_emails = [
-        # listener.email
-        # for listener in get_organization_listeners(organization=organization)
-    ]
-
     emails = []
 
     for booking in bookings:
-        booker_name = booking.booker.name
-        booker_email = booking.booker.email
-        venue_name = booking.venue.name
+        booker = booking.booker
+        venue = booking.venue
         created_at = (booking.created_at + timedelta(hours=8)).strftime(
             DATE_TIME_FORMAT
         )
@@ -132,9 +124,10 @@ def send_updated_booking_emails(
             "updated_booking_status_email_template.html",
             context={
                 "description": description,
-                "name": booker_name,
-                "email": booker_email,
-                "venue": venue_name,
+                "name": booker.name,
+                "email": booker.email,
+                "organization": venue.organization.name,
+                "venue": venue.name,
                 "created_at": created_at,
                 "booking_title": booking_title,
                 "time_slot": time_slot,
@@ -144,10 +137,17 @@ def send_updated_booking_emails(
         )
         plain_message = strip_tags(html_message)
 
-        subject = f"[{venue_name}] {description}"
+        subject = f"[{venue.name}] {description}"
+
+        cc_emails = [
+            subscription.email
+            for subscription in get_booking_notification_subscriptions(
+                venue_id=venue.id
+            )
+        ]
 
         email = EmailMultiAlternatives(
-            subject=subject, body=plain_message, to=[booker_email], cc=cc_emails
+            subject=subject, body=plain_message, to=[booker.email], cc=cc_emails
         )
         email.attach_alternative(html_message, "text/html")
 

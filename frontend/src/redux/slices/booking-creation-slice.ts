@@ -32,7 +32,7 @@ const bookingCreationSlice = createSlice({
   initialState,
   reducers: {
     resetBookingCreationAction: () => initialState,
-    cancelBookingCreationAction: (state) => {
+    exitBookingFinalizationAction: (state) => {
       if (state.createdBookings) {
         return initialState;
       }
@@ -133,7 +133,7 @@ const bookingCreationSlice = createSlice({
 // action creators
 export const {
   resetBookingCreationAction,
-  cancelBookingCreationAction,
+  exitBookingFinalizationAction,
   chooseVenueCategoryAction,
   chooseVenueAction,
   chooseBookingPeriodsAction,
