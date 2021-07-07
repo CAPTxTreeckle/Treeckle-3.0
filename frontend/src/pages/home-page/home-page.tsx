@@ -14,6 +14,7 @@ import {
 import { useAppDispatch } from "../../redux/hooks";
 import { resetReduxState } from "../../redux/store";
 import useShowScroller from "../../custom-hooks/use-show-scroller";
+import TotalBookingCounter from "../../components/total-booking-counter";
 import SignInButton from "../../components/sign-in-button";
 import treeckleLogo from "../../assets/treeckle-outline-min.png";
 import treeckleVideo from "../../assets/utown-video.mp4";
@@ -108,12 +109,7 @@ function HomePage() {
           <Grid columns="3" centered stackable relaxed padded="vertically">
             <Grid.Column textAlign="center">
               <h1>
-                200+
-                {/* {loading ? (
-                  <Loader active inline size="medium" />
-                ) : (
-                  <div ref={ref}>{value}</div>
-                )} */}
+                <TotalBookingCounter />
               </h1>
               <p>Facility bookings facilitated in total</p>
             </Grid.Column>
