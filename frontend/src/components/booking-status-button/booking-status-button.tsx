@@ -38,13 +38,13 @@ function BookingStatusButton({
           { bookingId, action },
         ]);
 
-        dispatch(updateBookingsAction(updatedBookings));
-
         toast.success(
           updatedBookings.length > 1
             ? "Booking statuses updated successfully."
             : "The booking status has been updated successfully.",
         );
+
+        dispatch(updateBookingsAction(updatedBookings));
       } catch (error) {
         resolveApiError(error);
       }

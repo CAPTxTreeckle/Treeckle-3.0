@@ -1,3 +1,4 @@
+import React, { memo } from "react";
 import { useModal } from "react-modal-hook";
 import { Button, Popup, ButtonProps, Icon } from "semantic-ui-react";
 import ConfirmationModal, {
@@ -10,10 +11,14 @@ export type DeleteModalPropsGetter = (props: {
   hideModal: () => void;
 }) => Partial<ConfirmationModalProps>;
 
-type Props = ButtonProps & {
+type Props = Omit<ButtonProps, "onClick"> & {
   popupContent?: string | null;
-  showDeleteModal?: boolean;
   getDeleteModalProps?: DeleteModalPropsGetter;
+  onClick?: (props: {
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>;
+    data: ButtonProps;
+    showModal: () => void;
+  }) => void;
 };
 
 const defaultGetDeleteModalProps = ({
@@ -23,16 +28,15 @@ const defaultGetDeleteModalProps = ({
 }) => ({
   title: "Delete",
   content: "Are you sure you want to delete?",
-  onYes: hideModal,
-  onNo: hideModal,
+  yesButtonProps: { onClick: hideModal },
+  noButtonProps: { onClick: hideModal },
   icon: <Icon name="trash alternate outline" />,
 });
 
 function DeleteButton({
-  popupContent = "Delete",
-  showDeleteModal = true,
+  popupContent = null,
   getDeleteModalProps,
-  onClick,
+  onClick = ({ showModal }) => showModal(),
   ...props
 }: Props) {
   const [showModal, hideModal] = useModal(
@@ -59,16 +63,14 @@ function DeleteButton({
         <Button
           icon="trash alternate"
           color="red"
-          onClick={(event, data) => {
-            onClick?.(event, data);
-            showDeleteModal && showModal();
-          }}
+          onClick={(event, data) => onClick({ event, data, showModal })}
           {...props}
         />
       }
       hideOnScroll
+      on="hover"
     />
   );
 }
 
-export default DeleteButton;
+export default memo(DeleteButton);

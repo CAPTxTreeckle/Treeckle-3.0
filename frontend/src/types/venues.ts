@@ -13,9 +13,15 @@ import {
   NAME,
   FORM_FIELD_DATA,
   ORGANIZATION,
+  FULL_DETAILS,
+  EMAIL,
+  VENUE,
 } from "../constants";
 
-export type VenueGetQueryParams = { [CATEGORY]?: string | null };
+export type VenueGetQueryParams = {
+  [CATEGORY]?: string | null;
+  [FULL_DETAILS]?: boolean | string | number | null;
+};
 
 export type VenuePostData = {
   [NAME]: string;
@@ -30,8 +36,9 @@ export type VenuePostData = {
 export type VenuePutData = VenuePostData;
 
 export type VenueData = BaseData &
-  VenuePostData & {
-    [ORGANIZATION]: string;
+  Partial<Omit<VenuePostData, "name">> & {
+    [NAME]: string;
+    [ORGANIZATION]?: string;
   };
 
 export enum FieldType {
@@ -61,4 +68,15 @@ export type VenueFormProps = {
 export type VenueViewProps = BaseData & {
   [ORGANIZATION]: string;
   venueFormProps: VenueFormProps;
+};
+
+export type BookingNotificationSubscriptionData = BaseData & {
+  [NAME]: string;
+  [EMAIL]: string;
+  [VENUE]: VenueData;
+};
+
+export type BookingNotificationSubscriptionPostData = {
+  [NAME]: string;
+  [EMAIL]: string;
 };

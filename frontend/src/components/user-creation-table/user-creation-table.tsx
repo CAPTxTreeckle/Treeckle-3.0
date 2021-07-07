@@ -33,6 +33,7 @@ import {
 } from "../../redux/slices/user-creation-slice";
 import { useCreateUserInvites } from "../../custom-hooks/api/users-api";
 import { resolveApiError } from "../../utils/error-utils";
+import UserCreationTableDescriptionSection from "../user-creation-table-description-section";
 import styles from "./user-creation-table.module.scss";
 
 const userCreationTableStateOptions: TableStateOptions = {
@@ -51,13 +52,13 @@ const rowClassNameGetter: TableProps<PendingCreationUser>["rowClassName"] = ({
   });
 };
 
-const ActionButton = ({ id }: { id: number }) => {
+const ActionButton = ({ id }: PendingCreationUser) => {
   const dispatch = useAppDispatch();
+
   return (
     <DeleteButton
       compact
       onClick={() => dispatch(removePendingCreationUserAction(id))}
-      showDeleteModal={false}
     />
   );
 };
@@ -109,12 +110,8 @@ function UserCreationTable() {
     }
   }, [unsuccessfullyCreatedUsers, showUnsuccessfullyCreatedUsers, showModal]);
 
-  const {
-    processedData: processedBookings,
-    sortBy,
-    setSortBy,
-    onSearchValueChange,
-  } = useTableState(pendingCreationUsers, userCreationTableStateOptions);
+  const { processedData, sortBy, setSortBy, onSearchValueChange } =
+    useTableState(pendingCreationUsers, userCreationTableStateOptions);
 
   const newPendingCreationUsers = useMemo(
     () =>
@@ -156,6 +153,8 @@ function UserCreationTable() {
 
   return (
     <Segment.Group raised>
+      <UserCreationTableDescriptionSection />
+
       <Segment secondary>
         <HorizontalLayoutContainer>
           <SearchBar fluid onSearchValueChange={onSearchValueChange} />
@@ -172,6 +171,7 @@ function UserCreationTable() {
                 disabled={unsuccessfullyCreatedUsers.length === 0}
               />
             }
+            on="hover"
           />
         </HorizontalLayoutContainer>
       </Segment>
@@ -180,7 +180,7 @@ function UserCreationTable() {
         <AutoResizer>
           {({ width, height }) => (
             <Table<PendingCreationUser>
-              data={processedBookings}
+              data={processedData}
               rowClassName={rowClassNameGetter}
               emptyRenderer={() => (
                 <PlaceholderWrapper
@@ -235,14 +235,11 @@ function UserCreationTable() {
 
               <Column<PendingCreationUser>
                 key={ACTION}
-                dataKey={ID}
                 title="Action"
                 width={150}
                 resizable
                 align="center"
-                cellRenderer={({ cellData }) => (
-                  <ActionButton id={cellData as number} />
-                )}
+                cellRenderer={({ rowData }) => <ActionButton {...rowData} />}
               />
             </Table>
           )}
@@ -253,7 +250,6 @@ function UserCreationTable() {
         <HorizontalLayoutContainer justify="end">
           <DeleteButton
             icon={null}
-            popupContent={null}
             content="Clear All"
             disabled={pendingCreationUsers.length === 0}
             getDeleteModalProps={getClearAllModalProps}

@@ -71,12 +71,8 @@ function BookingUserTable() {
     [allBookings],
   );
 
-  const {
-    processedData: processedBookings,
-    sortBy,
-    setSortBy,
-    onSearchValueChange,
-  } = useTableState(bookingViewData, bookingAdminTableStateOptions);
+  const { processedData, sortBy, setSortBy, onSearchValueChange } =
+    useTableState(bookingViewData, bookingAdminTableStateOptions);
 
   return (
     <Segment.Group raised>
@@ -101,7 +97,7 @@ function BookingUserTable() {
       </Segment>
 
       <BookingBaseTable
-        data={processedBookings}
+        data={processedData}
         emptyRenderer={() => (
           <PlaceholderWrapper
             showDefaultMessage={!loading}

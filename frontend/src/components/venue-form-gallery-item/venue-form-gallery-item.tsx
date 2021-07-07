@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Button } from "semantic-ui-react";
+import { Button, Segment } from "semantic-ui-react";
 import { VENUE_ID } from "../../constants";
 import { useDeleteVenue } from "../../custom-hooks/api/venues-api";
 import { ADMIN_VENUES_EDIT_PATH } from "../../routes/paths";
@@ -40,22 +40,25 @@ function VenueFormGalleryItem({ id, venueFormProps, getVenues }: Props) {
       onClick={onDelete}
       color="red"
       loading={loading}
+      disabled={loading}
     />,
   ];
 
   return (
-    <div className="flex-display hover-bob pointer">
-      <div className="flex-display full-width scale-in-center">
-        <PopupActionsWrapper
-          actionButtons={actionButtons}
-          offsetRatio={{ heightRatio: -2 }}
-        >
-          <div className="flex-display full-width">
-            <VenueBookingDisplayForm venueFormProps={venueFormProps} />
-          </div>
-        </PopupActionsWrapper>
+    <Segment basic className="flex-display">
+      <div className="flex-display full-width hover-bob pointer">
+        <div className="flex-display full-width scale-in-center">
+          <PopupActionsWrapper
+            actionButtons={actionButtons}
+            offsetRatio={{ heightRatio: -2 }}
+          >
+            <div className="flex-display full-width">
+              <VenueBookingDisplayForm venueFormProps={venueFormProps} />
+            </div>
+          </PopupActionsWrapper>
+        </div>
       </div>
-    </div>
+    </Segment>
   );
 }
 

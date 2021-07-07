@@ -16,7 +16,7 @@ def check_requester_event_same_organization(view_method):
 
             if event.creator.organization != requester.organization:
                 raise PermissionDenied(
-                    detail="User and event are in different organization.",
+                    detail="User and event are in different organizations.",
                     code="wrong_organization",
                 )
 

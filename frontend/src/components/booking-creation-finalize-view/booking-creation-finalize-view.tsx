@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Segment, Button, Grid } from "semantic-ui-react";
@@ -5,6 +6,7 @@ import { useCreateBookings } from "../../custom-hooks/api/bookings-api";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   backFromBookingFinalizationAction,
+  exitBookingFinalizationAction,
   resetBookingCreationAction,
   selectBookingFormProps,
   selectCreatedBookings,
@@ -54,11 +56,19 @@ function BookingCreationFinalizeView() {
       });
 
       toast.success("New booking(s) created successfully.");
+
       dispatch(successBookingFormSubmissionAction(createdBookings));
     } catch (error) {
       resolveApiError(error);
     }
   };
+
+  // cleanup on unmount
+  useEffect(() => {
+    return () => {
+      dispatch(exitBookingFinalizationAction());
+    };
+  }, [dispatch]);
 
   return (
     <>
@@ -158,10 +168,7 @@ function BookingCreationFinalizeView() {
             <Button
               color="blue"
               content="Done"
-              onClick={() => {
-                history.push(BOOKINGS_PATH);
-                dispatch(resetBookingCreationAction());
-              }}
+              onClick={() => history.push(BOOKINGS_PATH)}
             />
           </HorizontalLayoutContainer>
         ) : (

@@ -55,12 +55,7 @@ function UserCreationForm() {
             defaultOptions={roles}
           />
 
-          <TextAreaFormField
-            inputName={EMAILS}
-            label="Emails"
-            required
-            rows={8}
-          />
+          <TextAreaFormField inputName={EMAILS} label="Emails" required />
 
           <Form.Button fluid type="submit" content="Parse Input" color="blue" />
         </Form>

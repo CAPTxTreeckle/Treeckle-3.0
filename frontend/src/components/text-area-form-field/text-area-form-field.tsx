@@ -1,12 +1,13 @@
+import { ReactNode } from "react";
 import clsx from "clsx";
 import get from "lodash/get";
 import { useController, useFormContext } from "react-hook-form";
-import { Form, FormFieldProps, Ref } from "semantic-ui-react";
+import { Form, FormTextAreaProps, Ref } from "semantic-ui-react";
 
 type Props = {
   className?: string;
   required?: boolean;
-  label?: string;
+  label?: ReactNode;
   inputName: string;
   errorMsg?: string;
   placeholder?: string;
@@ -14,7 +15,7 @@ type Props = {
   readOnly?: boolean;
   rows?: number;
   hidden?: boolean;
-  width?: FormFieldProps["width"];
+  width?: FormTextAreaProps["width"];
 };
 
 function TextAreaFormField({
@@ -26,7 +27,7 @@ function TextAreaFormField({
   placeholder,
   defaultValue,
   readOnly = false,
-  rows,
+  rows = 8,
   hidden = false,
   width,
 }: Props) {

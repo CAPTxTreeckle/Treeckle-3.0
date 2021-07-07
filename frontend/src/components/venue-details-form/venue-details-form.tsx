@@ -23,6 +23,7 @@ import { FieldType, VenueFormProps } from "../../types/venues";
 import { useGetVenueCategories } from "../../custom-hooks/api/venues-api";
 import DropdownSelectorFormField from "../dropdown-selector-form-field";
 import { sort, deepTrim } from "../../utils/parser-utils";
+import HorizontalLayoutContainer from "../horizontal-layout-container";
 
 const schema = yup.object().shape({
   [NAME]: yup.string().trim().required("Please enter a venue name"),
@@ -177,13 +178,15 @@ function VenueDetailsForm({
             <VenueDetailsCustomFormFieldsSection />
           </Segment>
 
-          <Segment className="flex-display align-center justify-end">
-            <Form.Button
-              {...submitButtonProps}
-              type="submit"
-              loading={isSubmitting}
-              disabled={isSubmitting}
-            />
+          <Segment>
+            <HorizontalLayoutContainer justify="end">
+              <Form.Button
+                {...submitButtonProps}
+                type="submit"
+                loading={isSubmitting}
+                disabled={isSubmitting}
+              />
+            </HorizontalLayoutContainer>
           </Segment>
         </Segment.Group>
       </Form>

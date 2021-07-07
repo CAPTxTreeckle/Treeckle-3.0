@@ -2,11 +2,12 @@ import clsx from "clsx";
 import { Form, FormFieldProps, Ref } from "semantic-ui-react";
 import get from "lodash/get";
 import { useController, useFormContext } from "react-hook-form";
+import { ReactNode } from "react";
 
 type Props = {
   className?: string;
   required?: boolean;
-  label?: string;
+  label?: ReactNode;
   inputName: string;
   type?: string;
   errorMsg?: string;
@@ -15,6 +16,7 @@ type Props = {
   readOnly?: boolean;
   hidden?: boolean;
   width?: FormFieldProps["width"];
+  fluid?: boolean;
 };
 
 function FormField({
@@ -29,6 +31,7 @@ function FormField({
   readOnly = false,
   hidden = false,
   width,
+  fluid = false,
 }: Props) {
   const {
     formState: { errors },
@@ -47,6 +50,7 @@ function FormField({
     <Ref innerRef={ref}>
       <Form.Input
         className={clsx(hidden && "hidden-display", className)}
+        fluid={fluid}
         required={required}
         error={
           error && {

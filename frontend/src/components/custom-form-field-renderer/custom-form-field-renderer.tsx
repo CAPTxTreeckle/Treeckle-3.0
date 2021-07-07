@@ -1,5 +1,6 @@
 import { FieldType, BookingFormFieldProps } from "../../types/venues";
 import FormField from "../form-field";
+import LinkifyTextViewer from "../linkify-text-viewer";
 import RadioFormField from "../radio-form-field";
 import TextAreaFormField from "../text-area-form-field";
 
@@ -43,7 +44,6 @@ function CustomFormFieldRenderer({
           placeholder={placeholderText}
           required={requiredField}
           readOnly={readOnly}
-          rows={8}
           defaultValue={
             defaultValue === undefined ? defaultValue : String(defaultValue)
           }
@@ -68,7 +68,11 @@ function CustomFormFieldRenderer({
     case FieldType.Boolean:
       return (
         <RadioFormField
-          label={fieldLabel}
+          label={
+            <label className="text-viewer">
+              <LinkifyTextViewer>{fieldLabel}</LinkifyTextViewer>
+            </label>
+          }
           inputName={inputName}
           type="checkbox"
           readOnly={readOnly}

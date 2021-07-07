@@ -2,22 +2,22 @@ $primary-color: #2c4a66;
 
 @mixin horizontal-space-margin($spacing) {
   > * {
-    margin-right: $spacing;
-    margin-left: 0;
+    margin-right: $spacing !important;
+    margin-left: 0 !important;
 
     &:last-child {
-      margin-right: 0;
+      margin-right: 0 !important;
     }
   }
 }
 
 @mixin vertical-space-margin($spacing) {
   > * {
-    margin-bottom: $spacing;
-    margin-top: 0;
+    margin-bottom: $spacing !important;
+    margin-top: 0 !important;
 
     &:last-child {
-      margin-bottom: 0;
+      margin-bottom: 0 !important;
     }
   }
 }
@@ -31,4 +31,9 @@ $primary-color: #2c4a66;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+@mixin text-viewer {
+  white-space: pre-wrap;
+  word-break: break-word;
 }

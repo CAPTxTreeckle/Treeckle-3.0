@@ -57,7 +57,7 @@ function HomePage() {
           </h1>
           <Grid columns="3" centered stackable relaxed padded="vertically">
             <Grid.Column textAlign="center">
-              <i className="fas fa-home fa-6x" />
+              <i className="fad fa-building fa-6x" />
               <h3>FACILITIES BOOKING</h3>
               <p>
                 Redefined by Treeckle, booking facilities and approvals can now
@@ -65,7 +65,7 @@ function HomePage() {
               </p>
             </Grid.Column>
             <Grid.Column textAlign="center">
-              <i className="far fa-calendar-alt fa-6x" />
+              <i className="fad fa-calendar-alt fa-swap-opacity fa-6x" />
               <h3>COLLEGE EVENTS</h3>
               <p>
                 Digitized events are easier than ever to find, and simplifies
@@ -73,7 +73,7 @@ function HomePage() {
               </p>
             </Grid.Column>
             <Grid.Column textAlign="center">
-              <i className="far fa-infinity fa-6x" />
+              <i className="fas fa-infinity fa-6x" />
               <h3>THE SKY'S THE LIMIT</h3>
               <p>You get to decide what we build next</p>
             </Grid.Column>
