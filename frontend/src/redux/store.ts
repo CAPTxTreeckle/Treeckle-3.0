@@ -14,6 +14,9 @@ import usersReducer, { resetUsersAction } from "./slices/users-slice";
 import userInvitesReducer, {
   resetUserInvitesAction,
 } from "./slices/user-invites-slice";
+import bookingNotificiationSubscriptionReducer, {
+  resetBookingNotificationSubscriptionsAction,
+} from "./slices/booking-notification-subscription-slice";
 
 const store = configureStore({
   reducer: {
@@ -23,6 +26,7 @@ const store = configureStore({
     userCreation: userCreationReducer,
     users: usersReducer,
     userInvites: userInvitesReducer,
+    bookingNotificiationSubscriptions: bookingNotificiationSubscriptionReducer,
   },
   preloadedState: {
     currentUser: loadFromLocalStorage("user"),
@@ -45,6 +49,7 @@ export const resetReduxState = (dispatch: AppDispatch) => {
   dispatch(resetUserCreationAction());
   dispatch(resetUsersAction());
   dispatch(resetUserInvitesAction());
+  dispatch(resetBookingNotificationSubscriptionsAction());
   dispatch(setCurrentUserAction(null));
 };
 

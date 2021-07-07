@@ -52,7 +52,7 @@ const rowClassNameGetter: TableProps<PendingCreationUser>["rowClassName"] = ({
   });
 };
 
-const ActionButton = ({ id }: { id: number }) => {
+const ActionButton = ({ id }: PendingCreationUser) => {
   const dispatch = useAppDispatch();
 
   return (
@@ -110,12 +110,8 @@ function UserCreationTable() {
     }
   }, [unsuccessfullyCreatedUsers, showUnsuccessfullyCreatedUsers, showModal]);
 
-  const {
-    processedData: processedBookings,
-    sortBy,
-    setSortBy,
-    onSearchValueChange,
-  } = useTableState(pendingCreationUsers, userCreationTableStateOptions);
+  const { processedData, sortBy, setSortBy, onSearchValueChange } =
+    useTableState(pendingCreationUsers, userCreationTableStateOptions);
 
   const newPendingCreationUsers = useMemo(
     () =>
@@ -184,7 +180,7 @@ function UserCreationTable() {
         <AutoResizer>
           {({ width, height }) => (
             <Table<PendingCreationUser>
-              data={processedBookings}
+              data={processedData}
               rowClassName={rowClassNameGetter}
               emptyRenderer={() => (
                 <PlaceholderWrapper
@@ -239,14 +235,11 @@ function UserCreationTable() {
 
               <Column<PendingCreationUser>
                 key={ACTION}
-                dataKey={ID}
                 title="Action"
                 width={150}
                 resizable
                 align="center"
-                cellRenderer={({ cellData }) => (
-                  <ActionButton id={cellData as number} />
-                )}
+                cellRenderer={({ rowData }) => <ActionButton {...rowData} />}
               />
             </Table>
           )}
@@ -257,7 +250,6 @@ function UserCreationTable() {
         <HorizontalLayoutContainer justify="end">
           <DeleteButton
             icon={null}
-            popupContent={null}
             content="Clear All"
             disabled={pendingCreationUsers.length === 0}
             getDeleteModalProps={getClearAllModalProps}

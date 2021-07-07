@@ -125,9 +125,9 @@ export function useGoogleAuth() {
         const { data } = await login({ data: { tokenId } });
         console.log("POST /gateway/gmail success:", data);
 
-        dispatch(setCurrentUserAction(data));
-
         toast.success("Signed in successfully.");
+
+        dispatch(setCurrentUserAction(data));
       } catch (error) {
         console.log("POST /gateway/gmail error:", error, error?.response);
         toast.error("Invalid user.");

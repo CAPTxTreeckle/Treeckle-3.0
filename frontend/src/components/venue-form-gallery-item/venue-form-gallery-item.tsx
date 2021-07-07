@@ -40,6 +40,7 @@ function VenueFormGalleryItem({ id, venueFormProps, getVenues }: Props) {
       onClick={onDelete}
       color="red"
       loading={loading}
+      disabled={loading}
     />,
   ];
 

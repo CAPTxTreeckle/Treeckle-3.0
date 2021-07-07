@@ -14,6 +14,8 @@ import {
   FORM_FIELD_DATA,
   ORGANIZATION,
   FULL_DETAILS,
+  EMAIL,
+  VENUE,
 } from "../constants";
 
 export type VenueGetQueryParams = {
@@ -66,4 +68,15 @@ export type VenueFormProps = {
 export type VenueViewProps = BaseData & {
   [ORGANIZATION]: string;
   venueFormProps: VenueFormProps;
+};
+
+export type BookingNotificationSubscriptionData = BaseData & {
+  [NAME]: string;
+  [EMAIL]: string;
+  [VENUE]: VenueData;
+};
+
+export type BookingNotificationSubscriptionPostData = {
+  [NAME]: string;
+  [EMAIL]: string;
 };

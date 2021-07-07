@@ -8,6 +8,8 @@ import {
   VenuePostData,
   VenuePutData,
   VenueGetQueryParams,
+  BookingNotificationSubscriptionData,
+  BookingNotificationSubscriptionPostData,
 } from "../../types/venues";
 import { changeKeyCase } from "../../utils/parser-utils";
 import { errorHandlerWrapper, resolveApiError } from "../../utils/error-utils";
@@ -178,10 +180,13 @@ export function useDeleteVenue() {
   const deleteVenue = useMemo(
     () =>
       errorHandlerWrapper(async (venueId: number) => {
+        const url = `/venues/${venueId}`;
+
         const { data: deletedVenue } = await apiCall({
-          url: `/venues/${venueId}`,
+          url,
         });
-        console.log(`DELETE /venues/${venueId} success:`, deletedVenue);
+
+        console.log(`DELETE ${url} success:`, deletedVenue);
 
         return deletedVenue;
       }, `DELETE /venues/:venueId error:`),
@@ -208,9 +213,12 @@ export function useGetSingleVenue() {
         const { data: venue } = await apiCall({
           url,
         });
+
         console.log(`GET ${url} success:`, venue);
+
         const parsedVenue = parseVenueData(venue);
         setVenue(parsedVenue);
+
         return parsedVenue;
       } catch (error) {
         console.log(`GET ${url} error:`, error, error?.response);
@@ -238,11 +246,14 @@ export function useUpdateVenue() {
       errorHandlerWrapper(
         async (venueId: number | string, venueFormProps: VenueFormProps) => {
           const url = `/venues/${venueId}`;
+
           const data: VenuePutData = parseVenueFormProps(venueFormProps);
+
           const { data: venue } = await apiCall({
             url,
             data,
           });
+
           console.log(`PUT ${url} success:`, venue);
 
           return venue;
@@ -253,4 +264,106 @@ export function useUpdateVenue() {
   );
 
   return { updateVenue, loading };
+}
+
+export function useGetBookingNotificationSubscriptions() {
+  const [
+    { data: bookingNotificationSubscriptions = DEFAULT_ARRAY, loading },
+    apiCall,
+  ] = useAxiosWithTokenRefresh<BookingNotificationSubscriptionData[]>(
+    {
+      url: "/venues/subscriptions",
+      method: "get",
+    },
+    { manual: true },
+  );
+
+  const getBookingNotificationSubscriptions = useCallback(async () => {
+    try {
+      return await errorHandlerWrapper(async () => {
+        const { data: bookingNotificationSubscriptions = [] } = await apiCall();
+
+        console.log(
+          `GET /venues/subscriptions success:`,
+          bookingNotificationSubscriptions,
+        );
+
+        return bookingNotificationSubscriptions;
+      }, `GET /venues/subscriptions error:`)();
+    } catch (error) {
+      resolveApiError(error);
+      return [];
+    }
+  }, [apiCall]);
+
+  return {
+    bookingNotificationSubscriptions,
+    loading,
+    getBookingNotificationSubscriptions,
+  };
+}
+
+export function useCreateBookingNotificationSubscription() {
+  const [{ loading }, apiCall] =
+    useAxiosWithTokenRefresh<BookingNotificationSubscriptionData>(
+      {
+        method: "post",
+      },
+      { manual: true },
+    );
+
+  const createBookingNotificationSubscription = useMemo(
+    () =>
+      errorHandlerWrapper(
+        async (
+          venueId: number | string,
+          data: BookingNotificationSubscriptionPostData,
+        ) => {
+          const url = `/venues/${venueId}/subscriptions`;
+
+          const { data: bookingNotificationSubscriptions } = await apiCall({
+            url,
+            data,
+          });
+          console.log(`POST ${url} success:`, bookingNotificationSubscriptions);
+
+          return bookingNotificationSubscriptions;
+        },
+        "POST /venues/:venueId/subscriptions error:",
+      ),
+    [apiCall],
+  );
+
+  return { createBookingNotificationSubscription, loading };
+}
+
+export function useDeleteBookingNotificationSubscription() {
+  const [{ loading }, apiCall] =
+    useAxiosWithTokenRefresh<BookingNotificationSubscriptionData>(
+      {
+        method: "delete",
+      },
+      { manual: true },
+    );
+
+  const deleteBookingNotificationSubscription = useMemo(
+    () =>
+      errorHandlerWrapper(async (subscriptionId: number | string) => {
+        const url = `/venues/subscriptions/${subscriptionId}`;
+
+        const { data: deletedBookingNotificationSubscription } = await apiCall({
+          url,
+        });
+
+        console.log(
+          `DELETE ${url} success:`,
+          deletedBookingNotificationSubscription,
+        );
+
+        return deletedBookingNotificationSubscription;
+      }, `DELETE /venues/subscription/:subscriptionId error:`),
+    [apiCall],
+  );
+
+  return { deleteBookingNotificationSubscription, loading };
 }

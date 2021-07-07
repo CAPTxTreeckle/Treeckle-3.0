@@ -58,6 +58,7 @@ const ActionButtons = ({ id, role, email }: ExistingUserViewProps) => {
         const updatedUser = await _updateUser(id, data);
 
         toast.success("The user's role has been updated successfully.");
+
         dispatch(updateUserAction(updatedUser));
       } catch (error) {
         resolveApiError(error);
@@ -69,7 +70,7 @@ const ActionButtons = ({ id, role, email }: ExistingUserViewProps) => {
   const getDeleteUserModalProps: DeleteModalPropsGetter = useCallback(
     ({ hideModal }) => ({
       title: "Delete Existing User",
-      content: `Are you sure you want to delete existing user (${email})?`,
+      content: `Are you sure you want to the delete existing user (${email})?`,
       yesButtonProps: {
         disabled: loading,
         loading,
@@ -130,12 +131,8 @@ function UserTable() {
     [users],
   );
 
-  const {
-    processedData: processedBookings,
-    sortBy,
-    setSortBy,
-    onSearchValueChange,
-  } = useTableState(userViewData, userTableStateOptions);
+  const { processedData, sortBy, setSortBy, onSearchValueChange } =
+    useTableState(userViewData, userTableStateOptions);
 
   return (
     <Segment.Group raised>
@@ -160,7 +157,7 @@ function UserTable() {
       </Segment>
 
       <UserBaseTable<ExistingUserViewProps>
-        data={processedBookings}
+        data={processedData}
         emptyRenderer={() => (
           <PlaceholderWrapper
             showDefaultMessage={!loading}

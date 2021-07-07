@@ -1,15 +1,22 @@
 import { useEffect, useMemo } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Form, Header } from "semantic-ui-react";
+import { toast } from "react-toastify";
 import * as yup from "yup";
 import { FormProvider, useForm } from "react-hook-form";
 import { EMAIL, NAME, VENUE_ID } from "../../constants";
-import { BookingNotificationSubscriptionPostData } from "../../types/bookings";
+import { BookingNotificationSubscriptionPostData } from "../../types/venues";
 import { deepTrim, sort } from "../../utils/parser-utils";
-import { useGetVenues } from "../../custom-hooks/api/venues-api";
+import {
+  useCreateBookingNotificationSubscription,
+  useGetVenues,
+} from "../../custom-hooks/api/venues-api";
 import FormField from "../form-field";
 import DropdownSelectorFormField from "../dropdown-selector-form-field";
+import { useAppDispatch } from "../../redux/hooks";
+import { resolveApiError } from "../../utils/error-utils";
 import styles from "./booking-notification-subscription-form.module.scss";
+import { updateBookingNotificationSubscriptionAction } from "../../redux/slices/booking-notification-subscription-slice";
 
 type BookingNotificationSubscriptionFormProps =
   BookingNotificationSubscriptionPostData & {
@@ -41,6 +48,10 @@ function BookingNotificationSubscriptionForm() {
     defaultValues,
   });
   const { venues, loading, getVenues } = useGetVenues();
+  const { createBookingNotificationSubscription, loading: isSubmitting } =
+    useCreateBookingNotificationSubscription();
+  const dispatch = useAppDispatch();
+
   const sortedVenueOptions = useMemo(
     () =>
       sort(
@@ -52,7 +63,6 @@ function BookingNotificationSubscriptionForm() {
       ),
     [venues],
   );
-  console.log(sortedVenueOptions);
 
   useEffect(() => {
     getVenues({ fullDetails: false });
@@ -63,8 +73,26 @@ function BookingNotificationSubscriptionForm() {
   const onSubmit = async (
     formData: BookingNotificationSubscriptionFormProps,
   ) => {
-    deepTrim(formData);
-    reset();
+    const { venueId, ...data } = deepTrim(formData);
+
+    try {
+      const createdBookingNotificationSubscription =
+        await createBookingNotificationSubscription(venueId, data);
+
+      toast.success(
+        "New booking notification subscription has been created successfully.",
+      );
+
+      dispatch(
+        updateBookingNotificationSubscriptionAction(
+          createdBookingNotificationSubscription,
+        ),
+      );
+
+      reset();
+    } catch (error) {
+      resolveApiError(error);
+    }
   };
 
   return (
@@ -100,6 +128,8 @@ function BookingNotificationSubscriptionForm() {
             content="Subscribe"
             fluid
             width="3"
+            disabled={isSubmitting}
+            loading={isSubmitting}
           />
         </Form.Group>
       </Form>

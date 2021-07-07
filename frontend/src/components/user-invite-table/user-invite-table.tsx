@@ -52,8 +52,9 @@ const ActionButtons = ({ id, role, email }: UserInviteViewProps) => {
       try {
         const updatedUserInvite = await _updateUserInvite(id, data);
 
-        toast.success("The user's role has been updated successfully.");
         dispatch(updateUserInviteAction(updatedUserInvite));
+
+        toast.success("The user's role has been updated successfully.");
       } catch (error) {
         resolveApiError(error);
       }
@@ -64,7 +65,7 @@ const ActionButtons = ({ id, role, email }: UserInviteViewProps) => {
   const getDeleteUserInviteModalProps: DeleteModalPropsGetter = useCallback(
     ({ hideModal }) => ({
       title: "Delete Pending Registration User",
-      content: `Are you sure you want to delete pending registration user (${email})?`,
+      content: `Are you sure you want to delete the pending registration user (${email})?`,
       yesButtonProps: {
         disabled: loading,
         loading,
@@ -72,8 +73,9 @@ const ActionButtons = ({ id, role, email }: UserInviteViewProps) => {
           try {
             const { id: deletedUserInviteId } = await deleteUserInvite(id);
 
-            dispatch(deleteUserInviteAction(deletedUserInviteId));
             toast.success("The user has been deleted successfully.");
+
+            dispatch(deleteUserInviteAction(deletedUserInviteId));
             hideModal();
           } catch (error) {
             resolveApiError(error);
@@ -123,12 +125,8 @@ function UserInviteTable() {
     [userInvites],
   );
 
-  const {
-    processedData: processedBookings,
-    sortBy,
-    setSortBy,
-    onSearchValueChange,
-  } = useTableState(userInviteViewData, userTableStateOptions);
+  const { processedData, sortBy, setSortBy, onSearchValueChange } =
+    useTableState(userInviteViewData, userTableStateOptions);
 
   return (
     <Segment.Group raised>
@@ -153,7 +151,7 @@ function UserInviteTable() {
       </Segment>
 
       <UserBaseTable<UserInviteViewProps>
-        data={processedBookings}
+        data={processedData}
         emptyRenderer={() => (
           <PlaceholderWrapper
             showDefaultMessage={!loading}

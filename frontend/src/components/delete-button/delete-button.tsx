@@ -34,7 +34,7 @@ const defaultGetDeleteModalProps = ({
 });
 
 function DeleteButton({
-  popupContent = "Delete",
+  popupContent = null,
   getDeleteModalProps,
   onClick = ({ showModal }) => showModal(),
   ...props

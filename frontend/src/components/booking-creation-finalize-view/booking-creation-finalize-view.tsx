@@ -54,6 +54,7 @@ function BookingCreationFinalizeView() {
       });
 
       toast.success("New booking(s) created successfully.");
+
       dispatch(successBookingFormSubmissionAction(createdBookings));
     } catch (error) {
       resolveApiError(error);

@@ -17,8 +17,6 @@ import {
   IDS,
   USER_ID,
   VENUE,
-  NAME,
-  EMAIL,
 } from "../constants";
 import { BaseData } from "./base";
 import { UserData } from "./users";
@@ -118,14 +116,3 @@ export enum BookingCreationStep {
   Finalize,
   __length,
 }
-
-export type BookingNotificationSubscriptionData = {
-  [NAME]: string;
-  [EMAIL]: string;
-  [VENUE]: VenueData;
-};
-
-export type BookingNotificationSubscriptionPostData = {
-  [NAME]: string;
-  [EMAIL]: string;
-};
