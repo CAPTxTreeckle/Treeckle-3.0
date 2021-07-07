@@ -5,6 +5,8 @@ from collections import namedtuple
 from django.db.models import QuerySet, Q
 from django.db import transaction
 
+from rest_framework.exceptions import PermissionDenied
+
 from treeckle.common.constants import (
     ID,
     CREATED_AT,
@@ -18,6 +20,7 @@ from treeckle.common.constants import (
     FORM_RESPONSE_DATA,
     NAME,
 )
+from treeckle.common.exceptions import BadRequest
 from treeckle.common.parsers import parse_datetime_to_ms_timestamp
 from organizations.models import Organization
 from users.logic import user_to_json
@@ -169,105 +172,98 @@ def create_bookings(
     return new_bookings
 
 
-def update_booking_statuses(actions: Iterable[dict], user: User) -> Sequence[Booking]:
-    same_organization_bookings = get_bookings(venue__organization=user.organization)
+def update_booking_status(
+    booking: Booking, action: BookingStatusAction, user: User
+) -> tuple[Sequence[Booking], dict[int, BookingStatus]]:
+    current_booking_status = booking.status
 
-    bookings_to_be_updated = []
-    id_to_previous_booking_status_mapping = {}
+    ## cannot update status for cancelled booking
+    if current_booking_status == BookingStatus.CANCELLED:
+        raise BadRequest(
+            detail="Cannot update status of cancelled booking.",
+            code="no_update_cancelled_booking",
+        )
 
-    for data in actions:
-        action = data.get("action")
-        booking_id = data.get("booking_id")
+    ## 1. cannot update to other statuses if user is not admin
+    ## 2. cannot cancel booking if user is not booker
+    if (user.role != Role.ADMIN and action != BookingStatusAction.CANCEL) or (
+        booking.booker != user and action == BookingStatusAction.CANCEL
+    ):
+        raise PermissionDenied(
+            detail=f"No permission to {action.lower()} booking.",
+            code="no_update_booking_permission",
+        )
 
-        ## prevents multiple actions on same booking
-        if booking_id in id_to_previous_booking_status_mapping:
-            continue
+    if action == BookingStatusAction.CANCEL:
+        booking.status = BookingStatus.CANCELLED
+    elif (
+        action == BookingStatusAction.APPROVE
+        and current_booking_status != BookingStatus.APPROVED
+    ):
+        booking.status = BookingStatus.APPROVED
+    elif (
+        action == BookingStatusAction.REVOKE
+        and current_booking_status != BookingStatus.PENDING
+    ):
+        booking.status = BookingStatus.PENDING
 
-        booking_to_be_updated = same_organization_bookings.get(id=booking_id)
-        current_booking_status = booking_to_be_updated.status
+    elif (
+        action == BookingStatusAction.REJECT
+        and current_booking_status != BookingStatus.REJECTED
+    ):
+        booking.status = BookingStatus.REJECTED
+    else:
+        raise BadRequest(
+            detail=f"The booking has already been {current_booking_status.lower()}.",
+            code="same_status_booking_update",
+        )
 
-        ## cannot update status of cancelled booking
-        if current_booking_status == BookingStatus.CANCELLED:
-            continue
+    ## immediately update if new status is not APPROVED
+    if booking.status != BookingStatus.APPROVED:
+        booking.save(update_fields=["status"])
 
-        if action == BookingStatusAction.CANCEL:
-            ## can only cancel if booking is created by user
-            if booking_to_be_updated.booker == user:
-                booking_to_be_updated.status = BookingStatus.CANCELLED
-                bookings_to_be_updated.append(booking_to_be_updated)
-                id_to_previous_booking_status_mapping[
-                    booking_id
-                ] = current_booking_status
+        return [booking], {booking.id: current_booking_status}
 
-            continue
+    ## do not update if there are clashing APPROVED bookings
+    if (
+        get_bookings(status=BookingStatus.APPROVED, venue=booking.venue)
+        .exclude(end_date_time__lte=booking.start_date_time)
+        .exclude(start_date_time__gte=booking.end_date_time)
+        .exclude(id=booking.id)
+        .exists()
+    ):
+        raise BadRequest(
+            detail="Cannot approve booking due to other existing clashing approved bookings.",
+            code="clashing_approved_bookings",
+        )
 
-        ## cannot update to other statuses if user is not admin
-        if user.role != Role.ADMIN:
-            continue
+    clashing_pending_bookings = (
+        get_bookings(status=BookingStatus.PENDING, venue=booking.venue)
+        .exclude(end_date_time__lte=booking.start_date_time)
+        .exclude(start_date_time__gte=booking.end_date_time)
+        .exclude(id=booking.id)
+    )
 
-        if (
-            action == BookingStatusAction.APPROVE
-            and booking_to_be_updated.status != BookingStatus.APPROVED
-        ):
-            booking_to_be_updated.status = BookingStatus.APPROVED
+    id_to_previous_booking_status_mapping = {
+        pending_booking.id: BookingStatus.PENDING
+        for pending_booking in clashing_pending_bookings
+    }
 
-        elif (
-            action == BookingStatusAction.REVOKE
-            and booking_to_be_updated.status != BookingStatus.PENDING
-        ):
-            booking_to_be_updated.status = BookingStatus.PENDING
-
-        elif (
-            action == BookingStatusAction.REJECT
-            and booking_to_be_updated.status != BookingStatus.REJECTED
-        ):
-            booking_to_be_updated.status = BookingStatus.REJECTED
-        else:
-            continue
-
-        bookings_to_be_updated.append(booking_to_be_updated)
-        id_to_previous_booking_status_mapping[booking_id] = current_booking_status
+    id_to_previous_booking_status_mapping[booking.id] = current_booking_status
 
     with transaction.atomic():
-        Booking.objects.bulk_update(bookings_to_be_updated, fields=["status"])
+        ## reject clashing pending bookings
+        clashing_pending_bookings.update(status=BookingStatus.REJECTED)
 
-        for booking in bookings_to_be_updated:
-            if booking.status != BookingStatus.APPROVED:
-                continue
+        ## update current booking to APPROVED
+        booking.save(update_fields=["status"])
 
-            ## update status value from db and test again
-            booking.refresh_from_db(fields=["status"])
-
-            if booking.status != BookingStatus.APPROVED:
-                continue
-
-            ## update all clashing pending/approved bookings to rejected
-            clashing_bookings = (
-                get_bookings(
-                    Q(status=BookingStatus.PENDING) | Q(status=BookingStatus.APPROVED),
-                    venue=booking.venue,
-                )
-                .exclude(id=booking.id)
-                .exclude(end_date_time__lte=booking.start_date_time)
-                .exclude(start_date_time__gte=booking.end_date_time)
-            )
-
-            for clashing_booking in clashing_bookings:
-                if clashing_booking.id in id_to_previous_booking_status_mapping:
-                    continue
-
-                id_to_previous_booking_status_mapping[
-                    clashing_booking.id
-                ] = clashing_booking.status
-
-            clashing_bookings.update(status=BookingStatus.REJECTED)
-
-    updated_bookings = [
-        booking
-        for booking in get_bookings(
-            id__in=id_to_previous_booking_status_mapping
-        ).select_related("booker", "venue")
-    ]
+        updated_bookings = [
+            booking
+            for booking in get_bookings(
+                id__in=id_to_previous_booking_status_mapping
+            ).select_related("booker__organization", "venue")
+        ]
 
     return updated_bookings, id_to_previous_booking_status_mapping
 

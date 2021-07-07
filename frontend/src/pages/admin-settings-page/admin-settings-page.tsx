@@ -14,7 +14,7 @@ function AdminSettingsPage() {
             <Message.Content>
               <p>
                 The emails below will receive notifications for any creation or
-                change in status of the bookings associated with subscribed
+                change in status of the bookings associated with the subscribed
                 venue.
               </p>
             </Message.Content>

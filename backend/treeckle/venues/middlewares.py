@@ -43,7 +43,7 @@ def check_requester_booking_notification_subscription_same_organization(
         try:
             subscription = (
                 get_booking_notification_subscriptions(id=subscription_id)
-                .select_related("venue__organization")
+                .select_related("venue")
                 .get()
             )
 

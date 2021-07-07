@@ -51,14 +51,5 @@ class PostBookingSerializer(serializers.ModelSerializer):
         fields = ["title", "venue_id", "date_time_ranges", "form_response_data"]
 
 
-class BookingStatusActionSerializer(serializers.Serializer):
-    booking_id = serializers.IntegerField()
+class PatchSingleBookingSerializer(serializers.Serializer):
     action = serializers.ChoiceField(choices=BookingStatusAction.choices)
-
-
-class PatchBookingSerializer(serializers.Serializer):
-    actions = BookingStatusActionSerializer(many=True)
-
-
-class DeleteBookingSerializer(serializers.Serializer):
-    ids = serializers.ListField(child=serializers.IntegerField())
