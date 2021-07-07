@@ -1,4 +1,5 @@
 from datetime import datetime
+from treeckle.common.constants import COMMENTS
 
 from django.utils.timezone import make_aware
 from django.db import IntegrityError
@@ -22,6 +23,7 @@ from .serializers import (
     DeleteBookingSerializer,
 )
 from .models import Booking, BookingStatus
+from comments.logic import get_booking_comments, booking_comment_to_json
 from .middlewares import check_user_is_booker_or_admin
 from .logic import (
     get_bookings,
@@ -172,5 +174,10 @@ class SingleBookingsView(APIView):
     @check_user_is_booker_or_admin
     def get(self, request, requester: User, booking: Booking):
         data = booking_to_json(booking)
+        booking_comments = get_booking_comments(booking=booking).select_related(
+            "comment__commenter__organization", "booking"
+        )
+
+        data.update({COMMENTS: [booking_comment_to_json(comment) for comment in booking_comments]})
 
         return Response(data, status=status.HTTP_200_OK)

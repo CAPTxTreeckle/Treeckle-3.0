@@ -39,17 +39,6 @@ function BookingDetailsView({
         padded="horizontally"
         stackable={stackable}
       >
-        {
-          // title = models.CharField(max_length=255)
-          // booker = models.ForeignKey(User, on_delete=models.CASCADE)
-          // venue = models.ForeignKey(Venue, on_delete=models.CASCADE)
-          // start_date_time = models.DateTimeField()
-          // end_date_time = models.DateTimeField()
-          // status = models.CharField(
-          //     max_length=50, choices=BookingStatus.choices, default=BookingStatus.PENDING
-          // )
-        }
-
         {showFullDetails && (
           <>
             <Grid.Row>

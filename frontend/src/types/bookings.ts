@@ -5,6 +5,7 @@ import {
   BOOKER,
   BOOKING_ID,
   BOOKING_FORM_RESPONSES,
+  COMMENTS,
   DATE_TIME_RANGES,
   END_DATE_TIME,
   RESPONSE,
@@ -20,6 +21,7 @@ import {
 } from "../constants";
 import { BaseData } from "./base";
 import { UserData } from "./users";
+import { CommentData } from "./comments";
 import { BookingFormFieldProps, VenueData } from "./venues";
 
 export type BookingGetQueryParams = {
@@ -50,6 +52,7 @@ export type BookingData = BaseData & {
   [END_DATE_TIME]: number;
   [STATUS]: BookingStatus;
   [FORM_RESPONSE_DATA]: BookingFormResponse[];
+  [COMMENTS]?: CommentData[];
 };
 
 export type BookingFormResponse = BookingFormFieldProps & {

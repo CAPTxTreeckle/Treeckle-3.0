@@ -17,6 +17,7 @@ from treeckle.common.constants import (
     STATUS,
     FORM_RESPONSE_DATA,
     NAME,
+    COMMENTS,
 )
 from treeckle.common.parsers import parse_datetime_to_ms_timestamp
 from organizations.models import Organization

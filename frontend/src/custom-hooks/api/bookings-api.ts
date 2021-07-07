@@ -88,10 +88,8 @@ export function useGetSingleBooking() {
           url,
         });
         console.log(`GET ${url} success:`, booking);
-        // TODO: replace with some way to parse
-        const parsedBooking = booking;
-        setBooking(parsedBooking);
-        return parsedBooking;
+        setBooking(booking);
+        return booking;
       } catch (error) {
         console.log(`GET ${url} error:`, error, error?.response);
 

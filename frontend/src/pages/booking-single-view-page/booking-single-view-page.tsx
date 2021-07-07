@@ -3,6 +3,7 @@ import { Segment } from "semantic-ui-react";
 import { useParams } from "react-router-dom";
 import { useGetSingleBooking } from "../../custom-hooks/api/bookings-api";
 import BookingDetailsView from "../../components/booking-details-view/booking-details-view";
+import CommentsView from "../../components/comments-view";
 import styles from "./booking-single-view-page.module.scss";
 import PlaceholderWrapper from "../../components/placeholder-wrapper";
 
@@ -28,15 +29,20 @@ function BookingSingleViewPage() {
         inverted
         placeholder
       >
-        <Segment>
-          {booking && (
-            <BookingDetailsView
-              className={styles.detailsContainer}
-              booking={booking}
-              showFullDetails
-            />
-          )}
-        </Segment>
+        <Segment.Group>
+          <Segment>
+            {booking && (
+              <BookingDetailsView
+                className={styles.detailsContainer}
+                booking={booking}
+                showFullDetails
+              />
+            )}
+          </Segment>
+          <Segment>
+            <CommentsView comments={booking?.comments ?? []} />
+          </Segment>
+        </Segment.Group>
       </PlaceholderWrapper>
     </>
   );

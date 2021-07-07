@@ -32,7 +32,6 @@ def comment_to_json(comment: Comment) -> dict:
 
 def booking_comment_to_json(booking_comment: BookingComment) -> dict:
     data = comment_to_json(booking_comment.comment)
-    data.update({BOOKING_ID: booking_comment.booking.id})
 
     return data
 
