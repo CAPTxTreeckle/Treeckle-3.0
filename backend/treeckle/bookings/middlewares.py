@@ -24,7 +24,6 @@ def check_requester_booking_same_organization(view_method):
 
         except (
             Booking.DoesNotExist,
-            Booking.MultipleObjectsReturned,
             PermissionDenied,
         ) as e:
             raise NotFound(detail="No booking found.", code="no_booking_found")

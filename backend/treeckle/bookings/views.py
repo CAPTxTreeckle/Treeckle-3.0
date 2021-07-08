@@ -92,7 +92,7 @@ class BookingsView(APIView):
                 id=validated_data.get("venue_id", None),
             ).get()
 
-        except (Venue.DoesNotExist, Venue.MultipleObjectsReturned) as e:
+        except Venue.DoesNotExist as e:
             raise BadRequest(detail="Invalid venue", code="invalid_venue")
 
         ## shape: [{start_date_time:, end_date_time:}]

@@ -22,7 +22,6 @@ def check_requester_venue_same_organization(view_method):
 
         except (
             Venue.DoesNotExist,
-            Venue.MultipleObjectsReturned,
             PermissionDenied,
         ) as e:
             raise NotFound(detail="No venue found.", code="no_venue_found")
@@ -55,7 +54,6 @@ def check_requester_booking_notification_subscription_same_organization(
 
         except (
             VenueBookingNotificationSubscription.DoesNotExist,
-            VenueBookingNotificationSubscription.MultipleObjectsReturned,
             PermissionDenied,
         ) as e:
             raise NotFound(

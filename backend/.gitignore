@@ -1,5 +1,6 @@
 # Django static folder
 static/
+!treeckle/treeckle/static
 
 # Django #
 *.log

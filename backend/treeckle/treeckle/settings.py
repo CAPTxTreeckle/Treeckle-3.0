@@ -37,6 +37,7 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = [
+    "jazzmin",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -67,6 +68,47 @@ ANYMAIL = {
 EMAIL_BACKEND = "anymail.backends.sendinblue.EmailBackend"
 DEFAULT_FROM_EMAIL = "Treeckle <no-reply@treeckle.com>"
 SERVER_EMAIL = "treeckle@googlegroups.com"
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Treeckle",
+    "site_header": "Treeckle Admin",
+    "welcome_sign": "Welcome to Treeckle Administration",
+    "copyright": "Treeckle",
+    "site_logo": "treeckle-min.png",
+    "site_icon": "favicon-32x32.png",
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": False,
+    "accent": "accent-primary",
+    "navbar": "navbar-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": False,
+    "layout_boxed": False,
+    "footer_fixed": True,
+    "sidebar_fixed": False,
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": False,
+    "sidebar_nav_compact_style": True,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "darkly",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-outline-info",
+        "warning": "btn-outline-warning",
+        "danger": "btn-outline-danger",
+        "success": "btn-outline-success",
+    },
+}
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (

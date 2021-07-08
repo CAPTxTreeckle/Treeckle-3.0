@@ -17,6 +17,11 @@ function AdminSettingsPage() {
                 change in status of the bookings associated with the subscribed
                 venue.
               </p>
+              <p>
+                <strong>Note:</strong> The emails can be <strong>any</strong>{" "}
+                valid emails. It is not necessary for the emails to be
+                associated with any Treeckle accounts.
+              </p>
             </Message.Content>
           </Message>
 
