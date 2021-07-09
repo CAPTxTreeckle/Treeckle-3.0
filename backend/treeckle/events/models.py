@@ -16,7 +16,7 @@ class Event(TimestampedModel):
     start_date_time = models.DateTimeField()
     end_date_time = models.DateTimeField()
     image_url = models.URLField(blank=True)
-    image_id = models.CharField(max_length=100, blank=True)
+    image_id = models.CharField(max_length=255, blank=True)
     is_published = models.BooleanField()
     is_sign_up_allowed = models.BooleanField()
     is_sign_up_approval_required = models.BooleanField()

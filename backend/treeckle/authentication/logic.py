@@ -17,7 +17,7 @@ from treeckle.common.constants import (
     ID_TOKEN,
     SUB,
 )
-from .models import GmailAuthentication, OpenIdAuthentication
+from .models import GmailAuthentication, OpenIdAuthentication, PasswordAuthentication
 
 
 def get_gmail_user_data(token_id: str) -> dict:
@@ -47,6 +47,10 @@ def get_open_id_user_data(name: str, email: str, user_id: str) -> dict:
         AUTH_ID: user_id,
         AUTH_CLASS: OpenIdAuthentication,
     }
+
+
+def get_password_user_data(email: str, password: str) -> dict:
+    return {EMAIL: email, AUTH_ID: password, AUTH_CLASS: PasswordAuthentication}
 
 
 def authenticate_user(user_data: dict) -> Optional[User]:
@@ -79,15 +83,12 @@ def authenticate_user(user_data: dict) -> Optional[User]:
     ## user invite exists but not user
     if user is None:
         ## create a new user and delete user invite
-        try:
-            user = User.objects.create(
-                organization=user_invite.organization,
-                name=user_data.get(NAME, "<no name>"),
-                email=user_data.get(EMAIL),
-                role=user_invite.role,
-            )
-        except IntegrityError as e:
-            return None
+        user = User.objects.create(
+            organization=user_invite.organization,
+            name=user_data.get(NAME, ""),
+            email=user_data.get(EMAIL),
+            role=user_invite.role,
+        )
 
     ## since user exists, user invite should be deleted if it exists
     if user_invite is not None:
@@ -106,10 +107,7 @@ def authenticate_user(user_data: dict) -> Optional[User]:
         pass
 
     ## try to create auth method for user
-    try:
-        AuthClass.objects.create(user=user, auth_id=auth_id)
-    except IntegrityError as e:
-        return None
+    AuthClass.create(user, auth_id)
 
     return user
 

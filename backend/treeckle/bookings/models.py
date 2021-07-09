@@ -22,6 +22,9 @@ class BookingStatusAction(models.TextChoices):
     CANCEL = "CANCEL"
 
 
+MAX_STATUS_LENGTH = max(map(len, BookingStatus))
+
+
 class Booking(TimestampedModel):
     title = models.CharField(max_length=255)
     booker = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -29,7 +32,9 @@ class Booking(TimestampedModel):
     start_date_time = models.DateTimeField()
     end_date_time = models.DateTimeField()
     status = models.CharField(
-        max_length=50, choices=BookingStatus.choices, default=BookingStatus.PENDING
+        max_length=MAX_STATUS_LENGTH,
+        choices=BookingStatus.choices,
+        default=BookingStatus.PENDING,
     )
     form_response_data = models.JSONField()
 
