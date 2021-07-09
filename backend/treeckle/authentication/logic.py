@@ -107,9 +107,9 @@ def authenticate_user(user_data: dict) -> Optional[User]:
         pass
 
     ## try to create auth method for user
-    AuthClass.create(user, auth_id)
+    new_auth_method = AuthClass.create(user, auth_id)
 
-    return user
+    return user if new_auth_method is not None else None
 
 
 def get_tokens(user: User) -> dict:
