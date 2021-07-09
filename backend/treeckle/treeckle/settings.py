@@ -25,10 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.getenv("DEBUG", 0))
+DEBUG = bool(int(os.getenv("DEBUG", 0)))
 
 # CORS is disabled in debug mode
-CORS_ALLOW_ALL_ORIGINS = bool(DEBUG)
+CORS_ALLOW_ALL_ORIGINS = DEBUG
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(" ")
 
@@ -76,6 +76,18 @@ JAZZMIN_SETTINGS = {
     "copyright": "Treeckle",
     "site_logo": "treeckle-min.png",
     "site_icon": "favicon-32x32.png",
+    "hide_apps": ["auth", "flatpages", "sites", "events"],
+    "icons": {
+        "authentication.gmailauthentication": "fab fa-google",
+        "authentication.openidauthentication": "fab fa-openid",
+        "bookings.booking": "fas fa-book",
+        "organizations.organization": "fas fa-sitemap",
+        "users.user": "fas fa-users",
+        "users.userinvite": "fas fa-user-plus",
+        "venues.bookingnotificationsubscription": "fas fa-bell",
+        "venues.venuecategory": "fas fa-tags",
+        "venues.venue": "fas fa-building",
+    },
 }
 
 JAZZMIN_UI_TWEAKS = {

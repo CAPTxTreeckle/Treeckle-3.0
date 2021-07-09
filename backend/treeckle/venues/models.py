@@ -42,7 +42,7 @@ class Venue(TimestampedModel):
         return f"{self.name} | {self.category}"
 
 
-class VenueBookingNotificationSubscription(TimestampedModel):
+class BookingNotificationSubscription(TimestampedModel):
     name = models.CharField(max_length=255)
     email = models.EmailField()
     venue = models.ForeignKey(Venue, on_delete=models.CASCADE)

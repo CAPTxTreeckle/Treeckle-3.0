@@ -20,7 +20,7 @@ from treeckle.common.constants import (
 )
 from treeckle.common.parsers import parse_datetime_to_ms_timestamp
 from organizations.models import Organization
-from .models import VenueCategory, Venue, VenueBookingNotificationSubscription
+from .models import VenueCategory, Venue, BookingNotificationSubscription
 
 
 def venue_to_json(venue: Venue, full_details: bool = True) -> dict:
@@ -48,7 +48,7 @@ def venue_to_json(venue: Venue, full_details: bool = True) -> dict:
 
 
 def booking_notification_subscription_to_json(
-    subscription: VenueBookingNotificationSubscription,
+    subscription: BookingNotificationSubscription,
 ) -> dict:
     return {
         ID: subscription.id,
@@ -70,8 +70,8 @@ def get_venues(*args, **kwargs) -> QuerySet[Venue]:
 
 def get_booking_notification_subscriptions(
     *args, **kwargs
-) -> QuerySet[VenueBookingNotificationSubscription]:
-    return VenueBookingNotificationSubscription.objects.filter(*args, **kwargs)
+) -> QuerySet[BookingNotificationSubscription]:
+    return BookingNotificationSubscription.objects.filter(*args, **kwargs)
 
 
 def get_requested_venues(

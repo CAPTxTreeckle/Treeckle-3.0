@@ -1,7 +1,7 @@
 from rest_framework.exceptions import NotFound, PermissionDenied
 
 from users.models import User
-from .models import Venue, VenueBookingNotificationSubscription
+from .models import Venue, BookingNotificationSubscription
 from .logic import get_venues, get_booking_notification_subscriptions
 
 
@@ -53,7 +53,7 @@ def check_requester_booking_notification_subscription_same_organization(
                 )
 
         except (
-            VenueBookingNotificationSubscription.DoesNotExist,
+            BookingNotificationSubscription.DoesNotExist,
             PermissionDenied,
         ) as e:
             raise NotFound(

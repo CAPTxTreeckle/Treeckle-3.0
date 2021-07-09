@@ -12,7 +12,7 @@ from .serializers import (
     VenueSerializer,
     PostBookingNotificationSubscriptionSerializer,
 )
-from .models import Venue, VenueCategory, VenueBookingNotificationSubscription
+from .models import Venue, VenueCategory, BookingNotificationSubscription
 from .middlewares import (
     check_requester_venue_same_organization,
     check_requester_booking_notification_subscription_same_organization,
@@ -71,7 +71,7 @@ class SingleVenueBookingNotificationSubscriptionsView(APIView):
         validated_data = serializer.validated_data
 
         try:
-            new_subscription = VenueBookingNotificationSubscription.objects.create(
+            new_subscription = BookingNotificationSubscription.objects.create(
                 name=validated_data.get("name", ""),
                 email=validated_data.get("email", ""),
                 venue=venue,
@@ -91,7 +91,7 @@ class SingleBookingNotificationSubscriptionView(APIView):
         self,
         request,
         requester: User,
-        subscription: VenueBookingNotificationSubscription,
+        subscription: BookingNotificationSubscription,
     ):
         data = booking_notification_subscription_to_json(subscription)
         subscription.delete()
