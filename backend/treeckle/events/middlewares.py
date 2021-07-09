@@ -22,7 +22,6 @@ def check_requester_event_same_organization(view_method):
 
         except (
             Event.DoesNotExist,
-            Event.MultipleObjectsReturned,
             PermissionDenied,
         ) as e:
             raise NotFound(detail="No event found.", code="no_event_found")

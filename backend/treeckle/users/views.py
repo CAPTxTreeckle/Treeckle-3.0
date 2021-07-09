@@ -52,13 +52,10 @@ class UserInvitesView(APIView):
         ## shape: [(email, role)]
         valid_invitations = get_valid_invitations(invitations)
 
-        try:
-            new_user_invites = create_user_invites(
-                valid_invitations=valid_invitations,
-                organization=requester.organization,
-            )
-        except Exception as e:
-            raise BadRequest(e)
+        new_user_invites = create_user_invites(
+            valid_invitations=valid_invitations,
+            organization=requester.organization,
+        )
 
         send_user_invite_emails(user_invites=new_user_invites)
 

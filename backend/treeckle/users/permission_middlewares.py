@@ -14,7 +14,7 @@ def check_access(*allowed_roles: Role):
                     get_users(id=requester_id).select_related("organization").get()
                 )
 
-            except (User.DoesNotExist, User.MultipleObjectsReturned) as e:
+            except User.DoesNotExist as e:
                 raise AuthenticationFailed(
                     detail="Invalid user.",
                     code="invalid_user",

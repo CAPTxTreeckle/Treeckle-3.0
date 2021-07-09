@@ -24,10 +24,7 @@ class SelfSignUpView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
     @check_requester_event_same_organization
     def post(self, request, requester: User, event: Event):
-        try:
-            new_event_sign_up = create_event_sign_up(event=event, user=requester)
-        except Exception as e:
-            raise BadRequest(e)
+        new_event_sign_up = create_event_sign_up(event=event, user=requester)
 
         data = event_sign_up_to_json(new_event_sign_up)
 
@@ -36,10 +33,7 @@ class SelfSignUpView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
     @check_requester_event_same_organization
     def patch(self, request, requester: User, event: Event):
-        try:
-            attended_event_sign_up = attend_event_sign_up(event=event, user=requester)
-        except Exception as e:
-            raise BadRequest(e)
+        attended_event_sign_up = attend_event_sign_up(event=event, user=requester)
 
         data = event_sign_up_to_json(attended_event_sign_up)
 
@@ -64,12 +58,9 @@ class SignUpView(APIView):
 
         actions = serializer.validated_data.get("actions", [])
 
-        try:
-            updated_event_sign_ups = update_event_sign_ups(
-                actions=actions, event=event, organization=requester.organization
-            )
-        except Exception as e:
-            raise BadRequest(e)
+        updated_event_sign_ups = update_event_sign_ups(
+            actions=actions, event=event, organization=requester.organization
+        )
 
         data = [
             event_sign_up_to_json(event_sign_up)

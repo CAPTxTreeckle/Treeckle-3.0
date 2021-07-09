@@ -69,30 +69,27 @@ class EventsView(APIView):
         serializer.is_valid(raise_exception=True)
         validated_data = serializer.validated_data
 
-        try:
-            new_event = create_event(
-                creator=requester,
-                title=validated_data.get("title", ""),
-                organized_by=validated_data.get("organized_by", ""),
-                venue_name=validated_data.get("venue_name", ""),
-                description=validated_data.get("description", ""),
-                capacity=validated_data.get("capacity", None),
-                start_date_time=parse_ms_timestamp_to_datetime(
-                    validated_data.get("start_date_time", 0)
-                ),
-                end_date_time=parse_ms_timestamp_to_datetime(
-                    validated_data.get("end_date_time", 0)
-                ),
-                image=validated_data.get("image", ""),
-                is_published=validated_data.get("is_published", False),
-                is_sign_up_allowed=validated_data.get("is_sign_up_allowed", False),
-                is_sign_up_approval_required=validated_data.get(
-                    "is_sign_up_approval_required", False
-                ),
-                categories=validated_data.get("categories", []),
-            )
-        except Exception as e:
-            raise BadRequest(e)
+        new_event = create_event(
+            creator=requester,
+            title=validated_data.get("title", ""),
+            organized_by=validated_data.get("organized_by", ""),
+            venue_name=validated_data.get("venue_name", ""),
+            description=validated_data.get("description", ""),
+            capacity=validated_data.get("capacity", None),
+            start_date_time=parse_ms_timestamp_to_datetime(
+                validated_data.get("start_date_time", 0)
+            ),
+            end_date_time=parse_ms_timestamp_to_datetime(
+                validated_data.get("end_date_time", 0)
+            ),
+            image=validated_data.get("image", ""),
+            is_published=validated_data.get("is_published", False),
+            is_sign_up_allowed=validated_data.get("is_sign_up_allowed", False),
+            is_sign_up_approval_required=validated_data.get(
+                "is_sign_up_approval_required", False
+            ),
+            categories=validated_data.get("categories", []),
+        )
 
         data = event_to_json(new_event, requester)
 
@@ -180,30 +177,27 @@ class SingleEventView(APIView):
         serializer.is_valid(raise_exception=True)
         validated_data = serializer.validated_data
 
-        try:
-            updated_event = update_event(
-                current_event=event,
-                title=validated_data.get("title", ""),
-                organized_by=validated_data.get("organized_by", ""),
-                venue_name=validated_data.get("venue_name", ""),
-                description=validated_data.get("description", ""),
-                capacity=validated_data.get("capacity", None),
-                start_date_time=parse_ms_timestamp_to_datetime(
-                    validated_data.get("start_date_time", 0)
-                ),
-                end_date_time=parse_ms_timestamp_to_datetime(
-                    validated_data.get("end_date_time", 0)
-                ),
-                image=validated_data.get("image", ""),
-                is_published=validated_data.get("is_published", False),
-                is_sign_up_allowed=validated_data.get("is_sign_up_allowed", False),
-                is_sign_up_approval_required=validated_data.get(
-                    "is_sign_up_approval_required", False
-                ),
-                categories=validated_data.get("categories", []),
-            )
-        except Exception as e:
-            raise BadRequest(e)
+        updated_event = update_event(
+            current_event=event,
+            title=validated_data.get("title", ""),
+            organized_by=validated_data.get("organized_by", ""),
+            venue_name=validated_data.get("venue_name", ""),
+            description=validated_data.get("description", ""),
+            capacity=validated_data.get("capacity", None),
+            start_date_time=parse_ms_timestamp_to_datetime(
+                validated_data.get("start_date_time", 0)
+            ),
+            end_date_time=parse_ms_timestamp_to_datetime(
+                validated_data.get("end_date_time", 0)
+            ),
+            image=validated_data.get("image", ""),
+            is_published=validated_data.get("is_published", False),
+            is_sign_up_allowed=validated_data.get("is_sign_up_allowed", False),
+            is_sign_up_approval_required=validated_data.get(
+                "is_sign_up_approval_required", False
+            ),
+            categories=validated_data.get("categories", []),
+        )
 
         data = event_to_json(updated_event, requester)
 

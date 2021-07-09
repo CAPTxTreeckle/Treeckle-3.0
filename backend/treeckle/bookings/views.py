@@ -2,7 +2,6 @@ from datetime import datetime
 from treeckle.common.constants import COMMENTS
 
 from django.utils.timezone import make_aware
-from django.db import IntegrityError
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -19,12 +18,11 @@ from venues.models import Venue
 from .serializers import (
     GetBookingSerializer,
     PostBookingSerializer,
-    PatchBookingSerializer,
-    DeleteBookingSerializer,
+    PatchSingleBookingSerializer,
 )
 from .models import Booking, BookingStatus
 from comments.logic import get_booking_comments, booking_comment_to_json
-from .middlewares import check_user_is_booker_or_admin
+from .middlewares import check_requester_is_booker_or_admin
 from .logic import (
     get_bookings,
     get_requested_bookings,
@@ -32,8 +30,9 @@ from .logic import (
     create_bookings,
     delete_bookings,
     DateTimeInterval,
-    update_booking_statuses,
+    update_booking_status,
 )
+from .middlewares import check_requester_booking_same_organization
 
 # Create your views here.
 class TotalBookingCountView(APIView):
@@ -96,8 +95,8 @@ class BookingsView(APIView):
                 id=validated_data.get("venue_id", None),
             ).get()
 
-        except (Venue.DoesNotExist, Venue.MultipleObjectsReturned) as e:
-            raise BadRequest("Invalid venue")
+        except Venue.DoesNotExist as e:
+            raise BadRequest(detail="Invalid venue", code="invalid_venue")
 
         ## shape: [{start_date_time:, end_date_time:}]
         date_time_ranges = validated_data.get("date_time_ranges", [])
@@ -110,16 +109,13 @@ class BookingsView(APIView):
             for date_time_range in date_time_ranges
         ]
 
-        try:
-            new_bookings = create_bookings(
-                title=validated_data.get("title", ""),
-                booker=requester,
-                venue=venue,
-                new_date_time_intervals=new_date_time_intervals,
-                form_response_data=validated_data.get("form_response_data", []),
-            )
-        except Exception as e:
-            raise BadRequest(e)
+        new_bookings = create_bookings(
+            title=validated_data.get("title", ""),
+            booker=requester,
+            venue=venue,
+            new_date_time_intervals=new_date_time_intervals,
+            form_response_data=validated_data.get("form_response_data", []),
+        )
 
         send_created_booking_emails(bookings=new_bookings)
 
@@ -127,21 +123,21 @@ class BookingsView(APIView):
 
         return Response(data, status=status.HTTP_201_CREATED)
 
+
+class SingleBookingView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
-    def patch(self, request, requester: User):
-        serializer = PatchBookingSerializer(data=request.data)
+    @check_requester_booking_same_organization
+    def patch(self, request, requester: User, booking: Booking):
+        serializer = PatchSingleBookingSerializer(data=request.data)
 
         serializer.is_valid(raise_exception=True)
 
-        actions = serializer.validated_data.get("actions", [])
+        action = serializer.validated_data.get("action")
 
-        try:
-            (
-                updated_bookings,
-                id_to_previous_booking_status_mapping,
-            ) = update_booking_statuses(actions=actions, user=requester)
-        except Exception as e:
-            raise BadRequest(e)
+        (
+            updated_bookings,
+            id_to_previous_booking_status_mapping,
+        ) = update_booking_status(booking=booking, action=action, user=requester)
 
         send_updated_booking_emails(
             bookings=updated_bookings,
@@ -153,25 +149,18 @@ class BookingsView(APIView):
         return Response(data, status=status.HTTP_200_OK)
 
     @check_access(Role.ADMIN)
-    def delete(self, request, requester: User):
-        serializer = DeleteBookingSerializer(data=request.data)
+    @check_requester_booking_same_organization
+    def delete(self, request, requester: User, booking: Booking):
+        data = booking_to_json(booking)
 
-        serializer.is_valid(raise_exception=True)
-
-        booking_ids_to_be_deleted = serializer.validated_data.get("ids", [])
-
-        deleted_bookings = delete_bookings(
-            booking_ids_to_be_deleted, organization=requester.organization
-        )
-
-        data = [booking_to_json(booking) for booking in deleted_bookings]
+        booking.delete()
 
         return Response(data, status=status.HTTP_200_OK)
 
 
 class SingleBookingsView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
-    @check_user_is_booker_or_admin
+    @check_requester_is_booker_or_admin
     def get(self, request, requester: User, booking: Booking):
         data = booking_to_json(booking)
         booking_comments = get_booking_comments(booking=booking).select_related(

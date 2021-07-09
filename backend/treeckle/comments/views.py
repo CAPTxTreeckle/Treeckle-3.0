@@ -8,7 +8,7 @@ from users.models import Role, User
 from .serializers import PostCommentSerializer
 from .models import Booking, Comment
 from .middlewares import check_user_is_commenter
-from bookings.middlewares import check_user_is_booker_or_admin
+from bookings.middlewares import check_requester_is_booker_or_admin
 from .logic import (
     create_booking_comment,
     get_booking_comments,
@@ -23,7 +23,7 @@ from .logic import (
 
 class BookingCommentsView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
-    @check_user_is_booker_or_admin
+    @check_requester_is_booker_or_admin
     def get(self, request, requester: User, booking: Booking):
         booking_comments = get_booking_comments(booking=booking).select_related(
             "comment__commenter__organization", "booking"
@@ -37,7 +37,7 @@ class BookingCommentsView(APIView):
         return Response(data, status=status.HTTP_200_OK)
 
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
-    @check_user_is_booker_or_admin
+    @check_requester_is_booker_or_admin
     def post(self, request, requester: User, booking: Booking):
         serializer = PostCommentSerializer(data=request.data)
 
