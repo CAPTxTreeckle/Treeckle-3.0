@@ -100,11 +100,7 @@ def authenticate_user(user_data: dict) -> Optional[User]:
     try:
         auth_class = AuthClass.objects.get(user=user)
         ## matches with given auth_id
-        if auth_class.auth_id == auth_id:
-            return user
-        ## no match
-        else:
-            return None
+        return user if auth_class.is_valid(auth_id) else None
     except AuthClass.DoesNotExist:
         ## proceed to create auth method for user
         pass
