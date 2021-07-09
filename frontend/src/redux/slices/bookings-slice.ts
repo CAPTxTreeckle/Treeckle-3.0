@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
 import { normalize } from "normalizr";
-import { BookingData } from "../../types/bookings";
+import { BookingData, BookingStatus } from "../../types/bookings";
 import { VENUE, BOOKER } from "../../constants";
 import {
   UserEntityType,
@@ -94,6 +94,12 @@ export const selectBookingsByUserId = createSelector(
   (_: unknown, userId: number) => userId,
   (allBookings, userId) =>
     allBookings.filter(({ booker: { id } }) => id === userId),
+);
+
+export const selectPendingBookings = createSelector(
+  selectAllBookings,
+  (allBookings) =>
+    allBookings.filter(({ status }) => status === BookingStatus.Pending),
 );
 
 export default bookingsSlice.reducer;

@@ -14,10 +14,7 @@ import {
   BOOKER,
   ID,
   VENUE,
-  BOOKING_ID,
-  USER_ID,
 } from "../../constants";
-import { PROFILE_PATH, BOOKING_SINGLE_VIEW_PATH } from "../../routes/paths";
 import useTableState, {
   TableStateOptions,
 } from "../../custom-hooks/use-table-state";
@@ -28,13 +25,13 @@ import SearchBar from "../search-bar";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import UserNameRenderer from "../user-name-renderer";
 import UserEmailRenderer from "../user-email-renderer";
-import LinkifyTextViewer from "../linkify-text-viewer";
 import BookingBaseTable, { BookingViewProps } from "../booking-base-table";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   selectAllBookings,
   setBookingsAction,
 } from "../../redux/slices/bookings-slice";
+import { refreshPendingBookingCountThunk } from "../../redux/slices/pending-booking-count-slice";
 
 const BOOKER_NAME = `${BOOKER}.${NAME}`;
 const BOOKER_EMAIL = `${BOOKER}.${EMAIL}`;
@@ -53,42 +50,6 @@ const bookingAdminTableStateOptions: TableStateOptions = {
   ],
 };
 
-const bookingIdRenderer = ({
-  rowData: { id },
-}: {
-  rowData: Partial<BookingViewProps>;
-}) =>
-  id ? (
-    <a
-      href={BOOKING_SINGLE_VIEW_PATH.replace(`:${BOOKING_ID}`, `${id}`)}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {id}
-    </a>
-  ) : null;
-
-const nameRenderer = ({
-  rowData: { booker },
-}: {
-  rowData: Partial<BookingViewProps>;
-}) =>
-  booker ? (
-    <a
-      href={PROFILE_PATH.replace(`:${USER_ID}`, `${booker.id}`)}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {booker.name}
-    </a>
-  ) : null;
-
-const emailRenderer = ({
-  rowData: { booker },
-}: {
-  rowData: Partial<BookingViewProps>;
-}) => (booker ? <LinkifyTextViewer>{booker.email}</LinkifyTextViewer> : null);
-
 function BookingAdminTable() {
   const { getBookings: _getBookings, loading } = useGetBookings();
   const allBookings = useAppSelector(selectAllBookings);
@@ -97,6 +58,7 @@ function BookingAdminTable() {
   const getBookings = useCallback(async () => {
     const bookings = await _getBookings();
     dispatch(setBookingsAction(bookings));
+    dispatch(refreshPendingBookingCountThunk());
   }, [_getBookings, dispatch]);
 
   useEffect(() => {
@@ -171,7 +133,6 @@ function BookingAdminTable() {
           resizable
           sortable
           align="center"
-          cellRenderer={bookingIdRenderer}
         />
         <Column<BookingViewProps>
           key={BOOKER_NAME}

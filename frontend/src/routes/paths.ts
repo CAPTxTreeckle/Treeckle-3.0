@@ -1,9 +1,8 @@
-import { EVENT_ID, USER_ID, VENUE_ID, BOOKING_ID } from "../constants";
+import { EVENT_ID, USER_ID, VENUE_ID } from "../constants";
 
 export const HOME_PATH = "/";
 export const DASHBOARD_PATH = "/dashboard";
 export const BOOKINGS_PATH = "/bookings";
-export const BOOKING_SINGLE_VIEW_PATH = `/bookings/:${BOOKING_ID}`;
 export const BOOKINGS_CREATION_PATH = "/bookings/create";
 export const EVENTS_PATH = "/events";
 export const EVENTS_SIGNED_UP_PATH = "/events/signedup";
@@ -22,3 +21,4 @@ export const ADMIN_USERS_PENDING_REGISTRATION_PATH = "/admin/users/pending";
 export const ADMIN_USERS_CREATION_PATH = "/admin/users/create";
 export const ADMIN_SETTINGS_PATH = "/admin/settings";
 export const PROFILE_PATH = `/profile/:${USER_ID}`;
+export const AUTH_CALLBACK_PATH = "/auth/callback";

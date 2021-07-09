@@ -1,11 +1,8 @@
 import { LabelProps } from "semantic-ui-react";
 import {
   ACTION,
-  ACTIONS,
   BOOKER,
-  BOOKING_ID,
   BOOKING_FORM_RESPONSES,
-  COMMENTS,
   DATE_TIME_RANGES,
   END_DATE_TIME,
   RESPONSE,
@@ -15,13 +12,11 @@ import {
   TITLE,
   VENUE_ID,
   VENUE_NAME,
-  IDS,
   USER_ID,
   VENUE,
 } from "../constants";
 import { BaseData } from "./base";
 import { UserData } from "./users";
-import { CommentData } from "./comments";
 import { BookingFormFieldProps, VenueData } from "./venues";
 
 export type BookingGetQueryParams = {
@@ -52,7 +47,6 @@ export type BookingData = BaseData & {
   [END_DATE_TIME]: number;
   [STATUS]: BookingStatus;
   [FORM_RESPONSE_DATA]: BookingFormResponse[];
-  [COMMENTS]?: CommentData[];
 };
 
 export type BookingFormResponse = BookingFormFieldProps & {
@@ -65,19 +59,10 @@ export type BookingFormProps = {
 };
 
 export type BookingPatchData = {
-  [ACTIONS]: BookingStatusAction[];
+  [ACTION]: BookingStatusAction;
 };
 
-export type BookingDeleteData = {
-  [IDS]: number[];
-};
-
-export type BookingStatusAction = {
-  [BOOKING_ID]: number;
-  [ACTION]: BookingStatusActionType;
-};
-
-export enum BookingStatusActionType {
+export enum BookingStatusAction {
   Revoke = "REVOKE",
   Approve = "APPROVE",
   Reject = "REJECT",

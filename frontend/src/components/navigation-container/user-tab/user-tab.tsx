@@ -4,7 +4,7 @@ import { Dropdown, Menu, Image } from "semantic-ui-react";
 import { toast } from "react-toastify";
 import { PROFILE_PATH } from "../../../routes/paths";
 import { USER_ID } from "../../../constants";
-import { useAppDispatch, useDeepEqualAppSelector } from "../../../redux/hooks";
+import { useDeepEqualAppSelector } from "../../../redux/hooks";
 import { selectCurrentUserDisplayInfo } from "../../../redux/slices/current-user-slice";
 import { resetReduxState } from "../../../redux/store";
 import defaultAvatarImage from "../../../assets/avatar.png";
@@ -13,7 +13,6 @@ function UserTab() {
   const { id, name, profileImage } = useDeepEqualAppSelector(
     selectCurrentUserDisplayInfo,
   );
-  const dispatch = useAppDispatch();
   const { pathname } = useLocation();
   const currentUserProfilePath = PROFILE_PATH.replace(`:${USER_ID}`, `${id}`);
   const isShowingCurrentUserProfile = pathname.startsWith(
@@ -21,7 +20,7 @@ function UserTab() {
   );
 
   const onSignOut = () => {
-    resetReduxState(dispatch);
+    resetReduxState();
     toast.success("Signed out successfully.");
   };
 

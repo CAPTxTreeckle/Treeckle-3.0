@@ -14,8 +14,13 @@ function AdminSettingsPage() {
             <Message.Content>
               <p>
                 The emails below will receive notifications for any creation or
-                change in status of the bookings associated with subscribed
+                change in status of the bookings associated with the subscribed
                 venue.
+              </p>
+              <p>
+                <strong>Note:</strong> The emails can be <strong>any</strong>{" "}
+                valid emails. It is not necessary for the emails to be
+                associated with any Treeckle accounts.
               </p>
             </Message.Content>
           </Message>

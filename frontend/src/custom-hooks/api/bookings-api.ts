@@ -1,11 +1,10 @@
 import useAxios from "axios-hooks";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { stringifyUrl } from "query-string";
 import { snakeCase } from "change-case";
 import { useAxiosWithTokenRefresh } from "./auth-api";
 import {
   BookingData,
-  BookingDeleteData,
   BookingGetQueryParams,
   BookingPatchData,
   BookingPostData,
@@ -68,39 +67,6 @@ export function useGetPendingBookingCount() {
   }, [apiCall]);
 
   return { pendingCount, loading, getPendingBookingCount };
-}
-
-export function useGetSingleBooking() {
-  const [booking, setBooking] = useState<BookingData>();
-  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<BookingData>(
-    {
-      method: "get",
-    },
-    { manual: true },
-  );
-
-  const getSingleBooking = useCallback(
-    async (bookingId: number | string) => {
-      const url = `/bookings/${bookingId}`;
-
-      try {
-        const { data: booking } = await apiCall({
-          url,
-        });
-        console.log(`GET ${url} success:`, booking);
-        setBooking(booking);
-        return booking;
-      } catch (error) {
-        console.log(`GET ${url} error:`, error, error?.response);
-
-        setBooking(undefined);
-        return undefined;
-      }
-    },
-    [apiCall],
-  );
-
-  return { booking, loading, getSingleBooking };
 }
 
 export function useGetBookings() {
@@ -174,66 +140,65 @@ export function useCreateBookings() {
   return { loading, createBookings };
 }
 
-export function useUpdateBookingStatuses() {
+export function useUpdateBookingStatus() {
   const [{ loading }, apiCall] = useAxiosWithTokenRefresh<BookingData[]>(
     {
-      url: "/bookings/",
       method: "patch",
     },
     { manual: true },
   );
 
-  const updateBookingStatuses = useMemo(
+  const updateBookingStatus = useMemo(
     () =>
-      errorHandlerWrapper(async (actions: BookingStatusAction[]) => {
-        const bookingPatchData: BookingPatchData = { actions };
+      errorHandlerWrapper(
+        async (bookingId: number | string, action: BookingStatusAction) => {
+          const url = `/bookings/${bookingId}`;
+          const data: BookingPatchData = { action };
 
-        const { data: bookings = [] } = await apiCall({
-          data: bookingPatchData,
-        });
+          const { data: updatedBookings = [] } = await apiCall({
+            url,
+            data,
+          });
 
-        console.log(`PATCH /bookings/ success:`, bookings);
+          console.log(`PATCH ${url} success:`, updatedBookings);
 
-        if (bookings.length === 0) {
-          throw new Error("No booking statuses were updated.");
-        }
+          if (updatedBookings.length === 0) {
+            throw new Error("No booking statuses were updated.");
+          }
 
-        return bookings;
-      }, "PATCH /bookings/ error:"),
+          return updatedBookings;
+        },
+        "PATCH /bookings/:bookingId error:",
+      ),
     [apiCall],
   );
 
-  return { updateBookingStatuses, loading };
+  return { updateBookingStatus, loading };
 }
 
-export function useDeleteBookings() {
-  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<BookingData[]>(
+export function useDeleteBooking() {
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<BookingData>(
     {
-      url: "/bookings/",
       method: "delete",
     },
     { manual: true },
   );
 
-  const deleteBookings = useMemo(
+  const deleteBooking = useMemo(
     () =>
-      errorHandlerWrapper(async (ids: number[]) => {
-        const bookingDeleteData: BookingDeleteData = { ids };
+      errorHandlerWrapper(async (bookingId: number | string) => {
+        const url = `/bookings/${bookingId}`;
 
-        const { data: deletedBookings = [] } = await apiCall({
-          data: bookingDeleteData,
+        const { data: deletedBooking } = await apiCall({
+          url,
         });
 
-        console.log(`DELETE /bookings/ success:`, deletedBookings);
+        console.log(`DELETE ${url} success:`, deletedBooking);
 
-        if (deletedBookings.length === 0) {
-          throw new Error("No booking requests were deleted.");
-        }
-
-        return deletedBookings;
-      }, "DELETE /bookings/ error:"),
+        return deletedBooking;
+      }, "DELETE /bookings/:bookingId error:"),
     [apiCall],
   );
 
-  return { deleteBookings, loading };
+  return { deleteBooking, loading };
 }

@@ -17,6 +17,9 @@ import userInvitesReducer, {
 import bookingNotificiationSubscriptionReducer, {
   resetBookingNotificationSubscriptionsAction,
 } from "./slices/booking-notification-subscription-slice";
+import pendingBookingCountReducer, {
+  resetPendingBookingCountAction,
+} from "./slices/pending-booking-count-slice";
 
 const store = configureStore({
   reducer: {
@@ -27,6 +30,7 @@ const store = configureStore({
     users: usersReducer,
     userInvites: userInvitesReducer,
     bookingNotificiationSubscriptions: bookingNotificiationSubscriptionReducer,
+    pendingBookingCount: pendingBookingCountReducer,
   },
   preloadedState: {
     currentUser: loadFromLocalStorage("user"),
@@ -43,14 +47,15 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   Action<string>
 >;
 
-export const resetReduxState = (dispatch: AppDispatch) => {
-  dispatch(resetBookingsAction());
-  dispatch(resetBookingCreationAction());
-  dispatch(resetUserCreationAction());
-  dispatch(resetUsersAction());
-  dispatch(resetUserInvitesAction());
-  dispatch(resetBookingNotificationSubscriptionsAction());
-  dispatch(setCurrentUserAction(null));
+export const resetReduxState = () => {
+  store.dispatch(resetBookingsAction());
+  store.dispatch(resetBookingCreationAction());
+  store.dispatch(resetUserCreationAction());
+  store.dispatch(resetUsersAction());
+  store.dispatch(resetUserInvitesAction());
+  store.dispatch(resetBookingNotificationSubscriptionsAction());
+  store.dispatch(resetPendingBookingCountAction());
+  store.dispatch(setCurrentUserAction(null));
 };
 
 export default store;

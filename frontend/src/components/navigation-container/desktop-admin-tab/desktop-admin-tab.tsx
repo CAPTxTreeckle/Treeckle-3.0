@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { Link, useLocation } from "react-router-dom";
 import { Dropdown } from "semantic-ui-react";
+import PendingBookingCountLabel from "../../pending-booking-count-label";
 import {
   ADMIN_BOOKINGS_PATH,
   ADMIN_USERS_PATH,
@@ -16,6 +17,7 @@ function DesktopAdminTab() {
       className={clsx({ active: pathname.startsWith("/admin") })}
       text="Admin"
       item
+      icon={<PendingBookingCountLabel />}
       floating
     >
       <Dropdown.Menu>
