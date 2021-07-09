@@ -11,11 +11,16 @@ class Role(models.TextChoices):
     RESIDENT = "RESIDENT"
 
 
+MAX_ROLE_LENGTH = max(map(len, Role))
+
+
 class User(TimestampedModel):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, blank=True)
     email = models.EmailField(unique=True)
-    role = models.CharField(max_length=50, choices=Role.choices, default=Role.RESIDENT)
+    role = models.CharField(
+        max_length=MAX_ROLE_LENGTH, choices=Role.choices, default=Role.RESIDENT
+    )
     profile_image = models.URLField(blank=True)
 
     def __str__(self):
@@ -25,7 +30,9 @@ class User(TimestampedModel):
 class UserInvite(TimestampedModel):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
     email = models.EmailField(unique=True)
-    role = models.CharField(max_length=50, choices=Role.choices, default=Role.RESIDENT)
+    role = models.CharField(
+        max_length=MAX_ROLE_LENGTH, choices=Role.choices, default=Role.RESIDENT
+    )
 
     def __str__(self):
         return f"{self.email} ({self.organization})"
