@@ -18,6 +18,7 @@ RUN apk update && \
     gcc \
     musl-dev \
     postgresql-dev \
+    libffi-dev \
     && pip install --no-cache-dir -r requirements.txt \
     && apk del --no-cache .build-deps
 
