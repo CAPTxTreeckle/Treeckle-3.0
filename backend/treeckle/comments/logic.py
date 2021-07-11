@@ -8,10 +8,9 @@ from treeckle.common.constants import (
     UPDATED_AT,
     CONTENT,
     COMMENTER,
-    BOOKING_ID,
     IS_ACTIVE,
 )
-from .models import BookingComment, Comment
+from .models import BookingComment, Comment, CommentRead
 from bookings.models import Booking
 from users.models import User
 from users.logic import user_to_json
@@ -69,3 +68,15 @@ def delete_comment(comment: Comment) -> Comment:
     comment.save()
 
     return comment
+
+def create_comment_reads(comment_ids: list[int], user: User) -> QuerySet[CommentRead]:
+    comments = Comment.objects.filter(id__in=comment_ids)
+
+    comment_reads = [CommentRead(comment=comment, reader=user) for comment in comments]
+
+    for comment in comments:
+        print(comment)
+
+    created_comment_reads = CommentRead.objects.bulk_create(comment_reads, ignore_conflicts=True)
+    
+    return created_comment_reads

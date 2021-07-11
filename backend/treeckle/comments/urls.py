@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import SingleCommentView
+from .views import SingleCommentView, ReadCommentsView
 
 urlpatterns = [
     path(
@@ -8,4 +8,7 @@ urlpatterns = [
         SingleCommentView.as_view(),
         name="comments",
     ),
+    path(
+        "read", ReadCommentsView.as_view(), name="read_comments"
+    )
 ]
