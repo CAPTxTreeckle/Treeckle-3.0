@@ -120,6 +120,7 @@ JAZZMIN_SETTINGS = {
     "icons": {
         "authentication.gmailauthentication": "fab fa-google",
         "authentication.openidauthentication": "fab fa-openid",
+        "authentication.passwordauthentication": "fas fa-key",
         "bookings.booking": "fas fa-book",
         "organizations.organization": "fas fa-sitemap",
         "users.user": "fas fa-users",

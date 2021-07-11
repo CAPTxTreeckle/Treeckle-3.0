@@ -1,3 +1,5 @@
+from typing import Optional
+
 from rest_framework import serializers, exceptions
 
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
@@ -6,13 +8,14 @@ from rest_framework_simplejwt.settings import api_settings
 
 from users.models import User
 from users.logic import user_to_json, get_users
-from treeckle.common.constants import REFRESH, TOKEN_ID, NAME, EMAIL, USER_ID, PASSWORD
-from .logic import (
-    get_gmail_user_data,
-    get_open_id_user_data,
-    get_password_user_data,
-    authenticate_user,
-    get_authenticated_data,
+from treeckle.common.constants import REFRESH
+from .logic import get_authenticated_data
+
+from .models import (
+    AuthenticationData,
+    GmailAuthenticationData,
+    OpenIdAuthenticationData,
+    PasswordAuthenticationData,
 )
 
 
@@ -26,54 +29,44 @@ class BaseAuthenticationSerializer(serializers.Serializer):
         )
         raise authentication_failed_exception
 
-    def authenticate(self, user_data: dict) -> dict:
-        authenticated_user = authenticate_user(user_data=user_data)
+    def authenticate(self, auth_data: AuthenticationData) -> dict:
+        authenticated_user = auth_data.authenticate()
 
         if authenticated_user is None:
             self.raise_invalid_user()
 
-        data = get_authenticated_data(user=authenticated_user)
-
-        return data
+        return get_authenticated_data(user=authenticated_user)
 
 
 class GmailLoginSerializer(BaseAuthenticationSerializer):
     token_id = serializers.CharField()
 
     def validate(self, attrs):
-        token_id = attrs[TOKEN_ID]
+        auth_data = GmailAuthenticationData(attrs)
 
-        user_data = get_gmail_user_data(token_id=token_id)
-
-        return self.authenticate(user_data)
+        return self.authenticate(auth_data)
 
 
 class OpenIdLoginSerializer(BaseAuthenticationSerializer):
+    name = serializers.CharField()
     email = serializers.EmailField()
     user_id = serializers.CharField()
-    name = serializers.CharField()
 
     def validate(self, attrs):
-        name = attrs[NAME]
-        user_id = attrs[USER_ID]
-        email = attrs[EMAIL]
+        auth_data = OpenIdAuthenticationData(attrs)
 
-        user_data = get_open_id_user_data(name=name, email=email, user_id=user_id)
-
-        return self.authenticate(user_data)
+        return self.authenticate(auth_data)
 
 
 class PasswordLoginSerializer(BaseAuthenticationSerializer):
+    name = serializers.CharField(default="")
     email = serializers.EmailField()
     password = serializers.CharField()
 
     def validate(self, attrs):
-        email = attrs[EMAIL]
-        password = attrs[PASSWORD]
+        auth_data = PasswordAuthenticationData(attrs)
 
-        user_data = get_password_user_data(email=email, password=password)
-
-        return self.authenticate(user_data)
+        return self.authenticate(auth_data)
 
 
 class AccessTokenRefreshSerializer(
