@@ -73,10 +73,6 @@ def create_comment_reads(comment_ids: list[int], user: User) -> QuerySet[Comment
     comments = Comment.objects.filter(id__in=comment_ids)
 
     comment_reads = [CommentRead(comment=comment, reader=user) for comment in comments]
-
-    for comment in comments:
-        print(comment)
-
     created_comment_reads = CommentRead.objects.bulk_create(comment_reads, ignore_conflicts=True)
     
     return created_comment_reads

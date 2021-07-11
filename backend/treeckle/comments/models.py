@@ -13,7 +13,7 @@ class Comment(TimestampedModel):
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"{self.id} | {self.commenter} | is_active: {self.is_active}"
+        return f"{self.id} | is_active: {self.is_active} | {self.commenter}"
 
 
 class CommentRead(TimestampedModel):

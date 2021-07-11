@@ -18,8 +18,7 @@ from treeckle.common.constants import (
     END_DATE_TIME,
     STATUS,
     FORM_RESPONSE_DATA,
-    NAME,
-    COMMENTS,
+    COMMENTS
 )
 from treeckle.common.exceptions import BadRequest
 from treeckle.common.parsers import parse_datetime_to_ms_timestamp
@@ -29,6 +28,7 @@ from users.models import User, Role
 from venues.models import Venue
 from venues.logic import venue_to_json
 from .models import Booking, BookingStatusAction, BookingStatus
+from comments.logic import booking_comment_to_json, get_booking_comments
 
 DateTimeInterval = namedtuple(
     "DateTimeInterval", ["start", "end", "is_new"], defaults=[True]
@@ -64,8 +64,8 @@ def get_non_overlapping_date_time_intervals(
     return non_overlapping_date_time_intervals
 
 
-def booking_to_json(booking: Booking):
-    return {
+def booking_to_json(booking: Booking, include_comments: bool=False):
+    data =  {
         ID: booking.id,
         CREATED_AT: parse_datetime_to_ms_timestamp(booking.created_at),
         UPDATED_AT: parse_datetime_to_ms_timestamp(booking.updated_at),
@@ -77,6 +77,16 @@ def booking_to_json(booking: Booking):
         STATUS: booking.status,
         FORM_RESPONSE_DATA: booking.form_response_data,
     }
+
+    if include_comments:
+        booking_comments = get_booking_comments(booking=booking).select_related(
+            "comment__commenter__organization", "booking"
+        )
+
+        data.update({COMMENTS: [booking_comment_to_json(comment) for comment in booking_comments]})
+
+
+    return data
 
 
 def get_bookings(*args, **kwargs) -> QuerySet[Booking]:

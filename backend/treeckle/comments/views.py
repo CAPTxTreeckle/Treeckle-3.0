@@ -7,8 +7,8 @@ from users.permission_middlewares import check_access
 from users.models import Role, User
 from .serializers import PostCommentSerializer, PostReadCommentSerializer
 from .models import Booking, Comment
-from .middlewares import check_user_is_commenter
-from bookings.middlewares import check_requester_is_booker_or_admin
+from .middlewares import check_comment_is_active, check_requester_is_commenter
+from bookings.middlewares import check_requester_is_booker_or_admin, check_requester_booking_same_organization
 from .logic import (
     create_booking_comment,
     get_booking_comments,
@@ -21,9 +21,10 @@ from .logic import (
 
 # Create your views here.
 
-
+# Not used
 class BookingCommentsView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
+    @check_requester_booking_same_organization
     @check_requester_is_booker_or_admin
     def get(self, request, requester: User, booking: Booking):
         booking_comments = get_booking_comments(booking=booking).select_related(
@@ -38,6 +39,7 @@ class BookingCommentsView(APIView):
         return Response(data, status=status.HTTP_200_OK)
 
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
+    @check_requester_booking_same_organization
     @check_requester_is_booker_or_admin
     def post(self, request, requester: User, booking: Booking):
         serializer = PostCommentSerializer(data=request.data)
@@ -60,30 +62,23 @@ class BookingCommentsView(APIView):
 
 class SingleCommentView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
-    @check_user_is_commenter
+    @check_requester_is_commenter
+    @check_comment_is_active
     def put(self, request, requester: User, comment: Comment):
-        if not comment.is_active:
-            raise BadRequest("Comment has been deleted.")
-
         serializer = PostCommentSerializer(data=request.data)
 
         serializer.is_valid(raise_exception=True)
         content = serializer.validated_data["content"]
 
-        try:
-            updated_comment = update_comment(comment=comment, content=content)
-        except Exception as e:
-            raise InternalServerError(e)
+        updated_comment = update_comment(comment=comment, content=content)
 
         data = comment_to_json(updated_comment)
         return Response(data, status=status.HTTP_200_OK)
 
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
-    @check_user_is_commenter
+    @check_requester_is_commenter
+    @check_comment_is_active
     def delete(self, request, requester: User, comment: Comment):
-        if not comment.is_active:
-            raise BadRequest("Comment has already been deleted.")
-
         try:
             deleted_comment = delete_comment(comment=comment)
         except Exception as e:

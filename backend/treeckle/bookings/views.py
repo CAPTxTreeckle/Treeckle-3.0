@@ -1,6 +1,4 @@
 from datetime import datetime
-from treeckle.common.constants import COMMENTS
-
 from django.utils.timezone import make_aware
 
 from rest_framework import status
@@ -8,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 
+from treeckle.common.constants import COMMENTS
 from treeckle.common.exceptions import BadRequest
 from treeckle.common.parsers import parse_ms_timestamp_to_datetime
 from email_service.logic import send_created_booking_emails, send_updated_booking_emails
@@ -127,6 +126,15 @@ class BookingsView(APIView):
 class SingleBookingView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
     @check_requester_booking_same_organization
+    @check_requester_is_booker_or_admin
+    def get(self, request, requester: User, booking: Booking):
+        data = booking_to_json(booking, include_comments=True)
+
+        return Response(data, status=status.HTTP_200_OK)
+
+
+    @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
+    @check_requester_booking_same_organization
     def patch(self, request, requester: User, booking: Booking):
         serializer = PatchSingleBookingSerializer(data=request.data)
 
@@ -154,19 +162,5 @@ class SingleBookingView(APIView):
         data = booking_to_json(booking)
 
         booking.delete()
-
-        return Response(data, status=status.HTTP_200_OK)
-
-
-class SingleBookingsView(APIView):
-    @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
-    @check_requester_is_booker_or_admin
-    def get(self, request, requester: User, booking: Booking):
-        data = booking_to_json(booking)
-        booking_comments = get_booking_comments(booking=booking).select_related(
-            "comment__commenter__organization", "booking"
-        )
-
-        data.update({COMMENTS: [booking_comment_to_json(comment) for comment in booking_comments]})
 
         return Response(data, status=status.HTTP_200_OK)

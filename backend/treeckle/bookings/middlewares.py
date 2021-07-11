@@ -37,13 +37,9 @@ def check_requester_booking_same_organization(view_method):
 
 def check_requester_is_booker_or_admin(view_method):
     def _arguments_wrapper(
-        instance, request, requester: User, booking_id: int, *args, **kwargs
+        instance, request, requester: User, booking: Booking, *args, **kwargs
     ):
         try:
-            booking = (
-                get_bookings(id=booking_id).select_related("booker", "venue").get()
-            )
-
             is_admin = requester.role == Role.ADMIN
             is_booker = requester == booking.booker
             has_view_booking_permission = is_admin or is_booker
@@ -55,7 +51,6 @@ def check_requester_is_booker_or_admin(view_method):
                 )
 
         except (
-            Booking.DoesNotExist,
             Booking.MultipleObjectsReturned,
             PermissionDenied,
         ) as e:

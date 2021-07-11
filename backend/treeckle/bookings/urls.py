@@ -4,7 +4,7 @@ from .views import (
     TotalBookingCountView,
     PendingBookingCountView,
     BookingsView,
-    SingleBookingsView,
+    SingleBookingView,
 )
 from comments.views import BookingCommentsView
 
@@ -14,7 +14,7 @@ urlpatterns = [
     path(
         "pendingcount", PendingBookingCountView.as_view(), name="pending_count"
     ),
-    path("<int:booking_id>", SingleBookingsView.as_view(), name="single_booking"),
+    path("<int:booking_id>", SingleBookingView.as_view(), name="single_booking"),
     path(
         "<int:booking_id>/comments",
         BookingCommentsView.as_view(),

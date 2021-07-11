@@ -1,11 +1,12 @@
 from rest_framework.exceptions import NotFound, PermissionDenied
 
+from treeckle.common.exceptions import BadRequest
 from users.models import User
 from .models import Comment
 from .logic import get_comments
 
 
-def check_user_is_commenter(view_method):
+def check_requester_is_commenter(view_method):
     def _arguments_wrapper(
         instance, request, requester: User, comment_id: int, *args, **kwargs
     ):
@@ -30,4 +31,17 @@ def check_user_is_commenter(view_method):
             instance, request, requester=requester, comment=comment, *args, **kwargs
         )
 
+    return _arguments_wrapper
+
+def check_comment_is_active(view_method):
+    def _arguments_wrapper(
+        instance, request, requester: User, comment: Comment, *args, **kwargs
+    ):
+        if not comment.is_active:
+            raise BadRequest("Comment has already been deleted.")
+    
+        return view_method(
+            instance, request, requester=requester, comment=comment, *args, **kwargs
+        )
+    
     return _arguments_wrapper
