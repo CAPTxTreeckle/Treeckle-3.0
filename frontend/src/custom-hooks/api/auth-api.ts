@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import useAxios, { Options, RefetchOptions, ResponseValues } from "axios-hooks";
 import {
   GoogleLoginResponse,
@@ -7,8 +7,18 @@ import {
 } from "react-google-login";
 import { toast } from "react-toastify";
 import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from "axios";
-import { AuthenticationData } from "../../types/auth";
-import { isForbiddenOrNotAuthenticated } from "../../utils/error-utils";
+import {
+  AuthenticationData,
+  CheckAccountPostData,
+  GmailLoginPostData,
+  LoginDetails,
+  PasswordLoginPostData,
+} from "../../types/auth";
+import {
+  errorHandlerWrapper,
+  isForbiddenOrNotAuthenticated,
+  resolveApiError,
+} from "../../utils/error-utils";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   setCurrentUserAction,
@@ -66,19 +76,19 @@ export function useAxiosWithTokenRefresh<T>(
         try {
           console.log("Error before token refresh:", error, error?.response);
 
-          const { data } = await tokenRefresh();
+          const { data: authData } = await tokenRefresh();
 
-          console.log("POST /gateway/refresh success:", data);
+          console.log("POST /gateway/refresh success:", authData);
 
           const response = await apiCall(
             {
               ...config,
-              headers: { authorization: `Bearer ${data.access}` },
+              headers: { authorization: `Bearer ${authData.access}` },
             },
             options,
           );
 
-          dispatch(setCurrentUserAction(data));
+          dispatch(setCurrentUserAction(authData));
 
           return response;
         } catch (error) {
@@ -120,18 +130,24 @@ export function useGoogleAuth() {
     onSuccess: async (
       response: GoogleLoginResponse | GoogleLoginResponseOffline,
     ) => {
+      console.log("Google Client login success:", response);
+      const { tokenId } = response as GoogleLoginResponse;
+      const data: GmailLoginPostData = { tokenId };
+
       try {
-        console.log("Google Client login success:", response);
-        const { tokenId } = response as GoogleLoginResponse;
-        const { data } = await login({ data: { tokenId } });
-        console.log("POST /gateway/gmail success:", data);
+        await errorHandlerWrapper(async () => {
+          console.log("POST /gateway/gmail data:", data);
 
-        toast.success("Signed in successfully.");
+          const { data: authData } = await login({ data });
 
-        dispatch(setCurrentUserAction(data));
+          console.log("POST /gateway/gmail success:", authData);
+
+          toast.success("Signed in successfully.");
+
+          dispatch(setCurrentUserAction(authData));
+        }, "POST /gateway/gmail error:")();
       } catch (error) {
-        console.log("POST /gateway/gmail error:", error, error?.response);
-        toast.error("Invalid user.");
+        resolveApiError(error);
       }
     },
     onFailure: (error) => {
@@ -153,4 +169,64 @@ export function useGoogleAuth() {
     loading: !loaded || loading,
     isUnavailable,
   };
+}
+
+export function useCheckAccount() {
+  const [{ loading }, apiCall] = useAxios<LoginDetails>(
+    {
+      url: "/gateway/check",
+      method: "post",
+    },
+    { manual: true },
+  );
+
+  const checkAccount = useMemo(
+    () =>
+      errorHandlerWrapper(async (data: CheckAccountPostData) => {
+        console.log("POST /gateway/check data:", data);
+
+        const { data: loginDetails } = await apiCall({ data });
+
+        console.log("POST /gateway/check success:", loginDetails);
+
+        return loginDetails;
+      }, "POST /gateway/check error:"),
+    [apiCall],
+  );
+
+  return { loading, checkAccount };
+}
+
+export function usePasswordLogin() {
+  const dispatch = useAppDispatch();
+  const [{ loading }, login] = useAxios<AuthenticationData>(
+    {
+      url: "/gateway/login",
+      method: "post",
+    },
+    { manual: true },
+  );
+
+  const passwordLogin = useCallback(
+    async (data: PasswordLoginPostData) => {
+      try {
+        await errorHandlerWrapper(async () => {
+          console.log("POST /gateway/login data:", data);
+
+          const { data: authData } = await login({ data });
+
+          console.log("POST /gateway/login success:", authData);
+
+          toast.success("Signed in successfully.");
+
+          dispatch(setCurrentUserAction(authData));
+        }, "POST /gateway/login error:")();
+      } catch (error) {
+        resolveApiError(error);
+      }
+    },
+    [login, dispatch],
+  );
+
+  return { loading, passwordLogin };
 }

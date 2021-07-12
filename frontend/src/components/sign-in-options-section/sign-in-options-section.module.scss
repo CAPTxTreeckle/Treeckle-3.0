@@ -1,48 +1,41 @@
-@use "../../base";
+.googleButton {
+  box-shadow: rgb(0 0 0 / 24%) 0px 2px 2px 0px, rgb(0 0 0 / 24%) 0px 0px 1px 0px !important;
+  background-color: white !important;
+  color: rgba(20, 9, 9, 0.54) !important;
 
-.signInOptionsSection {
-  @include base.vertical-space-margin(1rem);
+  &:hover {
+    opacity: 0.9;
+  }
 
-  .googleButton {
+  &:focus {
+    background-color: #eeeeee !important;
+    opacity: 1;
+  }
+
+  &:global(.loading::after) {
+    border-color: #767676 transparent transparent;
+  }
+
+  &:global(.disabled) {
     box-shadow: rgb(0 0 0 / 24%) 0px 2px 2px 0px,
       rgb(0 0 0 / 24%) 0px 0px 1px 0px !important;
-    background-color: white !important;
-    color: rgba(20, 9, 9, 0.54) !important;
+  }
 
-    &:hover {
-      opacity: 0.9;
-    }
-
-    &:focus {
-      background-color: #eeeeee !important;
-      opacity: 1;
-    }
-
-    &:global(.loading::after) {
-      border-color: #767676 transparent transparent;
-    }
-
-    &:global(.disabled) {
-      box-shadow: rgb(0 0 0 / 24%) 0px 2px 2px 0px,
-        rgb(0 0 0 / 24%) 0px 0px 1px 0px !important;
-    }
-
-    :global(.google.icon) {
-      background: conic-gradient(
-          from -45deg,
-          #ea4335 110deg,
-          #4285f4 90deg 180deg,
-          #34a853 180deg 270deg,
-          #fbbc05 270deg
-        )
-        73% 55%/150% 150% no-repeat;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      -webkit-text-fill-color: transparent;
-      height: auto;
-      width: auto;
-      opacity: 1;
-    }
+  :global(.google.icon) {
+    background: conic-gradient(
+        from -45deg,
+        #ea4335 110deg,
+        #4285f4 90deg 180deg,
+        #34a853 180deg 270deg,
+        #fbbc05 270deg
+      )
+      73% 55%/150% 150% no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    height: auto;
+    width: auto;
+    opacity: 1;
   }
 }

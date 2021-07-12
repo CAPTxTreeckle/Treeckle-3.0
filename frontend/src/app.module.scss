@@ -6,75 +6,73 @@
   word-break: break-word;
 }
 
-.app {
-  :global {
-    .ui.message p {
-      opacity: 1;
+:global {
+  .ui.message p {
+    opacity: 1;
+  }
+
+  @media only screen and (min-width: 1200px) {
+    .ui.container {
+      width: 90%;
+    }
+  }
+
+  @media only screen and (max-width: 767px) {
+    .ui.icon.message {
+      flex-direction: column;
     }
 
-    @media only screen and (min-width: 1200px) {
-      .ui.container {
-        width: 90%;
+    .ui.message {
+      > .icon {
+        margin-right: 0;
+      }
+
+      > .icon:first-child {
+        margin-bottom: 0.6rem;
       }
     }
+  }
 
-    @media only screen and (max-width: 767px) {
-      .ui.icon.message {
-        flex-direction: column;
-      }
+  .ui.vertical.menu .item > i.icon {
+    float: none;
+    margin: 0 0.5rem 0 0;
+  }
 
-      .ui.message {
-        > .icon {
-          margin-right: 0;
-        }
+  .text-viewer {
+    @include base.text-viewer;
+  }
 
-        > .icon:first-child {
-          margin-bottom: 0.6rem;
-        }
-      }
-    }
+  .hidden-display {
+    display: none;
+  }
 
-    .ui.vertical.menu .item > i.icon {
-      float: none;
-      margin: 0 0.5rem 0 0;
-    }
+  .align-center {
+    align-items: center;
+  }
 
-    .text-viewer {
-      @include base.text-viewer;
-    }
+  .justify-end {
+    justify-content: flex-end;
+  }
 
-    .hidden-display {
-      display: none;
-    }
+  .justify-center {
+    justify-content: center;
+  }
 
-    .align-center {
-      align-items: center;
-    }
+  .flex-display {
+    display: flex;
+  }
 
-    .justify-end {
-      justify-content: flex-end;
-    }
+  .pointer {
+    cursor: pointer;
+  }
 
-    .justify-center {
-      justify-content: center;
-    }
+  .full-width {
+    width: 100%;
+  }
 
-    .flex-display {
-      display: flex;
-    }
-
-    .pointer {
-      cursor: pointer;
-    }
-
-    .full-width {
-      width: 100%;
-    }
-
-    .hover-dimming {
-      :hover {
-        background-color: rgb(240, 240, 240);
-      }
+  .hover-dimming {
+    :hover {
+      background-color: rgb(240, 240, 240);
     }
   }
 }

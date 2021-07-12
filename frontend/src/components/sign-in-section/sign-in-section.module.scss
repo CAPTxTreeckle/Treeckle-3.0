@@ -1,0 +1,8 @@
+@use "../../base";
+
+.signInSection {
+  @include base.vertical-space-margin(1rem);
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+}

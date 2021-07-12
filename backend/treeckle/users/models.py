@@ -16,7 +16,7 @@ MAX_ROLE_LENGTH = max(map(len, Role))
 
 class User(TimestampedModel):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255, blank=True)
+    name = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     role = models.CharField(
         max_length=MAX_ROLE_LENGTH, choices=Role.choices, default=Role.RESIDENT

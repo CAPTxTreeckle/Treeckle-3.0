@@ -8,8 +8,8 @@ from rest_framework_simplejwt.settings import api_settings
 
 from users.models import User
 from users.logic import user_to_json, get_users
-from treeckle.common.constants import REFRESH
-from .logic import get_authenticated_data
+from treeckle.common.constants import REFRESH, EMAIL
+from .logic import get_authenticated_data, get_login_details
 
 from .models import (
     AuthenticationData,
@@ -59,7 +59,7 @@ class OpenIdLoginSerializer(BaseAuthenticationSerializer):
 
 
 class PasswordLoginSerializer(BaseAuthenticationSerializer):
-    name = serializers.CharField(default="")
+    name = serializers.CharField()
     email = serializers.EmailField()
     password = serializers.CharField()
 
@@ -87,3 +87,17 @@ class AccessTokenRefreshSerializer(
         data.update(tokens)
 
         return data
+
+
+class CheckAccountSerializer(BaseAuthenticationSerializer):
+    email = serializers.EmailField()
+
+    def validate(self, attrs):
+        email = attrs[EMAIL]
+
+        login_details = get_login_details(email=email)
+
+        if login_details is None:
+            self.raise_invalid_user()
+
+        return login_details

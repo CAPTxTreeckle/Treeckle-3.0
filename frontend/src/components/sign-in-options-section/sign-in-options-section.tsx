@@ -1,8 +1,11 @@
+import { useContext } from "react";
 import { Button } from "semantic-ui-react";
+import { SignInContext } from "../../contexts/sign-in-provider";
 import { useGoogleAuth } from "../../custom-hooks/api/auth-api";
 import styles from "./sign-in-options-section.module.scss";
 
 function SignInOptionsSection() {
+  const { setPasswordSignIn } = useContext(SignInContext);
   const {
     startGoogleAuth,
     loading: googleAuthLoading,
@@ -10,8 +13,13 @@ function SignInOptionsSection() {
   } = useGoogleAuth();
 
   return (
-    <div className={styles.signInOptionsSection}>
-      <Button content="Sign in with password" icon="key" fluid />
+    <>
+      <Button
+        content="Sign in with password"
+        icon="key"
+        fluid
+        onClick={() => setPasswordSignIn(true)}
+      />
 
       <Button
         content="Sign in with NUSNET"
@@ -38,7 +46,7 @@ function SignInOptionsSection() {
         fluid
         disabled
       />
-    </div>
+    </>
   );
 }
 

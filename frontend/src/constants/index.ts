@@ -71,3 +71,5 @@ export const END_DATE_TIME_STRING = "endDateTimeString";
 export const PROFILE_IMAGE = "profileImage";
 export const DEFAULT_ARRAY = [];
 export const FULL_DETAILS = "fullDetails";
+export const TOKEN_ID = "tokenId";
+export const PASSWORD = "password";

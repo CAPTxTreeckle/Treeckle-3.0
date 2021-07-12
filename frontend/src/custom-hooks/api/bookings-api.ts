@@ -60,7 +60,7 @@ export function useGetPendingBookingCount() {
         return pendingCount;
       }, "GET /bookings/pendingcount error:")();
     } catch (error) {
-      resolveApiError(error);
+      console.log("GET /bookings/pendingcount error:", error, error?.response);
 
       return 0;
     }

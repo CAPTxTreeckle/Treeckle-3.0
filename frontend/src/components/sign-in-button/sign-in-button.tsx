@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Button, TransitionablePortal, Modal, Header } from "semantic-ui-react";
-import SignInOptionsSection from "../sign-in-options-section";
+import { Button, TransitionablePortal, Modal } from "semantic-ui-react";
+import SignInSection from "../sign-in-section";
+import SignInProvider from "../../contexts/sign-in-provider";
 import styles from "./sign-in-button.module.scss";
 
 function SignInButton() {
@@ -24,12 +25,9 @@ function SignInButton() {
           size="mini"
           closeIcon
         >
-          <Modal.Header as={Header} textAlign="center">
-            Sign In Options
-          </Modal.Header>
-          <Modal.Content>
-            <SignInOptionsSection />
-          </Modal.Content>
+          <SignInProvider>
+            <SignInSection />
+          </SignInProvider>
         </Modal>
       </TransitionablePortal>
     </div>

@@ -1,4 +1,4 @@
-import { Provider } from "react-redux";
+import { Provider as ReduxProvider } from "react-redux";
 import { toast, Zoom } from "react-toastify";
 import axios from "axios";
 import { configure } from "axios-hooks";
@@ -25,16 +25,14 @@ configure({ axios: axios.create({ baseURL: process.env.REACT_APP_API_URL }) });
 
 function App() {
   return (
-    <div className={styles.app}>
-      <Provider store={store}>
-        <ModalProvider rootComponent={TransitionGroup}>
-          <LocalStorageUserManager />
-          <LocalStorageBookingCreationManager />
-          <PendingBookingCountManager />
-          <Routes />
-        </ModalProvider>
-      </Provider>
-    </div>
+    <ReduxProvider store={store}>
+      <ModalProvider rootComponent={TransitionGroup}>
+        <LocalStorageUserManager />
+        <LocalStorageBookingCreationManager />
+        <PendingBookingCountManager />
+        <Routes />
+      </ModalProvider>
+    </ReduxProvider>
   );
 }
 

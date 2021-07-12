@@ -4,6 +4,7 @@ from .serializers import (
     GmailLoginSerializer,
     PasswordLoginSerializer,
     AccessTokenRefreshSerializer,
+    CheckAccountSerializer,
 )
 
 # Create your views here.
@@ -21,3 +22,7 @@ class PasswordLoginView(TokenViewBase):
 
 class AccessTokenRefreshView(TokenViewBase):
     serializer_class = AccessTokenRefreshSerializer
+
+
+class CheckAccountView(TokenViewBase):
+    serializer_class = CheckAccountSerializer

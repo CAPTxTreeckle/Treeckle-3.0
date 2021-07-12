@@ -4,6 +4,7 @@ from .views import (
     OpenIdLoginView,
     PasswordLoginView,
     AccessTokenRefreshView,
+    CheckAccountView,
 )
 
 urlpatterns = [
@@ -11,4 +12,5 @@ urlpatterns = [
     path("gmail", GmailLoginView.as_view(), name="gmail_login"),
     path("login", PasswordLoginView.as_view(), name="password_login"),
     path("refresh", AccessTokenRefreshView.as_view(), name="token_refresh"),
+    path("check", CheckAccountView.as_view(), name="check_account"),
 ]
