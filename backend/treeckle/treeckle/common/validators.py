@@ -8,5 +8,5 @@ def is_url(url: str) -> bool:
     try:
         validate_url(url)
         return True
-    except ValidationError:
+    except ValidationError as e:
         return False

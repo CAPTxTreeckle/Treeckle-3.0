@@ -4,7 +4,10 @@ from typing import Optional
 
 from django.db import models, transaction
 from django.contrib.auth.hashers import check_password, make_password
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 
+from treeckle.common.exceptions import BadRequest
 from treeckle.common.models import TimestampedModel
 from treeckle.common.constants import (
     TOKEN_ID,
@@ -72,6 +75,12 @@ class PasswordAuthentication(AuthenticationMethod):
             for method in ALTERNATIVE_AUTH_METHODS
         ):
             return None
+
+        try:
+            validate_password(password)
+        except ValidationError as e:
+            detail = "\n".join(e.messages) if type(e.messages) != str else e.message
+            raise BadRequest(detail=detail, code="bad_password")
 
         hashed_password = make_password(password)
         return super().create(user, hashed_password)
