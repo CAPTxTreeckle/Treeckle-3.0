@@ -1,4 +1,5 @@
 import { useContext } from "react";
+import clsx from "clsx";
 import { Button } from "semantic-ui-react";
 import { SignInContext } from "../../contexts/sign-in-provider";
 import { useGoogleAuth } from "../../custom-hooks/api/auth-api";
@@ -22,15 +23,7 @@ function SignInOptionsSection() {
       />
 
       <Button
-        content="Sign in with NUSNET"
-        icon="openid"
-        color="blue"
-        fluid
-        disabled
-      />
-
-      <Button
-        className={styles.googleButton}
+        className={clsx(styles.googleButton, styles.important)}
         onClick={startGoogleAuth}
         content="Sign in with Google"
         icon={googleAuthLoading ? undefined : "google"}
@@ -43,6 +36,14 @@ function SignInOptionsSection() {
         icon="facebook"
         color="facebook"
         content="Sign in with Facebook"
+        fluid
+        disabled
+      />
+
+      <Button
+        content="Sign in with NUSNET"
+        icon="openid"
+        color="blue"
         fluid
         disabled
       />
