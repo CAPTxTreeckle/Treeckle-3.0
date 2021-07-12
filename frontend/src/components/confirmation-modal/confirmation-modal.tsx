@@ -44,7 +44,6 @@ function ConfirmationModal({
 
         <Modal.Actions>
           <Button
-            basic
             color="red"
             inverted
             icon="times"
@@ -52,7 +51,6 @@ function ConfirmationModal({
             {...noButtonProps}
           />
           <Button
-            basic
             color="green"
             inverted
             icon="checkmark"
