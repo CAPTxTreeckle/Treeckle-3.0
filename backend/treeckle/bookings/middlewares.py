@@ -51,7 +51,6 @@ def check_requester_is_booker_or_admin(view_method):
                 )
 
         except (
-            Booking.MultipleObjectsReturned,
             PermissionDenied,
         ) as e:
             raise NotFound(detail="No booking found.", code="no_booking_found")
