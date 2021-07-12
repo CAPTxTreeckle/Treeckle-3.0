@@ -121,6 +121,7 @@ export function useGoogleAuth() {
       response: GoogleLoginResponse | GoogleLoginResponseOffline,
     ) => {
       try {
+        console.log("Google Client login success:", response);
         const { tokenId } = response as GoogleLoginResponse;
         const { data } = await login({ data: { tokenId } });
         console.log("POST /gateway/gmail success:", data);

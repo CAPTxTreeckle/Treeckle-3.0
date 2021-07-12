@@ -12,6 +12,7 @@ from treeckle.common.constants import (
     NAME,
     EMAIL,
     SUB,
+    PICTURE,
     PASSWORD,
     USER_ID,
 )
@@ -85,11 +86,13 @@ class AuthenticationData(ABC):
         email: str,
         auth_id: str,
         auth_method_class: AuthenticationMethod,
+        profile_image: str = "",
     ):
         self.name = name
         self.email = email
         self.auth_id = auth_id
         self.auth_method_class = auth_method_class
+        self.profile_image = profile_image
 
     @transaction.atomic
     def authenticate(self) -> Optional[User]:
@@ -124,8 +127,13 @@ class AuthenticationData(ABC):
                 organization=user_invite.organization,
                 name=self.name,
                 email=self.email,
+                profile_image=self.profile_image,
                 role=user_invite.role,
             )
+        ## update profile image if possible
+        elif not user.profile_image and self.profile_image:
+            user.profile_image = self.profile_image
+            user.save()
 
         ## since user exists, user invite should be deleted if it exists
         if user_invite is not None:
@@ -163,6 +171,7 @@ class GmailAuthenticationData(AuthenticationData):
             email=response_data.get(EMAIL),
             auth_id=response_data.get(SUB),
             auth_method_class=GmailAuthentication,
+            profile_image=response_data.get(PICTURE, ""),
         )
 
 
