@@ -27,7 +27,7 @@ function MobileAdminTab({ onTabClick }: Props) {
         onClick={() => setExpanded(!isExpanded)}
         active={isExpanded}
         content={
-          <HorizontalLayoutContainer spacing="compact">
+          <HorizontalLayoutContainer align="center" spacing="compact">
             <span>Admin</span>
 
             <PendingBookingCountLabel />

@@ -21,7 +21,6 @@ from treeckle.common.constants import (
 )
 
 from users.models import User, UserInvite
-from users.logic import get_users, get_user_invites
 
 
 ## DB models
@@ -52,7 +51,7 @@ class AuthenticationMethod(TimestampedModel):
 
 
 ## Alternative auth methods
-class GmailAuthentication(AuthenticationMethod):
+class GoogleAuthentication(AuthenticationMethod):
     pass
 
 
@@ -61,16 +60,16 @@ class OpenIdAuthentication(AuthenticationMethod):
 
 
 ## IMPORTANT: to be updated every time the alternative auth methods are updated
-ALTERNATIVE_AUTH_METHODS = [GmailAuthentication, OpenIdAuthentication]
+ALTERNATIVE_AUTH_METHODS = [GoogleAuthentication, OpenIdAuthentication]
 
 
 class PasswordAuthentication(AuthenticationMethod):
-    def is_valid(self, auth_id):
+    def is_valid(self, auth_id: str):
         return check_password(auth_id, self.auth_id)
 
     @classmethod
-    def create(cls, user, password):
-        if any(
+    def create(cls, user: User, password: str, check_alt_methods: bool = True):
+        if check_alt_methods and any(
             hasattr(user, method.get_related_name())
             for method in ALTERNATIVE_AUTH_METHODS
         ):
@@ -107,20 +106,16 @@ class AuthenticationData(ABC):
     def authenticate(self) -> Optional[User]:
         ## check if an invite exists
         try:
-            user_invite = (
-                get_user_invites(email=self.email).select_related("organization").get()
+            user_invite = UserInvite.objects.select_related("organization").get(
+                email=self.email
             )
         except UserInvite.DoesNotExist as e:
             user_invite = None
 
         ## check if is existing user
         try:
-            user = (
-                get_users(
-                    email=self.email,
-                )
-                .select_related("organization")
-                .get()
+            user = User.objects.select_related("organization").get(
+                email=self.email,
             )
         except User.DoesNotExist as e:
             user = None
@@ -163,7 +158,7 @@ class AuthenticationData(ABC):
         return user if new_auth_method is not None else None
 
 
-class GmailAuthenticationData(AuthenticationData):
+class GoogleAuthenticationData(AuthenticationData):
     def __init__(self, data: dict):
         token_id = data[TOKEN_ID]
 
@@ -179,7 +174,7 @@ class GmailAuthenticationData(AuthenticationData):
             name=response_data.get(NAME),
             email=response_data.get(EMAIL),
             auth_id=response_data.get(SUB),
-            auth_method_class=GmailAuthentication,
+            auth_method_class=GoogleAuthentication,
             profile_image=response_data.get(PICTURE, ""),
         )
 

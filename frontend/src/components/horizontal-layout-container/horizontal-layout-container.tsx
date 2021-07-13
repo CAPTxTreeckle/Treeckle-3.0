@@ -6,6 +6,7 @@ type Props = {
   className?: string;
   justify?: "start" | "center" | "end" | "space between";
   spacing?: "normal" | "compact";
+  align?: "center";
   children: ReactNode;
 };
 
@@ -14,6 +15,7 @@ function HorizontalLayoutContainer({
   className,
   justify = "start",
   spacing = "normal",
+  align,
 }: Props) {
   return (
     <div
@@ -27,6 +29,9 @@ function HorizontalLayoutContainer({
         {
           [styles.normal]: spacing === "normal",
           [styles.compact]: spacing === "compact",
+        },
+        {
+          [styles.alignCenter]: align === "center",
         },
         className,
       )}

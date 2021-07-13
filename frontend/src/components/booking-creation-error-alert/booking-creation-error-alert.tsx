@@ -17,7 +17,7 @@ function BookingCreationErrorAlert({
   return (
     <div className={styles.bookingCreationErrorAlert}>
       <div>{errorMessage}</div>
-      <HorizontalLayoutContainer spacing="compact">
+      <HorizontalLayoutContainer align="center" spacing="compact">
         <span>Please reset the form or contact us via</span>
         <span>
           <BookingCreationHelpButton />

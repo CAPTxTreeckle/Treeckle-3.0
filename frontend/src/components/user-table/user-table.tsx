@@ -37,7 +37,6 @@ import {
   setUsersAction,
   updateUserAction,
 } from "../../redux/slices/users-slice";
-import { selectCurrentUserId } from "../../redux/slices/current-user-slice";
 import { resolveApiError } from "../../utils/error-utils";
 
 type ExistingUserViewProps = UserViewProps & UserData;
@@ -46,10 +45,9 @@ const userTableStateOptions: TableStateOptions = {
   searchKeys: [ID, NAME, EMAIL, CREATED_AT_STRING, ROLE],
 };
 
-const ActionButtons = ({ id, role, email }: ExistingUserViewProps) => {
+const ActionButtons = ({ id, role, email, isSelf }: ExistingUserViewProps) => {
   const { updateUser: _updateUser } = useUpdateUser();
   const { deleteUser, loading } = useDeleteUser();
-  const userId = useAppSelector(selectCurrentUserId);
   const dispatch = useAppDispatch();
 
   const updateUser = useCallback(
@@ -97,12 +95,12 @@ const ActionButtons = ({ id, role, email }: ExistingUserViewProps) => {
         role={role}
         updateRole={updateUser}
         compact
-        disabled={userId === id}
+        disabled={isSelf}
       />
       <DeleteButton
         getDeleteModalProps={getDeleteUserModalProps}
         compact
-        disabled={userId === id}
+        disabled={isSelf}
       />
     </>
   );

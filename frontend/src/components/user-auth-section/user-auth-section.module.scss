@@ -1,0 +1,17 @@
+@use "../../base";
+
+.userAuthSection {
+  :global {
+    .row {
+      padding: 0.5rem 0 !important;
+    }
+  }
+
+  .greenText {
+    color: #21ba45;
+  }
+
+  .redText {
+    color: #db2828;
+  }
+}

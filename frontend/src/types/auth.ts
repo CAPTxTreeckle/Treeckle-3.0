@@ -6,7 +6,7 @@ export type AuthenticationData = UserData & {
   [REFRESH]: string;
 };
 
-export type GmailLoginPostData = {
+export type GoogleLoginPostData = {
   [TOKEN_ID]: string;
 };
 

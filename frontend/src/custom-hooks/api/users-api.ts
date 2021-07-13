@@ -1,6 +1,8 @@
 import { useCallback, useMemo } from "react";
 import { useAxiosWithTokenRefresh } from "./auth-api";
 import {
+  SelfData,
+  SelfPatchData,
   UserData,
   UserInviteData,
   UserInvitePatchData,
@@ -150,6 +152,59 @@ export function useGetUsers() {
   }, [apiCall]);
 
   return { users, loading, getUsers };
+}
+
+export function useGetSelf() {
+  const [{ data: self, loading }, apiCall] = useAxiosWithTokenRefresh<SelfData>(
+    {
+      url: "/users/self",
+      method: "get",
+    },
+    { manual: true },
+  );
+
+  const getSelf = useCallback(async () => {
+    try {
+      return await errorHandlerWrapper(async () => {
+        const { data: self } = await apiCall();
+
+        console.log("GET /users/self success:", self);
+
+        return self;
+      }, "GET /users/self error:")();
+    } catch (error) {
+      resolveApiError(error);
+
+      return undefined;
+    }
+  }, [apiCall]);
+
+  return { self, loading, getSelf };
+}
+
+export function useUpdateSelf() {
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<SelfData>(
+    {
+      url: "/users/self",
+      method: "patch",
+    },
+    { manual: true },
+  );
+
+  const updateSelf = useMemo(
+    () =>
+      errorHandlerWrapper(async (data: SelfPatchData) => {
+        const { data: self } = await apiCall({
+          data,
+        });
+        console.log(`PATCH /users/self success:`, self);
+
+        return self;
+      }, "PATCH /users/self error:"),
+    [apiCall],
+  );
+
+  return { loading, updateSelf };
 }
 
 export function useGetSingleUser() {

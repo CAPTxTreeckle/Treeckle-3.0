@@ -120,6 +120,7 @@ function BookingCreationTimeSlotSelector() {
 
               return (
                 <Label
+                  as="a"
                   key={label}
                   color="teal"
                   className="pointer"

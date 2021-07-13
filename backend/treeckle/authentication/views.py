@@ -1,15 +1,15 @@
 from rest_framework_simplejwt.views import TokenViewBase
 from .serializers import (
     OpenIdLoginSerializer,
-    GmailLoginSerializer,
+    GoogleLoginSerializer,
     PasswordLoginSerializer,
     AccessTokenRefreshSerializer,
     CheckAccountSerializer,
 )
 
 # Create your views here.
-class GmailLoginView(TokenViewBase):
-    serializer_class = GmailLoginSerializer
+class GoogleLoginView(TokenViewBase):
+    serializer_class = GoogleLoginSerializer
 
 
 class OpenIdLoginView(TokenViewBase):

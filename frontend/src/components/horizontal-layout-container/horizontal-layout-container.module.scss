@@ -2,7 +2,6 @@
 
 .horizontalLayoutContainer {
   display: flex;
-  align-items: center;
 
   &.normal {
     @include base.horizontal-space-margin(0.75rem);
@@ -22,5 +21,9 @@
 
   &.spaceBetween {
     justify-content: space-between;
+  }
+
+  &.alignCenter {
+    align-items: center;
   }
 }

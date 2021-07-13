@@ -1,9 +1,14 @@
 import {
   EMAIL,
   EMAILS,
+  HAS_FACEBOOK_AUTH,
+  HAS_GOOGLE_AUTH,
+  HAS_PASSWORD_AUTH,
   ID,
+  IS_SELF,
   NAME,
   ORGANIZATION,
+  PASSWORD,
   PROFILE_IMAGE,
   ROLE,
   STATUS,
@@ -27,6 +32,17 @@ export type UserInviteData = BaseData & {
 export type UserData = UserInviteData & {
   [NAME]: string;
   [PROFILE_IMAGE]: string;
+  [IS_SELF]?: boolean;
+};
+
+export type SelfData = UserData & {
+  [HAS_PASSWORD_AUTH]: boolean;
+  [HAS_GOOGLE_AUTH]: boolean;
+  [HAS_FACEBOOK_AUTH]: boolean;
+};
+
+export type SelfPatchData = {
+  [PASSWORD]: string;
 };
 
 export type UserInvitePostData = {

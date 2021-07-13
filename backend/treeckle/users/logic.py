@@ -1,7 +1,9 @@
 from typing import Sequence, Iterable
 
 from django.db.models import QuerySet
+from django.db import transaction
 
+from treeckle.common.exceptions import InternalServerError
 from treeckle.common.constants import (
     ID,
     NAME,
@@ -11,14 +13,19 @@ from treeckle.common.constants import (
     CREATED_AT,
     UPDATED_AT,
     PROFILE_IMAGE,
+    IS_SELF,
+    HAS_PASSWORD_AUTH,
+    HAS_GOOGLE_AUTH,
+    HAS_FACEBOOK_AUTH,
 )
 from treeckle.common.parsers import parse_datetime_to_ms_timestamp
 from organizations.models import Organization
+from authentication.models import PasswordAuthentication, GoogleAuthentication
 from .models import User, UserInvite
 
 
-def user_to_json(user: User) -> dict:
-    return {
+def user_to_json(user: User, requester: User = None) -> dict:
+    data = {
         ID: user.id,
         NAME: user.name,
         EMAIL: user.email,
@@ -28,6 +35,29 @@ def user_to_json(user: User) -> dict:
         CREATED_AT: parse_datetime_to_ms_timestamp(user.created_at),
         UPDATED_AT: parse_datetime_to_ms_timestamp(user.updated_at),
     }
+
+    if requester is not None:
+        data.update({IS_SELF: user == requester})
+
+    return data
+
+
+def requester_to_json(requester: User) -> dict:
+    data = user_to_json(user=requester, requester=requester)
+
+    data.update(
+        {
+            HAS_PASSWORD_AUTH: hasattr(
+                requester, PasswordAuthentication.get_related_name()
+            ),
+            HAS_GOOGLE_AUTH: hasattr(
+                requester, GoogleAuthentication.get_related_name()
+            ),
+            HAS_FACEBOOK_AUTH: False,
+        }
+    )
+
+    return data
 
 
 def user_invite_to_json(user_invite: UserInvite) -> dict:
@@ -74,3 +104,21 @@ def create_user_invites(
     new_user_invites = UserInvite.objects.bulk_create(user_invites_to_be_created)
 
     return new_user_invites
+
+
+@transaction.atomic
+def update_requester(requester: User, password: str) -> User:
+    PasswordAuthentication.objects.filter(user=requester).delete()
+
+    ## try to create new auth method for user
+    new_password_auth = PasswordAuthentication.create(
+        user=requester, password=password, check_alt_methods=False
+    )
+
+    if new_password_auth is None:
+        raise InternalServerError(
+            detail="An error has occurred while updating the password.",
+            code="no_new_password_auth",
+        )
+
+    return requester

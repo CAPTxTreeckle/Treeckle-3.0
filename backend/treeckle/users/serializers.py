@@ -33,3 +33,7 @@ class PatchSingleUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["name", "email", "role"]
+
+
+class PatchRequesterSerializer(serializers.Serializer):
+    password = serializers.CharField()

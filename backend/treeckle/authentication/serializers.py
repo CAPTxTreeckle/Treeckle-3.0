@@ -13,7 +13,7 @@ from .logic import get_authenticated_data, get_login_details
 
 from .models import (
     AuthenticationData,
-    GmailAuthenticationData,
+    GoogleAuthenticationData,
     OpenIdAuthenticationData,
     PasswordAuthenticationData,
 )
@@ -38,11 +38,11 @@ class BaseAuthenticationSerializer(serializers.Serializer):
         return get_authenticated_data(user=authenticated_user)
 
 
-class GmailLoginSerializer(BaseAuthenticationSerializer):
+class GoogleLoginSerializer(BaseAuthenticationSerializer):
     token_id = serializers.CharField()
 
     def validate(self, attrs):
-        auth_data = GmailAuthenticationData(attrs)
+        auth_data = GoogleAuthenticationData(attrs)
 
         return self.authenticate(auth_data)
 

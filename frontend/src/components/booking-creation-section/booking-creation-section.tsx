@@ -96,7 +96,7 @@ function BookingCreationSection() {
   return (
     <Segment.Group className={styles.bookingCreationSection} raised>
       <Segment>
-        <HorizontalLayoutContainer>
+        <HorizontalLayoutContainer align="center">
           <div>
             <h2>{headerContent}</h2>
           </div>

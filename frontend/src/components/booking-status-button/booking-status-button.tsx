@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { capitalCase } from "change-case";
 import { toast } from "react-toastify";
-import { Button, Popup, Label } from "semantic-ui-react";
+import { Button, Popup } from "semantic-ui-react";
 import { useUpdateBookingStatus } from "../../custom-hooks/api/bookings-api";
 import {
   BookingStatus,
@@ -106,9 +106,10 @@ function BookingStatusButton({ bookingId, status, adminView }: Props) {
   return (
     <Popup
       trigger={
-        <Label
-          as={Button}
+        <Button
           fluid
+          size="tiny"
+          compact
           color={BOOKING_STATUS_DETAILS.get(status)?.color}
           content={capitalCase(status)}
           disabled={
@@ -124,6 +125,7 @@ function BookingStatusButton({ bookingId, status, adminView }: Props) {
           className={styles.bookingStatusActionButtons}
           compact
           vertical
+          size="tiny"
         >
           {actionButtons}
         </Button.Group>

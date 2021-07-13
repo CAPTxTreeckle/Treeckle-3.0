@@ -1,14 +1,18 @@
 import { useContext } from "react";
+import { toast } from "react-toastify";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Form, Label } from "semantic-ui-react";
+import { Button, Form } from "semantic-ui-react";
 import FormField from "../form-field";
 import { SignInContext } from "../../contexts/sign-in-provider";
 import { NAME, EMAIL, PASSWORD } from "../../constants";
 import { PasswordLoginPostData } from "../../types/auth";
 import { usePasswordLogin } from "../../custom-hooks/api/auth-api";
 import { deepTrim } from "../../utils/parser-utils";
+import { useAppDispatch } from "../../redux/hooks";
+import { setCurrentUserAction } from "../../redux/slices/current-user-slice";
+import { resolveApiError } from "../../utils/error-utils";
 
 const schema = yup.object().shape({
   [EMAIL]: yup
@@ -23,6 +27,7 @@ const schema = yup.object().shape({
 type SignInAccountFormProps = PasswordLoginPostData;
 
 function SignInAccountForm() {
+  const dispatch = useAppDispatch();
   const { loginDetails, setLoginDetails } = useContext(SignInContext);
   const { loading, passwordLogin } = usePasswordLogin();
   const { email = "", name = "" } = loginDetails ?? {};
@@ -34,13 +39,26 @@ function SignInAccountForm() {
 
   const { handleSubmit } = methods;
 
-  const onSubmit = async (formData: SignInAccountFormProps) =>
-    passwordLogin(deepTrim(formData));
+  const onSubmit = async (formData: SignInAccountFormProps) => {
+    if (loading) {
+      return;
+    }
+
+    try {
+      const authData = await passwordLogin(deepTrim(formData));
+
+      toast.success("Signed in successfully.");
+
+      dispatch(setCurrentUserAction(authData));
+    } catch (error) {
+      resolveApiError(error);
+    }
+  };
 
   return (
     <FormProvider {...methods}>
-      <Label
-        as="a"
+      <Button
+        size="tiny"
         color="blue"
         basic
         content={email}

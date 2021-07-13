@@ -33,6 +33,10 @@ function SignInEmailForm() {
   const { handleSubmit } = methods;
 
   const onSubmit = async (formData: SignInEmailFormProps) => {
+    if (loading) {
+      return;
+    }
+
     try {
       const loginDetails = await checkAccount(deepTrim(formData));
       setLoginDetails(loginDetails);

@@ -55,7 +55,7 @@ function UserCreationCsvUploader() {
 
   return (
     <>
-      <HorizontalLayoutContainer>
+      <HorizontalLayoutContainer align="center">
         <div>
           <h2>CSV Upload</h2>
         </div>

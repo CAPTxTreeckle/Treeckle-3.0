@@ -2,6 +2,7 @@ import { capitalCase } from "change-case";
 import { Grid, Segment, Image, Divider } from "semantic-ui-react";
 import { displayDateTime } from "../../utils/parser-utils";
 import { UserData } from "../../types/users";
+import UserAuthSection from "../user-auth-section";
 import defaultAvatarImage from "../../assets/avatar.png";
 import styles from "./profile-card.module.scss";
 
@@ -14,6 +15,7 @@ function ProfileCard({
   organization,
   role,
   createdAt,
+  isSelf,
 }: Props) {
   return (
     <Segment className={styles.profileCard} raised padded="very">
@@ -46,6 +48,10 @@ function ProfileCard({
             <strong>Joined in:</strong>{" "}
             {displayDateTime(createdAt, "MMMM yyyy")}
           </p>
+
+          <Divider hidden />
+
+          {isSelf && <UserAuthSection />}
         </Grid.Column>
       </Grid>
     </Segment>

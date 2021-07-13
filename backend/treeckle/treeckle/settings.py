@@ -118,7 +118,7 @@ JAZZMIN_SETTINGS = {
     "site_icon": "favicon-32x32.png",
     "hide_apps": ["auth", "flatpages", "sites", "events"],
     "icons": {
-        "authentication.gmailauthentication": "fab fa-google",
+        "authentication.googleauthentication": "fab fa-google",
         "authentication.openidauthentication": "fab fa-openid",
         "authentication.passwordauthentication": "fas fa-key",
         "bookings.booking": "fas fa-book",

@@ -12,6 +12,8 @@ from .logic import (
     user_to_json,
     get_valid_invitations,
     create_user_invites,
+    requester_to_json,
+    update_requester,
 )
 from .models import User, UserInvite, Role
 from .permission_middlewares import check_access
@@ -23,6 +25,7 @@ from .serializers import (
     PostUserInviteSerializer,
     PatchSingleUserSerializer,
     PatchSingleUserInviteSerializer,
+    PatchRequesterSerializer,
 )
 
 # Create your views here.
@@ -94,7 +97,32 @@ class UsersView(APIView):
             organization=requester.organization
         ).select_related("organization")
 
-        data = [user_to_json(user) for user in same_organization_users]
+        data = [
+            user_to_json(user=user, requester=requester)
+            for user in same_organization_users
+        ]
+
+        return Response(data, status=status.HTTP_200_OK)
+
+
+class RequesterView(APIView):
+    @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
+    def get(self, request, requester: User):
+        data = requester_to_json(requester)
+
+        return Response(data, status=status.HTTP_200_OK)
+
+    @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
+    def patch(self, request, requester: User):
+        serialzer = PatchRequesterSerializer(data=request.data)
+
+        serialzer.is_valid(raise_exception=True)
+
+        updated_requester = update_requester(
+            requester=requester, password=serialzer.validated_data.get("password")
+        )
+
+        data = requester_to_json(updated_requester)
 
         return Response(data, status=status.HTTP_200_OK)
 
@@ -103,7 +131,7 @@ class SingleUserView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
     @check_requester_user_same_organization
     def get(self, request, requester: User, user: User):
-        data = user_to_json(user)
+        data = user_to_json(user=user, requester=requester)
 
         return Response(data, status=status.HTTP_200_OK)
 
@@ -119,7 +147,7 @@ class SingleUserView(APIView):
 
         user.update_from_dict(serializer.validated_data, commit=True)
 
-        data = user_to_json(user)
+        data = user_to_json(user=user, requester=requester)
 
         return Response(data, status=status.HTTP_200_OK)
 
@@ -129,7 +157,7 @@ class SingleUserView(APIView):
         if requester == user:
             raise BadRequest(detail="Cannot self-delete", code="self_delete")
 
-        data = user_to_json(user)
+        data = user_to_json(user=user, requester=requester)
         user.delete()
 
         return Response(data, status=status.HTTP_200_OK)

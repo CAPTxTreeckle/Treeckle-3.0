@@ -22,7 +22,7 @@ function UserCreationInputSection() {
 
                 <p>
                   Currently, Treeckle supports both <strong>NUSNET</strong> and{" "}
-                  <strong>Gmail</strong> users.
+                  <strong>Google</strong> users.
                 </p>
 
                 <p>
