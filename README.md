@@ -8,9 +8,11 @@
 
 Website: <https://treeckle.com/>
 
-_Currently in development._
+_**Currently in production**_
 
 Treeckle is a student life app for the Residential Colleges of NUS, intended to be a platform for the efficient booking of facilties, and the creation and management of events.
+
+For usage/contribution, please contact [@JermyTan](https://github.com/JermyTan)
 
 ## Contributions Guidelines
 
