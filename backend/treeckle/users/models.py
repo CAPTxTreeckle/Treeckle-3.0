@@ -1,4 +1,5 @@
 from django.db import models
+
 from treeckle.common.models import TimestampedModel
 from organizations.models import Organization
 
