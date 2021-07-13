@@ -18,8 +18,8 @@ function ProfileCard({
   isSelf,
 }: Props) {
   return (
-    <Segment className={styles.profileCard} raised padded="very">
-      <Grid columns="2" relaxed="very" stackable>
+    <Segment className={styles.profileCard} raised padded>
+      <Grid columns="2" relaxed="very" padded stackable doubling>
         <Grid.Column width="6" verticalAlign="middle">
           <Image
             src={profileImage || defaultAvatarImage}
