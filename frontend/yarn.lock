@@ -1983,13 +1983,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-facebook-login@^4.1.4":
-  version "4.1.4"
-  resolved "https://registry.yarnpkg.com/@types/react-facebook-login/-/react-facebook-login-4.1.4.tgz#64b9e7ef638ee3048a60c39acc8111c04aa9edf9"
-  integrity sha512-TX6y5shj0wCx8Whho05MqjAcb8lg1R33Jdy4raCl5b/t2nO9WC8/VLF+7u9cXzRd4ohN7Iz1RwuT+90LUROhyg==
-  dependencies:
-    "@types/react" "*"
-
 "@types/react-linkify@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@types/react-linkify/-/react-linkify-1.0.1.tgz#4ece351faef22bfde1280b6d9ace5e88683a74d4"
@@ -9879,11 +9872,6 @@ react-error-overlay@^6.0.9:
   version "6.0.9"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.9.tgz#3c743010c9359608c375ecd6bc76f35d93995b0a"
   integrity sha512-nQTTcUu+ATDbrSD1BZHr5kgSD4oF8OFjxun8uAaL8RwPBacGBNPf/yAuVVdx17N8XNzRDMrZ9XcKZHCjPW+9ew==
-
-react-facebook-login@^4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/react-facebook-login/-/react-facebook-login-4.1.1.tgz#005121236a6ac0dee02099976fb1a3265f9d633e"
-  integrity sha512-COnHEHlYGTKipz4963safFAK9PaNTcCiXfPXMS/yxo8El+/AJL5ye8kMJf23lKSSGGPgqFQuInskIHVqGqTvSw==
 
 react-fast-compare@^3.0.1:
   version "3.2.0"
