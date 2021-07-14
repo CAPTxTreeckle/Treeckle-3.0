@@ -24,7 +24,7 @@ import {
   setCurrentUserAction,
   selectCurrentUser,
 } from "../../redux/slices/current-user-slice";
-import { resetReduxState } from "../../redux/store";
+import { resetAppState } from "../../redux/store";
 
 export function useAxiosWithTokenRefresh<T>(
   config: AxiosRequestConfig,
@@ -95,7 +95,7 @@ export function useAxiosWithTokenRefresh<T>(
           console.log("Error after token refresh:", error, error?.response);
           if (isForbiddenOrNotAuthenticated(error)) {
             // kick user out
-            resetReduxState();
+            resetAppState();
             throw new Error(
               "Your current session has expired. Please log in again.",
             );
@@ -208,17 +208,26 @@ export function useFacebookAuth(
   }, [setFbAsyncInit, loadSdkAsynchronously]);
 
   const startFacebookAuth = () => {
-    window.FB.login(
-      (response) => {
-        console.log("Facebook Client login response:", response);
+    window.FB.getLoginStatus((response) => {
+      console.log("Facebook Client get login status response:", response);
+
+      if (response.status === "connected") {
         callback(response);
-      },
-      {
-        scope: "public_profile,email",
-        return_scopes: true,
-        auth_type: "rerequest",
-      },
-    );
+        return;
+      }
+
+      window.FB.login(
+        (response) => {
+          console.log("Facebook Client login response:", response);
+          callback(response);
+        },
+        {
+          scope: "public_profile,email",
+          return_scopes: true,
+          auth_type: "rerequest",
+        },
+      );
+    });
   };
 
   return { loading: !isSdkLoaded, startFacebookAuth };

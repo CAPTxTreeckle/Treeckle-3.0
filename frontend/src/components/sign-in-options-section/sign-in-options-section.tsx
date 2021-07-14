@@ -87,20 +87,6 @@ const FacebookLoginButton = () => {
       return;
     }
 
-    const grantedScopes = response.authResponse.grantedScopes?.split(",") ?? [];
-
-    if (
-      !grantedScopes.includes("public_profile") ||
-      !grantedScopes.includes("email")
-    ) {
-      toast.error(
-        `No permission to access ${
-          grantedScopes.includes("public_profile") ? "email" : "public profile"
-        } from Facebook.`,
-      );
-      return;
-    }
-
     const { accessToken } = response.authResponse;
 
     try {

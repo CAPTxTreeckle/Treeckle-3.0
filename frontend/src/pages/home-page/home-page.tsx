@@ -12,7 +12,7 @@ import {
   Grid,
   Icon,
 } from "semantic-ui-react";
-import { resetReduxState } from "../../redux/store";
+import { resetAppState } from "../../redux/store";
 import useScrollToTopScroller from "../../custom-hooks/use-scroll-to-top-scroller";
 import TotalBookingCounter from "../../components/total-booking-counter";
 import SignInButton from "../../components/sign-in-button";
@@ -30,7 +30,7 @@ function HomePage() {
     useScrollToTopScroller(300);
 
   useEffect(() => {
-    resetReduxState();
+    resetAppState();
   }, []);
 
   return (

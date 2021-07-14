@@ -47,7 +47,7 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   Action<string>
 >;
 
-export const resetReduxState = () => {
+export const resetAppState = () => {
   store.dispatch(resetBookingsAction());
   store.dispatch(resetBookingCreationAction());
   store.dispatch(resetUserCreationAction());
@@ -56,6 +56,10 @@ export const resetReduxState = () => {
   store.dispatch(resetBookingNotificationSubscriptionsAction());
   store.dispatch(resetPendingBookingCountAction());
   store.dispatch(setCurrentUserAction(null));
+
+  window.FB?.getLoginStatus(({ status }) => {
+    status === "connected" && window.FB?.logout();
+  });
 };
 
 export default store;

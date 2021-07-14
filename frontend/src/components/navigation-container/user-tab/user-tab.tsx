@@ -6,7 +6,7 @@ import { PROFILE_PATH } from "../../../routes/paths";
 import { USER_ID } from "../../../constants";
 import { useDeepEqualAppSelector } from "../../../redux/hooks";
 import { selectCurrentUserDisplayInfo } from "../../../redux/slices/current-user-slice";
-import { resetReduxState } from "../../../redux/store";
+import { resetAppState } from "../../../redux/store";
 import defaultAvatarImage from "../../../assets/avatar.png";
 
 function UserTab() {
@@ -20,7 +20,7 @@ function UserTab() {
   );
 
   const onSignOut = () => {
-    resetReduxState();
+    resetAppState();
     toast.success("Signed out successfully.");
   };
 
