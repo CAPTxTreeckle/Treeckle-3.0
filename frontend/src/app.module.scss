@@ -46,6 +46,10 @@
     @include base.text-viewer;
   }
 
+  .center-text {
+    text-align: center;
+  }
+
   .hidden-display {
     display: none;
   }

@@ -78,7 +78,7 @@ function SignInOptionsSection() {
         content="Sign in with Facebook"
         fluid
         loading={facebookAuthLoading}
-        disabled={facebookAuthLoading}
+        disabled={facebookAuthLoading || true}
       />
 
       {/* <Button

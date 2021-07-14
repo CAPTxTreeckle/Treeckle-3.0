@@ -4,7 +4,7 @@ import StandalonePageLayoutContainer from "../../components/standalone-page-layo
 function PrivacyPolicyPage() {
   return (
     <StandalonePageLayoutContainer>
-      <h1>Privacy Policy for Treeckle</h1>
+      <h1 className="center-text">Privacy Policy for Treeckle</h1>
 
       <Divider inverted />
 

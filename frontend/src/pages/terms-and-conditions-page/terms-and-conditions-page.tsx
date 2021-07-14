@@ -4,7 +4,7 @@ import StandalonePageLayoutContainer from "../../components/standalone-page-layo
 function TermsAndConditionsPage() {
   return (
     <StandalonePageLayoutContainer>
-      <h1>Terms and Conditions for Treeckle</h1>
+      <h1 className="center-text">Terms and Conditions for Treeckle</h1>
 
       <Divider inverted />
 
