@@ -1,5 +1,18 @@
 $primary-color: #2c4a66;
 
+@mixin primary-color-link {
+  a {
+    color: white;
+    text-decoration: underline;
+    font-weight: bold;
+    opacity: 0.85;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
 @mixin horizontal-space-margin($spacing) {
   > * {
     margin-right: $spacing !important;

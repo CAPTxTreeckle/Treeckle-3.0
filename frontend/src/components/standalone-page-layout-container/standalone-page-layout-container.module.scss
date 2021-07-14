@@ -1,0 +1,7 @@
+@use "../../base";
+
+.standalonePageLayoutContainer {
+  color: white;
+  background-color: base.$primary-color;
+  @include base.primary-color-link;
+}

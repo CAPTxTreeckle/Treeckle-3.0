@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import useAxios, { Options, RefetchOptions, ResponseValues } from "axios-hooks";
 import {
   GoogleLoginResponse,
@@ -117,7 +117,7 @@ export function useGoogleAuth(
     response: GoogleLoginResponse | GoogleLoginResponseOffline,
   ) => void,
 ) {
-  const [isUnavailable, setUnavailable] = useState(false);
+  const [isAvailable, setAvailable] = useState(true);
 
   const { signIn, loaded } = useGoogleLoginClient({
     clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID ?? "",
@@ -132,7 +132,7 @@ export function useGoogleAuth(
     onFailure: (error) => {
       console.log("Google Client error:", error, error?.response);
       if (error?.error === "idpiframe_initialization_failed") {
-        setUnavailable(true);
+        setAvailable(false);
       } else if (error?.error === "popup_closed_by_user") {
         return;
       }
@@ -145,9 +145,83 @@ export function useGoogleAuth(
 
   return {
     startGoogleAuth: signIn,
-    loading: !loaded,
-    isUnavailable,
+    loading: !loaded && isAvailable,
+    isAvailable,
   };
+}
+
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    FB: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    fbAsyncInit: any;
+  }
+}
+
+type FacebookAuthConfig = {
+  xfbml?: boolean;
+  cookie?: boolean;
+  version?: string;
+  language?: string;
+  scope?: string;
+};
+
+let isFacebookSdkLoaded = false;
+
+export function useFacebookAuth(
+  callback: (response: unknown) => void,
+  config?: FacebookAuthConfig,
+) {
+  const [isSdkLoaded, setSdkLoaded] = useState(isFacebookSdkLoaded);
+  const {
+    xfbml = true,
+    cookie = true,
+    version = "11.0",
+    language = "en_US",
+    scope = "public_profile",
+  } = config ?? {};
+
+  const setFbAsyncInit = useCallback(() => {
+    window.fbAsyncInit = () => {
+      window.FB.init({
+        appId: process.env.REACT_APP_FACEBOOK_APP_ID ?? "",
+        xfbml,
+        cookie,
+        version: `v${version}`,
+      });
+
+      isFacebookSdkLoaded = true;
+      setSdkLoaded(true);
+    };
+  }, [xfbml, cookie, version]);
+
+  const loadSdkAsynchronously = useCallback(() => {
+    ((d, s, id) => {
+      if (d.getElementById(id)) {
+        return;
+      }
+      const fjs = d.getElementsByTagName(s)[0];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const js = d.createElement(s) as any;
+      js.id = id;
+      js.src = `https://connect.facebook.net/${language}/sdk.js`;
+      fjs.parentNode?.insertBefore(js, fjs);
+    })(document, "script", "facebook-jssdk");
+  }, [language]);
+
+  useEffect(() => {
+    if (!isFacebookSdkLoaded) {
+      setFbAsyncInit();
+      loadSdkAsynchronously();
+    }
+  }, [setFbAsyncInit, loadSdkAsynchronously]);
+
+  const startFacebookAuth = useCallback(() => {
+    window.FB.login(callback, { scope });
+  }, [callback, scope]);
+
+  return { loading: !isSdkLoaded, startFacebookAuth };
 }
 
 export function useCheckAccount() {

@@ -7,7 +7,11 @@ import {
   GoogleLoginResponseOffline,
 } from "react-google-login";
 import { SignInContext } from "../../contexts/sign-in-provider";
-import { useGoogleAuth, useGoogleLogin } from "../../custom-hooks/api/auth-api";
+import {
+  useFacebookAuth,
+  useGoogleAuth,
+  useGoogleLogin,
+} from "../../custom-hooks/api/auth-api";
 import { useAppDispatch } from "../../redux/hooks";
 import { setCurrentUserAction } from "../../redux/slices/current-user-slice";
 import { resolveApiError } from "../../utils/error-utils";
@@ -41,11 +45,15 @@ function SignInOptionsSection() {
   const {
     startGoogleAuth,
     loading: googleAuthLoading,
-    isUnavailable,
+    isAvailable,
   } = useGoogleAuth(onGoogleLogin);
 
+  const { startFacebookAuth, loading: facebookAuthLoading } = useFacebookAuth(
+    (response) => console.log(response),
+  );
+
   return (
-    <>
+    <div className={clsx(styles.signInOptionsSection, styles.important)}>
       <Button
         content="Sign in with password"
         icon="key"
@@ -54,31 +62,33 @@ function SignInOptionsSection() {
       />
 
       <Button
-        className={clsx(styles.googleButton, styles.important)}
+        className={styles.googleButton}
         onClick={startGoogleAuth}
         content="Sign in with Google"
         icon={googleAuthLoading ? undefined : "google"}
         fluid
         loading={googleAuthLoading || loading}
-        disabled={isUnavailable || googleAuthLoading || loading}
+        disabled={!isAvailable || googleAuthLoading || loading}
       />
 
       <Button
         icon="facebook"
         color="facebook"
+        onClick={startFacebookAuth}
         content="Sign in with Facebook"
         fluid
-        disabled
+        loading={facebookAuthLoading}
+        disabled={facebookAuthLoading}
       />
 
-      <Button
+      {/* <Button
         content="Sign in with NUSNET"
         icon="openid"
         color="blue"
         fluid
         disabled
-      />
-    </>
+      /> */}
+    </div>
   );
 }
 

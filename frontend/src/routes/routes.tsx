@@ -9,6 +9,7 @@ import { Role } from "../types/users";
 import { useAppSelector } from "../redux/hooks";
 import { selectIsLoggedIn } from "../redux/slices/current-user-slice";
 import RoleRestrictedRoute from "./role-restricted-route";
+import ScrollToTopManager from "../managers/scroll-to-top-manager";
 import {
   DASHBOARD_PATH,
   BOOKINGS_PATH,
@@ -32,6 +33,8 @@ import {
   ADMIN_USERS_PENDING_REGISTRATION_PATH,
   BOOKINGS_CREATION_PATH,
   AUTH_CALLBACK_PATH,
+  PRIVACY_POLICY_PATH,
+  TERMS_AND_CONDITIONS_PATH,
 } from "./paths";
 import AppLayoutContainer from "../components/app-layout-container";
 import DashboardPage from "../pages/dashboard-page";
@@ -52,6 +55,14 @@ import EventsQrCodePage from "../pages/events-qr-code-page";
 import AdminUsersCreationPage from "../pages/admin-users-creation-page";
 import BookingsCreationPage from "../pages/bookings-creation-page";
 import AuthCallbackPage from "../pages/auth-callback-page";
+import PrivacyPolicyPage from "../pages/privacy-policy-page";
+import TermsAndConditionsPage from "../pages/terms-and-conditions-page";
+
+const onVisitScrollToTopPaths = [
+  HOME_PATH,
+  PRIVACY_POLICY_PATH,
+  TERMS_AND_CONDITIONS_PATH,
+];
 
 function Routes() {
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
@@ -59,6 +70,7 @@ function Routes() {
   return (
     <Router>
       <LastLocationProvider>
+        <ScrollToTopManager paths={onVisitScrollToTopPaths} />
         <AppLayoutContainer>
           <Switch>
             <Route path={HOME_PATH} exact>
@@ -71,7 +83,17 @@ function Routes() {
               </Route>
             )}
 
+            <Route path={PRIVACY_POLICY_PATH} exact>
+              <PrivacyPolicyPage />
+            </Route>
+
+            <Route path={TERMS_AND_CONDITIONS_PATH} exact>
+              <TermsAndConditionsPage />
+            </Route>
+
             {!isLoggedIn && <Redirect to={HOME_PATH} />}
+
+            {/* Authenticated routes  */}
 
             <Route path={DASHBOARD_PATH} exact strict>
               <DashboardPage />

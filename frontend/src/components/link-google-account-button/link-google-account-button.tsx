@@ -45,7 +45,7 @@ function LinkGoogleAccountButton({ email }: Props) {
   const {
     startGoogleAuth,
     loading: googleAuthLoading,
-    isUnavailable,
+    isAvailable,
   } = useGoogleAuth(onGoogleLogin);
 
   return (
@@ -56,7 +56,7 @@ function LinkGoogleAccountButton({ email }: Props) {
       content="Link"
       loading={googleAuthLoading || isLinking}
       onClick={startGoogleAuth}
-      disabled={isUnavailable || googleAuthLoading || isLinking}
+      disabled={!isAvailable || googleAuthLoading || isLinking}
     />
   );
 }

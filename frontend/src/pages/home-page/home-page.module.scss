@@ -130,10 +130,6 @@ $dark-color: #111111;
   }
 
   .footer {
-    .divider.important {
-      border-bottom-color: rgba(255, 255, 255, 0.7);
-    }
-
     a {
       color: #5ac6e7;
       opacity: 0.85;
@@ -142,15 +138,5 @@ $dark-color: #111111;
         opacity: 1;
       }
     }
-  }
-
-  .scrollToTopButton.important {
-    margin: 0;
-    position: fixed;
-    bottom: 8%;
-    right: 6%;
-    z-index: 5;
-    box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.4),
-      0px 6px 10px 0px rgba(0, 0, 0, 0.28), 0px 1px 18px 0px rgba(0, 0, 0, 0.24);
   }
 }

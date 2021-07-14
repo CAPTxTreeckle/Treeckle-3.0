@@ -33,6 +33,10 @@
     }
   }
 
+  .ui.divider.inverted {
+    border-bottom-color: rgba(255, 255, 255, 0.7) !important;
+  }
+
   .ui.vertical.menu .item > i.icon {
     float: none;
     margin: 0 0.5rem 0 0;

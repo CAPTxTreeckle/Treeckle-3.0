@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import clsx from "clsx";
+import { Link } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import {
   Transition,
@@ -12,16 +13,21 @@ import {
   Icon,
 } from "semantic-ui-react";
 import { resetReduxState } from "../../redux/store";
-import useShowScroller from "../../custom-hooks/use-show-scroller";
+import useScrollToTopScroller from "../../custom-hooks/use-scroll-to-top-scroller";
 import TotalBookingCounter from "../../components/total-booking-counter";
 import SignInButton from "../../components/sign-in-button";
 import treeckleLogo from "../../assets/treeckle-outline-min.png";
 import treeckleVideo from "../../assets/utown-video.mp4";
+import {
+  PRIVACY_POLICY_PATH,
+  TERMS_AND_CONDITIONS_PATH,
+} from "../../routes/paths";
 import styles from "./home-page.module.scss";
 
 function HomePage() {
   const isTabletOrLarger = useMediaQuery({ query: "(min-width: 768px)" });
-  const { showScroller } = useShowScroller(300);
+  const { showScroller, scrollerStyle, scrollToTop } =
+    useScrollToTopScroller(300);
 
   useEffect(() => {
     resetReduxState();
@@ -140,6 +146,14 @@ function HomePage() {
                 project, built with the aim of making a difference through a web
                 application.
               </p>
+
+              <p>
+                <Link to={PRIVACY_POLICY_PATH}>Privacy Policy</Link>
+              </p>
+
+              <p>
+                <Link to={TERMS_AND_CONDITIONS_PATH}>Terms and Conditions</Link>
+              </p>
             </Grid.Column>
             <Grid.Column textAlign="center">
               <h2>CONTACT US</h2>
@@ -154,21 +168,19 @@ function HomePage() {
               </p>
             </Grid.Column>
           </Grid>
-          <Divider className={clsx(styles.divider, styles.important)} section />
+          <Divider inverted section />
           <p>© Treeckle 2021</p>
         </Container>
       </Segment>
 
       <Transition visible={showScroller} animation="scale" duration="300">
         <Button
-          className={clsx(styles.scrollToTopButton, styles.important)}
+          style={scrollerStyle}
           color="teal"
-          onClick={() =>
-            window.scrollTo({ top: 0, left: 0, behavior: "smooth" })
-          }
+          onClick={scrollToTop}
           icon="arrow up"
           circular
-          size="massive"
+          size="huge"
           aria-label="scroll to top"
         />
       </Transition>

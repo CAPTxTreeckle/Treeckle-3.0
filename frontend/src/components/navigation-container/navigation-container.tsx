@@ -1,5 +1,4 @@
-import { ReactNode, useState, useEffect, useRef } from "react";
-import { useHistory } from "react-router-dom";
+import { ReactNode, useState, useEffect } from "react";
 import { Sidebar, Menu, Segment, Container } from "semantic-ui-react";
 import { useMediaQuery } from "react-responsive";
 import LogoTab from "./logo-tab";
@@ -24,19 +23,9 @@ type Props = {
 function NavigationContainer({ children }: Props) {
   const [isSidebarOpened, setSidebarOpened] = useState(false);
   const isComputerOrLarger = useMediaQuery({ query: "(min-width: 992px)" });
-  const pageBodyRef = useRef<HTMLDivElement>(null);
-  const history = useHistory();
 
   const closeSidebar = () => setSidebarOpened(false);
   const openSidebar = () => setSidebarOpened(true);
-
-  useEffect(() => {
-    const unlisten = history.listen(() =>
-      pageBodyRef.current?.scrollTo({ left: 0, top: 0 }),
-    );
-
-    return unlisten;
-  }, [history]);
 
   useEffect(() => {
     if (isComputerOrLarger) {
@@ -82,7 +71,7 @@ function NavigationContainer({ children }: Props) {
             <UserTab />
           </TopBar>
 
-          <PageBody className={styles.pageBody} ref={pageBodyRef}>
+          <PageBody className={styles.pageBody}>
             <Segment padded vertical>
               <Container>{children}</Container>
             </Segment>

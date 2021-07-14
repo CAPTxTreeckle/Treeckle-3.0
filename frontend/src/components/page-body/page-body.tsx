@@ -1,15 +1,48 @@
-import { forwardRef, ReactNode, Ref } from "react";
+import { ReactNode, useState, createContext } from "react";
 import clsx from "clsx";
 import styles from "./page-body.module.scss";
 
+type PageBodyContextType = {
+  body: Element | (Window & typeof globalThis) | null;
+};
+
+export const PageBodyContext = createContext<PageBodyContextType>({
+  body: window,
+});
+
+// // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// const mergeRefs = (...refs: any[]) => {
+//   const filteredRefs = refs.filter(Boolean);
+
+//   if (filteredRefs.length === 0) {
+//     return null;
+//   }
+
+//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//   return (instance: any) =>
+//     filteredRefs.forEach((ref) => {
+//       if (typeof ref === "function") {
+//         ref(element);
+//       } else if (ref) {
+//         ref.current = element;
+//       }
+//     });
+// };
+
 type Props = { className?: string; children: ReactNode };
 
-function PageBody({ className, children }: Props, ref: Ref<HTMLDivElement>) {
+function PageBody({ className, children }: Props) {
+  const [body, setBody] = useState<
+    Element | (Window & typeof globalThis) | null
+  >(window);
+
   return (
-    <div ref={ref} className={clsx(styles.pageBody, className)}>
-      {children}
+    <div ref={setBody} className={clsx(styles.pageBody, className)}>
+      <PageBodyContext.Provider value={{ body }}>
+        {children}
+      </PageBodyContext.Provider>
     </div>
   );
 }
 
-export default forwardRef(PageBody);
+export default PageBody;

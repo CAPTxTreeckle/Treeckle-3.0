@@ -22,3 +22,5 @@ export const ADMIN_USERS_CREATION_PATH = "/admin/users/create";
 export const ADMIN_SETTINGS_PATH = "/admin/settings";
 export const PROFILE_PATH = `/profile/:${USER_ID}`;
 export const AUTH_CALLBACK_PATH = "/auth/callback";
+export const PRIVACY_POLICY_PATH = "/privacy-policy";
+export const TERMS_AND_CONDITIONS_PATH = "/terms-and-conditions";

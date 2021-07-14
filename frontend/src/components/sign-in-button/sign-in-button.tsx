@@ -1,4 +1,5 @@
 import { useState } from "react";
+import clsx from "clsx";
 import { Button, TransitionablePortal, Modal } from "semantic-ui-react";
 import SignInSection from "../sign-in-section";
 import SignInProvider from "../../contexts/sign-in-provider";
@@ -11,7 +12,7 @@ function SignInButton() {
     <div className={styles.signInButtonContainer}>
       <Button
         fluid
-        className={styles.signInButton}
+        className={clsx(styles.signInButton, styles.important)}
         content="Sign In"
         onClick={() => setSignInOptionsOpened(true)}
       />

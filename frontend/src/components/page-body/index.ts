@@ -1,1 +1,1 @@
-export { default } from "./page-body";
+export { default, PageBodyContext } from "./page-body";
