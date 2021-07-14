@@ -77,3 +77,4 @@ export const IS_SELF = "isSelf";
 export const HAS_PASSWORD_AUTH = "hasPasswordAuth";
 export const HAS_GOOGLE_AUTH = "hasGoogleAuth";
 export const HAS_FACEBOOK_AUTH = "hasFacebookAuth";
+export const ACCESS_TOKEN = "accessToken";

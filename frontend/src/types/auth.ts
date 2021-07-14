@@ -1,5 +1,13 @@
 import { UserData } from "./users";
-import { ACCESS, EMAIL, NAME, PASSWORD, REFRESH, TOKEN_ID } from "../constants";
+import {
+  ACCESS,
+  EMAIL,
+  NAME,
+  PASSWORD,
+  REFRESH,
+  TOKEN_ID,
+  ACCESS_TOKEN,
+} from "../constants";
 
 export type AuthenticationData = UserData & {
   [ACCESS]: string;
@@ -8,6 +16,10 @@ export type AuthenticationData = UserData & {
 
 export type GoogleLoginPostData = {
   [TOKEN_ID]: string;
+};
+
+export type FacebookLoginPostData = {
+  [ACCESS_TOKEN]: string;
 };
 
 export type CheckAccountPostData = {

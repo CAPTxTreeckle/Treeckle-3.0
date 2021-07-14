@@ -48,6 +48,7 @@
   },
   "devDependencies": {
     "@types/array-sort": "^1.0.0",
+    "@types/facebook-js-sdk": "^3.3.4",
     "@types/file-saver": "^2.0.3",
     "@types/jest": "^26.0.24",
     "@types/lodash": "^4.14.171",

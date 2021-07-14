@@ -10,6 +10,7 @@ import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from "axios";
 import {
   AuthenticationData,
   CheckAccountPostData,
+  FacebookLoginPostData,
   GoogleLoginPostData,
   LoginDetails,
   PasswordLoginPostData,
@@ -153,40 +154,29 @@ export function useGoogleAuth(
 declare global {
   interface Window {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    FB: any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     fbAsyncInit: any;
   }
 }
 
 type FacebookAuthConfig = {
-  xfbml?: boolean;
   cookie?: boolean;
   version?: string;
   language?: string;
-  scope?: string;
 };
 
 let isFacebookSdkLoaded = false;
 
 export function useFacebookAuth(
-  callback: (response: unknown) => void,
+  callback: (response: fb.StatusResponse) => void,
   config?: FacebookAuthConfig,
 ) {
   const [isSdkLoaded, setSdkLoaded] = useState(isFacebookSdkLoaded);
-  const {
-    xfbml = true,
-    cookie = true,
-    version = "11.0",
-    language = "en_US",
-    scope = "public_profile",
-  } = config ?? {};
+  const { cookie = true, version = "11.0", language = "en_US" } = config ?? {};
 
   const setFbAsyncInit = useCallback(() => {
     window.fbAsyncInit = () => {
       window.FB.init({
         appId: process.env.REACT_APP_FACEBOOK_APP_ID ?? "",
-        xfbml,
         cookie,
         version: `v${version}`,
       });
@@ -194,7 +184,7 @@ export function useFacebookAuth(
       isFacebookSdkLoaded = true;
       setSdkLoaded(true);
     };
-  }, [xfbml, cookie, version]);
+  }, [cookie, version]);
 
   const loadSdkAsynchronously = useCallback(() => {
     ((d, s, id) => {
@@ -217,9 +207,19 @@ export function useFacebookAuth(
     }
   }, [setFbAsyncInit, loadSdkAsynchronously]);
 
-  const startFacebookAuth = useCallback(() => {
-    window.FB.login(callback, { scope });
-  }, [callback, scope]);
+  const startFacebookAuth = () => {
+    window.FB.login(
+      (response) => {
+        console.log("Facebook Client login response:", response);
+        callback(response);
+      },
+      {
+        scope: "public_profile,email",
+        return_scopes: true,
+        auth_type: "rerequest",
+      },
+    );
+  };
 
   return { loading: !isSdkLoaded, startFacebookAuth };
 }
@@ -274,6 +274,32 @@ export function useGoogleLogin() {
   );
 
   return { loading, googleLogin };
+}
+
+export function useFacebookLogin() {
+  const [{ loading }, apiCall] = useAxios<AuthenticationData>(
+    {
+      url: "/gateway/facebook",
+      method: "post",
+    },
+    { manual: true },
+  );
+
+  const facebookLogin = useMemo(
+    () =>
+      errorHandlerWrapper(async (data: FacebookLoginPostData) => {
+        console.log("POST /gateway/facebook data:", data);
+
+        const { data: authData } = await apiCall({ data });
+
+        console.log("POST /gateway/facebook success:", authData);
+
+        return authData;
+      }, "POST /gateway/facebook error:"),
+    [apiCall],
+  );
+
+  return { loading, facebookLogin };
 }
 
 export function usePasswordLogin() {
