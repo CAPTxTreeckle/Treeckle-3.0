@@ -2,6 +2,7 @@ from rest_framework_simplejwt.views import TokenViewBase
 from .serializers import (
     OpenIdLoginSerializer,
     GoogleLoginSerializer,
+    FacebookLoginSerializer,
     PasswordLoginSerializer,
     AccessTokenRefreshSerializer,
     CheckAccountSerializer,
@@ -10,6 +11,10 @@ from .serializers import (
 # Create your views here.
 class GoogleLoginView(TokenViewBase):
     serializer_class = GoogleLoginSerializer
+
+
+class FacebookLoginView(TokenViewBase):
+    serializer_class = FacebookLoginSerializer
 
 
 class OpenIdLoginView(TokenViewBase):

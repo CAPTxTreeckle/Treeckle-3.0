@@ -20,7 +20,11 @@ from treeckle.common.constants import (
 )
 from treeckle.common.parsers import parse_datetime_to_ms_timestamp
 from organizations.models import Organization
-from authentication.models import PasswordAuthentication, GoogleAuthentication
+from authentication.models import (
+    PasswordAuthentication,
+    GoogleAuthentication,
+    FacebookAuthentication,
+)
 from .models import User, UserInvite
 
 
@@ -53,7 +57,9 @@ def requester_to_json(requester: User) -> dict:
             HAS_GOOGLE_AUTH: hasattr(
                 requester, GoogleAuthentication.get_related_name()
             ),
-            HAS_FACEBOOK_AUTH: False,
+            HAS_FACEBOOK_AUTH: hasattr(
+                requester, FacebookAuthentication.get_related_name()
+            ),
         }
     )
 

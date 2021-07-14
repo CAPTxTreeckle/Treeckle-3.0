@@ -1,4 +1,3 @@
-import requests
 from abc import ABC, abstractmethod
 from typing import Optional
 
@@ -9,16 +8,6 @@ from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 
 from treeckle.common.exceptions import BadRequest
 from treeckle.common.models import TimestampedModel
-from treeckle.common.constants import (
-    TOKEN_ID,
-    ID_TOKEN,
-    NAME,
-    EMAIL,
-    SUB,
-    PICTURE,
-    PASSWORD,
-    USER_ID,
-)
 
 from users.models import User, UserInvite
 
@@ -55,12 +44,20 @@ class GoogleAuthentication(AuthenticationMethod):
     pass
 
 
+class FacebookAuthentication(AuthenticationMethod):
+    pass
+
+
 class OpenIdAuthentication(AuthenticationMethod):
     pass
 
 
 ## IMPORTANT: to be updated every time the alternative auth methods are updated
-ALTERNATIVE_AUTH_METHODS = [GoogleAuthentication, OpenIdAuthentication]
+ALTERNATIVE_AUTH_METHODS = [
+    GoogleAuthentication,
+    FacebookAuthentication,
+    OpenIdAuthentication,
+]
 
 
 class PasswordAuthentication(AuthenticationMethod):
@@ -159,52 +156,42 @@ class AuthenticationData(ABC):
 
 
 class GoogleAuthenticationData(AuthenticationData):
-    def __init__(self, data: dict):
-        token_id = data[TOKEN_ID]
-
-        params = {ID_TOKEN: token_id}
-
-        response = requests.get(
-            url="https://oauth2.googleapis.com/tokeninfo",
-            params=params,
-        )
-        response_data = response.json()
-
+    def __init__(self, name: str, email: str, auth_id: str, profile_image: str):
         super().__init__(
-            name=response_data.get(NAME),
-            email=response_data.get(EMAIL),
-            auth_id=response_data.get(SUB),
+            name=name,
+            email=email,
+            auth_id=auth_id,
             auth_method_class=GoogleAuthentication,
-            profile_image=response_data.get(PICTURE, ""),
+            profile_image=profile_image,
+        )
+
+
+class FacebookAuthenticationData(AuthenticationData):
+    def __init__(self, name: str, email: str, auth_id: str, profile_image: str):
+        super().__init__(
+            name=name,
+            email=email,
+            auth_id=auth_id,
+            auth_method_class=FacebookAuthentication,
+            profile_image=profile_image,
         )
 
 
 class OpenIdAuthenticationData(AuthenticationData):
-    def __init__(self, data: dict):
-        name = data[NAME]
-        email = data[EMAIL]
-        user_id = data[USER_ID]
-
-        email_domain = email[email.rfind("@") + 1 :]
-        nusnet_email = f"{user_id}@{email_domain}".lower()
-
+    def __init__(self, name: str, email: str, auth_id: str):
         super().__init__(
             name=name,
-            email=nusnet_email,
-            auth_id=user_id,
+            email=email,
+            auth_id=auth_id,
             auth_method_class=OpenIdAuthentication,
         )
 
 
 class PasswordAuthenticationData(AuthenticationData):
-    def __init__(self, data: dict):
-        name = data[NAME]
-        email = data[EMAIL]
-        password = data[PASSWORD]
-
+    def __init__(self, name: str, email: str, auth_id: str):
         super().__init__(
             name=name,
             email=email,
-            auth_id=password,
+            auth_id=auth_id,
             auth_method_class=PasswordAuthentication,
         )

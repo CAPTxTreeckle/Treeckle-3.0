@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     "events",
     "venues",
     "bookings",
-    "comments"
+    "comments",
 ]
 
 if DEBUG:
@@ -119,6 +119,7 @@ JAZZMIN_SETTINGS = {
     "hide_apps": ["auth", "flatpages", "sites", "events"],
     "icons": {
         "authentication.googleauthentication": "fab fa-google",
+        "authentication.facebookauthentication": "fab fa-facebook",
         "authentication.openidauthentication": "fab fa-openid",
         "authentication.passwordauthentication": "fas fa-key",
         "bookings.booking": "fas fa-book",
