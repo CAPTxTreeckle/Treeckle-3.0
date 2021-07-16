@@ -3,6 +3,7 @@ import { Grid, Segment, Image, Divider } from "semantic-ui-react";
 import { displayDateTime } from "../../utils/parser-utils";
 import { UserData } from "../../types/users";
 import UserAuthSection from "../user-auth-section";
+import UserSelfProvider from "../../contexts/user-self-provider";
 import defaultAvatarImage from "../../assets/avatar.png";
 import styles from "./profile-card.module.scss";
 
@@ -51,7 +52,11 @@ function ProfileCard({
 
           <Divider hidden />
 
-          {isSelf && <UserAuthSection />}
+          {isSelf && (
+            <UserSelfProvider>
+              <UserAuthSection />
+            </UserSelfProvider>
+          )}
         </Grid.Column>
       </Grid>
     </Segment>

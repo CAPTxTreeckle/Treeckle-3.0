@@ -10,15 +10,15 @@ from rest_framework_simplejwt.settings import api_settings
 
 
 from treeckle.common.constants import (
-    TOKEN_ID,
     NAME,
     EMAIL,
-    PASSWORD,
     USER_ID,
     REFRESH,
+    TOKEN_ID,
     ACCESS_TOKEN,
+    PASSWORD,
 )
-from treeckle.common.exceptions import InternalServerError
+from treeckle.common.exceptions import InternalServerError, BadRequest
 from users.models import User
 from users.logic import user_to_json, get_users
 from .logic import get_authenticated_data, get_login_details
@@ -32,26 +32,7 @@ from .models import (
 )
 
 
-class BaseAuthenticationSerializer(serializers.Serializer):
-    default_error_messages = {"invalid_user": "Invalid user."}
-
-    def raise_invalid_user(self):
-        authentication_failed_exception = exceptions.AuthenticationFailed(
-            detail=self.error_messages.get("invalid_user"),
-            code="invalid_user",
-        )
-        raise authentication_failed_exception
-
-    def authenticate(self, auth_data: AuthenticationData) -> dict:
-        authenticated_user = auth_data.authenticate()
-
-        if authenticated_user is None:
-            self.raise_invalid_user()
-
-        return get_authenticated_data(user=authenticated_user)
-
-
-class GoogleLoginSerializer(BaseAuthenticationSerializer):
+class GoogleAuthenticationSerializer(serializers.Serializer):
     token_id = serializers.CharField()
 
     def validate(self, attrs):
@@ -65,14 +46,24 @@ class GoogleLoginSerializer(BaseAuthenticationSerializer):
         )
         response_data = response.json()
 
+        name = response_data.get("name")
+        email = response_data.get("email")
+        auth_id = response_data.get("sub")
+
+        if not all((name, email, auth_id)):
+            raise BadRequest(
+                detail="Invalid google token.",
+                code="fail_google_token_verification",
+            )
+
         auth_data = GoogleAuthenticationData(
-            name=response_data.get("name"),
-            email=response_data.get("email"),
-            auth_id=response_data.get("sub"),
+            name=name,
+            email=email,
+            auth_id=auth_id,
             profile_image=response_data.get("picture", ""),
         )
 
-        return self.authenticate(auth_data)
+        return auth_data
 
 
 FACEBOOK_APP_ID = os.getenv("FACEBOOK_APP_ID")
@@ -80,7 +71,7 @@ FACEBOOK_APP_SECRET = os.getenv("FACEBOOK_APP_SECRET")
 VALID_SCOPES = {"email", "public_profile"}
 
 
-class FacebookLoginSerializer(BaseAuthenticationSerializer):
+class FacebookAuthenticationSerializer(serializers.Serializer):
     access_token = serializers.CharField()
 
     def verify_access_token(self, access_token: str):
@@ -104,10 +95,13 @@ class FacebookLoginSerializer(BaseAuthenticationSerializer):
                 if not error_message:
                     raise Exception()
             except Exception as e:
-                self.raise_invalid_user()
+                raise BadRequest(
+                    detail="Invalid facebook token.",
+                    code="fail_facebook_token_verification",
+                )
 
             raise InternalServerError(
-                detail=error_message, code="fail_facebook_access_token_verification"
+                detail=error_message, code="fail_facebook_token_verification"
             )
 
         app_id = data.get("app_id")
@@ -115,7 +109,10 @@ class FacebookLoginSerializer(BaseAuthenticationSerializer):
         scopes = set(data.get("scopes", []))
 
         if app_id != FACEBOOK_APP_ID or not is_valid or scopes != VALID_SCOPES:
-            self.raise_invalid_user()
+            raise BadRequest(
+                detail="Invalid facebook token.",
+                code="fail_facebook_token_verification",
+            )
 
     def validate(self, attrs):
         access_token = attrs[ACCESS_TOKEN]
@@ -142,6 +139,64 @@ class FacebookLoginSerializer(BaseAuthenticationSerializer):
             profile_image=profile_image,
         )
 
+        return auth_data
+
+
+class PasswordAuthenticationSerializer(serializers.Serializer):
+    password = serializers.CharField()
+
+    def validate(self, attrs):
+        password = attrs[PASSWORD]
+
+        auth_data = PasswordAuthenticationData(
+            name="",
+            email="",
+            auth_id=password,
+        )
+
+        return auth_data
+
+
+class BaseAuthenticationSerializer(serializers.Serializer):
+    default_error_messages = {"invalid_user": "Invalid user."}
+
+    def raise_invalid_user(self):
+        authentication_failed_exception = exceptions.AuthenticationFailed(
+            detail=self.error_messages.get("invalid_user"),
+            code="invalid_user",
+        )
+        raise authentication_failed_exception
+
+    def authenticate(self, auth_data: AuthenticationData) -> dict:
+        authenticated_user = auth_data.authenticate()
+
+        if authenticated_user is None:
+            self.raise_invalid_user()
+
+        return get_authenticated_data(user=authenticated_user)
+
+
+class GoogleLoginSerializer(
+    GoogleAuthenticationSerializer, BaseAuthenticationSerializer
+):
+    def validate(self, attrs):
+        try:
+            auth_data = super().validate(attrs)
+        except BadRequest as e:
+            self.raise_invalid_user()
+
+        return self.authenticate(auth_data)
+
+
+class FacebookLoginSerializer(
+    FacebookAuthenticationSerializer, BaseAuthenticationSerializer
+):
+    def validate(self, attrs):
+        try:
+            auth_data = super().validate(attrs)
+        except BadRequest as e:
+            self.raise_invalid_user()
+
         return self.authenticate(auth_data)
 
 
@@ -165,21 +220,19 @@ class OpenIdLoginSerializer(BaseAuthenticationSerializer):
         return self.authenticate(auth_data)
 
 
-class PasswordLoginSerializer(BaseAuthenticationSerializer):
+class PasswordLoginSerializer(
+    PasswordAuthenticationSerializer, BaseAuthenticationSerializer
+):
     name = serializers.CharField()
     email = serializers.EmailField()
-    password = serializers.CharField()
 
     def validate(self, attrs):
         name = attrs[NAME]
         email = attrs[EMAIL]
-        password = attrs[PASSWORD]
 
-        auth_data = PasswordAuthenticationData(
-            name=name,
-            email=email,
-            auth_id=password,
-        )
+        auth_data = super().validate(attrs)
+        auth_data.name = name
+        auth_data.email = email
 
         return self.authenticate(auth_data)
 

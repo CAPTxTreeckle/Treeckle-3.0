@@ -33,12 +33,12 @@ const PasswordLoginButton = () => {
 
 const GoogleLoginButton = () => {
   const dispatch = useAppDispatch();
-  const { loading, googleLogin } = useGoogleLogin();
+  const { loading: isLoggingIn, googleLogin } = useGoogleLogin();
 
   const onGoogleLogin = async (
     response: GoogleLoginResponse | GoogleLoginResponseOffline,
   ) => {
-    if (loading) {
+    if (isLoggingIn) {
       return;
     }
 
@@ -61,22 +61,24 @@ const GoogleLoginButton = () => {
     isAvailable,
   } = useGoogleAuth(onGoogleLogin);
 
+  const loading = isLoggingIn || googleAuthLoading;
+
   return (
     <Button
       className={styles.googleButton}
       onClick={startGoogleAuth}
       content="Sign in with Google"
-      icon={googleAuthLoading ? undefined : "google"}
+      icon={loading ? undefined : "google"}
       fluid
-      loading={googleAuthLoading || loading}
-      disabled={!isAvailable || googleAuthLoading || loading}
+      loading={loading}
+      disabled={!isAvailable || loading}
     />
   );
 };
 
 const FacebookLoginButton = () => {
   const dispatch = useAppDispatch();
-  const { loading, facebookLogin } = useFacebookLogin();
+  const { loading: isLoggingIn, facebookLogin } = useFacebookLogin();
 
   const onFacebookLogin = async (response: fb.StatusResponse) => {
     if (response.status === "not_authorized") {
@@ -103,6 +105,8 @@ const FacebookLoginButton = () => {
   const { startFacebookAuth, loading: facebookAuthLoading } =
     useFacebookAuth(onFacebookLogin);
 
+  const loading = isLoggingIn || facebookAuthLoading;
+
   return (
     <Button
       icon="facebook"
@@ -110,8 +114,8 @@ const FacebookLoginButton = () => {
       onClick={startFacebookAuth}
       content="Sign in with Facebook"
       fluid
-      loading={facebookAuthLoading || loading}
-      disabled={facebookAuthLoading || loading}
+      loading={loading}
+      disabled={loading}
     />
   );
 };

@@ -77,7 +77,10 @@ class SingleVenueBookingNotificationSubscriptionsView(APIView):
                 venue=venue,
             )
         except IntegrityError as e:
-            raise Conflict(detail="Booking notification subscription already exists.")
+            raise Conflict(
+                detail="Booking notification subscription already exists.",
+                code="booking_notification_subscription_exists",
+            )
 
         data = booking_notification_subscription_to_json(new_subscription)
 
@@ -140,7 +143,7 @@ class VenuesView(APIView):
                 form_field_data=validated_data.get("form_field_data", []),
             )
         except IntegrityError as e:
-            raise Conflict(detail="Venue already exists.")
+            raise Conflict(detail="Venue already exists.", code="venue_exists")
 
         data = venue_to_json(new_venue)
 
@@ -176,7 +179,7 @@ class SingleVenueView(APIView):
             )
 
         except IntegrityError as e:
-            raise Conflict(detail="Venue already exists.")
+            raise Conflict(detail="Venue already exists.", code="venue_exists")
 
         data = venue_to_json(updated_venue)
 

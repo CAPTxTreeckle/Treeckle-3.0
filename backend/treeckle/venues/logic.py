@@ -99,6 +99,7 @@ def delete_unused_venue_categories(organization: Organization) -> None:
     organization.venuecategory_set.filter(venue=None).delete()
 
 
+@transaction.atomic
 def create_venue(
     organization: Organization,
     venue_name: str,
@@ -110,25 +111,25 @@ def create_venue(
     form_field_data: list[dict],
 ) -> Venue:
 
-    with transaction.atomic():
-        venue_category = get_or_create_venue_category(
-            name=category_name, organization=organization
-        )
+    venue_category = get_or_create_venue_category(
+        name=category_name, organization=organization
+    )
 
-        new_venue = Venue.objects.create(
-            organization=organization,
-            name=venue_name,
-            category=venue_category,
-            capacity=capacity,
-            ic_name=ic_name,
-            ic_email=ic_email,
-            ic_contact_number=ic_contact_number,
-            form_field_data=form_field_data,
-        )
+    new_venue = Venue.objects.create(
+        organization=organization,
+        name=venue_name,
+        category=venue_category,
+        capacity=capacity,
+        ic_name=ic_name,
+        ic_email=ic_email,
+        ic_contact_number=ic_contact_number,
+        form_field_data=form_field_data,
+    )
 
     return new_venue
 
 
+@transaction.atomic
 def update_venue(
     current_venue: Venue,
     venue_name: str,
@@ -140,24 +141,23 @@ def update_venue(
     form_field_data: list[dict],
 ) -> Venue:
 
-    with transaction.atomic():
-        venue_category = get_or_create_venue_category(
-            name=category_name, organization=current_venue.organization
-        )
+    venue_category = get_or_create_venue_category(
+        name=category_name, organization=current_venue.organization
+    )
 
-        current_venue.update_from_dict(
-            {
-                "name": venue_name,
-                "category": venue_category,
-                "capacity": capacity,
-                "ic_name": ic_name,
-                "ic_email": ic_email,
-                "ic_contact_number": ic_contact_number,
-                "form_field_data": form_field_data,
-            },
-            commit=True,
-        )
+    current_venue.update_from_dict(
+        {
+            "name": venue_name,
+            "category": venue_category,
+            "capacity": capacity,
+            "ic_name": ic_name,
+            "ic_email": ic_email,
+            "ic_contact_number": ic_contact_number,
+            "form_field_data": form_field_data,
+        },
+        commit=True,
+    )
 
-        delete_unused_venue_categories(organization=current_venue.organization)
+    delete_unused_venue_categories(organization=current_venue.organization)
 
     return current_venue

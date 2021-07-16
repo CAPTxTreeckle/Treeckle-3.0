@@ -3,7 +3,14 @@ from django.db import models
 from treeckle.common.models import TimestampedModel
 from organizations.models import Organization
 
+
 # Create your models here.
+
+
+class PatchUserAction(models.TextChoices):
+    PASSWORD = "PASSWORD"
+    GOOGLE = "GOOGLE"
+    FACEBOOK = "FACEBOOK"
 
 
 class Role(models.TextChoices):

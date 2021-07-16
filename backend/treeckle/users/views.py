@@ -114,12 +114,16 @@ class RequesterView(APIView):
 
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
     def patch(self, request, requester: User):
-        serialzer = PatchRequesterSerializer(data=request.data)
+        print(request.data)
+        serializer = PatchRequesterSerializer(data=request.data)
 
-        serialzer.is_valid(raise_exception=True)
+        serializer.is_valid(raise_exception=True)
+        validated_data = serializer.validated_data
 
         updated_requester = update_requester(
-            requester=requester, password=serialzer.validated_data.get("password")
+            requester=requester,
+            action=validated_data.get("action"),
+            payload=validated_data.get("payload"),
         )
 
         data = requester_to_json(updated_requester)
@@ -141,11 +145,12 @@ class SingleUserView(APIView):
         serializer = PatchSingleUserSerializer(data=request.data)
 
         serializer.is_valid(raise_exception=True)
+        validated_data = serializer.validated_data
 
-        if requester == user and "role" in serializer.validated_data:
+        if requester == user and "role" in validated_data:
             raise BadRequest(detail="Cannot self-update role", code="self_update_role")
 
-        user.update_from_dict(serializer.validated_data, commit=True)
+        user.update_from_dict(validated_data, commit=True)
 
         data = user_to_json(user=user, requester=requester)
 

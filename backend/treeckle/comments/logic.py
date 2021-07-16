@@ -35,16 +35,14 @@ def booking_comment_to_json(booking_comment: BookingComment) -> dict:
     return data
 
 
+@transaction.atomic
 def create_booking_comment(
     booking: Booking, commenter: User, content: str
 ) -> BookingComment:
 
-    with transaction.atomic():
-        comment = Comment.objects.create(commenter=commenter, content=content)
+    comment = Comment.objects.create(commenter=commenter, content=content)
 
-        booking_comment = BookingComment.objects.create(
-            booking=booking, comment=comment
-        )
+    booking_comment = BookingComment.objects.create(booking=booking, comment=comment)
 
     return booking_comment
 
@@ -69,10 +67,13 @@ def delete_comment(comment: Comment) -> Comment:
 
     return comment
 
+
 def create_comment_reads(comment_ids: list[int], user: User) -> QuerySet[CommentRead]:
     comments = Comment.objects.filter(id__in=comment_ids)
 
     comment_reads = [CommentRead(comment=comment, reader=user) for comment in comments]
-    created_comment_reads = CommentRead.objects.bulk_create(comment_reads, ignore_conflicts=True)
-    
+    created_comment_reads = CommentRead.objects.bulk_create(
+        comment_reads, ignore_conflicts=True
+    )
+
     return created_comment_reads

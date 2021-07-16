@@ -1,9 +1,9 @@
-from typing import Sequence, Iterable
+from typing import Sequence, Iterable, Optional
 
 from django.db.models import QuerySet
-from django.db import transaction
+from django.db import transaction, models
 
-from treeckle.common.exceptions import InternalServerError
+from treeckle.common.exceptions import InternalServerError, BadRequest
 from treeckle.common.constants import (
     ID,
     NAME,
@@ -25,7 +25,7 @@ from authentication.models import (
     GoogleAuthentication,
     FacebookAuthentication,
 )
-from .models import User, UserInvite
+from .models import User, UserInvite, PatchUserAction
 
 
 def user_to_json(user: User, requester: User = None) -> dict:
@@ -113,18 +113,73 @@ def create_user_invites(
 
 
 @transaction.atomic
-def update_requester(requester: User, password: str) -> User:
-    PasswordAuthentication.objects.filter(user=requester).delete()
+def update_requester(
+    requester: User, action: PatchUserAction, payload: Optional[dict]
+) -> User:
+    ## lazy import to prevent circular import
+    from .utils import ActionClasses
 
-    ## try to create new auth method for user
-    new_password_auth = PasswordAuthentication.create(
-        user=requester, password=password, check_alt_methods=False
-    )
+    classes = ActionClasses.get(action)
 
-    if new_password_auth is None:
-        raise InternalServerError(
-            detail="An error has occurred while updating the password.",
-            code="no_new_password_auth",
+    if not classes:
+        raise BadRequest(detail="Invalid action", code="invalid_patch_user_action")
+
+    serializer_class = classes.serializer_class
+    auth_method_class = classes.auth_method_class
+    auth_name = classes.auth_name
+
+    if action == PatchUserAction.PASSWORD:
+        ## Do not allow None/user to delete password
+        serializer = serializer_class(data=payload)
+        serializer.is_valid(raise_exception=True)
+
+        password_auth_data = serializer.validated_data
+
+        auth_method_class.objects.filter(user=requester).delete()
+
+        ## try to create new password auth method for user
+        new_auth_method = auth_method_class.create(
+            user=requester,
+            password=password_auth_data.auth_id,
+            check_alt_methods=False,
         )
+
+        if new_auth_method is None:
+            raise InternalServerError(
+                detail=f"An error has occurred while updating the {auth_name}.",
+                code=f"no_new_{auth_name}_auth",
+            )
+
+    elif action in (PatchUserAction.GOOGLE, PatchUserAction.FACEBOOK):
+        if payload is None:
+            try:
+                auth_method = auth_method_class.objects.get(user=requester)
+            except auth_method_class.DoesNotExist as e:
+                raise BadRequest(
+                    detail=f"There is no {auth_name} account that is currently linked.",
+                    code=f"no_linked_{auth_name}_account",
+                )
+
+            auth_method.delete()
+        else:
+            if auth_method_class.objects.filter(user=requester).exists():
+                raise BadRequest(
+                    detail=f"There is already a linked {auth_name} account.",
+                    code=f"linked_{auth_name}_account_exists",
+                )
+
+            serializer = serializer_class(data=payload)
+            serializer.is_valid(raise_exception=True)
+
+            auth_data = serializer.validated_data
+
+            ## try to create new auth method for user
+            new_auth_method = auth_method_class.create(requester, auth_data.auth_id)
+
+            if new_auth_method is None:
+                raise InternalServerError(
+                    detail=f"An error has occurred while linking the {auth_name} account.",
+                    code=f"no_new_{auth_name}_auth",
+                )
 
     return requester

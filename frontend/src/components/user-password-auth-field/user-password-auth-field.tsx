@@ -1,23 +1,18 @@
-import { useState, ReactNode, useRef, FormEvent } from "react";
+import { useState, useRef, FormEvent, useContext } from "react";
 import { toast } from "react-toastify";
 import { Button, Icon, Input } from "semantic-ui-react";
+import { UserSelfContext } from "../../contexts/user-self-provider";
 import { useUpdateSelf } from "../../custom-hooks/api/users-api";
-import { SelfData } from "../../types/users";
 import { resolveApiError } from "../../utils/error-utils";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
-import styles from "./user-set-password-field.module.scss";
+import styles from "./user-password-auth-field.module.scss";
 
 type Props = {
-  extraContent: ReactNode;
-  buttonText: string;
-  didUpdatedSelf?: (self: SelfData) => void;
+  labelClassName?: string;
 };
 
-function UserSetPasswordField({
-  extraContent,
-  buttonText,
-  didUpdatedSelf,
-}: Props) {
+function UserPasswordAuthField({ labelClassName }: Props) {
+  const { self, setSelf } = useContext(UserSelfContext);
   const [isSettingPassword, setSettingPassword] = useState(false);
   const [isShowingPassword, setShowingPassword] = useState(false);
   const passwordInputRef = useRef<HTMLInputElement>(null);
@@ -34,8 +29,7 @@ function UserSetPasswordField({
     try {
       const updatedSelf = await updateSelf({ password });
 
-      didUpdatedSelf?.(updatedSelf);
-      setSettingPassword(false);
+      setSelf(updatedSelf);
       setSettingPassword(false);
       setShowingPassword(false);
 
@@ -92,16 +86,19 @@ function UserSetPasswordField({
     </form>
   ) : (
     <HorizontalLayoutContainer align="center">
-      {extraContent}
+      <span className={labelClassName}>
+        {self?.hasPasswordAuth ? "Active" : "Inactive"}
+      </span>
+
       <Button
         onClick={() => setSettingPassword(true)}
         size="mini"
         compact
         color="blue"
-        content={buttonText}
+        content={self?.hasPasswordAuth ? "Change" : "Activate"}
       />
     </HorizontalLayoutContainer>
   );
 }
 
-export default UserSetPasswordField;
+export default UserPasswordAuthField;

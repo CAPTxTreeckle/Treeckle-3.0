@@ -99,6 +99,9 @@ class AuthenticationData(ABC):
         self.auth_method_class = auth_method_class
         self.profile_image = profile_image
 
+    def __str__(self):
+        return f"{self.name} | {self.email} | {self.auth_id} | {self.profile_image}"
+
     @transaction.atomic
     def authenticate(self) -> Optional[User]:
         ## check if an invite exists

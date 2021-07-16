@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from .models import User, UserInvite, Role
+from .utils import PatchUserAction
 
 
 class PostSingleUserInviteSerializer(serializers.ModelSerializer):
@@ -36,4 +37,5 @@ class PatchSingleUserSerializer(serializers.ModelSerializer):
 
 
 class PatchRequesterSerializer(serializers.Serializer):
-    password = serializers.CharField()
+    action = serializers.ChoiceField(choices=PatchUserAction.choices)
+    payload = serializers.JSONField(allow_null=True)

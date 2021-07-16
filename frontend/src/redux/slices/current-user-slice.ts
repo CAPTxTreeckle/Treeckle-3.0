@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import { AuthenticationData } from "../../types/auth";
 
-type CurrentUserState = AuthenticationData | null;
+type CurrentUserState = Partial<AuthenticationData> | null;
 
 const initialState: CurrentUserState = null as CurrentUserState;
 
@@ -11,9 +11,9 @@ const currentUserSlice = createSlice({
   initialState,
   reducers: {
     setCurrentUserAction: (
-      _,
-      { payload }: PayloadAction<AuthenticationData | null>,
-    ) => payload,
+      state,
+      { payload }: PayloadAction<CurrentUserState | null>,
+    ) => (payload === null ? null : { ...state, ...payload }),
   },
 });
 
