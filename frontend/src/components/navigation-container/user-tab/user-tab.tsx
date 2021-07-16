@@ -10,9 +10,8 @@ import { resetAppState } from "../../../redux/store";
 import defaultAvatarImage from "../../../assets/avatar.png";
 
 function UserTab() {
-  const { id, name, profileImage } = useDeepEqualAppSelector(
-    selectCurrentUserDisplayInfo,
-  );
+  const { id, name, profileImage } =
+    useDeepEqualAppSelector(selectCurrentUserDisplayInfo) ?? {};
   const { pathname } = useLocation();
   const currentUserProfilePath = PROFILE_PATH.replace(`:${USER_ID}`, `${id}`);
   const isShowingCurrentUserProfile = pathname.startsWith(

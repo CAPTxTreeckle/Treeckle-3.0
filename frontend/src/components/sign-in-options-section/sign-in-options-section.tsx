@@ -14,7 +14,7 @@ import {
   useGoogleLogin,
 } from "../../custom-hooks/api/auth-api";
 import { useAppDispatch } from "../../redux/hooks";
-import { setCurrentUserAction } from "../../redux/slices/current-user-slice";
+import { updateCurrentUserAction } from "../../redux/slices/current-user-slice";
 import { resolveApiError } from "../../utils/error-utils";
 import styles from "./sign-in-options-section.module.scss";
 
@@ -49,7 +49,7 @@ const GoogleLoginButton = () => {
 
       toast.success("Signed in successfully.");
 
-      dispatch(setCurrentUserAction(authData));
+      dispatch(updateCurrentUserAction(authData));
     } catch (error) {
       resolveApiError(error);
     }
@@ -96,7 +96,7 @@ const FacebookLoginButton = () => {
 
       toast.success("Signed in successfully.");
 
-      dispatch(setCurrentUserAction(authData));
+      dispatch(updateCurrentUserAction(authData));
     } catch (error) {
       resolveApiError(error);
     }

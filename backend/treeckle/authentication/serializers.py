@@ -17,10 +17,12 @@ from treeckle.common.constants import (
     TOKEN_ID,
     ACCESS_TOKEN,
     PASSWORD,
+    USER,
+    TOKENS,
 )
 from treeckle.common.exceptions import InternalServerError, BadRequest
 from users.models import User
-from users.logic import user_to_json, get_users
+from users.logic import requester_to_json, get_users
 from .logic import get_authenticated_data, get_login_details
 
 from .models import (
@@ -247,14 +249,22 @@ class AccessTokenRefreshSerializer(
         user_id = RefreshToken(tokens[REFRESH]).get(key=api_settings.USER_ID_CLAIM)
 
         try:
-            user = get_users(id=user_id).select_related("organization").get()
+            user = (
+                get_users(id=user_id)
+                .select_related(
+                    "organization",
+                    "passwordauthentication",
+                    "googleauthentication",
+                    "facebookauthentication",
+                )
+                .get()
+            )
         except User.DoesNotExist as e:
             self.raise_invalid_user()
 
-        data = user_to_json(user=user)
-        data.update(tokens)
+        data = requester_to_json(user)
 
-        return data
+        return {USER: data, TOKENS: tokens}
 
 
 class CheckAccountSerializer(BaseAuthenticationSerializer):

@@ -1,4 +1,3 @@
-import { useContext } from "react";
 import { Button } from "semantic-ui-react";
 import {
   GoogleLoginResponse,
@@ -6,18 +5,17 @@ import {
 } from "react-google-login";
 import { toast } from "react-toastify";
 import { useGoogleAuth, useGoogleLogin } from "../../custom-hooks/api/auth-api";
-import { useAppDispatch, useDeepEqualAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   selectCurrentUserDisplayInfo,
-  setCurrentUserAction,
+  updateCurrentUserAction,
 } from "../../redux/slices/current-user-slice";
 import { resolveApiError } from "../../utils/error-utils";
-import { UserSelfContext } from "../../contexts/user-self-provider";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 
 const LinkButton = () => {
   const dispatch = useAppDispatch();
-  const { email } = useDeepEqualAppSelector(selectCurrentUserDisplayInfo);
+  const { email } = useAppSelector(selectCurrentUserDisplayInfo) ?? {};
 
   const { loading: isLinking, googleLogin } = useGoogleLogin();
 
@@ -40,7 +38,7 @@ const LinkButton = () => {
 
       toast.success("Your google account has been successfully linked.");
 
-      dispatch(setCurrentUserAction(authData));
+      dispatch(updateCurrentUserAction(authData));
     } catch (error) {
       resolveApiError(error);
     }
@@ -72,12 +70,12 @@ type Props = {
 };
 
 function UserGoogleAuthField({ labelClassName }: Props) {
-  const { self } = useContext(UserSelfContext);
+  const user = useAppSelector(selectCurrentUserDisplayInfo);
 
   return (
     <HorizontalLayoutContainer align="center">
       <span className={labelClassName}>
-        {self?.hasGoogleAuth ? "Linked" : "Not linked"}
+        {user?.hasGoogleAuth ? "Linked" : "Not linked"}
       </span>
 
       <LinkButton />

@@ -1,20 +1,32 @@
-import { useEffect, useContext } from "react";
+import { useEffect } from "react";
 import { Grid, Icon } from "semantic-ui-react";
 import { useGetSelf } from "../../custom-hooks/api/users-api";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import UserPasswordAuthField from "../user-password-auth-field";
 import UserGoogleAuthField from "../user-google-auth-field";
 import UserFacebookAuthField from "../user-facebook-auth-field";
-import { UserSelfContext } from "../../contexts/user-self-provider";
 import styles from "./user-auth-section.module.scss";
+import { useAppDispatch, useDeepEqualAppSelector } from "../../redux/hooks";
+import {
+  selectCurrentUserDisplayInfo,
+  updateCurrentUserAction,
+} from "../../redux/slices/current-user-slice";
 
 function UserAuthSection() {
   const { getSelf, loading } = useGetSelf();
-  const { self, setSelf } = useContext(UserSelfContext);
+  const dispatch = useAppDispatch();
+  const user = useDeepEqualAppSelector(selectCurrentUserDisplayInfo);
 
   useEffect(() => {
-    (async () => setSelf(await getSelf()))();
-  }, [getSelf, setSelf]);
+    (async () => {
+      const self = await getSelf();
+      if (!self) {
+        return;
+      }
+
+      dispatch(updateCurrentUserAction({ user: self }));
+    })();
+  }, [getSelf, dispatch]);
 
   console.log("test");
 
@@ -22,7 +34,7 @@ function UserAuthSection() {
     <>
       <h3>Sign-in Methods</h3>
       <PlaceholderWrapper
-        showDefaultMessage={!self}
+        showDefaultMessage={!user}
         defaultMessage="Error loading sign-in methods"
         loading={loading}
         size="medium"
@@ -53,7 +65,7 @@ function UserAuthSection() {
             >
               <UserPasswordAuthField
                 labelClassName={
-                  self?.hasPasswordAuth ? styles.greenText : styles.redText
+                  user?.hasPasswordAuth ? styles.greenText : styles.redText
                 }
               />
             </Grid.Column>
@@ -80,7 +92,7 @@ function UserAuthSection() {
             >
               <UserGoogleAuthField
                 labelClassName={
-                  self?.hasGoogleAuth ? styles.greenText : styles.redText
+                  user?.hasGoogleAuth ? styles.greenText : styles.redText
                 }
               />
             </Grid.Column>
@@ -107,7 +119,7 @@ function UserAuthSection() {
             >
               <UserFacebookAuthField
                 labelClassName={
-                  self?.hasFacebookAuth ? styles.greenText : styles.redText
+                  user?.hasFacebookAuth ? styles.greenText : styles.redText
                 }
               />
             </Grid.Column>

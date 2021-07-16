@@ -11,7 +11,7 @@ import { PasswordLoginPostData } from "../../types/auth";
 import { usePasswordLogin } from "../../custom-hooks/api/auth-api";
 import { deepTrim } from "../../utils/parser-utils";
 import { useAppDispatch } from "../../redux/hooks";
-import { setCurrentUserAction } from "../../redux/slices/current-user-slice";
+import { updateCurrentUserAction } from "../../redux/slices/current-user-slice";
 import { resolveApiError } from "../../utils/error-utils";
 
 const schema = yup.object().shape({
@@ -49,7 +49,7 @@ function SignInAccountForm() {
 
       toast.success("Signed in successfully.");
 
-      dispatch(setCurrentUserAction(authData));
+      dispatch(updateCurrentUserAction(authData));
     } catch (error) {
       resolveApiError(error);
     }

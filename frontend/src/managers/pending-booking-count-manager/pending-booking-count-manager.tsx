@@ -10,7 +10,7 @@ const DELAY_INTERVAL = 1000 * 60 * 5;
 
 function PendingBookingCountManager() {
   const dispatch = useAppDispatch();
-  const { role } = useDeepEqualAppSelector(selectCurrentUserDisplayInfo);
+  const { role } = useDeepEqualAppSelector(selectCurrentUserDisplayInfo) ?? {};
   const { getPendingBookingCount } = useGetPendingBookingCount();
 
   const delay = role === Role.Admin ? DELAY_INTERVAL : null;

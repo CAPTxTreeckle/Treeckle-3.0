@@ -1,25 +1,17 @@
-import { UserData } from "./users";
 import {
-  ACCESS,
-  EMAIL,
-  NAME,
-  PASSWORD,
-  REFRESH,
-  TOKEN_ID,
-  ACCESS_TOKEN,
-} from "../constants";
+  SelfData,
+  GooglePayloadPostData,
+  FacebookPayloadPostData,
+  PasswordPayloadPostData,
+} from "./users";
+import { ACCESS, EMAIL, NAME, REFRESH, TOKENS, USER } from "../constants";
 
-export type AuthenticationData = UserData & {
-  [ACCESS]: string;
-  [REFRESH]: string;
-};
-
-export type GoogleLoginPostData = {
-  [TOKEN_ID]: string;
-};
-
-export type FacebookLoginPostData = {
-  [ACCESS_TOKEN]: string;
+export type AuthenticationData = {
+  [USER]: SelfData;
+  [TOKENS]: {
+    [ACCESS]: string;
+    [REFRESH]: string;
+  };
 };
 
 export type CheckAccountPostData = {
@@ -31,8 +23,11 @@ export type LoginDetails = {
   [EMAIL]: string;
 };
 
-export type PasswordLoginPostData = {
+export type GoogleLoginPostData = GooglePayloadPostData;
+
+export type FacebookLoginPostData = FacebookPayloadPostData;
+
+export type PasswordLoginPostData = PasswordPayloadPostData & {
   [NAME]: string;
   [EMAIL]: string;
-  [PASSWORD]: string;
 };

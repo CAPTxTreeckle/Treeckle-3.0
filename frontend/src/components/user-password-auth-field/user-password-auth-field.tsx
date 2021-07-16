@@ -1,8 +1,14 @@
-import { useState, useRef, FormEvent, useContext } from "react";
+import { useState, useRef, FormEvent } from "react";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Button, Icon, Input } from "semantic-ui-react";
-import { UserSelfContext } from "../../contexts/user-self-provider";
 import { useUpdateSelf } from "../../custom-hooks/api/users-api";
+import { useAppSelector } from "../../redux/hooks";
+import {
+  selectCurrentUserDisplayInfo,
+  updateCurrentUserAction,
+} from "../../redux/slices/current-user-slice";
+import { SelfPatchAction } from "../../types/users";
 import { resolveApiError } from "../../utils/error-utils";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import styles from "./user-password-auth-field.module.scss";
@@ -12,7 +18,8 @@ type Props = {
 };
 
 function UserPasswordAuthField({ labelClassName }: Props) {
-  const { self, setSelf } = useContext(UserSelfContext);
+  const user = useAppSelector(selectCurrentUserDisplayInfo);
+  const dispatch = useDispatch();
   const [isSettingPassword, setSettingPassword] = useState(false);
   const [isShowingPassword, setShowingPassword] = useState(false);
   const passwordInputRef = useRef<HTMLInputElement>(null);
@@ -27,9 +34,12 @@ function UserPasswordAuthField({ labelClassName }: Props) {
     }
 
     try {
-      const updatedSelf = await updateSelf({ password });
+      const updatedSelf = await updateSelf({
+        action: SelfPatchAction.Password,
+        payload: { password },
+      });
 
-      setSelf(updatedSelf);
+      dispatch(updateCurrentUserAction({ user: updatedSelf }));
       setSettingPassword(false);
       setShowingPassword(false);
 
@@ -87,7 +97,7 @@ function UserPasswordAuthField({ labelClassName }: Props) {
   ) : (
     <HorizontalLayoutContainer align="center">
       <span className={labelClassName}>
-        {self?.hasPasswordAuth ? "Active" : "Inactive"}
+        {user?.hasPasswordAuth ? "Active" : "Inactive"}
       </span>
 
       <Button
@@ -95,7 +105,7 @@ function UserPasswordAuthField({ labelClassName }: Props) {
         size="mini"
         compact
         color="blue"
-        content={self?.hasPasswordAuth ? "Change" : "Activate"}
+        content={user?.hasPasswordAuth ? "Change" : "Activate"}
       />
     </HorizontalLayoutContainer>
   );

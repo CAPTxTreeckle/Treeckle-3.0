@@ -114,7 +114,6 @@ class RequesterView(APIView):
 
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
     def patch(self, request, requester: User):
-        print(request.data)
         serializer = PatchRequesterSerializer(data=request.data)
 
         serializer.is_valid(raise_exception=True)

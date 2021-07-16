@@ -1,6 +1,6 @@
-import { useContext } from "react";
 import { Button } from "semantic-ui-react";
-import { UserSelfContext } from "../../contexts/user-self-provider";
+import { useAppSelector } from "../../redux/hooks";
+import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 
 type Props = {
@@ -8,19 +8,19 @@ type Props = {
 };
 
 function UserFacebookAuthField({ labelClassName }: Props) {
-  const { self } = useContext(UserSelfContext);
+  const user = useAppSelector(selectCurrentUserDisplayInfo);
 
   return (
     <HorizontalLayoutContainer align="center">
       <span className={labelClassName}>
-        {self?.hasFacebookAuth ? "Linked" : "Not linked"}
+        {user?.hasFacebookAuth ? "Linked" : "Not linked"}
       </span>
 
       <Button
         size="mini"
         compact
         color="blue"
-        content={self?.hasFacebookAuth ? "Unlink" : "Link"}
+        content={user?.hasFacebookAuth ? "Unlink" : "Link"}
         disabled
       />
     </HorizontalLayoutContainer>

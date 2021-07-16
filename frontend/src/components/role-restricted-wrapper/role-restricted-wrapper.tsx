@@ -14,7 +14,7 @@ function RoleRestrictedWrapper({
   allowedRoles,
   defaultRender = null,
 }: Props) {
-  const { role } = useDeepEqualAppSelector(selectCurrentUserDisplayInfo);
+  const { role } = useDeepEqualAppSelector(selectCurrentUserDisplayInfo) ?? {};
 
   return <>{role && allowedRoles.includes(role) ? children : defaultRender}</>;
 }

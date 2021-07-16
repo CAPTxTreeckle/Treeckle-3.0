@@ -1,7 +1,7 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import { loadFromLocalStorage } from "../utils/local-storage-utils";
 import currentUserReducer, {
-  setCurrentUserAction,
+  updateCurrentUserAction,
 } from "./slices/current-user-slice";
 import bookingsReducer, { resetBookingsAction } from "./slices/bookings-slice";
 import bookingCreationReducer, {
@@ -55,7 +55,7 @@ export const resetAppState = () => {
   store.dispatch(resetUserInvitesAction());
   store.dispatch(resetBookingNotificationSubscriptionsAction());
   store.dispatch(resetPendingBookingCountAction());
-  store.dispatch(setCurrentUserAction(null));
+  store.dispatch(updateCurrentUserAction(null));
 
   window.FB?.getLoginStatus(({ status }) => {
     status === "connected" && window.FB?.logout();

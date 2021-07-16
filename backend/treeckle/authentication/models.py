@@ -114,7 +114,12 @@ class AuthenticationData(ABC):
 
         ## check if is existing user
         try:
-            user = User.objects.select_related("organization").get(
+            user = User.objects.select_related(
+                "organization",
+                "passwordauthentication",
+                "googleauthentication",
+                "facebookauthentication",
+            ).get(
                 email=self.email,
             )
         except User.DoesNotExist as e:

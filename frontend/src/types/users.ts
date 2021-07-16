@@ -1,4 +1,6 @@
 import {
+  ACCESS_TOKEN,
+  ACTION,
   EMAIL,
   EMAILS,
   HAS_FACEBOOK_AUTH,
@@ -9,9 +11,11 @@ import {
   NAME,
   ORGANIZATION,
   PASSWORD,
+  PAYLOAD,
   PROFILE_IMAGE,
   ROLE,
   STATUS,
+  TOKEN_ID,
 } from "../constants";
 import { BaseData } from "./base";
 
@@ -41,9 +45,37 @@ export type SelfData = UserData & {
   [HAS_FACEBOOK_AUTH]: boolean;
 };
 
-export type SelfPatchData = {
+export enum SelfPatchAction {
+  Password = "PASSWORD",
+  Google = "GOOGLE",
+  Facebook = "FACEBOOK",
+}
+
+export type GooglePayloadPostData = {
+  [TOKEN_ID]: string;
+};
+
+export type FacebookPayloadPostData = {
+  [ACCESS_TOKEN]: string;
+};
+
+export type PasswordPayloadPostData = {
   [PASSWORD]: string;
 };
+
+export type SelfPatchData =
+  | {
+      [ACTION]: SelfPatchAction.Password;
+      [PAYLOAD]: PasswordPayloadPostData;
+    }
+  | {
+      [ACTION]: SelfPatchAction.Google;
+      [PAYLOAD]: GooglePayloadPostData;
+    }
+  | {
+      [ACTION]: SelfPatchAction.Facebook;
+      [PAYLOAD]: FacebookPayloadPostData;
+    };
 
 export type UserInvitePostData = {
   [EMAIL]: string;

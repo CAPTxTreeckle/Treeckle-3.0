@@ -10,7 +10,7 @@ const currentUserSlice = createSlice({
   name: "currentUser",
   initialState,
   reducers: {
-    setCurrentUserAction: (
+    updateCurrentUserAction: (
       state,
       { payload }: PayloadAction<CurrentUserState | null>,
     ) => (payload === null ? null : { ...state, ...payload }),
@@ -18,23 +18,22 @@ const currentUserSlice = createSlice({
 });
 
 // action creators
-export const { setCurrentUserAction } = currentUserSlice.actions;
+export const { updateCurrentUserAction } = currentUserSlice.actions;
 
 // selectors
 export const selectCurrentUser = ({ currentUser }: RootState) => currentUser;
 export const selectIsLoggedIn = createSelector(
   selectCurrentUser,
-  (currentUser) => Boolean(currentUser?.access),
+  (currentUser) => Boolean(currentUser),
 );
-export const selectCurrentUserId = createSelector(
+export const selectCurrentUserTokens = createSelector(
   selectCurrentUser,
-  (currentUser) => currentUser?.id,
+  (currentUser) => currentUser?.tokens,
 );
 export const selectCurrentUserDisplayInfo = createSelector(
   selectCurrentUser,
   (currentUser) => {
-    const { access, refresh, ...displayInfo } = { ...currentUser };
-    return displayInfo;
+    return currentUser?.user;
   },
 );
 

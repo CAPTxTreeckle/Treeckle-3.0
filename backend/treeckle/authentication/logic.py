@@ -1,8 +1,8 @@
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from users.models import User, UserInvite
-from users.logic import user_to_json, get_users, get_user_invites
-from treeckle.common.constants import REFRESH, ACCESS, NAME, EMAIL
+from users.logic import requester_to_json, get_users, get_user_invites
+from treeckle.common.constants import REFRESH, ACCESS, NAME, EMAIL, TOKENS, USER
 
 
 def get_tokens(user: User) -> dict:
@@ -15,12 +15,10 @@ def get_tokens(user: User) -> dict:
 
 
 def get_authenticated_data(user: User) -> dict:
-    data = user_to_json(user)
+    data = requester_to_json(user)
     tokens = get_tokens(user)
 
-    data.update(tokens)
-
-    return data
+    return {USER: data, TOKENS: tokens}
 
 
 def get_login_details(email: str) -> dict:

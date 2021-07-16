@@ -210,18 +210,20 @@ export function useGetSingleVenue() {
       const url = `/venues/${venueId}`;
 
       try {
-        const { data: venue } = await apiCall({
-          url,
-        });
+        await errorHandlerWrapper(async () => {
+          const { data: venue } = await apiCall({
+            url,
+          });
 
-        console.log(`GET ${url} success:`, venue);
+          console.log(`GET ${url} success:`, venue);
 
-        const parsedVenue = parseVenueData(venue);
-        setVenue(parsedVenue);
+          const parsedVenue = parseVenueData(venue);
+          setVenue(parsedVenue);
 
-        return parsedVenue;
+          return parsedVenue;
+        })();
       } catch (error) {
-        console.log(`GET ${url} error:`, error, error?.response);
+        resolveApiError(error);
 
         setVenue(undefined);
         return undefined;

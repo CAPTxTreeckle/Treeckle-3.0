@@ -21,8 +21,8 @@ import {
 } from "../../utils/error-utils";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
-  setCurrentUserAction,
-  selectCurrentUser,
+  updateCurrentUserAction,
+  selectCurrentUserTokens,
 } from "../../redux/slices/current-user-slice";
 import { resetAppState } from "../../redux/store";
 
@@ -34,7 +34,7 @@ export function useAxiosWithTokenRefresh<T>(
   (config?: AxiosRequestConfig, options?: RefetchOptions) => AxiosPromise<T>,
   () => void,
 ] {
-  const { access, refresh } = useAppSelector(selectCurrentUser) ?? {};
+  const { access, refresh } = useAppSelector(selectCurrentUserTokens) ?? {};
   const dispatch = useAppDispatch();
   const [responseValues, apiCall, cancel] = useAxios<T>(
     {
@@ -83,12 +83,12 @@ export function useAxiosWithTokenRefresh<T>(
           const response = await apiCall(
             {
               ...config,
-              headers: { authorization: `Bearer ${authData.access}` },
+              headers: { authorization: `Bearer ${authData.tokens.access}` },
             },
             options,
           );
 
-          dispatch(setCurrentUserAction(authData));
+          dispatch(updateCurrentUserAction(authData));
 
           return response;
         } catch (error) {
