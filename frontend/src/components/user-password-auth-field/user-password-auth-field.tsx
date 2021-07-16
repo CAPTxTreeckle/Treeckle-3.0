@@ -39,11 +39,13 @@ function UserPasswordAuthField({ labelClassName }: Props) {
         payload: { password },
       });
 
-      dispatch(updateCurrentUserAction({ user: updatedSelf }));
-      setSettingPassword(false);
-      setShowingPassword(false);
+      if (updatedSelf.isSelf) {
+        dispatch(updateCurrentUserAction({ user: updatedSelf }));
+        setSettingPassword(false);
+        setShowingPassword(false);
 
-      toast.success("Your password has been updated successfully.");
+        toast.success("Your password has been updated successfully.");
+      }
     } catch (error) {
       resolveApiError(error);
     }

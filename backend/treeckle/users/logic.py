@@ -173,8 +173,18 @@ def update_requester(
 
             auth_data = serializer.validated_data
 
+            if requester.email != auth_data.email:
+                raise BadRequest(
+                    detail=f"{auth_name.capitalize()} email does not match with Treeckle account email.",
+                    code="wrong_email",
+                )
+
             ## try to create new auth method for user
             new_auth_method = auth_method_class.create(requester, auth_data.auth_id)
+
+            if not requester.profile_image and auth_data.profile_image:
+                requester.profile_image = auth_data.profile_image
+                requester.save()
 
             if new_auth_method is None:
                 raise InternalServerError(

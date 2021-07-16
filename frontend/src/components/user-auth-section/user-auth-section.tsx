@@ -6,7 +6,7 @@ import UserPasswordAuthField from "../user-password-auth-field";
 import UserGoogleAuthField from "../user-google-auth-field";
 import UserFacebookAuthField from "../user-facebook-auth-field";
 import styles from "./user-auth-section.module.scss";
-import { useAppDispatch, useDeepEqualAppSelector } from "../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   selectCurrentUserDisplayInfo,
   updateCurrentUserAction,
@@ -15,7 +15,7 @@ import {
 function UserAuthSection() {
   const { getSelf, loading } = useGetSelf();
   const dispatch = useAppDispatch();
-  const user = useDeepEqualAppSelector(selectCurrentUserDisplayInfo);
+  const user = useAppSelector(selectCurrentUserDisplayInfo);
 
   useEffect(() => {
     (async () => {
@@ -27,8 +27,6 @@ function UserAuthSection() {
       dispatch(updateCurrentUserAction({ user: self }));
     })();
   }, [getSelf, dispatch]);
-
-  console.log("test");
 
   return (
     <>

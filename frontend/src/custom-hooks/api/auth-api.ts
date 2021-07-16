@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import useAxios, { Options, RefetchOptions, ResponseValues } from "axios-hooks";
 import {
   GoogleLoginResponse,
@@ -158,57 +158,11 @@ declare global {
   }
 }
 
-type FacebookAuthConfig = {
-  cookie?: boolean;
-  version?: string;
-  language?: string;
-};
-
-let isFacebookSdkLoaded = false;
-
 export function useFacebookAuth(
   callback: (response: fb.StatusResponse) => void,
-  config?: FacebookAuthConfig,
 ) {
-  const [isSdkLoaded, setSdkLoaded] = useState(isFacebookSdkLoaded);
-  const { cookie = true, version = "11.0", language = "en_US" } = config ?? {};
-
-  const setFbAsyncInit = useCallback(() => {
-    window.fbAsyncInit = () => {
-      window.FB.init({
-        appId: process.env.REACT_APP_FACEBOOK_APP_ID ?? "",
-        cookie,
-        version: `v${version}`,
-      });
-
-      isFacebookSdkLoaded = true;
-      setSdkLoaded(true);
-    };
-  }, [cookie, version]);
-
-  const loadSdkAsynchronously = useCallback(() => {
-    ((d, s, id) => {
-      if (d.getElementById(id)) {
-        return;
-      }
-      const fjs = d.getElementsByTagName(s)[0];
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const js = d.createElement(s) as any;
-      js.id = id;
-      js.src = `https://connect.facebook.net/${language}/sdk.js`;
-      fjs.parentNode?.insertBefore(js, fjs);
-    })(document, "script", "facebook-jssdk");
-  }, [language]);
-
-  useEffect(() => {
-    if (!isFacebookSdkLoaded) {
-      setFbAsyncInit();
-      loadSdkAsynchronously();
-    }
-  }, [setFbAsyncInit, loadSdkAsynchronously]);
-
   const startFacebookAuth = () => {
-    window.FB.getLoginStatus((response) => {
+    window.FB?.getLoginStatus((response) => {
       console.log("Facebook Client get login status response:", response);
 
       if (response.status === "connected") {
@@ -216,7 +170,7 @@ export function useFacebookAuth(
         return;
       }
 
-      window.FB.login(
+      window.FB?.login(
         (response) => {
           console.log("Facebook Client login response:", response);
           callback(response);
@@ -230,7 +184,7 @@ export function useFacebookAuth(
     });
   };
 
-  return { loading: !isSdkLoaded, startFacebookAuth };
+  return { startFacebookAuth };
 }
 
 export function useCheckAccount() {

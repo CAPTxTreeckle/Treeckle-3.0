@@ -4,7 +4,8 @@ import {
   GoogleLoginResponseOffline,
 } from "react-google-login";
 import { toast } from "react-toastify";
-import { useGoogleAuth, useGoogleLogin } from "../../custom-hooks/api/auth-api";
+import { useGoogleAuth } from "../../custom-hooks/api/auth-api";
+import { useUpdateSelf } from "../../custom-hooks/api/users-api";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   selectCurrentUserDisplayInfo,
@@ -12,14 +13,15 @@ import {
 } from "../../redux/slices/current-user-slice";
 import { resolveApiError } from "../../utils/error-utils";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
+import { SelfPatchAction } from "../../types/users";
 
 const LinkButton = () => {
   const dispatch = useAppDispatch();
   const { email } = useAppSelector(selectCurrentUserDisplayInfo) ?? {};
 
-  const { loading: isLinking, googleLogin } = useGoogleLogin();
+  const { loading: isLinking, updateSelf } = useUpdateSelf();
 
-  const onGoogleLogin = async (
+  const onLinkGoogle = async (
     response: GoogleLoginResponse | GoogleLoginResponseOffline,
   ) => {
     if (isLinking) {
@@ -29,16 +31,21 @@ const LinkButton = () => {
     const { tokenId, profileObj } = response as GoogleLoginResponse;
 
     if (email !== profileObj.email) {
-      toast.error("Google email does not match with Treeckle account email");
+      toast.error("Google email does not match with Treeckle account email.");
       return;
     }
 
     try {
-      const authData = await googleLogin({ tokenId });
+      const updatedSelf = await updateSelf({
+        action: SelfPatchAction.Google,
+        payload: { tokenId },
+      });
 
-      toast.success("Your google account has been successfully linked.");
+      if (updatedSelf.isSelf) {
+        toast.success("Your google account has been successfully linked.");
 
-      dispatch(updateCurrentUserAction(authData));
+        dispatch(updateCurrentUserAction({ user: updatedSelf }));
+      }
     } catch (error) {
       resolveApiError(error);
     }
@@ -48,7 +55,7 @@ const LinkButton = () => {
     startGoogleAuth,
     loading: googleAuthLoading,
     isAvailable,
-  } = useGoogleAuth(onGoogleLogin);
+  } = useGoogleAuth(onLinkGoogle);
 
   const loading = googleAuthLoading || isLinking;
 
@@ -61,6 +68,44 @@ const LinkButton = () => {
       loading={loading}
       onClick={startGoogleAuth}
       disabled={!isAvailable || loading}
+    />
+  );
+};
+
+const UnlinkButton = () => {
+  const dispatch = useAppDispatch();
+  const { loading: isUnlinking, updateSelf } = useUpdateSelf();
+
+  const onUnlinkGoogle = async () => {
+    if (isUnlinking) {
+      return;
+    }
+
+    try {
+      const updatedSelf = await updateSelf({
+        action: SelfPatchAction.Google,
+        payload: null,
+      });
+
+      if (updatedSelf.isSelf) {
+        toast.success("Your google account has been successfully unlinked.");
+
+        dispatch(updateCurrentUserAction({ user: updatedSelf }));
+      }
+    } catch (error) {
+      resolveApiError(error);
+    }
+  };
+
+  return (
+    <Button
+      size="mini"
+      compact
+      color="blue"
+      content="Unlink"
+      loading={isUnlinking}
+      onClick={onUnlinkGoogle}
+      disabled={isUnlinking}
     />
   );
 };
@@ -78,7 +123,7 @@ function UserGoogleAuthField({ labelClassName }: Props) {
         {user?.hasGoogleAuth ? "Linked" : "Not linked"}
       </span>
 
-      <LinkButton />
+      {user?.hasGoogleAuth ? <UnlinkButton /> : <LinkButton />}
     </HorizontalLayoutContainer>
   );
 }

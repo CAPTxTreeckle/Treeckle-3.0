@@ -102,10 +102,7 @@ const FacebookLoginButton = () => {
     }
   };
 
-  const { startFacebookAuth, loading: facebookAuthLoading } =
-    useFacebookAuth(onFacebookLogin);
-
-  const loading = isLoggingIn || facebookAuthLoading;
+  const { startFacebookAuth } = useFacebookAuth(onFacebookLogin);
 
   return (
     <Button
@@ -114,8 +111,8 @@ const FacebookLoginButton = () => {
       onClick={startFacebookAuth}
       content="Sign in with Facebook"
       fluid
-      loading={loading}
-      disabled={loading}
+      loading={isLoggingIn}
+      disabled={isLoggingIn}
     />
   );
 };

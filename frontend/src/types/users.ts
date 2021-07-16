@@ -53,11 +53,11 @@ export enum SelfPatchAction {
 
 export type GooglePayloadPostData = {
   [TOKEN_ID]: string;
-};
+} | null;
 
 export type FacebookPayloadPostData = {
   [ACCESS_TOKEN]: string;
-};
+} | null;
 
 export type PasswordPayloadPostData = {
   [PASSWORD]: string;
