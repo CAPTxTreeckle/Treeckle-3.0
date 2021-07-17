@@ -68,7 +68,10 @@ const GoogleLoginButton = () => {
       className={styles.googleButton}
       onClick={startGoogleAuth}
       content="Sign in with Google"
-      icon={loading ? undefined : "google"}
+      icon={{
+        name: "google",
+        className: loading ? undefined : styles.icon,
+      }}
       fluid
       loading={loading}
       disabled={!isAvailable || loading}

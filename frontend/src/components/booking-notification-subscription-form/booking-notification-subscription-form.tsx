@@ -101,12 +101,12 @@ function BookingNotificationSubscriptionForm() {
         <Header as={Form.Field}>Add Subscribers</Header>
 
         <Form.Group className={styles.fieldsContainer} widths="equal">
-          <FormField fluid required label="Name" inputName={NAME} width="4" />
+          <FormField fluid required label="Name" fieldName={NAME} width="4" />
           <FormField
             fluid
             required
             label="Email"
-            inputName={EMAIL}
+            fieldName={EMAIL}
             type="email"
             width="4"
           />
@@ -115,7 +115,7 @@ function BookingNotificationSubscriptionForm() {
             fluid
             required
             label="Venue"
-            inputName={VENUE_ID}
+            fieldName={VENUE_ID}
             width="5"
             loading={loading}
             defaultOptions={sortedVenueOptions}

@@ -8,6 +8,7 @@ import {
   ADMIN_SETTINGS_PATH,
   ADMIN_VENUES_PATH,
 } from "../../../routes/paths";
+import HorizontalLayoutContainer from "../../horizontal-layout-container";
 
 function DesktopAdminTab() {
   const { pathname } = useLocation();
@@ -22,10 +23,17 @@ function DesktopAdminTab() {
     >
       <Dropdown.Menu>
         <Dropdown.Item
+          className="flex-display"
           as={Link}
           to={ADMIN_BOOKINGS_PATH}
           active={pathname.startsWith(ADMIN_BOOKINGS_PATH)}
-          text="Bookings"
+          text={
+            <HorizontalLayoutContainer align="center">
+              <span>Bookings</span>
+
+              <PendingBookingCountLabel />
+            </HorizontalLayoutContainer>
+          }
           icon="book"
         />
         <Dropdown.Item

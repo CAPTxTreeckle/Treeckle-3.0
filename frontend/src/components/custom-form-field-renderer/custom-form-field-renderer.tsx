@@ -5,14 +5,14 @@ import RadioFormField from "../radio-form-field";
 import TextAreaFormField from "../text-area-form-field";
 
 type Props = BookingFormFieldProps & {
-  inputName: string;
+  fieldName: string;
   readOnly?: boolean;
   defaultValue?: string | boolean;
   hidden?: boolean;
 };
 
 function CustomFormFieldRenderer({
-  inputName,
+  fieldName,
   fieldLabel,
   fieldType,
   placeholderText,
@@ -26,7 +26,7 @@ function CustomFormFieldRenderer({
       return (
         <FormField
           label={fieldLabel}
-          inputName={inputName}
+          fieldName={fieldName}
           placeholder={placeholderText}
           required={requiredField}
           readOnly={readOnly}
@@ -40,7 +40,7 @@ function CustomFormFieldRenderer({
       return (
         <TextAreaFormField
           label={fieldLabel}
-          inputName={inputName}
+          fieldName={fieldName}
           placeholder={placeholderText}
           required={requiredField}
           readOnly={readOnly}
@@ -54,7 +54,7 @@ function CustomFormFieldRenderer({
       return (
         <FormField
           label={fieldLabel}
-          inputName={inputName}
+          fieldName={fieldName}
           placeholder={placeholderText}
           required={requiredField}
           readOnly={readOnly}
@@ -73,7 +73,7 @@ function CustomFormFieldRenderer({
               <LinkifyTextViewer>{fieldLabel}</LinkifyTextViewer>
             </label>
           }
-          inputName={inputName}
+          fieldName={fieldName}
           type="checkbox"
           readOnly={readOnly}
           defaultValue={

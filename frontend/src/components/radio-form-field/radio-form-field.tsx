@@ -6,11 +6,10 @@ import { CheckboxProps, Form, Ref } from "semantic-ui-react";
 type Props = {
   className?: string;
   label?: ReactNode;
-  inputName: string;
+  fieldName: string;
   type: "slider" | "toggle" | "checkbox";
   defaultValue?: boolean;
   readOnly?: boolean;
-  disabled?: boolean;
   onChangeEffect?: (
     e: FormEvent<HTMLInputElement>,
     data: CheckboxProps,
@@ -21,17 +20,16 @@ type Props = {
 function RadioFormField({
   className,
   label,
-  inputName,
+  fieldName,
   type,
   defaultValue,
   readOnly = false,
-  disabled = false,
   onChangeEffect,
   hidden = false,
 }: Props) {
   const {
     field: { onChange, onBlur, value, ref },
-  } = useController({ name: inputName, defaultValue });
+  } = useController({ name: fieldName, defaultValue });
 
   return (
     <Ref innerRef={ref}>
@@ -47,7 +45,6 @@ function RadioFormField({
         slider={type === "slider"}
         toggle={type === "toggle"}
         readOnly={readOnly}
-        disabled={disabled}
       />
     </Ref>
   );

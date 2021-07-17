@@ -17,7 +17,7 @@ type Props = {
   className?: string;
   required?: boolean;
   label?: ReactNode;
-  inputName: string;
+  fieldName: string;
   errorMsg?: string;
   placeholder?: string;
   defaultValue?: string | string[];
@@ -40,7 +40,7 @@ function DropdownSelectorFormField({
   className,
   required = false,
   label,
-  inputName,
+  fieldName,
   errorMsg,
   placeholder,
   defaultValue,
@@ -60,12 +60,12 @@ function DropdownSelectorFormField({
     formState: { errors },
     getValues,
   } = useFormContext();
-  const error = get(errors, inputName);
+  const error = get(errors, fieldName);
 
   const {
     field: { onChange, onBlur, value, ref },
   } = useController({
-    name: inputName,
+    name: fieldName,
     defaultValue,
     rules: { required },
   });
@@ -95,7 +95,7 @@ function DropdownSelectorFormField({
           if (multiple) {
             if (
               JSON.stringify(trimmedValue) ===
-              JSON.stringify(getValues(inputName))
+              JSON.stringify(getValues(fieldName))
             ) {
               return;
             }
@@ -103,7 +103,7 @@ function DropdownSelectorFormField({
           } else {
             if (
               (!clearable && trimmedValue.length === 0) ||
-              trimmedValue?.[0] === getValues(inputName)
+              trimmedValue?.[0] === getValues(fieldName)
             ) {
               return;
             }
@@ -115,12 +115,13 @@ function DropdownSelectorFormField({
         }}
         value={value}
         error={
-          error && {
-            basic: true,
-            color: "red",
-            content: errorMsg ?? error?.message,
-            pointing: "below",
-          }
+          error &&
+          (errorMsg || error?.message
+            ? {
+                content: errorMsg ?? error?.message,
+                pointing: "below",
+              }
+            : true)
         }
       />
     </Ref>

@@ -67,10 +67,10 @@ function SignInAccountForm() {
       />
 
       <Form className="full-width" onSubmit={handleSubmit(onSubmit)}>
-        {!name && <FormField inputName={NAME} label="Name" required />}
+        {!name && <FormField fieldName={NAME} label="Name" required />}
 
         <FormField
-          inputName={PASSWORD}
+          fieldName={PASSWORD}
           type="password"
           label="Password"
           required

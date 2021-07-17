@@ -1,72 +1,85 @@
-import { ReactNode } from "react";
+import { ReactNode, Ref } from "react";
 import clsx from "clsx";
 import get from "lodash/get";
-import { useController, useFormContext } from "react-hook-form";
-import { Form, FormTextAreaProps, Ref } from "semantic-ui-react";
+import { useFormContext } from "react-hook-form";
+import { Form, FormTextAreaProps } from "semantic-ui-react";
+import TextareaAutosize from "react-textarea-autosize";
+
+const Textarea = ({
+  innerRef,
+  ...textareaAutosizeProps
+}: Parameters<typeof TextareaAutosize>["0"] & {
+  innerRef?: Ref<HTMLTextAreaElement>;
+}) => <TextareaAutosize {...textareaAutosizeProps} ref={innerRef} />;
 
 type Props = {
   className?: string;
   required?: boolean;
   label?: ReactNode;
-  inputName: string;
+  fieldName: string;
   errorMsg?: string;
   placeholder?: string;
   defaultValue?: string;
   readOnly?: boolean;
-  rows?: number;
+  minRows?: number;
+  maxRows?: number;
   hidden?: boolean;
   width?: FormTextAreaProps["width"];
+  autoFocus?: boolean;
 };
 
 function TextAreaFormField({
   className,
   required = false,
   label,
-  inputName,
+  fieldName,
   errorMsg,
   placeholder,
   defaultValue,
   readOnly = false,
-  rows = 8,
+  minRows = 5,
+  maxRows,
   hidden = false,
   width,
+  autoFocus = false,
 }: Props) {
   const {
     formState: { errors },
+    register,
   } = useFormContext();
-  const error = get(errors, inputName);
+  const error = get(errors, fieldName);
 
-  const {
-    field: { onChange, onBlur, value, ref },
-  } = useController({
-    name: inputName,
-    defaultValue,
-    rules: { required },
+  const { ref, ...otherRegisterProps } = register(fieldName, {
+    required,
+    value: defaultValue,
   });
 
   return (
-    <Ref innerRef={ref}>
-      <Form.TextArea
-        className={clsx(hidden && "hidden-display", className)}
-        required={required}
-        error={
-          error && {
-            basic: true,
-            color: "red",
-            content: errorMsg ?? error?.message,
-            pointing: "below",
-          }
-        }
-        label={label}
-        placeholder={placeholder}
-        onChange={onChange}
-        onBlur={onBlur}
-        value={value}
-        readOnly={readOnly}
-        rows={rows}
-        width={width}
-      />
-    </Ref>
+    <Form.Field
+      className={clsx(hidden && "hidden-display", className)}
+      control={Textarea}
+      required={required}
+      error={
+        error &&
+        (errorMsg || error?.message
+          ? {
+              content: errorMsg ?? error?.message,
+              pointing: "below",
+            }
+          : true)
+      }
+      label={label}
+      placeholder={placeholder}
+      readOnly={readOnly}
+      width={width}
+      rows={minRows}
+      minRows={minRows}
+      maxRows={maxRows}
+      hidden={hidden}
+      autoFocus={autoFocus}
+      innerRef={ref}
+      {...otherRegisterProps}
+    />
   );
 }
 

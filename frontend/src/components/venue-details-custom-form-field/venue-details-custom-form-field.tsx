@@ -104,7 +104,7 @@ function VenueDetailsCustomFormField({
           <Segment className={styles.fieldTypeSelectorContainer}>
             <DropdownSelectorFormField
               className={styles.selector}
-              inputName={fieldType}
+              fieldName={fieldType}
               defaultOptions={typeOptions}
               defaultValue={defaultValues.fieldType}
               required
@@ -131,14 +131,16 @@ function VenueDetailsCustomFormField({
             <TextAreaFormField
               required
               label="Field Label"
-              inputName={fieldLabel}
+              fieldName={fieldLabel}
               defaultValue={defaultValues.fieldLabel}
-              rows={isBooleanField ? 8 : 1}
+              minRows={isBooleanField ? 3 : 1}
+              maxRows={8}
+              autoFocus
             />
 
             <FormField
               label="Placeholder Text"
-              inputName={placeholderText}
+              fieldName={placeholderText}
               defaultValue={defaultValues.placeholderText}
               hidden={isBooleanField}
             />
@@ -154,7 +156,7 @@ function VenueDetailsCustomFormField({
           >
             <RadioFormField
               label="Required Field"
-              inputName={requiredField}
+              fieldName={requiredField}
               defaultValue={defaultValues.requiredField}
               type="toggle"
             />

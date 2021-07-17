@@ -103,7 +103,7 @@ function BookingCreationCustomForm() {
           <FormProvider {...methods}>
             <Form>
               <FormField
-                inputName={TITLE}
+                fieldName={TITLE}
                 label="Short Booking Title"
                 required
               />
@@ -122,7 +122,7 @@ function BookingCreationCustomForm() {
                 ) => (
                   <CustomFormFieldRenderer
                     key={id}
-                    inputName={`${BOOKING_FORM_RESPONSES}.${index}.${RESPONSE}`}
+                    fieldName={`${BOOKING_FORM_RESPONSES}.${index}.${RESPONSE}`}
                     fieldType={fieldType}
                     fieldLabel={fieldLabel}
                     placeholderText={placeholderText}

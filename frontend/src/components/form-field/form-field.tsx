@@ -1,15 +1,15 @@
+import { InputHTMLAttributes, ReactNode } from "react";
 import clsx from "clsx";
-import { Form, FormFieldProps, Ref } from "semantic-ui-react";
+import { Form, FormFieldProps } from "semantic-ui-react";
 import get from "lodash/get";
-import { useController, useFormContext } from "react-hook-form";
-import { ReactNode } from "react";
+import { useFormContext } from "react-hook-form";
 
 type Props = {
   className?: string;
   required?: boolean;
   label?: ReactNode;
-  inputName: string;
-  type?: string;
+  fieldName: string;
+  type?: InputHTMLAttributes<HTMLInputElement>["type"];
   errorMsg?: string;
   placeholder?: string;
   defaultValue?: string;
@@ -17,6 +17,7 @@ type Props = {
   hidden?: boolean;
   width?: FormFieldProps["width"];
   fluid?: boolean;
+  autoFocus?: boolean;
 };
 
 function FormField({
@@ -24,7 +25,7 @@ function FormField({
   required = false,
   label,
   errorMsg,
-  inputName,
+  fieldName,
   type = "text",
   placeholder,
   defaultValue,
@@ -32,44 +33,39 @@ function FormField({
   hidden = false,
   width,
   fluid = false,
+  autoFocus,
 }: Props) {
   const {
     formState: { errors },
+    register,
   } = useFormContext();
-  const error = get(errors, inputName);
-
-  const {
-    field: { onChange, onBlur, value, ref },
-  } = useController({
-    name: inputName,
-    defaultValue,
-    rules: { required },
-  });
+  const error = get(errors, fieldName);
 
   return (
-    <Ref innerRef={ref}>
-      <Form.Input
-        className={clsx(hidden && "hidden-display", className)}
-        fluid={fluid}
-        required={required}
-        error={
-          error && {
-            basic: true,
-            color: "red",
-            content: errorMsg ?? error?.message,
-            pointing: "below",
-          }
-        }
-        label={label}
-        type={type}
-        placeholder={placeholder}
-        onChange={onChange}
-        onBlur={onBlur}
-        value={value}
-        readOnly={readOnly}
-        width={width}
-      />
-    </Ref>
+    <Form.Input
+      className={clsx(hidden && "hidden-display", className)}
+      fluid={fluid}
+      required={required}
+      error={
+        error &&
+        (errorMsg || error?.message
+          ? {
+              content: errorMsg ?? error?.message,
+              pointing: "below",
+            }
+          : true)
+      }
+      label={label}
+      width={width}
+      input={{
+        type,
+        placeholder,
+        readOnly,
+        hidden,
+        autoFocus,
+        ...register(fieldName, { required, value: defaultValue }),
+      }}
+    />
   );
 }
 

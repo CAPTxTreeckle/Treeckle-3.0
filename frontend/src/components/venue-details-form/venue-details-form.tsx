@@ -130,10 +130,15 @@ function VenueDetailsForm({
             </Header>
 
             <Form.Group widths="equal">
-              <FormField required label="Venue Name" inputName={NAME} />
+              <FormField
+                required
+                label="Venue Name"
+                fieldName={NAME}
+                autoFocus
+              />
 
               <DropdownSelectorFormField
-                inputName={CATEGORY}
+                fieldName={CATEGORY}
                 label="Category"
                 placeholder="Select/add a category"
                 required
@@ -145,23 +150,23 @@ function VenueDetailsForm({
 
               <FormField
                 label="Recommended Capacity"
-                inputName={CAPACITY}
+                fieldName={CAPACITY}
                 type="number"
               />
             </Form.Group>
 
             <Form.Group widths="equal">
-              <FormField label="Venue IC Name" inputName={IC_NAME} />
+              <FormField label="Venue IC Name" fieldName={IC_NAME} />
 
               <FormField
                 label="Venue IC Email"
-                inputName={IC_EMAIL}
+                fieldName={IC_EMAIL}
                 type="email"
               />
 
               <FormField
                 label="Venue IC Contact Number"
-                inputName={IC_CONTACT_NUMBER}
+                fieldName={IC_CONTACT_NUMBER}
                 type="tel"
               />
             </Form.Group>

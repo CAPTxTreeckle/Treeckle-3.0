@@ -51,11 +51,11 @@
   }
 
   .hidden-display {
-    display: none;
+    display: none !important;
   }
 
   .flex-display {
-    display: flex;
+    display: flex !important;
   }
 
   .pointer {

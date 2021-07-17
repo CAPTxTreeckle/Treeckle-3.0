@@ -49,7 +49,7 @@ function SignInEmailForm() {
   return (
     <FormProvider {...methods}>
       <Form className="full-width" onSubmit={handleSubmit(onSubmit)}>
-        <FormField inputName={EMAIL} type="email" label="Email" required />
+        <FormField fieldName={EMAIL} type="email" label="Email" required />
 
         <Form.Button
           type="submit"
