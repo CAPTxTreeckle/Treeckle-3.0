@@ -1,3 +1,6 @@
+import os
+import requests
+
 from typing import Sequence, Iterable, Optional
 
 from django.db.models import QuerySet
@@ -112,6 +115,10 @@ def create_user_invites(
     return new_user_invites
 
 
+FACEBOOK_APP_ID = os.getenv("FACEBOOK_APP_ID")
+FACEBOOK_APP_SECRET = os.getenv("FACEBOOK_APP_SECRET")
+
+
 @transaction.atomic
 def update_requester(
     requester: User, action: PatchUserAction, payload: Optional[dict]
@@ -161,6 +168,18 @@ def update_requester(
                 )
 
             auth_method.delete()
+
+            if action == PatchUserAction.FACEBOOK:
+                response = requests.delete(
+                    f"https://graph.facebook.com/v11.0/{auth_method.auth_id}/permissions",
+                    params={"access_token": f"{FACEBOOK_APP_ID}|{FACEBOOK_APP_SECRET}"},
+                )
+
+                if not response.json().get("success"):
+                    raise InternalServerError(
+                        detail="An error has occurred while unlinking {auth_name} account."
+                    )
+
         else:
             if auth_method_class.objects.filter(user=requester).exists():
                 raise BadRequest(

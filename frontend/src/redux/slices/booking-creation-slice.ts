@@ -77,12 +77,12 @@ const bookingCreationSlice = createSlice({
       { payload: selectedVenue }: PayloadAction<VenueViewProps | null>,
     ) => {
       if (!equal(state.selectedVenue, selectedVenue)) {
-        state.selectedVenue = selectedVenue;
-
         if (!selectedVenue) {
           state.bookingFormProps = null;
           return;
         }
+
+        state.selectedVenue = selectedVenue;
       }
 
       state.bookingFormProps = {

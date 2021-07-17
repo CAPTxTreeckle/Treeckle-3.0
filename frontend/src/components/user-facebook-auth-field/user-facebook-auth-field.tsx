@@ -20,14 +20,6 @@ const LinkButton = () => {
   const { updateSelf } = useUpdateSelf();
 
   const onFacebookLogin = async (response: fb.StatusResponse) => {
-    if (response.status === "not_authorized") {
-      toast.error("No permission to access required info from Facebook.");
-      return;
-    }
-    if (response.status !== "connected") {
-      return;
-    }
-
     const { accessToken } = response.authResponse;
 
     try {
@@ -35,7 +27,7 @@ const LinkButton = () => {
 
       const { data } = await errorHandlerWrapper(() =>
         axios.get<{ email: string }>(
-          `https://graph.facebook.com/me?fields=email&access_token=${accessToken}`,
+          `https://graph.facebook.com/v11.0/me?fields=email&access_token=${accessToken}`,
         ),
       )();
 

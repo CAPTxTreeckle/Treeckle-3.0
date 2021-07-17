@@ -63,6 +63,7 @@ function BookingCreationCustomForm() {
     if (selectedVenue?.id !== undefined) {
       (async () => {
         const venue = await getSingleVenue(selectedVenue.id);
+
         dispatch(syncVenueAction(venue ?? null));
       })();
     }
@@ -94,7 +95,7 @@ function BookingCreationCustomForm() {
           placeholder
           loading={loading}
           loadingMessage="Loading booking form"
-          showDefaultMessage={!selectedVenue}
+          showDefaultMessage={!bookingFormProps}
           defaultMessage={() => (
             <BookingCreationErrorAlert errorMessage="No booking form data found" />
           )}
@@ -149,6 +150,7 @@ function BookingCreationCustomForm() {
             color="blue"
             content="Next"
             onClick={handleSubmit(onSubmit)}
+            disabled={!bookingFormProps}
           />
         </HorizontalLayoutContainer>
       </Segment>

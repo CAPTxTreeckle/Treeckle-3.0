@@ -81,14 +81,6 @@ const FacebookLoginButton = () => {
   const { loading: isLoggingIn, facebookLogin } = useFacebookLogin();
 
   const onFacebookLogin = async (response: fb.StatusResponse) => {
-    if (response.status === "not_authorized") {
-      toast.error("No permission to access required info from Facebook.");
-      return;
-    }
-    if (response.status !== "connected") {
-      return;
-    }
-
     const { accessToken } = response.authResponse;
 
     try {

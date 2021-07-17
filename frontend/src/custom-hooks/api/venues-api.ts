@@ -210,7 +210,7 @@ export function useGetSingleVenue() {
       const url = `/venues/${venueId}`;
 
       try {
-        await errorHandlerWrapper(async () => {
+        return await errorHandlerWrapper(async () => {
           const { data: venue } = await apiCall({
             url,
           });

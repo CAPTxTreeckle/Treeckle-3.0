@@ -83,11 +83,12 @@ class FacebookAuthenticationSerializer(serializers.Serializer):
         }
 
         response = requests.get(
-            url="https://graph.facebook.com/debug_token",
+            url="https://graph.facebook.com/v11.0/debug_token",
             params=params,
         )
 
         response_data = response.json()
+
         data = response_data.get("data")
 
         if data is None:
@@ -121,10 +122,13 @@ class FacebookAuthenticationSerializer(serializers.Serializer):
 
         self.verify_access_token(access_token)
 
-        params = {"fields": "id,name,email,picture", "access_token": access_token}
+        params = {
+            "fields": "id,name,email,picture.width(512).height(512)",
+            "access_token": access_token,
+        }
 
         response = requests.get(
-            url="https://graph.facebook.com/me",
+            url="https://graph.facebook.com/v11.0/me",
             params=params,
         )
         response_data = response.json()

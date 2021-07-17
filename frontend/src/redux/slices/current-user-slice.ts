@@ -24,7 +24,7 @@ export const { updateCurrentUserAction } = currentUserSlice.actions;
 export const selectCurrentUser = ({ currentUser }: RootState) => currentUser;
 export const selectIsLoggedIn = createSelector(
   selectCurrentUser,
-  (currentUser) => Boolean(currentUser),
+  (currentUser) => Boolean(currentUser?.tokens && currentUser?.user),
 );
 export const selectCurrentUserTokens = createSelector(
   selectCurrentUser,
