@@ -25,7 +25,6 @@ import { BookingFormProps } from "../../types/bookings";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import FormField from "../form-field";
 import CustomFormFieldRenderer from "../custom-form-field-renderer";
-import { FieldType } from "../../types/venues";
 import { useGetSingleVenue } from "../../custom-hooks/api/venues-api";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import BookingCreationErrorAlert from "../booking-creation-error-alert";
@@ -44,7 +43,10 @@ const schema = yup.object().shape({
             then: yup.lazy((value) =>
               typeof value === "string"
                 ? yup.string().trim().required("This field is required")
-                : yup.boolean().required("An error has occurred"),
+                : yup
+                    .boolean()
+                    .required("An error has occurred")
+                    .oneOf([true], "This field must be checked"),
             ),
           }),
         })
@@ -110,14 +112,7 @@ function BookingCreationCustomForm() {
 
               {fields.map(
                 (
-                  {
-                    id,
-                    fieldType,
-                    fieldLabel,
-                    placeholderText,
-                    requiredField,
-                    response,
-                  },
+                  { id, fieldType, fieldLabel, placeholderText, requiredField },
                   index,
                 ) => (
                   <CustomFormFieldRenderer
@@ -127,9 +122,6 @@ function BookingCreationCustomForm() {
                     fieldLabel={fieldLabel}
                     placeholderText={placeholderText}
                     requiredField={requiredField}
-                    defaultValue={
-                      response ?? (fieldType === FieldType.Boolean ? false : "")
-                    }
                   />
                 ),
               )}

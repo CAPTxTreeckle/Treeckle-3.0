@@ -6,7 +6,7 @@ import {
   BookingFormProps,
   DateTimeRange,
 } from "../../types/bookings";
-import { VenueViewProps } from "../../types/venues";
+import { FieldType, VenueViewProps } from "../../types/venues";
 import type { RootState } from "../store";
 
 export type BookingCreationState = {
@@ -76,26 +76,38 @@ const bookingCreationSlice = createSlice({
       state,
       { payload: selectedVenue }: PayloadAction<VenueViewProps | null>,
     ) => {
-      if (!equal(state.selectedVenue, selectedVenue)) {
-        if (!selectedVenue) {
-          state.bookingFormProps = null;
-          return;
-        }
-
-        state.selectedVenue = selectedVenue;
+      if (!selectedVenue) {
+        state.bookingFormProps = null;
+        return;
       }
 
+      if (equal(state.selectedVenue, selectedVenue)) {
+        state.bookingFormProps = {
+          title: state.bookingFormProps?.title ?? "",
+          bookingFormResponses:
+            selectedVenue?.venueFormProps.bookingFormFields?.map(
+              (fields, index) => ({
+                ...fields,
+                response:
+                  state.bookingFormProps?.bookingFormResponses?.[index]
+                    ?.response ??
+                  (fields.fieldType === FieldType.Boolean ? false : ""),
+              }),
+            ),
+        };
+
+        return;
+      }
+
+      state.selectedVenue = selectedVenue;
+
       state.bookingFormProps = {
-        title: state.bookingFormProps?.title ?? "",
+        title: "",
         bookingFormResponses:
-          selectedVenue?.venueFormProps.bookingFormFields?.map(
-            (fields, index) => ({
-              ...fields,
-              response:
-                state.bookingFormProps?.bookingFormResponses?.[index]
-                  ?.response ?? "",
-            }),
-          ),
+          selectedVenue?.venueFormProps.bookingFormFields?.map((fields) => ({
+            ...fields,
+            response: fields.fieldType === FieldType.Boolean ? false : "",
+          })),
       };
     },
     completeBookingFormAction: (

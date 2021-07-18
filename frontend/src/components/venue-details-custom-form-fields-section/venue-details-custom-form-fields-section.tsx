@@ -40,11 +40,7 @@ function VenueDetailsCustomFormFieldsSection() {
             {({ innerRef, droppableProps, placeholder }) => (
               <div ref={innerRef} {...droppableProps}>
                 {fields.map(({ id }, index) => (
-                  <Draggable
-                    key={id}
-                    index={index}
-                    draggableId={id ?? `${index}`}
-                  >
+                  <Draggable key={id} index={index} draggableId={id}>
                     {({ innerRef, draggableProps, dragHandleProps }) => (
                       <div ref={innerRef} {...draggableProps}>
                         <VenueDetailsCustomFormField
