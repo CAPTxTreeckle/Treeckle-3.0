@@ -2,12 +2,17 @@
 
 .venueFormGallery {
   display: flex;
-  overflow-x: auto;
+  flex-direction: column;
   @include base.vertical-space-margin(0);
 
-  @media only screen and (max-width: 991px) {
-    flex-direction: column;
-    overflow-x: unset;
+  @media only screen and (min-width: 992px) {
+    flex-direction: row;
+    overflow-x: auto;
+    transform: rotateX(180deg);
+
+    > * {
+      transform: rotateX(180deg);
+    }
   }
 
   &::-webkit-scrollbar-thumb {

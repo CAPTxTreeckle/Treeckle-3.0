@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useForm, FormProvider, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { Button, Segment, Form } from "semantic-ui-react";
+import { Button, Segment, Form, Ref } from "semantic-ui-react";
 import {
   BOOKING_FORM_RESPONSES,
   REQUIRED_FIELD,
@@ -60,6 +60,7 @@ function BookingCreationCustomForm() {
   const bookingFormProps = useDeepEqualAppSelector(selectBookingFormProps);
   const { getSingleVenue, loading } = useGetSingleVenue();
   const dispatch = useAppDispatch();
+  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     if (selectedVenue?.id !== undefined) {
@@ -103,29 +104,37 @@ function BookingCreationCustomForm() {
           )}
         >
           <FormProvider {...methods}>
-            <Form>
-              <FormField
-                fieldName={TITLE}
-                label="Short Booking Title"
-                required
-              />
+            <Ref innerRef={formRef}>
+              <Form onSubmit={handleSubmit(onSubmit)}>
+                <FormField
+                  fieldName={TITLE}
+                  label="Short Booking Title"
+                  required
+                />
 
-              {fields.map(
-                (
-                  { id, fieldType, fieldLabel, placeholderText, requiredField },
-                  index,
-                ) => (
-                  <CustomFormFieldRenderer
-                    key={id}
-                    fieldName={`${BOOKING_FORM_RESPONSES}.${index}.${RESPONSE}`}
-                    fieldType={fieldType}
-                    fieldLabel={fieldLabel}
-                    placeholderText={placeholderText}
-                    requiredField={requiredField}
-                  />
-                ),
-              )}
-            </Form>
+                {fields.map(
+                  (
+                    {
+                      id,
+                      fieldType,
+                      fieldLabel,
+                      placeholderText,
+                      requiredField,
+                    },
+                    index,
+                  ) => (
+                    <CustomFormFieldRenderer
+                      key={id}
+                      fieldName={`${BOOKING_FORM_RESPONSES}.${index}.${RESPONSE}`}
+                      fieldType={fieldType}
+                      fieldLabel={fieldLabel}
+                      placeholderText={placeholderText}
+                      requiredField={requiredField}
+                    />
+                  ),
+                )}
+              </Form>
+            </Ref>
           </FormProvider>
         </PlaceholderWrapper>
       </Segment>
@@ -141,8 +150,13 @@ function BookingCreationCustomForm() {
           <Button
             color="blue"
             content="Next"
-            onClick={handleSubmit(onSubmit)}
             disabled={!bookingFormProps}
+            onClick={() => {
+              formRef.current?.reportValidity() &&
+                formRef.current?.dispatchEvent(
+                  new Event("submit", { cancelable: true, bubbles: true }),
+                );
+            }}
           />
         </HorizontalLayoutContainer>
       </Segment>

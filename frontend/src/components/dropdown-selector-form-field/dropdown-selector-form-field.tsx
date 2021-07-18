@@ -91,7 +91,17 @@ function DropdownSelectorFormField({
   };
 
   return (
-    <Ref innerRef={ref}>
+    <Ref
+      innerRef={(element) =>
+        ref(
+          Array.from(
+            Array.from(element?.children ?? []).find((child) =>
+              child.className.includes("dropdown"),
+            )?.children ?? [],
+          ).find((child) => child.tagName === "INPUT"),
+        )
+      }
+    >
       <Form.Select
         className={className}
         fluid={fluid}

@@ -1,6 +1,8 @@
 import { ReactNode } from "react";
+import clsx from "clsx";
 import { useController } from "react-hook-form";
 import { Form, Ref } from "semantic-ui-react";
+import styles from "./radio-form-field.module.scss";
 
 type Props = {
   className?: string;
@@ -29,16 +31,24 @@ function RadioFormField({
   } = useController({ name: fieldName, defaultValue, rules: { required } });
 
   return (
-    <Ref innerRef={ref}>
+    <Ref
+      innerRef={(element) =>
+        ref(
+          Array.from(element?.children ?? [])
+            .find((child) => child.className.includes("checkbox"))
+            ?.children.namedItem(fieldName),
+        )
+      }
+    >
       <Form.Checkbox
-        className={className}
+        className={clsx(styles.checkbox, className)}
         label={label}
         error={
           error &&
           (errorMsg || error?.message
             ? {
                 content: errorMsg ?? error?.message,
-                pointing: "right",
+                pointing: "below",
               }
             : true)
         }
