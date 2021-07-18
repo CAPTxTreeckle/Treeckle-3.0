@@ -8,7 +8,6 @@ type Props = BookingFormFieldProps & {
   fieldName: string;
   readOnly?: boolean;
   defaultValue?: string | boolean;
-  hidden?: boolean;
 };
 
 function CustomFormFieldRenderer({
@@ -19,7 +18,6 @@ function CustomFormFieldRenderer({
   requiredField,
   readOnly = false,
   defaultValue,
-  hidden = false,
 }: Props) {
   switch (fieldType) {
     case FieldType.Text:
@@ -33,7 +31,6 @@ function CustomFormFieldRenderer({
           defaultValue={
             defaultValue === undefined ? defaultValue : String(defaultValue)
           }
-          hidden={hidden}
         />
       );
     case FieldType.TextArea:
@@ -47,7 +44,6 @@ function CustomFormFieldRenderer({
           defaultValue={
             defaultValue === undefined ? defaultValue : String(defaultValue)
           }
-          hidden={hidden}
         />
       );
     case FieldType.Number:
@@ -62,7 +58,6 @@ function CustomFormFieldRenderer({
           defaultValue={
             defaultValue === undefined ? defaultValue : String(defaultValue)
           }
-          hidden={hidden}
         />
       );
     case FieldType.Boolean:
@@ -74,12 +69,12 @@ function CustomFormFieldRenderer({
             </label>
           }
           fieldName={fieldName}
+          required={requiredField}
           type="checkbox"
           readOnly={readOnly}
           defaultValue={
             defaultValue === undefined ? defaultValue : Boolean(defaultValue)
           }
-          hidden={hidden}
         />
       );
     default:

@@ -1,6 +1,5 @@
 import { ReactNode, SyntheticEvent } from "react";
-import { useFormContext, useController } from "react-hook-form";
-import clsx from "clsx";
+import { useController } from "react-hook-form";
 import {
   DropdownItemProps,
   DropdownProps,
@@ -8,7 +7,6 @@ import {
   FormSelectProps,
   Ref,
 } from "semantic-ui-react";
-import get from "lodash/get";
 import useOptionsState from "../../custom-hooks/use-options-state";
 import { sanitizeArray } from "../../utils/parser-utils";
 import { DEFAULT_ARRAY } from "../../constants";
@@ -31,7 +29,6 @@ type Props = {
     e: SyntheticEvent<HTMLElement, Event>,
     data: DropdownProps,
   ) => void;
-  hidden?: boolean;
   width?: FormSelectProps["width"];
   fluid?: boolean;
 };
@@ -51,29 +48,52 @@ function DropdownSelectorFormField({
   search = false,
   clearable = false,
   onChangeEffect,
-  hidden = false,
   width,
   fluid = false,
 }: Props) {
   const { options, onSelect } = useOptionsState(defaultOptions);
-  const {
-    formState: { errors },
-    getValues,
-  } = useFormContext();
-  const error = get(errors, fieldName);
 
   const {
     field: { onChange, onBlur, value, ref },
+    fieldState: { error },
   } = useController({
     name: fieldName,
     defaultValue,
     rules: { required },
   });
 
+  const onSelectChange = (
+    event: SyntheticEvent<HTMLElement, Event>,
+    data: DropdownProps,
+  ) => {
+    const { value: newValue } = data;
+    const trimmedValue = sanitizeArray(
+      Array.isArray(newValue) ? (newValue as string[]) : [newValue as string],
+    );
+
+    if (multiple) {
+      if (JSON.stringify(trimmedValue) === JSON.stringify(value)) {
+        return;
+      }
+      onChange(trimmedValue);
+    } else {
+      if (
+        (!clearable && trimmedValue.length === 0) ||
+        trimmedValue?.[0] === value
+      ) {
+        return;
+      }
+      onChange(trimmedValue?.[0] ?? "");
+    }
+
+    onSelect(trimmedValue);
+    onChangeEffect?.(event, data);
+  };
+
   return (
     <Ref innerRef={ref}>
       <Form.Select
-        className={clsx(hidden && "hidden-display", className)}
+        className={className}
         fluid={fluid}
         loading={loading}
         placeholder={placeholder}
@@ -86,33 +106,7 @@ function DropdownSelectorFormField({
         multiple={multiple}
         clearable={clearable}
         width={width}
-        onChange={(event, data) => {
-          const { value } = data;
-          const trimmedValue = sanitizeArray(
-            Array.isArray(value) ? (value as string[]) : [value as string],
-          );
-
-          if (multiple) {
-            if (
-              JSON.stringify(trimmedValue) ===
-              JSON.stringify(getValues(fieldName))
-            ) {
-              return;
-            }
-            onChange(trimmedValue);
-          } else {
-            if (
-              (!clearable && trimmedValue.length === 0) ||
-              trimmedValue?.[0] === getValues(fieldName)
-            ) {
-              return;
-            }
-            onChange(trimmedValue?.[0] ?? "");
-          }
-
-          onSelect(trimmedValue);
-          onChangeEffect?.(event, data);
-        }}
+        onChange={onSelectChange}
         value={value}
         error={
           error &&

@@ -1,7 +1,7 @@
-import { InputHTMLAttributes, ReactNode } from "react";
-import clsx from "clsx";
-import { Form, FormFieldProps } from "semantic-ui-react";
+import { InputHTMLAttributes, ReactNode, memo } from "react";
 import get from "lodash/get";
+import pickBy from "lodash/pickBy";
+import { Form, FormFieldProps } from "semantic-ui-react";
 import { useFormContext } from "react-hook-form";
 
 type Props = {
@@ -14,7 +14,6 @@ type Props = {
   placeholder?: string;
   defaultValue?: string;
   readOnly?: boolean;
-  hidden?: boolean;
   width?: FormFieldProps["width"];
   fluid?: boolean;
   autoFocus?: boolean;
@@ -30,7 +29,6 @@ function FormField({
   placeholder,
   defaultValue,
   readOnly = false,
-  hidden = false,
   width,
   fluid = false,
   autoFocus,
@@ -43,7 +41,7 @@ function FormField({
 
   return (
     <Form.Input
-      className={clsx(hidden && "hidden-display", className)}
+      className={className}
       fluid={fluid}
       required={required}
       error={
@@ -61,12 +59,14 @@ function FormField({
         type,
         placeholder,
         readOnly,
-        hidden,
         autoFocus,
-        ...register(fieldName, { required, value: defaultValue }),
+        ...register(
+          fieldName,
+          pickBy({ required, value: defaultValue }, (key) => key !== undefined),
+        ),
       }}
     />
   );
 }
 
-export default FormField;
+export default memo(FormField);

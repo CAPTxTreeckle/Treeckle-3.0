@@ -67,13 +67,16 @@ function SignInAccountForm() {
       />
 
       <Form className="full-width" onSubmit={handleSubmit(onSubmit)}>
-        {!name && <FormField fieldName={NAME} label="Name" required />}
+        {!name && (
+          <FormField fieldName={NAME} label="Name" required autoFocus />
+        )}
 
         <FormField
           fieldName={PASSWORD}
           type="password"
           label="Password"
           required
+          autoFocus={Boolean(name)}
         />
 
         <Form.Button

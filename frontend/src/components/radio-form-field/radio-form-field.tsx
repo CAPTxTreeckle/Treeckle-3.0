@@ -1,50 +1,55 @@
-import { FormEvent, ReactNode } from "react";
-import clsx from "clsx";
+import { ReactNode } from "react";
 import { useController } from "react-hook-form";
-import { CheckboxProps, Form, Ref } from "semantic-ui-react";
+import { Form, Ref } from "semantic-ui-react";
 
 type Props = {
   className?: string;
+  required?: boolean;
   label?: ReactNode;
+  errorMsg?: string;
   fieldName: string;
   type: "slider" | "toggle" | "checkbox";
   defaultValue?: boolean;
   readOnly?: boolean;
-  onChangeEffect?: (
-    e: FormEvent<HTMLInputElement>,
-    data: CheckboxProps,
-  ) => void;
-  hidden?: boolean;
 };
 
 function RadioFormField({
   className,
+  required = false,
   label,
+  errorMsg,
   fieldName,
   type,
   defaultValue,
   readOnly = false,
-  onChangeEffect,
-  hidden = false,
 }: Props) {
   const {
-    field: { onChange, onBlur, value, ref },
-  } = useController({ name: fieldName, defaultValue });
+    field: { onChange, onBlur, value, ref, name },
+    fieldState: { error },
+  } = useController({ name: fieldName, defaultValue, rules: { required } });
 
   return (
     <Ref innerRef={ref}>
       <Form.Checkbox
-        className={clsx(hidden && "hidden-display", className)}
-        onBlur={onBlur}
+        className={className}
         label={label}
-        onChange={(event, data) => {
-          onChange(data.checked);
-          onChangeEffect?.(event, data);
-        }}
+        error={
+          error &&
+          (errorMsg || error?.message
+            ? {
+                content: errorMsg ?? error?.message,
+                pointing: "right",
+              }
+            : true)
+        }
+        required={required}
+        onChange={(_, { checked }) => onChange(checked)}
+        onBlur={onBlur}
         checked={value}
         slider={type === "slider"}
         toggle={type === "toggle"}
         readOnly={readOnly}
+        name={name}
       />
     </Ref>
   );

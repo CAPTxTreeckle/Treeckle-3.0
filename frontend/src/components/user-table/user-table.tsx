@@ -91,7 +91,6 @@ const ActionButtons = ({ id, role, email, isSelf }: ExistingUserViewProps) => {
   return (
     <>
       <UserRoleChangeButton
-        userId={id}
         role={role}
         updateRole={updateUser}
         compact

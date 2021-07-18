@@ -2,7 +2,7 @@ import { useState, useMemo, useCallback, useEffect } from "react";
 import { DateRange, stringOrDate, View } from "react-big-calendar";
 import {
   isWithinInterval,
-  isEqual,
+  isEqual as isEqualDates,
   startOfToday,
   startOfDay,
   isFuture,
@@ -72,7 +72,7 @@ export default function useBookingCreationCalendarState(
 
   const updateDateView = useCallback(
     (newDate: Date) => {
-      if (isEqual(dateView, newDate)) {
+      if (isEqualDates(dateView, newDate)) {
         return;
       }
 
@@ -124,7 +124,7 @@ export default function useBookingCreationCalendarState(
 
       if (
         slots.length === 1 &&
-        isEqual(selectedRange.start, selectedRange.end)
+        isEqualDates(selectedRange.start, selectedRange.end)
       ) {
         if (box) {
           setView("day");

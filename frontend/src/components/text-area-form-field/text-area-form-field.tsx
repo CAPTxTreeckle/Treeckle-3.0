@@ -1,11 +1,11 @@
-import { ReactNode, Ref } from "react";
-import clsx from "clsx";
+import { ReactNode, Ref, memo } from "react";
 import get from "lodash/get";
+import pickBy from "lodash/pickBy";
 import { useFormContext } from "react-hook-form";
 import { Form, FormTextAreaProps } from "semantic-ui-react";
 import TextareaAutosize from "react-textarea-autosize";
 
-const Textarea = ({
+const TextArea = ({
   innerRef,
   ...textareaAutosizeProps
 }: Parameters<typeof TextareaAutosize>["0"] & {
@@ -23,7 +23,6 @@ type Props = {
   readOnly?: boolean;
   minRows?: number;
   maxRows?: number;
-  hidden?: boolean;
   width?: FormTextAreaProps["width"];
   autoFocus?: boolean;
 };
@@ -38,8 +37,7 @@ function TextAreaFormField({
   defaultValue,
   readOnly = false,
   minRows = 5,
-  maxRows,
-  hidden = false,
+  maxRows = minRows,
   width,
   autoFocus = false,
 }: Props) {
@@ -49,15 +47,15 @@ function TextAreaFormField({
   } = useFormContext();
   const error = get(errors, fieldName);
 
-  const { ref, ...otherRegisterProps } = register(fieldName, {
-    required,
-    value: defaultValue,
-  });
+  const { ref, ...otherRegisterProps } = register(
+    fieldName,
+    pickBy({ required, value: defaultValue }, (key) => key !== undefined),
+  );
 
   return (
     <Form.Field
-      className={clsx(hidden && "hidden-display", className)}
-      control={Textarea}
+      className={className}
+      control={TextArea}
       required={required}
       error={
         error &&
@@ -74,8 +72,7 @@ function TextAreaFormField({
       width={width}
       rows={minRows}
       minRows={minRows}
-      maxRows={maxRows}
-      hidden={hidden}
+      maxRows={Math.max(maxRows, minRows)}
       autoFocus={autoFocus}
       innerRef={ref}
       {...otherRegisterProps}
@@ -83,4 +80,4 @@ function TextAreaFormField({
   );
 }
 
-export default TextAreaFormField;
+export default memo(TextAreaFormField);
