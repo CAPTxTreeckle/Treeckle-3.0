@@ -8,7 +8,7 @@ type Props = {
   className?: string;
   required?: boolean;
   label?: ReactNode;
-  fieldName: string;
+  name: string;
   type?: InputHTMLAttributes<HTMLInputElement>["type"];
   errorMsg?: string;
   placeholder?: string;
@@ -24,7 +24,7 @@ function FormField({
   required = false,
   label,
   errorMsg,
-  fieldName,
+  name,
   type = "text",
   placeholder,
   defaultValue,
@@ -37,7 +37,7 @@ function FormField({
     formState: { errors },
     register,
   } = useFormContext();
-  const error = get(errors, fieldName);
+  const error = get(errors, name);
 
   return (
     <Form.Input
@@ -61,7 +61,7 @@ function FormField({
         readOnly,
         autoFocus,
         ...register(
-          fieldName,
+          name,
           pickBy({ required, value: defaultValue }, (key) => key !== undefined),
         ),
       }}

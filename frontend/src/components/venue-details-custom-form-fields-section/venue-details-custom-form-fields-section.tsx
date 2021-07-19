@@ -68,10 +68,10 @@ function VenueDetailsCustomFormFieldsSection() {
             icon="plus"
             onClick={() =>
               append({
-                fieldLabel: "",
+                label: "",
                 placeholderText: "",
-                fieldType: FieldType.Text,
-                requiredField: false,
+                type: FieldType.Text,
+                required: false,
               })
             }
           />

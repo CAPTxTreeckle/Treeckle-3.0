@@ -5,28 +5,34 @@ import RadioFormField from "../radio-form-field";
 import TextAreaFormField from "../text-area-form-field";
 
 type Props = BookingFormFieldProps & {
-  fieldName: string;
+  name: string;
   readOnly?: boolean;
   defaultValue?: string | boolean;
 };
 
 function CustomFormFieldRenderer({
-  fieldName,
-  fieldLabel,
-  fieldType,
+  name,
+  label: labelString,
+  type,
   placeholderText,
-  requiredField,
+  required,
   readOnly = false,
   defaultValue,
 }: Props) {
-  switch (fieldType) {
+  const label = (
+    <label className="text-viewer">
+      <LinkifyTextViewer>{labelString}</LinkifyTextViewer>
+    </label>
+  );
+
+  switch (type) {
     case FieldType.Text:
       return (
         <FormField
-          label={fieldLabel}
-          fieldName={fieldName}
+          label={label}
+          name={name}
           placeholder={placeholderText}
-          required={requiredField}
+          required={required}
           readOnly={readOnly}
           defaultValue={
             defaultValue === undefined ? defaultValue : String(defaultValue)
@@ -36,10 +42,10 @@ function CustomFormFieldRenderer({
     case FieldType.TextArea:
       return (
         <TextAreaFormField
-          label={fieldLabel}
-          fieldName={fieldName}
+          label={label}
+          name={name}
           placeholder={placeholderText}
-          required={requiredField}
+          required={required}
           readOnly={readOnly}
           defaultValue={
             defaultValue === undefined ? defaultValue : String(defaultValue)
@@ -49,10 +55,10 @@ function CustomFormFieldRenderer({
     case FieldType.Number:
       return (
         <FormField
-          label={fieldLabel}
-          fieldName={fieldName}
+          label={label}
+          name={name}
           placeholder={placeholderText}
-          required={requiredField}
+          required={required}
           readOnly={readOnly}
           type="number"
           defaultValue={
@@ -63,13 +69,9 @@ function CustomFormFieldRenderer({
     case FieldType.Boolean:
       return (
         <RadioFormField
-          label={
-            <label className="text-viewer">
-              <LinkifyTextViewer>{fieldLabel}</LinkifyTextViewer>
-            </label>
-          }
-          fieldName={fieldName}
-          required={requiredField}
+          label={label}
+          name={name}
+          required={required}
           type="checkbox"
           readOnly={readOnly}
           defaultValue={

@@ -5,12 +5,12 @@ import { Form, Header, Segment, ButtonProps } from "semantic-ui-react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
   CATEGORY,
-  FIELD_LABEL,
-  FIELD_TYPE,
+  LABEL,
+  TYPE,
   PHONE_NUM_REGEX,
   PLACEHOLDER_TEXT,
   CAPACITY,
-  REQUIRED_FIELD,
+  REQUIRED,
   BOOKING_FORM_FIELDS,
   IC_CONTACT_NUMBER,
   IC_EMAIL,
@@ -55,16 +55,16 @@ const schema = yup.object().shape({
       yup
         .object()
         .shape({
-          [FIELD_TYPE]: yup
+          [TYPE]: yup
             .mixed<FieldType>()
             .oneOf(Object.values(FieldType))
             .required("Please choose a field type"),
-          [FIELD_LABEL]: yup
+          [LABEL]: yup
             .string()
             .trim()
-            .required("Please enter a field label"),
+            .required("Please enter a label / question"),
           [PLACEHOLDER_TEXT]: yup.string().trim().notRequired(),
-          [REQUIRED_FIELD]: yup.boolean().required("An error has occurred"),
+          [REQUIRED]: yup.boolean().required("An error has occurred"),
         })
         .required(),
     )
@@ -130,15 +130,10 @@ function VenueDetailsForm({
             </Header>
 
             <Form.Group widths="equal">
-              <FormField
-                required
-                label="Venue Name"
-                fieldName={NAME}
-                autoFocus
-              />
+              <FormField required label="Venue Name" name={NAME} autoFocus />
 
               <DropdownSelectorFormField
-                fieldName={CATEGORY}
+                name={CATEGORY}
                 label="Category"
                 placeholder="Select/add a category"
                 required
@@ -150,23 +145,19 @@ function VenueDetailsForm({
 
               <FormField
                 label="Recommended Capacity"
-                fieldName={CAPACITY}
+                name={CAPACITY}
                 type="number"
               />
             </Form.Group>
 
             <Form.Group widths="equal">
-              <FormField label="Venue IC Name" fieldName={IC_NAME} />
+              <FormField label="Venue IC Name" name={IC_NAME} />
 
-              <FormField
-                label="Venue IC Email"
-                fieldName={IC_EMAIL}
-                type="email"
-              />
+              <FormField label="Venue IC Email" name={IC_EMAIL} type="email" />
 
               <FormField
                 label="Venue IC Contact Number"
-                fieldName={IC_CONTACT_NUMBER}
+                name={IC_CONTACT_NUMBER}
                 type="tel"
               />
             </Form.Group>

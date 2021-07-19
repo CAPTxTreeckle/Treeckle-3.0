@@ -67,12 +67,10 @@ function SignInAccountForm() {
       />
 
       <Form className="full-width" onSubmit={handleSubmit(onSubmit)}>
-        {!name && (
-          <FormField fieldName={NAME} label="Name" required autoFocus />
-        )}
+        {!name && <FormField name={NAME} label="Name" required autoFocus />}
 
         <FormField
-          fieldName={PASSWORD}
+          name={PASSWORD}
           type="password"
           label="Password"
           required

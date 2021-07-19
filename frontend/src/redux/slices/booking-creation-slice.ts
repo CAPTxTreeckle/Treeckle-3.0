@@ -91,7 +91,7 @@ const bookingCreationSlice = createSlice({
                 response:
                   state.bookingFormProps?.bookingFormResponses?.[index]
                     ?.response ??
-                  (fields.fieldType === FieldType.Boolean ? false : ""),
+                  (fields.type === FieldType.Boolean ? false : ""),
               }),
             ),
         };
@@ -106,7 +106,7 @@ const bookingCreationSlice = createSlice({
         bookingFormResponses:
           selectedVenue?.venueFormProps.bookingFormFields?.map((fields) => ({
             ...fields,
-            response: fields.fieldType === FieldType.Boolean ? false : "",
+            response: fields.type === FieldType.Boolean ? false : "",
           })),
       };
     },

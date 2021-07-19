@@ -10,10 +10,10 @@ import {
   Segment,
 } from "semantic-ui-react";
 import {
-  FIELD_LABEL,
-  FIELD_TYPE,
+  LABEL,
+  TYPE,
   PLACEHOLDER_TEXT,
-  REQUIRED_FIELD,
+  REQUIRED,
   BOOKING_FORM_FIELDS,
 } from "../../constants";
 import { FieldType, VenueFormProps } from "../../types/venues";
@@ -26,12 +26,12 @@ import styles from "./venue-details-custom-form-field.module.scss";
 const typeOptions: DropdownItemProps[] = [
   {
     value: FieldType.Text,
-    text: "Single-line Input",
+    text: "Short Response",
     icon: "minus",
   },
   {
     value: FieldType.TextArea,
-    text: "Multi-line Input",
+    text: "Long Response",
     icon: "bars",
   },
   {
@@ -47,43 +47,38 @@ const typeOptions: DropdownItemProps[] = [
 ];
 
 const MiddleSection = ({
-  fieldType,
-  fieldLabel,
-  placeholderText,
+  typeFieldName,
+  labelFieldName,
+  placeholderTextFieldName,
 }: {
-  fieldType: string;
-  fieldLabel: string;
-  placeholderText: string;
+  typeFieldName: string;
+  labelFieldName: string;
+  placeholderTextFieldName: string;
 }) => {
-  const fieldTypeValue = useWatch({ name: fieldType });
-  const isBooleanField = fieldTypeValue === FieldType.Boolean;
-  const isTextAreaField = fieldTypeValue === FieldType.TextArea;
+  const type = useWatch({ name: typeFieldName });
+  const isBooleanField = type === FieldType.Boolean;
+  const isTextAreaField = type === FieldType.TextArea;
 
   return (
     <Segment>
       <Form.Group widths="equal">
-        {isBooleanField ? (
-          <TextAreaFormField
-            required
-            label="Field Label"
-            fieldName={fieldLabel}
-            minRows={3}
-            maxRows={8}
-          />
-        ) : (
-          <FormField required label="Field Label" fieldName={fieldLabel} />
-        )}
+        <TextAreaFormField
+          required
+          label="Label / Question"
+          name={labelFieldName}
+        />
 
         {!isBooleanField &&
           (isTextAreaField ? (
             <TextAreaFormField
               label="Placeholder Text"
-              fieldName={placeholderText}
-              minRows={3}
-              maxRows={8}
+              name={placeholderTextFieldName}
             />
           ) : (
-            <FormField label="Placeholder Text" fieldName={placeholderText} />
+            <FormField
+              label="Placeholder Text"
+              name={placeholderTextFieldName}
+            />
           ))}
       </Form.Group>
     </Segment>
@@ -102,19 +97,19 @@ function VenueDetailsCustomFormField({
   dragHandleProps,
 }: Props) {
   const { setValue } = useFormContext<VenueFormProps>();
-  const fieldType = `${BOOKING_FORM_FIELDS}.${index}.${FIELD_TYPE}` as const;
-  const fieldLabel = `${BOOKING_FORM_FIELDS}.${index}.${FIELD_LABEL}` as const;
-  const placeholderText =
+  const typeFieldName = `${BOOKING_FORM_FIELDS}.${index}.${TYPE}` as const;
+  const labelFieldName = `${BOOKING_FORM_FIELDS}.${index}.${LABEL}` as const;
+  const placeholderTextFieldName =
     `${BOOKING_FORM_FIELDS}.${index}.${PLACEHOLDER_TEXT}` as const;
-  const requiredField =
-    `${BOOKING_FORM_FIELDS}.${index}.${REQUIRED_FIELD}` as const;
+  const requiredFieldName =
+    `${BOOKING_FORM_FIELDS}.${index}.${REQUIRED}` as const;
 
   const onSelectFieldType = (
     _: SyntheticEvent<HTMLElement, Event>,
-    { value: fieldTypeValue }: DropdownProps,
+    { value: typeValue }: DropdownProps,
   ) => {
-    if (fieldTypeValue === FieldType.Boolean) {
-      setValue(placeholderText, "");
+    if (typeValue === FieldType.Boolean) {
+      setValue(placeholderTextFieldName, "");
     }
   };
 
@@ -124,10 +119,10 @@ function VenueDetailsCustomFormField({
         <Segment.Group className={styles.topSection} horizontal>
           <Segment className={styles.fieldNumberContainer}>{index + 1}</Segment>
 
-          <Segment className={styles.fieldTypeSelectorContainer}>
+          <Segment className={styles.typeSelectorContainer}>
             <DropdownSelectorFormField
               className={styles.selector}
-              fieldName={fieldType}
+              name={typeFieldName}
               defaultOptions={typeOptions}
               required
               onChangeEffect={onSelectFieldType}
@@ -149,16 +144,16 @@ function VenueDetailsCustomFormField({
         </Segment.Group>
 
         <MiddleSection
-          fieldType={fieldType}
-          fieldLabel={fieldLabel}
-          placeholderText={placeholderText}
+          typeFieldName={typeFieldName}
+          labelFieldName={labelFieldName}
+          placeholderTextFieldName={placeholderTextFieldName}
         />
 
         <Segment.Group className={styles.bottomSection} horizontal>
           <Segment className={styles.requiredFieldContainer}>
             <RadioFormField
-              label="Required Field"
-              fieldName={requiredField}
+              label="Required"
+              name={requiredFieldName}
               type="toggle"
             />
           </Segment>

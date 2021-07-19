@@ -49,13 +49,18 @@ function UserCreationForm() {
       <FormProvider {...methods}>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <DropdownSelectorFormField
-            fieldName={ROLE}
+            name={ROLE}
             label="Role"
             required
             defaultOptions={roles}
           />
 
-          <TextAreaFormField fieldName={EMAILS} label="Emails" required />
+          <TextAreaFormField
+            name={EMAILS}
+            label="Emails"
+            required
+            minRows={5}
+          />
 
           <Form.Button fluid type="submit" content="Parse Input" color="blue" />
         </Form>

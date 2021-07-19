@@ -1,11 +1,11 @@
 import { BaseData } from "./base";
 import {
   CATEGORY,
-  FIELD_LABEL,
-  FIELD_TYPE,
+  LABEL,
+  TYPE,
   PLACEHOLDER_TEXT,
   CAPACITY,
-  REQUIRED_FIELD,
+  REQUIRED,
   BOOKING_FORM_FIELDS,
   IC_CONTACT_NUMBER,
   IC_EMAIL,
@@ -49,10 +49,10 @@ export enum FieldType {
 }
 
 export type BookingFormFieldProps = {
-  [FIELD_TYPE]: FieldType;
-  [FIELD_LABEL]: string;
+  [TYPE]: FieldType;
+  [LABEL]: string;
   [PLACEHOLDER_TEXT]: string;
-  [REQUIRED_FIELD]: boolean;
+  [REQUIRED]: boolean;
 };
 
 export type VenueFormProps = {

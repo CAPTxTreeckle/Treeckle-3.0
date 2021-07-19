@@ -15,7 +15,7 @@ type Props = {
   className?: string;
   required?: boolean;
   label?: ReactNode;
-  fieldName: string;
+  name: string;
   errorMsg?: string;
   placeholder?: string;
   defaultValue?: string | string[];
@@ -37,7 +37,7 @@ function DropdownSelectorFormField({
   className,
   required = false,
   label,
-  fieldName,
+  name,
   errorMsg,
   placeholder,
   defaultValue,
@@ -57,7 +57,7 @@ function DropdownSelectorFormField({
     field: { onChange, onBlur, value, ref },
     fieldState: { error },
   } = useController({
-    name: fieldName,
+    name,
     defaultValue,
     rules: { required },
   });

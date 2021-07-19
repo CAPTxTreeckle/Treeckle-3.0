@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { Button, Segment, Form, Ref } from "semantic-ui-react";
 import {
   BOOKING_FORM_RESPONSES,
-  REQUIRED_FIELD,
+  REQUIRED,
   RESPONSE,
   TITLE,
 } from "../../constants";
@@ -37,8 +37,8 @@ const schema = yup.object().shape({
       yup
         .object()
         .shape({
-          [REQUIRED_FIELD]: yup.boolean(),
-          [RESPONSE]: yup.mixed<string | boolean>().when(REQUIRED_FIELD, {
+          [REQUIRED]: yup.boolean(),
+          [RESPONSE]: yup.mixed<string | boolean>().when(REQUIRED, {
             is: true,
             then: yup.lazy((value) =>
               typeof value === "string"
@@ -106,30 +106,17 @@ function BookingCreationCustomForm() {
           <FormProvider {...methods}>
             <Ref innerRef={formRef}>
               <Form onSubmit={handleSubmit(onSubmit)}>
-                <FormField
-                  fieldName={TITLE}
-                  label="Short Booking Title"
-                  required
-                />
+                <FormField name={TITLE} label="Short Booking Title" required />
 
                 {fields.map(
-                  (
-                    {
-                      id,
-                      fieldType,
-                      fieldLabel,
-                      placeholderText,
-                      requiredField,
-                    },
-                    index,
-                  ) => (
+                  ({ id, type, label, placeholderText, required }, index) => (
                     <CustomFormFieldRenderer
                       key={id}
-                      fieldName={`${BOOKING_FORM_RESPONSES}.${index}.${RESPONSE}`}
-                      fieldType={fieldType}
-                      fieldLabel={fieldLabel}
+                      name={`${BOOKING_FORM_RESPONSES}.${index}.${RESPONSE}`}
+                      type={type}
+                      label={label}
                       placeholderText={placeholderText}
-                      requiredField={requiredField}
+                      required={required}
                     />
                   ),
                 )}

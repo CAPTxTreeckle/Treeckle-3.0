@@ -11,3 +11,4 @@ django-update-from-dict
 django-cors-headers==3.7.0
 django-jazzmin
 django[argon2]
+django-json-widget

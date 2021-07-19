@@ -129,9 +129,9 @@ function BookingCreationFinalizeView() {
               </Grid.Row>
 
               {bookingFormResponses?.flatMap(
-                ({ fieldLabel, response, fieldType }, index) => {
+                ({ label, response, type }, index) => {
                   let displayedResponse: string;
-                  if (fieldType !== FieldType.Boolean) {
+                  if (type !== FieldType.Boolean) {
                     displayedResponse = response as string;
                   } else {
                     displayedResponse = response ? "Yes" : "No";
@@ -139,9 +139,9 @@ function BookingCreationFinalizeView() {
 
                   return displayedResponse
                     ? [
-                        <Grid.Row key={`${index}-${fieldLabel}`}>
+                        <Grid.Row key={`${index}-${label}`}>
                           <Grid.Column className="text-viewer" width="4">
-                            <strong>{fieldLabel}:</strong>
+                            <strong>{label}:</strong>
                           </Grid.Column>
                           <Grid.Column className="text-viewer" width="12">
                             {displayedResponse}

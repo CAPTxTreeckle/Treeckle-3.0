@@ -22,29 +22,27 @@ function BookingDetailsView({
           <Grid.Column width="12">{title}</Grid.Column>
         </Grid.Row>
 
-        {formResponseData.flatMap(
-          ({ fieldLabel, response, fieldType }, index) => {
-            let displayedResponse: string;
-            if (fieldType !== FieldType.Boolean) {
-              displayedResponse = response as string;
-            } else {
-              displayedResponse = response ? "Yes" : "No";
-            }
+        {formResponseData.flatMap(({ label, response, type }, index) => {
+          let displayedResponse: string;
+          if (type !== FieldType.Boolean) {
+            displayedResponse = response as string;
+          } else {
+            displayedResponse = response ? "Yes" : "No";
+          }
 
-            return displayedResponse
-              ? [
-                  <Grid.Row key={`${index}-${fieldLabel}`}>
-                    <Grid.Column className="text-viewer" width="4">
-                      <strong>{fieldLabel}:</strong>
-                    </Grid.Column>
-                    <Grid.Column className="text-viewer" width="12">
-                      {displayedResponse}
-                    </Grid.Column>
-                  </Grid.Row>,
-                ]
-              : [];
-          },
-        )}
+          return displayedResponse
+            ? [
+                <Grid.Row key={`${index}-${label}`}>
+                  <Grid.Column className="text-viewer" width="4">
+                    <strong>{label}:</strong>
+                  </Grid.Column>
+                  <Grid.Column className="text-viewer" width="12">
+                    {displayedResponse}
+                  </Grid.Column>
+                </Grid.Row>,
+              ]
+            : [];
+        })}
       </Grid>
     </LinkifyTextViewer>
   );

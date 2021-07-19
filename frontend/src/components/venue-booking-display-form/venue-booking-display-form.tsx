@@ -33,7 +33,7 @@ function VenueBookingDisplayForm({ venueFormProps }: Props) {
               {fields.map((field, index) => (
                 <CustomFormFieldRenderer
                   key={index}
-                  fieldName={`${index}`}
+                  name={`${index}`}
                   readOnly
                   {...field}
                 />

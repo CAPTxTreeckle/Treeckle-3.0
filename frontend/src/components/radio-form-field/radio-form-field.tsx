@@ -9,7 +9,7 @@ type Props = {
   required?: boolean;
   label?: ReactNode;
   errorMsg?: string;
-  fieldName: string;
+  name: string;
   type: "slider" | "toggle" | "checkbox";
   defaultValue?: boolean;
   readOnly?: boolean;
@@ -20,15 +20,15 @@ function RadioFormField({
   required = false,
   label,
   errorMsg,
-  fieldName,
+  name,
   type,
   defaultValue,
   readOnly = false,
 }: Props) {
   const {
-    field: { onChange, onBlur, value, ref, name },
+    field: { onChange, onBlur, value, ref },
     fieldState: { error },
-  } = useController({ name: fieldName, defaultValue, rules: { required } });
+  } = useController({ name, defaultValue, rules: { required } });
 
   return (
     <Ref
@@ -36,7 +36,7 @@ function RadioFormField({
         ref(
           Array.from(element?.children ?? [])
             .find((child) => child.className.includes("checkbox"))
-            ?.children.namedItem(fieldName),
+            ?.children.namedItem(name),
         )
       }
     >

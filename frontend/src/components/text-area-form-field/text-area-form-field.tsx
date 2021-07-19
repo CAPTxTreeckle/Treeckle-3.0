@@ -16,7 +16,7 @@ type Props = {
   className?: string;
   required?: boolean;
   label?: ReactNode;
-  fieldName: string;
+  name: string;
   errorMsg?: string;
   placeholder?: string;
   defaultValue?: string;
@@ -31,13 +31,13 @@ function TextAreaFormField({
   className,
   required = false,
   label,
-  fieldName,
+  name,
   errorMsg,
   placeholder,
   defaultValue,
   readOnly = false,
-  minRows = 5,
-  maxRows = minRows,
+  minRows = 3,
+  maxRows = 8,
   width,
   autoFocus = false,
 }: Props) {
@@ -45,10 +45,10 @@ function TextAreaFormField({
     formState: { errors },
     register,
   } = useFormContext();
-  const error = get(errors, fieldName);
+  const error = get(errors, name);
 
   const { ref, ...otherRegisterProps } = register(
-    fieldName,
+    name,
     pickBy({ required, value: defaultValue }, (key) => key !== undefined),
   );
 
