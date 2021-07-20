@@ -51,6 +51,8 @@ function CustomFormFieldRenderer({
           defaultValue={
             defaultValue === undefined ? defaultValue : String(defaultValue)
           }
+          minRows={3}
+          maxRows={readOnly ? 3 : undefined}
         />
       );
     case FieldType.Number:
