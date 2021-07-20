@@ -10,8 +10,8 @@ import {
   Button,
   Divider,
   Popup,
-  ButtonGroupProps,
   PopupProps,
+  SemanticWIDTHS,
 } from "semantic-ui-react";
 
 type Props = {
@@ -84,7 +84,7 @@ function PopupActionsWrapper({
 
         <Button.Group
           fluid
-          widths={actionButtons.length as ButtonGroupProps["widths"]}
+          widths={actionButtons.length as SemanticWIDTHS}
           vertical={vertical}
         >
           {actionButtons}

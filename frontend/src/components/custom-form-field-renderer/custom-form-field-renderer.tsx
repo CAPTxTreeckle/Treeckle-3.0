@@ -3,6 +3,7 @@ import FormField from "../form-field";
 import LinkifyTextViewer from "../linkify-text-viewer";
 import RadioFormField from "../radio-form-field";
 import TextAreaFormField from "../text-area-form-field";
+import TextDisplayFormField from "../text-display-form-field";
 
 type Props = BookingFormFieldProps & {
   name: string;
@@ -14,7 +15,7 @@ function CustomFormFieldRenderer({
   name,
   label: labelString,
   type,
-  placeholderText,
+  placeholder,
   required,
   readOnly = false,
   defaultValue,
@@ -31,7 +32,7 @@ function CustomFormFieldRenderer({
         <FormField
           label={label}
           name={name}
-          placeholder={placeholderText}
+          placeholder={placeholder}
           required={required}
           readOnly={readOnly}
           defaultValue={
@@ -44,7 +45,7 @@ function CustomFormFieldRenderer({
         <TextAreaFormField
           label={label}
           name={name}
-          placeholder={placeholderText}
+          placeholder={placeholder}
           required={required}
           readOnly={readOnly}
           defaultValue={
@@ -57,7 +58,7 @@ function CustomFormFieldRenderer({
         <FormField
           label={label}
           name={name}
-          placeholder={placeholderText}
+          placeholder={placeholder}
           required={required}
           readOnly={readOnly}
           type="number"
@@ -77,6 +78,13 @@ function CustomFormFieldRenderer({
           defaultValue={
             defaultValue === undefined ? defaultValue : Boolean(defaultValue)
           }
+        />
+      );
+    case FieldType.TextDisplay:
+      return (
+        <TextDisplayFormField
+          text={labelString}
+          maxRows={readOnly ? 5 : undefined}
         />
       );
     default:

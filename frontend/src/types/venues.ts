@@ -3,7 +3,7 @@ import {
   CATEGORY,
   LABEL,
   TYPE,
-  PLACEHOLDER_TEXT,
+  PLACEHOLDER,
   CAPACITY,
   REQUIRED,
   BOOKING_FORM_FIELDS,
@@ -46,12 +46,13 @@ export enum FieldType {
   TextArea = "TEXT_AREA",
   Number = "NUMBER",
   Boolean = "BOOLEAN",
+  TextDisplay = "TEXT_DISPLAY",
 }
 
 export type BookingFormFieldProps = {
   [TYPE]: FieldType;
   [LABEL]: string;
-  [PLACEHOLDER_TEXT]: string;
+  [PLACEHOLDER]: string;
   [REQUIRED]: boolean;
 };
 

@@ -109,13 +109,13 @@ function BookingCreationCustomForm() {
                 <FormField name={TITLE} label="Short Booking Title" required />
 
                 {fields.map(
-                  ({ id, type, label, placeholderText, required }, index) => (
+                  ({ id, type, label, placeholder, required }, index) => (
                     <CustomFormFieldRenderer
                       key={id}
                       name={`${BOOKING_FORM_RESPONSES}.${index}.${RESPONSE}`}
                       type={type}
                       label={label}
-                      placeholderText={placeholderText}
+                      placeholder={placeholder}
                       required={required}
                     />
                   ),

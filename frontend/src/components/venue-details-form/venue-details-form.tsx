@@ -8,7 +8,7 @@ import {
   LABEL,
   TYPE,
   PHONE_NUM_REGEX,
-  PLACEHOLDER_TEXT,
+  PLACEHOLDER,
   CAPACITY,
   REQUIRED,
   BOOKING_FORM_FIELDS,
@@ -63,7 +63,7 @@ const schema = yup.object().shape({
             .string()
             .trim()
             .required("Please enter a label / question"),
-          [PLACEHOLDER_TEXT]: yup.string().trim().notRequired(),
+          [PLACEHOLDER]: yup.string().trim().notRequired(),
           [REQUIRED]: yup.boolean().required("An error has occurred"),
         })
         .required(),

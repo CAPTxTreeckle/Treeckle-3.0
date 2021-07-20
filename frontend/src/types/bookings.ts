@@ -1,4 +1,4 @@
-import { LabelProps } from "semantic-ui-react";
+import { SemanticCOLORS } from "semantic-ui-react";
 import {
   ACTION,
   BOOKER,
@@ -78,7 +78,7 @@ export enum BookingStatus {
 
 export const BOOKING_STATUS_DETAILS = new Map<
   BookingStatus,
-  { color: LabelProps["color"] }
+  { color: SemanticCOLORS }
 >([
   [
     BookingStatus.Approved,

@@ -1,7 +1,7 @@
 import { InputHTMLAttributes, ReactNode, memo } from "react";
 import get from "lodash/get";
 import pickBy from "lodash/pickBy";
-import { Form, FormFieldProps } from "semantic-ui-react";
+import { Form, SemanticWIDTHS } from "semantic-ui-react";
 import { useFormContext } from "react-hook-form";
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
   placeholder?: string;
   defaultValue?: string;
   readOnly?: boolean;
-  width?: FormFieldProps["width"];
+  width?: SemanticWIDTHS;
   fluid?: boolean;
   autoFocus?: boolean;
 };

@@ -60,6 +60,7 @@ function UserCreationForm() {
             label="Emails"
             required
             minRows={5}
+            maxRows={8}
           />
 
           <Form.Button fluid type="submit" content="Parse Input" color="blue" />

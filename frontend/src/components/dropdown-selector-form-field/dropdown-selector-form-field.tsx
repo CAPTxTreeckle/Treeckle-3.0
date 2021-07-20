@@ -4,8 +4,8 @@ import {
   DropdownItemProps,
   DropdownProps,
   Form,
-  FormSelectProps,
   Ref,
+  SemanticWIDTHS,
 } from "semantic-ui-react";
 import useOptionsState from "../../custom-hooks/use-options-state";
 import { sanitizeArray } from "../../utils/parser-utils";
@@ -29,7 +29,7 @@ type Props = {
     e: SyntheticEvent<HTMLElement, Event>,
     data: DropdownProps,
   ) => void;
-  width?: FormSelectProps["width"];
+  width?: SemanticWIDTHS;
   fluid?: boolean;
 };
 

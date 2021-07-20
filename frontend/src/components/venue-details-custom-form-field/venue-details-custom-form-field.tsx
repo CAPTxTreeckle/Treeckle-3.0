@@ -12,7 +12,7 @@ import {
 import {
   LABEL,
   TYPE,
-  PLACEHOLDER_TEXT,
+  PLACEHOLDER,
   REQUIRED,
   BOOKING_FORM_FIELDS,
 } from "../../constants";
@@ -32,7 +32,7 @@ const typeOptions: DropdownItemProps[] = [
   {
     value: FieldType.TextArea,
     text: "Long Response",
-    icon: "bars",
+    icon: { name: "align left", flipped: "vertically" },
   },
   {
     value: FieldType.Number,
@@ -44,43 +44,62 @@ const typeOptions: DropdownItemProps[] = [
     text: "Yes / No",
     icon: "check square",
   },
+  {
+    value: FieldType.TextDisplay,
+    text: "Display Text",
+    icon: { as: "i", className: "fas fa-text" },
+  },
 ];
+
+const noPlaceholderFieldTypes = [FieldType.Boolean, FieldType.TextDisplay];
+const noRequiredFieldTypes = [FieldType.TextDisplay];
 
 const MiddleSection = ({
   typeFieldName,
   labelFieldName,
-  placeholderTextFieldName,
+  placeholderFieldName,
 }: {
   typeFieldName: string;
   labelFieldName: string;
-  placeholderTextFieldName: string;
+  placeholderFieldName: string;
 }) => {
   const type = useWatch({ name: typeFieldName });
-  const isBooleanField = type === FieldType.Boolean;
-  const isTextAreaField = type === FieldType.TextArea;
 
   return (
     <Segment>
       <Form.Group widths="equal">
         <TextAreaFormField
           required
-          label="Label / Question"
+          label={type === FieldType.TextDisplay ? "Text" : "Label / Question"}
           name={labelFieldName}
         />
 
-        {!isBooleanField &&
-          (isTextAreaField ? (
+        {!noPlaceholderFieldTypes.includes(type) &&
+          (type === FieldType.TextArea ? (
             <TextAreaFormField
               label="Placeholder Text"
-              name={placeholderTextFieldName}
+              name={placeholderFieldName}
             />
           ) : (
-            <FormField
-              label="Placeholder Text"
-              name={placeholderTextFieldName}
-            />
+            <FormField label="Placeholder Text" name={placeholderFieldName} />
           ))}
       </Form.Group>
+    </Segment>
+  );
+};
+
+const RequiredFieldSection = ({
+  typeFieldName,
+  requiredFieldName,
+}: {
+  typeFieldName: string;
+  requiredFieldName: string;
+}) => {
+  const type = useWatch({ name: typeFieldName });
+
+  return noRequiredFieldTypes.includes(type) ? null : (
+    <Segment className={styles.requiredFieldContainer}>
+      <RadioFormField label="Required" name={requiredFieldName} type="toggle" />
     </Segment>
   );
 };
@@ -99,17 +118,23 @@ function VenueDetailsCustomFormField({
   const { setValue } = useFormContext<VenueFormProps>();
   const typeFieldName = `${BOOKING_FORM_FIELDS}.${index}.${TYPE}` as const;
   const labelFieldName = `${BOOKING_FORM_FIELDS}.${index}.${LABEL}` as const;
-  const placeholderTextFieldName =
-    `${BOOKING_FORM_FIELDS}.${index}.${PLACEHOLDER_TEXT}` as const;
+  const placeholderFieldName =
+    `${BOOKING_FORM_FIELDS}.${index}.${PLACEHOLDER}` as const;
   const requiredFieldName =
     `${BOOKING_FORM_FIELDS}.${index}.${REQUIRED}` as const;
 
   const onSelectFieldType = (
     _: SyntheticEvent<HTMLElement, Event>,
-    { value: typeValue }: DropdownProps,
+    { value }: DropdownProps,
   ) => {
-    if (typeValue === FieldType.Boolean) {
-      setValue(placeholderTextFieldName, "");
+    const type = value as FieldType;
+
+    if (noPlaceholderFieldTypes.includes(type)) {
+      setValue(placeholderFieldName, "");
+    }
+
+    if (noRequiredFieldTypes.includes(type)) {
+      setValue(requiredFieldName, false);
     }
   };
 
@@ -146,17 +171,14 @@ function VenueDetailsCustomFormField({
         <MiddleSection
           typeFieldName={typeFieldName}
           labelFieldName={labelFieldName}
-          placeholderTextFieldName={placeholderTextFieldName}
+          placeholderFieldName={placeholderFieldName}
         />
 
         <Segment.Group className={styles.bottomSection} horizontal>
-          <Segment className={styles.requiredFieldContainer}>
-            <RadioFormField
-              label="Required"
-              name={requiredFieldName}
-              type="toggle"
-            />
-          </Segment>
+          <RequiredFieldSection
+            typeFieldName={typeFieldName}
+            requiredFieldName={requiredFieldName}
+          />
 
           <Segment />
 

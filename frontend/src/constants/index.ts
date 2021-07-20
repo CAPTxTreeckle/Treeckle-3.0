@@ -45,7 +45,7 @@ export const ORGANIZATION = "organization";
 export const ORGANIZED_BY = "organizedBy";
 export const PHONE_NUM_REGEX =
   /^(\s*|(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?)$/;
-export const PLACEHOLDER_TEXT = "placeholderText";
+export const PLACEHOLDER = "placeholder";
 export const POSITIVE_NUM_REGEX = /^(\s*|[1-9]\d*)$/;
 export const REFRESH = "refresh";
 export const REQUIRED = "required";

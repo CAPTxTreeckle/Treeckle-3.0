@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import clsx from "clsx";
-import { Segment, Loader, LoaderProps, Dimmer } from "semantic-ui-react";
+import { Segment, Loader, SemanticSIZES, Dimmer } from "semantic-ui-react";
 import styles from "./placeholder-wrapper.module.scss";
 
 type Props = {
@@ -11,7 +11,7 @@ type Props = {
   defaultMessage?: ReactNode | (() => ReactNode);
   inverted?: boolean;
   placeholder?: boolean;
-  size?: LoaderProps["size"];
+  size?: SemanticSIZES;
   dimmed?: boolean;
   fillParent?: boolean;
 };

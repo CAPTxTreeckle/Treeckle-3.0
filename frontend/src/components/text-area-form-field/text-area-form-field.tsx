@@ -1,16 +1,9 @@
-import { ReactNode, Ref, memo } from "react";
+import { ReactNode, memo } from "react";
 import get from "lodash/get";
 import pickBy from "lodash/pickBy";
 import { useFormContext } from "react-hook-form";
-import { Form, FormTextAreaProps } from "semantic-ui-react";
-import TextareaAutosize from "react-textarea-autosize";
-
-const TextArea = ({
-  innerRef,
-  ...textareaAutosizeProps
-}: Parameters<typeof TextareaAutosize>["0"] & {
-  innerRef?: Ref<HTMLTextAreaElement>;
-}) => <TextareaAutosize {...textareaAutosizeProps} ref={innerRef} />;
+import { Form, SemanticWIDTHS } from "semantic-ui-react";
+import TextArea from "../text-area";
 
 type Props = {
   className?: string;
@@ -23,7 +16,7 @@ type Props = {
   readOnly?: boolean;
   minRows?: number;
   maxRows?: number;
-  width?: FormTextAreaProps["width"];
+  width?: SemanticWIDTHS;
   autoFocus?: boolean;
 };
 
@@ -37,7 +30,7 @@ function TextAreaFormField({
   defaultValue,
   readOnly = false,
   minRows = 3,
-  maxRows = 8,
+  maxRows = 10,
   width,
   autoFocus = false,
 }: Props) {
@@ -72,7 +65,7 @@ function TextAreaFormField({
       width={width}
       rows={minRows}
       minRows={minRows}
-      maxRows={Math.max(maxRows, minRows)}
+      maxRows={maxRows}
       autoFocus={autoFocus}
       innerRef={ref}
       {...otherRegisterProps}
