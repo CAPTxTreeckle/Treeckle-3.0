@@ -18,7 +18,7 @@ from treeckle.common.constants import (
     END_DATE_TIME,
     STATUS,
     FORM_RESPONSE_DATA,
-    COMMENTS
+    COMMENTS,
 )
 from treeckle.common.exceptions import BadRequest
 from treeckle.common.parsers import parse_datetime_to_ms_timestamp
@@ -64,8 +64,8 @@ def get_non_overlapping_date_time_intervals(
     return non_overlapping_date_time_intervals
 
 
-def booking_to_json(booking: Booking, include_comments: bool=False):
-    data =  {
+def booking_to_json(booking: Booking, include_comments: bool = False):
+    data = {
         ID: booking.id,
         CREATED_AT: parse_datetime_to_ms_timestamp(booking.created_at),
         UPDATED_AT: parse_datetime_to_ms_timestamp(booking.updated_at),
@@ -83,8 +83,13 @@ def booking_to_json(booking: Booking, include_comments: bool=False):
             "comment__commenter__organization", "booking"
         )
 
-        data.update({COMMENTS: [booking_comment_to_json(comment) for comment in booking_comments]})
-
+        data.update(
+            {
+                COMMENTS: [
+                    booking_comment_to_json(comment) for comment in booking_comments
+                ]
+            }
+        )
 
     return data
 
@@ -96,7 +101,7 @@ def get_bookings(*args, **kwargs) -> QuerySet[Booking]:
 def get_requested_bookings(
     organization: Organization,
     user_id: Optional[int],
-    venue_name: Optional[str],
+    venue_id: Optional[int],
     start_date_time: datetime,
     end_date_time: datetime,
     status: Optional[BookingStatus],
@@ -110,8 +115,8 @@ def get_requested_bookings(
     if user_id is not None:
         filtered_bookings = filtered_bookings.filter(booker_id=user_id)
 
-    if venue_name is not None:
-        filtered_bookings = filtered_bookings.filter(venue__name=venue_name)
+    if venue_id is not None:
+        filtered_bookings = filtered_bookings.filter(venue_id=venue_id)
 
     if status is not None:
         filtered_bookings = filtered_bookings.filter(status=status)

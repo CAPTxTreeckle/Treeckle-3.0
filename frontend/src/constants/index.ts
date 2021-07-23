@@ -35,7 +35,6 @@ export const IC_NAME = "icName";
 export const ID = "id";
 export const IDS = "ids";
 export const IMAGE = "image";
-export const IS_NEW = "isNew";
 export const IS_PUBLISHED = "isPublished";
 export const IS_SIGN_UP_ALLOWED = "isSignUpAllowed";
 export const IS_SIGN_UP_APPROVAL_REQUIRED = "isSignUpApprovalRequired";

@@ -67,7 +67,7 @@ class BookingsView(APIView):
         bookings = get_requested_bookings(
             organization=requester.organization,
             user_id=validated_data.get("user_id", None),
-            venue_name=validated_data.get("venue_name", None),
+            venue_id=validated_data.get("venue_id", None),
             start_date_time=parse_ms_timestamp_to_datetime(start_date_time)
             if start_date_time is not None
             else make_aware(datetime.min),
@@ -131,7 +131,6 @@ class SingleBookingView(APIView):
         data = booking_to_json(booking, include_comments=True)
 
         return Response(data, status=status.HTTP_200_OK)
-
 
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
     @check_requester_booking_same_organization

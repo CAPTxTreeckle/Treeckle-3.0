@@ -11,7 +11,6 @@ import {
   STATUS,
   TITLE,
   VENUE_ID,
-  VENUE_NAME,
   USER_ID,
   VENUE,
 } from "../constants";
@@ -21,7 +20,7 @@ import { BookingFormFieldProps, VenueData } from "./venues";
 
 export type BookingGetQueryParams = {
   [USER_ID]?: number | string | null;
-  [VENUE_NAME]?: string | null;
+  [VENUE_ID]?: number | string | null;
   [START_DATE_TIME]?: number | string | null;
   [END_DATE_TIME]?: number | string | null;
   [STATUS]?: BookingStatus | null;

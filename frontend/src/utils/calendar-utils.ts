@@ -1,9 +1,10 @@
-import { CSSProperties } from "react";
 import {
   dateFnsLocalizer,
   DateRangeFormatFunction,
   DateRange,
   DateLocalizer,
+  DayPropGetter,
+  SlotPropGetter,
 } from "react-big-calendar";
 import {
   format,
@@ -13,13 +14,14 @@ import {
   isSameMonth,
   startOfMonth,
   endOfMonth,
-  endOfWeek,
   max,
   min,
   endOfDay,
   startOfToday,
   isBefore,
   isPast,
+  endOfWeek,
+  startOfDay,
 } from "date-fns";
 import { enUS } from "date-fns/locale";
 import { sort } from "./parser-utils";
@@ -29,7 +31,7 @@ export const CURRENT_LOCALE = "en-US";
 export const DAY_HEADER_FORMAT = "EEEE dd MMMM";
 
 const locales = {
-  "en-US": enUS,
+  [CURRENT_LOCALE]: enUS,
 };
 
 export const dateLocalizer: DateLocalizer = dateFnsLocalizer({
@@ -51,6 +53,16 @@ export const weekRangeFormat: DateRangeFormatFunction = (
     culture,
   )} – ${local.format(end, "dd MMMM", culture)}`;
 
+export const dayPropGetter: DayPropGetter = (date: Date) => {
+  return isBefore(date, startOfToday())
+    ? { style: { backgroundColor: "#f2f2f2" } }
+    : {};
+};
+
+export const slotPropGetter: SlotPropGetter = (date: Date) => {
+  return isPast(date) ? { style: { backgroundColor: "#f2f2f2" } } : {};
+};
+
 function getFirstVisibleDateInCalendarMonth(date: Date): Date {
   const firstDateOfMonth = startOfMonth(date);
 
@@ -59,22 +71,6 @@ function getFirstVisibleDateInCalendarMonth(date: Date): Date {
       typeof getDay
     >,
   });
-}
-
-export function dayPropGetter(date: Date): {
-  className?: string;
-  style?: CSSProperties;
-} {
-  return isBefore(date, startOfToday())
-    ? { style: { backgroundColor: "#f2f2f2" } }
-    : {};
-}
-
-export function slotPropGetter(date: Date): {
-  className?: string;
-  style?: CSSProperties;
-} {
-  return isPast(date) ? { style: { backgroundColor: "#f2f2f2" } } : {};
 }
 
 function getLastVisibleDateInCalendarMonth(date: Date): Date {
@@ -99,7 +95,7 @@ export function getVisibleRange(dates: Date[]): DateRange {
   const maxDate = max(dates);
 
   return {
-    start: minDate,
+    start: startOfDay(minDate),
     end: endOfDay(maxDate),
   };
 }

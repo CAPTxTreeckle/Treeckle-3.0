@@ -61,16 +61,18 @@ const bookingCreationSlice = createSlice({
       selectedCategory,
       selectedVenue: payload,
     }),
-    chooseBookingPeriodsAction: (
+    updateBookingPeriodsAction: (
       state,
       { payload }: PayloadAction<DateTimeRange[]>,
     ) => {
-      if (payload.length === 0) {
+      state.newBookingPeriods = payload;
+    },
+    confirmBookingPeriodsAction: (state) => {
+      if (!state.newBookingPeriods || state.newBookingPeriods.length === 0) {
         return;
       }
 
       state.currentCreationStep = BookingCreationStep.Form;
-      state.newBookingPeriods = payload;
     },
     syncVenueAction: (
       state,
@@ -148,7 +150,8 @@ export const {
   exitBookingFinalizationAction,
   chooseVenueCategoryAction,
   chooseVenueAction,
-  chooseBookingPeriodsAction,
+  updateBookingPeriodsAction,
+  confirmBookingPeriodsAction,
   syncVenueAction,
   completeBookingFormAction,
   successBookingFormSubmissionAction,

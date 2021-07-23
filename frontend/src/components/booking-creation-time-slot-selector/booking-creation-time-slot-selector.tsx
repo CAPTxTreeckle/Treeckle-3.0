@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import { useModal } from "react-modal-hook";
 import {
   Segment,
@@ -7,7 +7,7 @@ import {
   Modal,
   Label,
 } from "semantic-ui-react";
-import { Calendar, View } from "react-big-calendar";
+import { Calendar, EventPropGetter, Views } from "react-big-calendar";
 import {
   CURRENT_LOCALE,
   dateLocalizer,
@@ -20,33 +20,43 @@ import { useGetBookings } from "../../custom-hooks/api/bookings-api";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   backFromBookingPeriodsSelectionAction,
-  chooseBookingPeriodsAction,
+  updateBookingPeriodsAction,
+  confirmBookingPeriodsAction,
   selectNewBookingPeriods,
   selectSelectedVenue,
 } from "../../redux/slices/booking-creation-slice";
 import { BookingStatus } from "../../types/bookings";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import PlaceholderWrapper from "../placeholder-wrapper";
+import CalendarBookingEvent from "../calendar-booking-event";
 import useBookingCreationCalendarState, {
   CalendarBooking,
 } from "../../custom-hooks/use-booking-creation-calendar-state";
 import { DEFAULT_ARRAY } from "../../constants";
+import { displayDateTimeRange } from "../../utils/parser-utils";
+import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
 import styles from "./booking-creation-time-slot-selector.module.scss";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { displayDateTimeRange } from "../../utils/parser-utils";
 
-const eventPropGetter = ({
-  isNew,
-}: CalendarBooking): { className?: string; style?: React.CSSProperties } =>
-  isNew ? { style: { backgroundColor: "#00b5ad" } } : {};
+const eventPropGetter: EventPropGetter<CalendarBooking> = ({ status }) =>
+  !status ? { style: { backgroundColor: "#00b5ad" } } : {};
 
-const views: View[] = ["month", "week", "day"];
+const views = [Views.MONTH, Views.WEEK, Views.DAY];
+
+const components = {
+  event: CalendarBookingEvent,
+};
 
 function BookingCreationTimeSlotSelector() {
-  const selectedVenue = useAppSelector(selectSelectedVenue);
+  const { id: venueId, venueFormProps } =
+    useAppSelector(selectSelectedVenue) ?? {};
   const newBookingPeriods =
     useAppSelector(selectNewBookingPeriods) ?? DEFAULT_ARRAY;
+  const user = useAppSelector(selectCurrentUserDisplayInfo) ?? null;
   const dispatch = useAppDispatch();
+
+  const { bookings: approvedBookings, loading, getBookings } = useGetBookings();
+
   const [showModal, hideModal] = useModal(({ in: open, onExited }) => (
     <TransitionablePortal
       transition={{ animation: "fade down" }}
@@ -63,9 +73,26 @@ function BookingCreationTimeSlotSelector() {
     </TransitionablePortal>
   ));
 
-  const { name: venueName } = selectedVenue?.venueFormProps ?? {};
+  useEffect(() => {
+    if (loading) {
+      showModal();
+    } else {
+      hideModal();
+    }
+  }, [loading, showModal, hideModal]);
 
-  const { bookings: approvedBookings, loading, getBookings } = useGetBookings();
+  const didUpdateNewBookingPeriods = useCallback(
+    (newBookings: CalendarBooking[]) =>
+      dispatch(
+        updateBookingPeriodsAction(
+          newBookings.map(({ start, end }) => ({
+            startDateTime: start.getTime(),
+            endDateTime: end.getTime(),
+          })),
+        ),
+      ),
+    [dispatch],
+  );
 
   const {
     allBookings,
@@ -80,7 +107,12 @@ function BookingCreationTimeSlotSelector() {
     onSelectEvent,
     onSelecting,
     removeNewBooking,
-  } = useBookingCreationCalendarState(approvedBookings, newBookingPeriods);
+  } = useBookingCreationCalendarState({
+    approvedBookings,
+    newBookingPeriods,
+    user,
+    didUpdateNewBookingPeriods,
+  });
 
   useEffect(() => {
     const { start, end } = visibleDateRange;
@@ -88,20 +120,12 @@ function BookingCreationTimeSlotSelector() {
     const endDateTime = end.getTime();
 
     getBookings({
-      venueName,
+      venueId,
       status: BookingStatus.Approved,
       startDateTime,
       endDateTime,
     });
-  }, [getBookings, venueName, visibleDateRange]);
-
-  useEffect(() => {
-    if (loading) {
-      showModal();
-    } else {
-      hideModal();
-    }
-  }, [loading, showModal, hideModal]);
+  }, [getBookings, venueId, visibleDateRange]);
 
   return (
     <>
@@ -123,7 +147,6 @@ function BookingCreationTimeSlotSelector() {
                   as="a"
                   key={label}
                   color="teal"
-                  className="pointer"
                   content={label}
                   onClick={(e) => onSelectEvent(booking, e, true)}
                   onRemove={() => removeNewBooking(booking)}
@@ -133,37 +156,40 @@ function BookingCreationTimeSlotSelector() {
           </Label.Group>
         </Segment>
 
-        <h2>{venueName} Bookings</h2>
-        <Calendar
-          className={styles.calendar}
-          events={allBookings}
-          localizer={dateLocalizer}
-          toolbar
-          step={30}
-          timeslots={1}
-          selectable
-          showMultiDayTimes
-          popup
-          views={views}
-          view={view}
-          culture={CURRENT_LOCALE}
-          date={dateView}
-          formats={{
-            dayHeaderFormat: DAY_HEADER_FORMAT,
-            dayRangeHeaderFormat: weekRangeFormat,
-          }}
-          dayPropGetter={dayPropGetter}
-          slotPropGetter={slotPropGetter}
-          eventPropGetter={eventPropGetter}
-          scrollToTime={dateView}
-          onRangeChange={onRangeChange}
-          onView={onView}
-          onSelectSlot={onSelectSlot}
-          onNavigate={onNavigate}
-          onSelectEvent={onSelectEvent}
-          onSelecting={onSelecting}
-          onDoubleClickEvent={removeNewBooking}
-        />
+        <h2>{venueFormProps?.name} Bookings</h2>
+        <div className={styles.calendarWrapper}>
+          <Calendar
+            events={allBookings}
+            localizer={dateLocalizer}
+            toolbar
+            titleAccessor="title"
+            step={30}
+            timeslots={1}
+            selectable
+            showMultiDayTimes
+            popup
+            views={views}
+            components={components}
+            view={view}
+            culture={CURRENT_LOCALE}
+            date={dateView}
+            formats={{
+              dayHeaderFormat: DAY_HEADER_FORMAT,
+              dayRangeHeaderFormat: weekRangeFormat,
+            }}
+            dayPropGetter={dayPropGetter}
+            slotPropGetter={slotPropGetter}
+            eventPropGetter={eventPropGetter}
+            scrollToTime={dateView}
+            onRangeChange={onRangeChange}
+            onView={onView}
+            onSelectSlot={onSelectSlot}
+            onNavigate={onNavigate}
+            onSelectEvent={onSelectEvent}
+            onSelecting={onSelecting}
+            onDoubleClickEvent={removeNewBooking}
+          />
+        </div>
       </Segment>
 
       <Segment secondary>
@@ -177,17 +203,8 @@ function BookingCreationTimeSlotSelector() {
           <Button
             color="blue"
             content="Next"
-            onClick={() =>
-              dispatch(
-                chooseBookingPeriodsAction(
-                  newBookings.map(({ start, end }) => ({
-                    startDateTime: start.getTime(),
-                    endDateTime: end.getTime(),
-                  })),
-                ),
-              )
-            }
-            disabled={newBookings.length === 0}
+            onClick={() => dispatch(confirmBookingPeriodsAction())}
+            disabled={newBookingPeriods.length === 0}
           />
         </HorizontalLayoutContainer>
       </Segment>

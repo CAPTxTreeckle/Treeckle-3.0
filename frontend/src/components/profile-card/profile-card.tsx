@@ -36,7 +36,7 @@ function ProfileCard({
           <Divider hidden />
 
           <p>
-            <strong>Email:</strong> {email}
+            <strong>Email:</strong> <a href={`mailto:${email}`}>{email}</a>
           </p>
           <p>
             <strong>Organization:</strong> {organization}
