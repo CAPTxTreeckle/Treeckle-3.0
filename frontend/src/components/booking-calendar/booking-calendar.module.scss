@@ -1,0 +1,26 @@
+@use "../../base";
+
+.calendarWrapper {
+  height: 80vh;
+  min-height: 40rem;
+}
+
+.new {
+  background-color: base.$teal-color !important;
+}
+
+.approved {
+  background-color: base.$green-color !important;
+}
+
+.pending {
+  background-color: base.$orange-color !important;
+}
+
+.rejected {
+  background-color: base.$red-color !important;
+}
+
+.cancelled {
+  background-color: base.$light-grey-color !important;
+}

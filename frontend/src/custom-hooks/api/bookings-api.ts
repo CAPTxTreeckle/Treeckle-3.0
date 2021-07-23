@@ -85,7 +85,7 @@ export function useGetBookings() {
           url: "/bookings/",
           query: changeKeyCase(snakeCase, queryParams),
         },
-        { skipNull: true, skipEmptyString: true },
+        { skipNull: true, skipEmptyString: true, arrayFormat: "comma" },
       );
 
       try {

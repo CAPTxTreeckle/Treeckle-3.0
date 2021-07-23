@@ -1,4 +1,7 @@
-.calendarWrapper {
-  height: 80vh;
-  min-height: 40rem;
+.statusRow {
+  padding: 0.5rem 0 !important;
+
+  .status {
+    width: 100%;
+  }
 }

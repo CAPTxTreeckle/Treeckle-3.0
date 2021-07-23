@@ -6,16 +6,10 @@ import {
   TransitionablePortal,
   Modal,
   Label,
+  Message,
+  Icon,
+  Grid,
 } from "semantic-ui-react";
-import { Calendar, EventPropGetter, Views } from "react-big-calendar";
-import {
-  CURRENT_LOCALE,
-  dateLocalizer,
-  dayPropGetter,
-  DAY_HEADER_FORMAT,
-  slotPropGetter,
-  weekRangeFormat,
-} from "../../utils/calendar-utils";
 import { useGetBookings } from "../../custom-hooks/api/bookings-api";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
@@ -28,26 +22,12 @@ import {
 import { BookingStatus } from "../../types/bookings";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import PlaceholderWrapper from "../placeholder-wrapper";
-import CalendarBookingEvent from "../calendar-booking-event";
-import CalendarToolbar from "../calendar-toolbar";
-import useBookingCreationCalendarState, {
-  CalendarBooking,
-} from "../../custom-hooks/use-booking-creation-calendar-state";
+import BookingCalendar, { CalendarBooking } from "../booking-calendar";
+import useBookingCreationCalendarState from "../../custom-hooks/use-booking-creation-calendar-state";
 import { DEFAULT_ARRAY } from "../../constants";
 import { displayDateTimeRange } from "../../utils/parser-utils";
 import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
 import styles from "./booking-creation-time-slot-selector.module.scss";
-import "react-big-calendar/lib/css/react-big-calendar.css";
-
-const eventPropGetter: EventPropGetter<CalendarBooking> = ({ status }) =>
-  !status ? { style: { backgroundColor: "#00b5ad" } } : {};
-
-const views = [Views.MONTH, Views.WEEK, Views.DAY];
-
-const components = {
-  event: CalendarBookingEvent,
-  toolbar: CalendarToolbar,
-};
 
 function BookingCreationTimeSlotSelector() {
   const { id: venueId, venueFormProps } =
@@ -57,7 +37,7 @@ function BookingCreationTimeSlotSelector() {
   const user = useAppSelector(selectCurrentUserDisplayInfo) ?? null;
   const dispatch = useAppDispatch();
 
-  const { bookings: approvedBookings, loading, getBookings } = useGetBookings();
+  const { bookings: existingBookings, loading, getBookings } = useGetBookings();
 
   const [showModal, hideModal] = useModal(({ in: open, onExited }) => (
     <TransitionablePortal
@@ -111,7 +91,7 @@ function BookingCreationTimeSlotSelector() {
     removeNewBooking,
     onDrillDown,
   } = useBookingCreationCalendarState({
-    approvedBookings,
+    existingBookings,
     newBookingPeriods,
     user,
     didUpdateNewBookingPeriods,
@@ -124,7 +104,7 @@ function BookingCreationTimeSlotSelector() {
 
     getBookings({
       venueId,
-      status: BookingStatus.Approved,
+      statuses: [BookingStatus.Approved, BookingStatus.Pending],
       startDateTime,
       endDateTime,
     });
@@ -133,7 +113,63 @@ function BookingCreationTimeSlotSelector() {
   return (
     <>
       <Segment>
-        <Segment raised>
+        <Message info icon>
+          <Icon name="info circle" />
+          <Message.Content>
+            <p>
+              There are 3 possible types of booking statuses in this calendar:
+            </p>
+            <Grid
+              verticalAlign="middle"
+              padded="vertically"
+              columns="2"
+              stackable
+            >
+              <Grid.Row className={styles.statusRow}>
+                <Grid.Column textAlign="center" width="3">
+                  <Label className={styles.status} color="teal" content="New" />
+                </Grid.Column>
+                <Grid.Column width="13">
+                  <p>Newly selected booking</p>
+                </Grid.Column>
+              </Grid.Row>
+
+              <Grid.Row className={styles.statusRow}>
+                <Grid.Column textAlign="center" width="3">
+                  <Label
+                    className={styles.status}
+                    color="green"
+                    content="Approved"
+                  />
+                </Grid.Column>
+                <Grid.Column width="13">
+                  <p>Existing approved booking.</p>
+                </Grid.Column>
+              </Grid.Row>
+
+              <Grid.Row className={styles.statusRow}>
+                <Grid.Column textAlign="center" width="3">
+                  <Label
+                    className={styles.status}
+                    color="orange"
+                    content="Pending"
+                  />
+                </Grid.Column>
+                <Grid.Column width="13">
+                  <p>Existing booking which has yet to be approved.</p>
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+            <p>
+              <strong>Note:</strong> You are <strong>not</strong> allowed to
+              make <Label as="span" color="teal" content="New" /> bookings which
+              overlap with existing{" "}
+              <Label as="span" color="green" content="Approved" /> bookings.
+            </p>
+          </Message.Content>
+        </Message>
+
+        <Segment>
           <Label
             attached="top left"
             content="Selected time slot(s)"
@@ -152,7 +188,10 @@ function BookingCreationTimeSlotSelector() {
                   color="teal"
                   content={label}
                   onClick={(e) => onSelectEvent(booking, e, true)}
-                  onRemove={() => removeNewBooking(booking)}
+                  onRemove={(e) => {
+                    e.stopPropagation();
+                    removeNewBooking(booking);
+                  }}
                 />
               );
             })}
@@ -160,43 +199,20 @@ function BookingCreationTimeSlotSelector() {
         </Segment>
 
         <h2>{venueFormProps?.name} Bookings</h2>
-        <div className={styles.calendarWrapper}>
-          <Calendar
-            events={allBookings}
-            localizer={dateLocalizer}
-            toolbar
-            titleAccessor="title"
-            startAccessor="start"
-            endAccessor="end"
-            step={30}
-            timeslots={1}
-            selectable
-            showMultiDayTimes
-            popup
-            doShowMoreDrillDown={false}
-            views={views}
-            components={components}
-            view={view}
-            culture={CURRENT_LOCALE}
-            date={dateView}
-            formats={{
-              dayHeaderFormat: DAY_HEADER_FORMAT,
-              dayRangeHeaderFormat: weekRangeFormat,
-            }}
-            dayPropGetter={dayPropGetter}
-            slotPropGetter={slotPropGetter}
-            eventPropGetter={eventPropGetter}
-            scrollToTime={dateView}
-            onRangeChange={onRangeChange}
-            onView={onView}
-            onSelectSlot={onSelectSlot}
-            onNavigate={onNavigate}
-            onSelectEvent={onSelectEvent}
-            onSelecting={onSelecting}
-            onDoubleClickEvent={removeNewBooking}
-            onDrillDown={onDrillDown}
-          />
-        </div>
+        <BookingCalendar
+          events={allBookings}
+          view={view}
+          date={dateView}
+          scrollToTime={dateView}
+          onRangeChange={onRangeChange}
+          onView={onView}
+          onSelectSlot={onSelectSlot}
+          onNavigate={onNavigate}
+          onSelectEvent={onSelectEvent}
+          onSelecting={onSelecting}
+          onDoubleClickEvent={removeNewBooking}
+          onDrillDown={onDrillDown}
+        />
       </Segment>
 
       <Segment secondary>

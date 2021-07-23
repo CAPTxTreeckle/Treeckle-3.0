@@ -13,6 +13,7 @@ import {
   VENUE_ID,
   USER_ID,
   VENUE,
+  STATUSES,
 } from "../constants";
 import { BaseData } from "./base";
 import { UserData } from "./users";
@@ -23,7 +24,7 @@ export type BookingGetQueryParams = {
   [VENUE_ID]?: number | string | null;
   [START_DATE_TIME]?: number | string | null;
   [END_DATE_TIME]?: number | string | null;
-  [STATUS]?: BookingStatus | null;
+  [STATUSES]?: BookingStatus[] | null;
 };
 
 export type BookingPostData = {

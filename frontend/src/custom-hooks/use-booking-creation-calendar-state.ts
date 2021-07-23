@@ -24,26 +24,19 @@ import {
   mergeDateRanges,
 } from "../utils/calendar-utils";
 import { BookingData, BookingStatus, DateTimeRange } from "../types/bookings";
-import { TITLE, START, END, STATUS, BOOKER } from "../constants";
+import { STATUS } from "../constants";
 import { UserData } from "../types/users";
-
-export type CalendarBooking = {
-  [TITLE]: string;
-  [BOOKER]: UserData | null;
-  [START]: Date;
-  [END]: Date;
-  [STATUS]: BookingStatus | null;
-};
+import { CalendarBooking } from "../components/booking-calendar";
 
 const NEW_BOOKING = "New booking";
 
 export default function useBookingCreationCalendarState({
-  approvedBookings,
+  existingBookings,
   newBookingPeriods,
   user,
   didUpdateNewBookingPeriods,
 }: {
-  approvedBookings: BookingData[];
+  existingBookings: BookingData[];
   newBookingPeriods: DateTimeRange[];
   user: UserData | null;
   didUpdateNewBookingPeriods: (newBookings: CalendarBooking[]) => void;
@@ -70,7 +63,7 @@ export default function useBookingCreationCalendarState({
   const allBookings = useMemo(
     () =>
       (
-        approvedBookings.map(
+        existingBookings.map(
           ({ title, booker, startDateTime, endDateTime, status }) => ({
             title,
             booker,
@@ -80,7 +73,7 @@ export default function useBookingCreationCalendarState({
           }),
         ) as CalendarBooking[]
       ).concat(newBookings),
-    [approvedBookings, newBookings],
+    [existingBookings, newBookings],
   );
 
   const onRangeChange = (
@@ -116,6 +109,33 @@ export default function useBookingCreationCalendarState({
     );
   };
 
+  const onSelecting = ({
+    start,
+    end,
+  }: {
+    start: stringOrDate;
+    end: stringOrDate;
+  }) => {
+    const selectingRange: DateRange = {
+      start: new Date(start),
+      end: new Date(end),
+    };
+
+    return (
+      isFuture(selectingRange.start) &&
+      isFuture(selectingRange.end) &&
+      !allBookings.some(
+        ({ start, end, status }) =>
+          (!status || status === BookingStatus.Approved) &&
+          areIntervalsOverlapping(
+            selectingRange,
+            { start, end },
+            { inclusive: false },
+          ),
+      )
+    );
+  };
+
   const onSelectSlot = ({ action, start, end }: SlotInfo) => {
     const selectedRange: DateRange = {
       start: new Date(start),
@@ -134,7 +154,7 @@ export default function useBookingCreationCalendarState({
           return;
         }
 
-        if (!isFuture(selectedRange.start) || !isFuture(selectedRange.end)) {
+        if (!onSelecting(selectedRange)) {
           return;
         }
 
@@ -166,31 +186,6 @@ export default function useBookingCreationCalendarState({
     }
 
     setView(Views.DAY);
-  };
-
-  const onSelecting = ({
-    start,
-    end,
-  }: {
-    start: stringOrDate;
-    end: stringOrDate;
-  }) => {
-    const selectingRange: DateRange = {
-      start: new Date(start),
-      end: new Date(end),
-    };
-
-    return (
-      isFuture(selectingRange.start) &&
-      isFuture(selectingRange.end) &&
-      !allBookings.some(({ start, end }) =>
-        areIntervalsOverlapping(
-          selectingRange,
-          { start, end },
-          { inclusive: false },
-        ),
-      )
-    );
   };
 
   const removeNewBooking = (currentBooking: CalendarBooking) => {

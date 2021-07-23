@@ -1,6 +1,6 @@
 import React from "react";
 import { Popup } from "semantic-ui-react";
-import { CalendarBooking } from "../../custom-hooks/use-booking-creation-calendar-state";
+import { CalendarBooking } from "../booking-calendar";
 import { displayDateTimeRange } from "../../utils/parser-utils";
 import UserNameRenderer from "../user-name-renderer";
 import styles from "./calendar-booking-event.module.scss";

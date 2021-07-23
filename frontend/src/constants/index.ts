@@ -79,3 +79,4 @@ export const HAS_FACEBOOK_AUTH = "hasFacebookAuth";
 export const ACCESS_TOKEN = "accessToken";
 export const PAYLOAD = "payload";
 export const TOKENS = "tokens";
+export const STATUSES = "statuses";
