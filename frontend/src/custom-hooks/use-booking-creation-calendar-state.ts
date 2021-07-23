@@ -203,6 +203,10 @@ export default function useBookingCreationCalendarState({
     );
   };
 
+  const onDrillDown = (date: Date) => {
+    viewCurrentTime(date);
+  };
+
   return {
     allBookings,
     newBookings,
@@ -216,5 +220,6 @@ export default function useBookingCreationCalendarState({
     onSelectEvent,
     onSelecting,
     removeNewBooking,
+    onDrillDown,
   };
 }

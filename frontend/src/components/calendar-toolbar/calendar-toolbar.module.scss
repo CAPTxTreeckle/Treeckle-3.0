@@ -1,0 +1,21 @@
+@use "../../base";
+
+.calendarToolbar {
+  display: flex;
+  margin-bottom: 1rem;
+  align-items: center;
+  justify-content: center;
+
+  @media only screen and (max-width: 767px) {
+    flex-direction: column;
+    align-items: flex-start;
+    @include base.vertical-space-margin(0.5rem);
+  }
+
+  .label {
+    width: 100%;
+    text-align: center;
+    font-size: 1.15rem;
+    padding: 0 0.5rem;
+  }
+}

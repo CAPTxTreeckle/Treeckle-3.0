@@ -29,6 +29,7 @@ import { BookingStatus } from "../../types/bookings";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import CalendarBookingEvent from "../calendar-booking-event";
+import CalendarToolbar from "../calendar-toolbar";
 import useBookingCreationCalendarState, {
   CalendarBooking,
 } from "../../custom-hooks/use-booking-creation-calendar-state";
@@ -45,6 +46,7 @@ const views = [Views.MONTH, Views.WEEK, Views.DAY];
 
 const components = {
   event: CalendarBookingEvent,
+  toolbar: CalendarToolbar,
 };
 
 function BookingCreationTimeSlotSelector() {
@@ -107,6 +109,7 @@ function BookingCreationTimeSlotSelector() {
     onSelectEvent,
     onSelecting,
     removeNewBooking,
+    onDrillDown,
   } = useBookingCreationCalendarState({
     approvedBookings,
     newBookingPeriods,
@@ -163,11 +166,14 @@ function BookingCreationTimeSlotSelector() {
             localizer={dateLocalizer}
             toolbar
             titleAccessor="title"
+            startAccessor="start"
+            endAccessor="end"
             step={30}
             timeslots={1}
             selectable
             showMultiDayTimes
             popup
+            doShowMoreDrillDown={false}
             views={views}
             components={components}
             view={view}
@@ -188,6 +194,7 @@ function BookingCreationTimeSlotSelector() {
             onSelectEvent={onSelectEvent}
             onSelecting={onSelecting}
             onDoubleClickEvent={removeNewBooking}
+            onDrillDown={onDrillDown}
           />
         </div>
       </Segment>
