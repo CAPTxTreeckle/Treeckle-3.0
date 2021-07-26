@@ -73,8 +73,8 @@ function Routes() {
   return (
     <Router>
       <LastLocationProvider>
-        <ScrollToTopManager paths={onVisitScrollToTopPaths} />
         <AppLayoutContainer>
+          <ScrollToTopManager paths={onVisitScrollToTopPaths} />
           <Switch>
             <Route path={HOME_PATH} exact>
               {isLoggedIn ? <Redirect to={DASHBOARD_PATH} /> : <HomePage />}
