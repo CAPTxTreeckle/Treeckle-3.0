@@ -7,7 +7,9 @@ import BookingsTab from "./bookings-tab";
 // import EventsTab from "./events-tab";
 import RoleRestrictedWrapper from "../role-restricted-wrapper";
 import MobileAdminTab from "./mobile-admin-tab";
+import MobileAboutTab from "./mobile-about-tab";
 import DesktopAdminTab from "./desktop-admin-tab";
+import DesktopAboutTab from "./desktop-about-tab";
 import SidebarTab from "./sidebar-tab";
 import { Role } from "../../types/users";
 import FullPageContainer from "../full-page-container";
@@ -46,6 +48,7 @@ function NavigationContainer({ children }: Props) {
         <DashboardTab onTabClick={closeSidebar} />
         <BookingsTab onTabClick={closeSidebar} />
         {/* <EventsTab onTabClick={closeSidebar} /> */}
+        <MobileAboutTab onTabClick={closeSidebar} />
         <RoleRestrictedWrapper allowedRoles={[Role.Admin]}>
           <MobileAdminTab onTabClick={closeSidebar} />
         </RoleRestrictedWrapper>
@@ -60,6 +63,7 @@ function NavigationContainer({ children }: Props) {
                 <DashboardTab />
                 <BookingsTab />
                 {/* <EventsTab /> */}
+                <DesktopAboutTab />
                 <RoleRestrictedWrapper allowedRoles={[Role.Admin]}>
                   <DesktopAdminTab />
                 </RoleRestrictedWrapper>

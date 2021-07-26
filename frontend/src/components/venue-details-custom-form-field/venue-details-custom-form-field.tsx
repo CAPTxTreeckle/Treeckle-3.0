@@ -47,7 +47,7 @@ const typeOptions: DropdownItemProps[] = [
   {
     value: FieldType.TextDisplay,
     text: "Display Text",
-    icon: { as: "i", className: "fas fa-text" },
+    icon: { className: "fas fa-text" },
   },
 ];
 

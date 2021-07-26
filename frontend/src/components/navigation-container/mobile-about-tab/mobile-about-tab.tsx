@@ -1,0 +1,51 @@
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
+import { Accordion, MenuItem } from "semantic-ui-react";
+import {
+  OUR_STORY_PATH,
+  TERMS_AND_CONDITIONS_PATH,
+  PRIVACY_POLICY_PATH,
+} from "../../../routes/paths";
+import TabItem from "../tab-item";
+
+type Props = {
+  onTabClick?: () => void;
+};
+
+function MobileAboutTab({ onTabClick }: Props) {
+  const [isExpanded, setExpanded] = useState(false);
+  const { pathname } = useLocation();
+
+  return (
+    <Accordion as={MenuItem} active={pathname.startsWith("/about")}>
+      <Accordion.Title
+        content="About"
+        onClick={() => setExpanded(!isExpanded)}
+        active={isExpanded}
+      />
+
+      <Accordion.Content active={isExpanded}>
+        <TabItem
+          label="Our Story"
+          redirectPath={OUR_STORY_PATH}
+          onTabClick={onTabClick}
+          icon={<i className="fas fa-book-spells icon" />}
+        />
+        <TabItem
+          label="Terms and Conditions"
+          redirectPath={TERMS_AND_CONDITIONS_PATH}
+          onTabClick={onTabClick}
+          icon={<i className="fas fa-file-contract icon" />}
+        />
+        <TabItem
+          label="Privacy Policy"
+          redirectPath={PRIVACY_POLICY_PATH}
+          onTabClick={onTabClick}
+          icon={<i className="fas fa-user-shield icon" />}
+        />
+      </Accordion.Content>
+    </Accordion>
+  );
+}
+
+export default MobileAboutTab;

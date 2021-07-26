@@ -4,6 +4,7 @@ import { Segment, Loader, SemanticSIZES, Dimmer } from "semantic-ui-react";
 import styles from "./placeholder-wrapper.module.scss";
 
 type Props = {
+  className?: string;
   children?: ReactNode;
   loading?: boolean;
   loadingMessage?: string;
@@ -17,6 +18,7 @@ type Props = {
 };
 
 function PlaceholderWrapper({
+  className,
   children = null,
   loading = false,
   loadingMessage,
@@ -33,6 +35,7 @@ function PlaceholderWrapper({
       className={clsx(
         styles.placeholderWrapper,
         fillParent && styles.fillParent,
+        className,
       )}
       basic
       placeholder={placeholder}

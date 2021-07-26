@@ -19,6 +19,7 @@ import SignInButton from "../../components/sign-in-button";
 import treeckleLogo from "../../assets/treeckle-outline-min.png";
 import treeckleVideo from "../../assets/utown-video.mp4";
 import {
+  OUR_STORY_PATH,
   PRIVACY_POLICY_PATH,
   TERMS_AND_CONDITIONS_PATH,
 } from "../../routes/paths";
@@ -148,11 +149,15 @@ function HomePage() {
               </p>
 
               <p>
-                <Link to={PRIVACY_POLICY_PATH}>Privacy Policy</Link>
+                <Link to={OUR_STORY_PATH}>Our Story</Link>
               </p>
 
               <p>
                 <Link to={TERMS_AND_CONDITIONS_PATH}>Terms and Conditions</Link>
+              </p>
+
+              <p>
+                <Link to={PRIVACY_POLICY_PATH}>Privacy Policy</Link>
               </p>
             </Grid.Column>
             <Grid.Column textAlign="center">
@@ -169,7 +174,7 @@ function HomePage() {
             </Grid.Column>
           </Grid>
           <Divider inverted section />
-          <p>© Treeckle 2021</p>
+          <p>© 2019-2021 Treeckle. All Rights Reserved.</p>
         </Container>
       </Segment>
 

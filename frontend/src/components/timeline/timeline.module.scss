@@ -1,0 +1,94 @@
+@use "../../base";
+
+.timeline {
+  :global {
+    .vertical-timeline-element-date {
+      font-weight: bold;
+      color: base.$light-grey-color;
+      opacity: 1;
+      font-size: 1rem;
+
+      @media only screen and (max-width: 1169px) {
+        color: base.$grey-color;
+      }
+    }
+
+    .vertical-timeline-element-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 4px solid white;
+      box-shadow: 0px 5px 25px 0px rgba(0, 0, 0, 0.4);
+      font-size: 1.75rem;
+
+      @media only screen and (max-width: 1169px) {
+        font-size: 1rem;
+      }
+    }
+
+    .vertical-timeline-element-content {
+      color: black;
+      background-color: white;
+      border-top: 3px solid;
+      box-shadow: 0px 5px 25px 0px rgba(0, 0, 0, 0.4);
+
+      a {
+        color: black;
+      }
+    }
+  }
+
+  .greenTheme {
+    :global {
+      .vertical-timeline-element-icon {
+        background-color: base.$green-color;
+      }
+
+      .vertical-timeline-element-content {
+        border-top-color: base.$green-color;
+      }
+    }
+  }
+
+  .blueTheme {
+    :global {
+      .vertical-timeline-element-icon {
+        background-color: base.$blue-color;
+      }
+
+      .vertical-timeline-element-content {
+        border-top-color: base.$blue-color;
+      }
+    }
+  }
+
+  .pinkTheme {
+    :global {
+      .vertical-timeline-element-icon {
+        background-color: base.$pink-color;
+      }
+
+      .vertical-timeline-element-content {
+        border-top-color: base.$pink-color;
+      }
+    }
+  }
+
+  .hidden {
+    :global {
+      .vertical-timeline-element-content {
+        @media only screen and (min-width: 1170px) {
+          border: none;
+          box-shadow: none;
+          background-color: transparent;
+        }
+      }
+
+      .vertical-timeline-element-content-arrow {
+        @media only screen and (max-width: 1169px) {
+          display: unset;
+        }
+      }
+    }
+  }
+}

@@ -32,7 +32,8 @@ import {
   ADMIN_USERS_CREATION_PATH,
   ADMIN_USERS_PENDING_REGISTRATION_PATH,
   BOOKINGS_CREATION_PATH,
-  AUTH_CALLBACK_PATH,
+  // AUTH_CALLBACK_PATH,
+  OUR_STORY_PATH,
   PRIVACY_POLICY_PATH,
   TERMS_AND_CONDITIONS_PATH,
 } from "./paths";
@@ -54,12 +55,14 @@ import EventsEditPage from "../pages/events-edit-page";
 import EventsQrCodePage from "../pages/events-qr-code-page";
 import AdminUsersCreationPage from "../pages/admin-users-creation-page";
 import BookingsCreationPage from "../pages/bookings-creation-page";
-import AuthCallbackPage from "../pages/auth-callback-page";
+// import AuthCallbackPage from "../pages/auth-callback-page";
+import OurStoryPage from "../pages/our-story-page";
 import PrivacyPolicyPage from "../pages/privacy-policy-page";
 import TermsAndConditionsPage from "../pages/terms-and-conditions-page";
 
 const onVisitScrollToTopPaths = [
   HOME_PATH,
+  OUR_STORY_PATH,
   PRIVACY_POLICY_PATH,
   TERMS_AND_CONDITIONS_PATH,
 ];
@@ -77,17 +80,21 @@ function Routes() {
               {isLoggedIn ? <Redirect to={DASHBOARD_PATH} /> : <HomePage />}
             </Route>
 
-            {!isLoggedIn && (
+            {/* {!isLoggedIn && (
               <Route path={AUTH_CALLBACK_PATH}>
                 <AuthCallbackPage />
               </Route>
-            )}
+            )} */}
+
+            <Route path={OUR_STORY_PATH} exact>
+              <OurStoryPage />
+            </Route>
 
             <Route path={PRIVACY_POLICY_PATH} exact>
               <PrivacyPolicyPage />
             </Route>
 
-            <Route path={TERMS_AND_CONDITIONS_PATH} exact>
+            <Route path={TERMS_AND_CONDITIONS_PATH}>
               <TermsAndConditionsPage />
             </Route>
 
