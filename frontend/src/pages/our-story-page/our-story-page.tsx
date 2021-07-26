@@ -70,7 +70,7 @@ const milestones: TimelineElement[] = [
         </a>
       </div>
     ),
-    meta: "Aug 2019: Proposal for Treeckle 2.0 for CS3219 module project",
+    meta: "Aug 2019: Proposal for Treeckle 2.0 as part of the CS3219 module project",
   },
   {
     meta: "Dec 2019: Handed over Treeckle project to CAPT",
@@ -105,6 +105,16 @@ function OurStoryPage() {
         </a>{" "}
         coursework project. It is built with the aim of being a one-stop student
         life platform for the Residential Colleges of NUS.
+      </p>
+
+      <p>
+        Over the years, Treeckle has continously improved and evolved based on
+        the feedback given by its users. If you would like to see a new feature
+        or would like to contribute to the project, do contact us at{" "}
+        <a href="mailto:treeckle@googlegroups.com" rel="noopener noreferrer">
+          treeckle@googlegroups.com
+        </a>
+        . We are always open to suggestions and contributions :D
       </p>
 
       <h2>Co-Founders</h2>
