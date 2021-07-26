@@ -19,17 +19,6 @@ function UserCreationInputSection() {
                   new users. Alternatively, you can upload a CSV file containing
                   the emails.
                 </p>
-
-                <p>
-                  Currently, Treeckle supports both <strong>NUSNET</strong> and{" "}
-                  <strong>Google</strong> users.
-                </p>
-
-                <p>
-                  <strong>Note:</strong> For creation of NUSNET users, please
-                  provide NUSNET emails and <strong>NOT</strong> friendly
-                  emails.
-                </p>
               </Message.Content>
             </Message>
           </Grid.Column>

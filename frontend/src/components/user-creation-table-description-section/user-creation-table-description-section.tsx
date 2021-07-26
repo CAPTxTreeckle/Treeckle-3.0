@@ -12,7 +12,7 @@ function UserCreationTableDescriptionSection() {
       <Message info icon>
         <Icon name="info circle" />
         <Message.Content>
-          <p>This section contains the parsed users' details.</p>
+          <p>This section contains the parsed users&apos; details.</p>
           <p>There are 4 types of user statuses:</p>
           <Grid
             verticalAlign="middle"

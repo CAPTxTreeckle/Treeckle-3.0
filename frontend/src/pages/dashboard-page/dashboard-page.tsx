@@ -10,7 +10,9 @@ function DashboardPage() {
     <div className={styles.dashboardPage}>
       <LinkifyTextViewer>
         <h2>Welcome, {name}!</h2>
-        <h3>Head over to the "Bookings" tab to view/make bookings.</h3>
+        <h3>
+          Head over to the &quot;Bookings&quot; tab to view/make bookings.
+        </h3>
 
         {/* <h3>Visit the "Events" tab to see upcoming events!</h3> */}
 

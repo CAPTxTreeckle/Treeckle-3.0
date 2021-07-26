@@ -79,7 +79,7 @@ function HomePage() {
             </Grid.Column>
             <Grid.Column textAlign="center">
               <i className="fas fa-infinity fa-6x" />
-              <h3>THE SKY'S THE LIMIT</h3>
+              <h3>THE SKY&apos;S THE LIMIT</h3>
               <p>You get to decide what we build next</p>
             </Grid.Column>
           </Grid>
