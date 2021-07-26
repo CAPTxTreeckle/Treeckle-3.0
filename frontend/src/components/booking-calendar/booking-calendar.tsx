@@ -15,7 +15,7 @@ import {
 } from "../../utils/calendar-utils";
 import CalendarBookingEvent from "../calendar-booking-event";
 import CalendarToolbar from "../calendar-toolbar";
-import { TITLE, BOOKER, START, END, STATUS } from "../../constants";
+import { TITLE, BOOKER, START, END, STATUS, VENUE_NAME } from "../../constants";
 import { BookingStatus } from "../../types/bookings";
 import { UserData } from "../../types/users";
 import styles from "./booking-calendar.module.scss";
@@ -27,6 +27,7 @@ export type CalendarBooking = {
   [START]: Date;
   [END]: Date;
   [STATUS]: BookingStatus | null;
+  [VENUE_NAME]: string | null;
 };
 
 const eventPropGetter: EventPropGetter<CalendarBooking> = ({ status }) => ({
@@ -59,7 +60,6 @@ function BookingCalendar(props: Props) {
         endAccessor="end"
         step={30}
         timeslots={1}
-        selectable
         showMultiDayTimes
         popup
         doShowMoreDrillDown={false}

@@ -37,7 +37,7 @@ function BookingStatusButton({ bookingId, status, adminView }: Props) {
             : "The booking status has been updated successfully.",
         );
 
-        dispatch(updateBookingsAction(updatedBookings));
+        dispatch(updateBookingsAction({ bookings: updatedBookings }));
 
         if (action !== BookingStatusAction.Cancel) {
           dispatch(refreshPendingBookingCountThunk());

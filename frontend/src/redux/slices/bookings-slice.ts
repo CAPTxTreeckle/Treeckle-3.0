@@ -1,4 +1,9 @@
-import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  PayloadAction,
+  createSelector,
+  EntityState,
+} from "@reduxjs/toolkit";
 import { normalize } from "normalizr";
 import { BookingData, BookingStatus } from "../../types/bookings";
 import { VENUE, BOOKER } from "../../constants";
@@ -12,11 +17,25 @@ import {
   bookingsAdapter,
 } from "../entities";
 import type { RootState } from "../store";
+import { UserData } from "../../types/users";
+import { VenueData } from "../../types/venues";
 
 type Entities = {
   users: { [key: string]: UserEntityType };
   venues: { [key: string]: VenueEntityType };
   bookings: { [key: string]: BookingEntityType };
+};
+
+type BookingsState = {
+  users: EntityState<UserData>;
+  venues: EntityState<VenueData>;
+  bookings: EntityState<BookingEntityType>;
+  loading: boolean;
+};
+
+type UpdateAction = {
+  bookings?: BookingData[];
+  loading?: boolean;
 };
 
 const normalizeBookings = (data: BookingData[]) => {
@@ -33,10 +52,27 @@ const normalizeBookings = (data: BookingData[]) => {
   return { users, venues, bookings };
 };
 
-const initialState = {
+const updateBookings = ({
+  state,
+  updateFn,
+  bookingsToBeUpdated,
+}: {
+  state: BookingsState;
+  updateFn: "setAll" | "upsertMany";
+  bookingsToBeUpdated: BookingData[];
+}) => {
+  const { users, venues, bookings } = normalizeBookings(bookingsToBeUpdated);
+
+  usersAdapter[updateFn](state.users, users);
+  venuesAdapter[updateFn](state.venues, venues);
+  bookingsAdapter[updateFn](state.bookings, bookings);
+};
+
+const initialState: BookingsState = {
   users: usersAdapter.getInitialState(),
   venues: venuesAdapter.getInitialState(),
   bookings: bookingsAdapter.getInitialState(),
+  loading: false,
 };
 
 const bookingsSlice = createSlice({
@@ -44,22 +80,37 @@ const bookingsSlice = createSlice({
   initialState,
   reducers: {
     resetBookingsAction: () => initialState,
-    setBookingsAction: (state, { payload }: PayloadAction<BookingData[]>) => {
-      const { users, venues, bookings } = normalizeBookings(payload);
+    setBookingsAction: (
+      state,
+      { payload: { bookings, loading } }: PayloadAction<UpdateAction>,
+    ) => {
+      if (bookings) {
+        updateBookings({
+          state,
+          updateFn: "setAll",
+          bookingsToBeUpdated: bookings,
+        });
+      }
 
-      usersAdapter.setAll(state.users, users);
-      venuesAdapter.setAll(state.venues, venues);
-      bookingsAdapter.setAll(state.bookings, bookings);
+      if (loading !== undefined) {
+        state.loading = loading;
+      }
     },
     updateBookingsAction: (
       state,
-      { payload }: PayloadAction<BookingData[]>,
+      { payload: { bookings, loading } }: PayloadAction<UpdateAction>,
     ) => {
-      const { users, venues, bookings } = normalizeBookings(payload);
+      if (bookings) {
+        updateBookings({
+          state,
+          updateFn: "upsertMany",
+          bookingsToBeUpdated: bookings,
+        });
+      }
 
-      usersAdapter.upsertMany(state.users, users);
-      venuesAdapter.upsertMany(state.venues, venues);
-      bookingsAdapter.upsertMany(state.bookings, bookings);
+      if (loading !== undefined) {
+        state.loading = loading;
+      }
     },
   },
 });
@@ -72,6 +123,10 @@ export const { resetBookingsAction, setBookingsAction, updateBookingsAction } =
 const { selectById: selectUserById } = usersAdapter.getSelectors();
 const { selectById: selectVenueById } = venuesAdapter.getSelectors();
 const { selectAll: selectBookings } = bookingsAdapter.getSelectors();
+
+export const selectBookingsLoadingState = ({
+  bookings: { loading },
+}: RootState) => loading;
 
 export const selectAllBookings = createSelector(
   ({ bookings }: RootState) => bookings,

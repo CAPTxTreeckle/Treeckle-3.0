@@ -1,21 +1,10 @@
-import { useState, useMemo } from "react";
-import {
-  DateRange,
-  SlotInfo,
-  stringOrDate,
-  View,
-  Views,
-} from "react-big-calendar";
+import { useState, useMemo, useCallback } from "react";
+import { DateRange, SlotInfo, stringOrDate, Views } from "react-big-calendar";
 import {
   isWithinInterval,
   isFuture,
   areIntervalsOverlapping,
   isSameDay,
-  set,
-  getHours,
-  getMinutes,
-  getSeconds,
-  getMilliseconds,
 } from "date-fns";
 import equal from "fast-deep-equal";
 import {
@@ -27,6 +16,7 @@ import { BookingData, BookingStatus, DateTimeRange } from "../types/bookings";
 import { STATUS } from "../constants";
 import { UserData } from "../types/users";
 import { CalendarBooking } from "../components/booking-calendar";
+import useBookingCalendarState from "./use-booking-calendar-state";
 
 const NEW_BOOKING = "New booking";
 
@@ -41,14 +31,23 @@ export default function useBookingCreationCalendarState({
   user: UserData | null;
   didUpdateNewBookingPeriods: (newBookings: CalendarBooking[]) => void;
 }) {
-  const now = new Date();
+  const {
+    calendarBookings: existingCalendarBookings,
+    view,
+    dateView,
+    onView: setView,
+    onNavigate: setDateView,
+    onSelectEvent,
+    onDrillDown: viewCurrentDateTime,
+  } = useBookingCalendarState({
+    bookings: existingBookings,
+    showVenueName: false,
+  });
   const [visibleDateRange, setVisibleDateRange] = useState<DateRange>(
-    getVisibleRangeInCalendarMonth(now),
+    getVisibleRangeInCalendarMonth(dateView),
   );
-  const [view, setView] = useState<View>(Views.MONTH);
-  const [dateView, setDateView] = useState<Date>(now);
 
-  const newBookings = useMemo(
+  const newBookings: CalendarBooking[] = useMemo(
     () =>
       newBookingPeriods.map(({ startDateTime, endDateTime }) => ({
         title: NEW_BOOKING,
@@ -56,151 +55,121 @@ export default function useBookingCreationCalendarState({
         start: new Date(startDateTime),
         end: new Date(endDateTime),
         status: null,
+        venueName: null,
       })),
     [newBookingPeriods, user],
   );
 
-  const allBookings = useMemo(
-    () =>
-      (
-        existingBookings.map(
-          ({ title, booker, startDateTime, endDateTime, status }) => ({
-            title,
-            booker,
-            start: new Date(startDateTime),
-            end: new Date(endDateTime),
-            status,
-          }),
-        ) as CalendarBooking[]
-      ).concat(newBookings),
-    [existingBookings, newBookings],
+  const allBookings: CalendarBooking[] = useMemo(
+    () => existingCalendarBookings.concat(newBookings),
+    [existingCalendarBookings, newBookings],
   );
 
-  const onRangeChange = (
-    range: Date[] | { start: stringOrDate; end: stringOrDate },
-  ) => {
-    const newVisibleRange: DateRange = Array.isArray(range)
-      ? getVisibleRange(range as Date[])
-      : { start: new Date(range.start), end: new Date(range.end) };
+  const onRangeChange = useCallback(
+    (range: Date[] | { start: stringOrDate; end: stringOrDate }) => {
+      const newVisibleRange: DateRange = Array.isArray(range)
+        ? getVisibleRange(range as Date[])
+        : { start: new Date(range.start), end: new Date(range.end) };
 
-    const { start, end } = newVisibleRange;
+      const { start, end } = newVisibleRange;
 
-    if (
-      isWithinInterval(start, visibleDateRange) &&
-      isWithinInterval(end, visibleDateRange)
-    ) {
-      return;
-    }
+      setVisibleDateRange((visibleDateRange) =>
+        isWithinInterval(start, visibleDateRange) &&
+        isWithinInterval(end, visibleDateRange)
+          ? visibleDateRange
+          : newVisibleRange,
+      );
+    },
+    [],
+  );
 
-    setVisibleDateRange(newVisibleRange);
-  };
+  const onSelecting = useCallback(
+    ({ start, end }: { start: stringOrDate; end: stringOrDate }) => {
+      const selectingRange: DateRange = {
+        start: new Date(start),
+        end: new Date(end),
+      };
 
-  const viewCurrentTime = (date: Date) => {
-    const now = new Date();
+      return (
+        isFuture(selectingRange.start) &&
+        isFuture(selectingRange.end) &&
+        !allBookings.some(
+          ({ start, end, status }) =>
+            (!status || status === BookingStatus.Approved) &&
+            areIntervalsOverlapping(
+              selectingRange,
+              { start, end },
+              { inclusive: false },
+            ),
+        )
+      );
+    },
+    [allBookings],
+  );
 
-    setView(Views.DAY);
-    setDateView(
-      set(date, {
-        hours: getHours(now),
-        minutes: getMinutes(now),
-        seconds: getSeconds(now),
-        milliseconds: getMilliseconds(now),
-      }),
-    );
-  };
+  const onSelectSlot = useCallback(
+    ({ action, start, end }: SlotInfo) => {
+      const selectedRange: DateRange = {
+        start: new Date(start),
+        end: new Date(end),
+      };
 
-  const onSelecting = ({
-    start,
-    end,
-  }: {
-    start: stringOrDate;
-    end: stringOrDate;
-  }) => {
-    const selectingRange: DateRange = {
-      start: new Date(start),
-      end: new Date(end),
-    };
+      switch (view) {
+        case Views.MONTH: {
+          action === "click" && viewCurrentDateTime(selectedRange.start);
+          return;
+        }
+        case Views.WEEK:
+        case Views.DAY: {
+          if (!isSameDay(selectedRange.start, selectedRange.end)) {
+            action === "click" && viewCurrentDateTime(selectedRange.start);
+            return;
+          }
 
-    return (
-      isFuture(selectingRange.start) &&
-      isFuture(selectingRange.end) &&
-      !allBookings.some(
-        ({ start, end, status }) =>
-          (!status || status === BookingStatus.Approved) &&
-          areIntervalsOverlapping(
-            selectingRange,
-            { start, end },
-            { inclusive: false },
-          ),
-      )
-    );
-  };
+          if (!onSelecting(selectedRange)) {
+            return;
+          }
 
-  const onSelectSlot = ({ action, start, end }: SlotInfo) => {
-    const selectedRange: DateRange = {
-      start: new Date(start),
-      end: new Date(end),
-    };
+          const mergedDateRanges = mergeDateRanges(
+            newBookings
+              .map(({ start, end }) => ({ start, end }))
+              .concat([selectedRange]),
+          );
 
-    switch (view) {
-      case Views.MONTH: {
-        action === "click" && viewCurrentTime(selectedRange.start);
+          const updatedNewBookings = mergedDateRanges.map((dateRange) => ({
+            title: NEW_BOOKING,
+            booker: user,
+            ...dateRange,
+            status: null,
+            venueName: null,
+          }));
+
+          didUpdateNewBookingPeriods(updatedNewBookings);
+        }
+      }
+    },
+    [
+      view,
+      user,
+      onSelecting,
+      newBookings,
+      viewCurrentDateTime,
+      didUpdateNewBookingPeriods,
+    ],
+  );
+
+  const removeNewBooking = useCallback(
+    (currentBooking: CalendarBooking) => {
+      if (currentBooking[STATUS]) {
         return;
       }
-      case Views.WEEK:
-      case Views.DAY: {
-        if (!isSameDay(selectedRange.start, selectedRange.end)) {
-          action === "click" && viewCurrentTime(selectedRange.start);
-          return;
-        }
 
-        if (!onSelecting(selectedRange)) {
-          return;
-        }
-
-        const mergedDateRanges = mergeDateRanges(
-          newBookings
-            .map(({ start, end }) => ({ start, end }))
-            .concat([selectedRange]),
-        );
-
-        const updatedNewBookings = mergedDateRanges.map((dateRange) => ({
-          title: NEW_BOOKING,
-          booker: user,
-          ...dateRange,
-          status: null,
-        }));
-
-        didUpdateNewBookingPeriods(updatedNewBookings);
-      }
-    }
-  };
-
-  const onSelectEvent = (
-    { start }: CalendarBooking,
-    _: React.SyntheticEvent<HTMLElement, Event>,
-    forceJumpToEvent = false,
-  ) => {
-    if (forceJumpToEvent || view !== Views.DAY) {
-      setDateView(start);
-    }
-
-    setView(Views.DAY);
-  };
-
-  const removeNewBooking = (currentBooking: CalendarBooking) => {
-    if (currentBooking[STATUS]) {
-      return;
-    }
-
-    didUpdateNewBookingPeriods(
-      newBookings.filter((booking) => !equal(booking, currentBooking)),
-    );
-  };
-
-  const onDrillDown = (date: Date) => {
-    viewCurrentTime(date);
-  };
+      didUpdateNewBookingPeriods(
+        newBookings.filter((booking) => !equal(booking, currentBooking)),
+      );
+    },
+    [newBookings, didUpdateNewBookingPeriods],
+  );
 
   return {
     allBookings,
@@ -215,6 +184,6 @@ export default function useBookingCreationCalendarState({
     onSelectEvent,
     onSelecting,
     removeNewBooking,
-    onDrillDown,
+    onDrillDown: viewCurrentDateTime,
   };
 }

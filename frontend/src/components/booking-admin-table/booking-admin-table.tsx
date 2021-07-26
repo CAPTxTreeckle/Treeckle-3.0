@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useCallback } from "react";
+import { useMemo } from "react";
 import { Column } from "react-base-table";
-import { Button, Popup, Segment } from "semantic-ui-react";
+import { Segment } from "semantic-ui-react";
 import {
   NAME,
   START_DATE_TIME_STRING,
@@ -18,20 +18,17 @@ import {
 import useTableState, {
   TableStateOptions,
 } from "../../custom-hooks/use-table-state";
-import { useGetBookings } from "../../custom-hooks/api/bookings-api";
 import { displayDateTime } from "../../utils/parser-utils";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../search-bar";
-import HorizontalLayoutContainer from "../horizontal-layout-container";
 import UserNameRenderer from "../user-name-renderer";
 import UserEmailRenderer from "../user-email-renderer";
 import BookingBaseTable, { BookingViewProps } from "../booking-base-table";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import {
   selectAllBookings,
-  setBookingsAction,
+  selectBookingsLoadingState,
 } from "../../redux/slices/bookings-slice";
-import { refreshPendingBookingCountThunk } from "../../redux/slices/pending-booking-count-slice";
 
 const BOOKER_NAME = `${BOOKER}.${NAME}`;
 const BOOKER_EMAIL = `${BOOKER}.${EMAIL}`;
@@ -51,19 +48,8 @@ const bookingAdminTableStateOptions: TableStateOptions = {
 };
 
 function BookingAdminTable() {
-  const { getBookings: _getBookings, loading } = useGetBookings();
   const allBookings = useAppSelector(selectAllBookings);
-  const dispatch = useAppDispatch();
-
-  const getBookings = useCallback(async () => {
-    const bookings = await _getBookings();
-    dispatch(setBookingsAction(bookings));
-    dispatch(refreshPendingBookingCountThunk());
-  }, [_getBookings, dispatch]);
-
-  useEffect(() => {
-    getBookings();
-  }, [getBookings]);
+  const loading = useAppSelector(selectBookingsLoadingState);
 
   const bookingViewData: BookingViewProps[] = useMemo(
     () =>
@@ -83,23 +69,7 @@ function BookingAdminTable() {
   return (
     <Segment.Group raised>
       <Segment secondary>
-        <HorizontalLayoutContainer>
-          <SearchBar fluid onSearchValueChange={onSearchValueChange} />
-          <Popup
-            content="Refresh"
-            trigger={
-              <Button
-                icon="redo alternate"
-                color="blue"
-                onClick={getBookings}
-                loading={loading}
-                disabled={loading}
-              />
-            }
-            position="top center"
-            hideOnScroll
-          />
-        </HorizontalLayoutContainer>
+        <SearchBar fluid onSearchValueChange={onSearchValueChange} />
       </Segment>
 
       <BookingBaseTable

@@ -212,6 +212,7 @@ function BookingCreationTimeSlotSelector() {
           onSelecting={onSelecting}
           onDoubleClickEvent={removeNewBooking}
           onDrillDown={onDrillDown}
+          selectable
         />
       </Segment>
 

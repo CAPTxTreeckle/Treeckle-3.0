@@ -56,9 +56,9 @@ function UserCreationCsvUploader() {
   return (
     <>
       <HorizontalLayoutContainer align="center">
-        <div>
+        <span>
           <h2>CSV Upload</h2>
-        </div>
+        </span>
 
         <Popup
           content="Download user creation CSV template"

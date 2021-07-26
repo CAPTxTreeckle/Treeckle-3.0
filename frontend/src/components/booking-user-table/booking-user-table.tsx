@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Column } from "react-base-table";
-import { Segment, Popup, Button } from "semantic-ui-react";
+import { Segment } from "semantic-ui-react";
 import {
   VENUE,
   NAME,
@@ -13,23 +13,17 @@ import {
   END_DATE_TIME,
   START_DATE_TIME,
 } from "../../constants";
-import { useGetBookings } from "../../custom-hooks/api/bookings-api";
 import useTableState, {
   TableStateOptions,
 } from "../../custom-hooks/use-table-state";
-import {
-  useAppSelector,
-  useAppDispatch,
-  useDeepEqualAppSelector,
-} from "../../redux/hooks";
+import { useAppSelector, useDeepEqualAppSelector } from "../../redux/hooks";
 import {
   selectBookingsByUserId,
-  setBookingsAction,
+  selectBookingsLoadingState,
 } from "../../redux/slices/bookings-slice";
 import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
 import { displayDateTime } from "../../utils/parser-utils";
 import BookingBaseTable, { BookingViewProps } from "../booking-base-table";
-import HorizontalLayoutContainer from "../horizontal-layout-container";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../search-bar";
 
@@ -47,33 +41,23 @@ const bookingAdminTableStateOptions: TableStateOptions = {
 };
 
 function BookingUserTable() {
-  const { getBookings: _getBookings, loading } = useGetBookings();
   const { id: userId } =
     useDeepEqualAppSelector(selectCurrentUserDisplayInfo) ?? {};
-  const allBookings = useAppSelector((state) =>
+  const userBookings = useAppSelector((state) =>
     selectBookingsByUserId(state, userId ?? 0),
   );
-  const dispatch = useAppDispatch();
-
-  const getBookings = useCallback(async () => {
-    const bookings = await _getBookings({ userId });
-    dispatch(setBookingsAction(bookings));
-  }, [_getBookings, dispatch, userId]);
-
-  useEffect(() => {
-    getBookings();
-  }, [getBookings]);
+  const loading = useAppSelector(selectBookingsLoadingState);
 
   const bookingViewData: BookingViewProps[] = useMemo(
     () =>
-      allBookings.map((booking) => ({
+      userBookings.map((booking) => ({
         ...booking,
         [START_DATE_TIME_STRING]: displayDateTime(booking.startDateTime),
         [END_DATE_TIME_STRING]: displayDateTime(booking.endDateTime),
         [CREATED_AT_STRING]: displayDateTime(booking.createdAt),
         children: [{ [ID]: `${booking.id}-details`, booking }],
       })),
-    [allBookings],
+    [userBookings],
   );
 
   const { processedData, sortBy, setSortBy, onSearchValueChange } =
@@ -82,23 +66,7 @@ function BookingUserTable() {
   return (
     <Segment.Group raised>
       <Segment secondary>
-        <HorizontalLayoutContainer>
-          <SearchBar fluid onSearchValueChange={onSearchValueChange} />
-          <Popup
-            content="Refresh"
-            trigger={
-              <Button
-                icon="redo alternate"
-                color="blue"
-                onClick={getBookings}
-                loading={loading}
-                disabled={loading}
-              />
-            }
-            position="top center"
-            hideOnScroll
-          />
-        </HorizontalLayoutContainer>
+        <SearchBar fluid onSearchValueChange={onSearchValueChange} />
       </Segment>
 
       <BookingBaseTable

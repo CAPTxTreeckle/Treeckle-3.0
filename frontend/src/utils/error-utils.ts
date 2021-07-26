@@ -24,12 +24,12 @@ export function resolveApiError(error: ApiResponseError) {
 }
 
 export function errorHandlerWrapper<T extends unknown[], R = unknown>(
-  f: (...args: T) => Promise<R>,
+  fn: (...args: T) => Promise<R>,
   logMessageLabel = "Error",
 ) {
   return async (...args: T) => {
     try {
-      return (await f(...args)) as R;
+      return (await fn(...args)) as R;
     } catch (error) {
       console.log(`${logMessageLabel}:`, args, error, error?.response);
 

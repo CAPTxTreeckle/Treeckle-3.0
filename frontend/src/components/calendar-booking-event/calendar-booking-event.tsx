@@ -10,7 +10,10 @@ type Props = {
   event: CalendarBooking;
 };
 
-function CalendarBookingEvent({ title, event: { booker, start, end } }: Props) {
+function CalendarBookingEvent({
+  title,
+  event: { booker, start, end, venueName },
+}: Props) {
   return (
     <Popup
       onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
@@ -27,6 +30,7 @@ function CalendarBookingEvent({ title, event: { booker, start, end } }: Props) {
             </div>
           )}
 
+          {venueName && <div>{venueName}</div>}
           <div>{displayDateTimeRange(start, end)}</div>
         </Popup.Content>
       }
