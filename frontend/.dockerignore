@@ -14,7 +14,7 @@
 /build
 
 # misc
-.DS_Store
+.DS_Store*
 .env* 
 
 npm-debug.log*
