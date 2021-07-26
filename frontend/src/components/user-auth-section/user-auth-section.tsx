@@ -41,6 +41,7 @@ function UserAuthSection() {
           className={styles.userAuthSection}
           verticalAlign="middle"
           columns="2"
+          stackable
         >
           <Grid.Row>
             <Grid.Column
@@ -90,7 +91,7 @@ function UserAuthSection() {
             >
               <UserGoogleAuthField
                 labelClassName={
-                  user?.hasGoogleAuth ? styles.greenText : styles.redText
+                  user?.googleAuth ? styles.greenText : styles.redText
                 }
               />
             </Grid.Column>
@@ -117,7 +118,7 @@ function UserAuthSection() {
             >
               <UserFacebookAuthField
                 labelClassName={
-                  user?.hasFacebookAuth ? styles.greenText : styles.redText
+                  user?.facebookAuth ? styles.greenText : styles.redText
                 }
               />
             </Grid.Column>

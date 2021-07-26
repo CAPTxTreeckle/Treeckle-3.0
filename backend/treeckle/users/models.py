@@ -29,7 +29,7 @@ class User(TimestampedModel):
     role = models.CharField(
         max_length=MAX_ROLE_LENGTH, choices=Role.choices, default=Role.RESIDENT
     )
-    profile_image = models.URLField(blank=True)
+    profile_image = models.URLField(max_length=500, blank=True)
 
     def __str__(self):
         return f"{self.name} | {self.email} ({self.organization})"

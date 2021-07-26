@@ -17,7 +17,6 @@ import { SelfPatchAction } from "../../types/users";
 
 const LinkButton = () => {
   const dispatch = useAppDispatch();
-  const { email } = useAppSelector(selectCurrentUserDisplayInfo) ?? {};
 
   const { loading: isLinking, updateSelf } = useUpdateSelf();
 
@@ -28,12 +27,7 @@ const LinkButton = () => {
       return;
     }
 
-    const { tokenId, profileObj } = response as GoogleLoginResponse;
-
-    if (email !== profileObj.email) {
-      toast.error("Google email does not match with Treeckle account email.");
-      return;
-    }
+    const { tokenId } = response as GoogleLoginResponse;
 
     try {
       const updatedSelf = await updateSelf({
@@ -115,15 +109,22 @@ type Props = {
 };
 
 function UserGoogleAuthField({ labelClassName }: Props) {
-  const user = useAppSelector(selectCurrentUserDisplayInfo);
+  const { googleAuth } = useAppSelector(selectCurrentUserDisplayInfo) ?? {};
 
   return (
-    <HorizontalLayoutContainer align="center">
+    <HorizontalLayoutContainer spacing="compact" align="center">
       <span className={labelClassName}>
-        {user?.hasGoogleAuth ? "Linked" : "Not linked"}
+        {googleAuth ? "Linked" : "Not linked"}
       </span>
 
-      {user?.hasGoogleAuth ? <UnlinkButton /> : <LinkButton />}
+      {googleAuth ? (
+        <>
+          <span>{`(${googleAuth.email})`}</span>
+          <UnlinkButton />
+        </>
+      ) : (
+        <LinkButton />
+      )}
     </HorizontalLayoutContainer>
   );
 }

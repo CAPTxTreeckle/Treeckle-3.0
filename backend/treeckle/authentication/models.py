@@ -23,28 +23,44 @@ class AuthenticationMethod(TimestampedModel):
     def __str__(self):
         return f"{self.user}"
 
-    def is_valid(self, auth_id: str) -> bool:
-        return self.auth_id == auth_id
+    def is_valid(self, auth_data: "AuthenticationData") -> bool:
+        return self.auth_id == auth_data.auth_id
 
     @classmethod
-    def create(cls, user: User, auth_id: str):
-        auth_method = cls(user=user, auth_id=auth_id)
-
-        auth_method.save()
-
-        return auth_method
+    def create(cls, user: User, auth_data: "AuthenticationData"):
+        return cls.objects.create(user=user, auth_id=auth_data.auth_id)
 
     @classmethod
     def get_related_name(cls):
         return cls.__name__.lower()
 
 
+class CustomProfileAuthenticationMethod(AuthenticationMethod):
+    email = models.EmailField(unique=True)
+    profile_image = models.URLField(max_length=500, blank=True)
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return f"{self.email} | {super().__str__()}"
+
+    @classmethod
+    def create(cls, user: User, auth_data: "AuthenticationData"):
+        return cls.objects.create(
+            user=user,
+            auth_id=auth_data.auth_id,
+            email=auth_data.email,
+            profile_image=auth_data.profile_image,
+        )
+
+
 ## Alternative auth methods
-class GoogleAuthentication(AuthenticationMethod):
+class GoogleAuthentication(CustomProfileAuthenticationMethod):
     pass
 
 
-class FacebookAuthentication(AuthenticationMethod):
+class FacebookAuthentication(CustomProfileAuthenticationMethod):
     pass
 
 
@@ -61,11 +77,13 @@ ALTERNATIVE_AUTH_METHODS = [
 
 
 class PasswordAuthentication(AuthenticationMethod):
-    def is_valid(self, auth_id: str):
-        return check_password(auth_id, self.auth_id)
+    def is_valid(self, auth_data: "AuthenticationData"):
+        return check_password(auth_data.auth_id, self.auth_id)
 
     @classmethod
-    def create(cls, user: User, password: str, check_alt_methods: bool = True):
+    def create(
+        cls, user: User, auth_data: "AuthenticationData", check_alt_methods: bool = True
+    ):
         if check_alt_methods and any(
             hasattr(user, method.get_related_name())
             for method in ALTERNATIVE_AUTH_METHODS
@@ -73,13 +91,13 @@ class PasswordAuthentication(AuthenticationMethod):
             return None
 
         try:
-            validate_password(password)
+            validate_password(auth_data.auth_id)
         except ValidationError as e:
             detail = "\n".join(e.messages) if type(e.messages) != str else e.message
             raise BadRequest(detail=detail, code="bad_password")
 
-        hashed_password = make_password(password)
-        return super().create(user, hashed_password)
+        auth_data.auth_id = make_password(auth_data.auth_id)
+        return super().create(user, auth_data)
 
 
 ## Non DB models
@@ -104,26 +122,57 @@ class AuthenticationData(ABC):
 
     @transaction.atomic
     def authenticate(self) -> Optional[User]:
-        ## check if an invite exists
-        try:
-            user_invite = UserInvite.objects.select_related("organization").get(
-                email=self.email
-            )
-        except UserInvite.DoesNotExist as e:
-            user_invite = None
+        from users.logic import get_users, get_user_invites
+
+        ## try to login to associated user account if any
+        if self.auth_method_class is not PasswordAuthentication:
+            try:
+                auth_method = self.auth_method_class.objects.select_related(
+                    "user__organization",
+                    "user__passwordauthentication",
+                    "user__googleauthentication",
+                    "user__facebookauthentication",
+                ).get(auth_id=self.auth_id)
+
+                user = auth_method.user
+
+                ## remove user invite with same email if any
+                get_user_invites(email=user.email).delete()
+
+                ## update custom profile auth method if required
+                if isinstance(auth_method, CustomProfileAuthenticationMethod) and (
+                    auth_method.email != self.email
+                    or auth_method.profile_image != self.profile_image
+                ):
+                    auth_method.email = self.email
+                    auth_method.profile_image = self.profile_image
+                    auth_method.save()
+
+                return user
+            except self.auth_method_class.DoesNotExist:
+                pass
 
         ## check if is existing user
         try:
-            user = User.objects.select_related(
-                "organization",
-                "passwordauthentication",
-                "googleauthentication",
-                "facebookauthentication",
-            ).get(
-                email=self.email,
+            user = (
+                get_users(email=self.email)
+                .select_related(
+                    "organization",
+                    "passwordauthentication",
+                    "googleauthentication",
+                    "facebookauthentication",
+                )
+                .get()
             )
         except User.DoesNotExist as e:
             user = None
+
+        try:
+            user_invite = (
+                get_user_invites(email=self.email).select_related("organization").get()
+            )
+        except UserInvite.DoesNotExist as e:
+            user_invite = None
 
         ## no existing user nor user invite
         if user is None and user_invite is None:
@@ -139,10 +188,6 @@ class AuthenticationData(ABC):
                 profile_image=self.profile_image,
                 role=user_invite.role,
             )
-        ## update profile image if possible
-        elif not user.profile_image and self.profile_image:
-            user.profile_image = self.profile_image
-            user.save()
 
         ## since user exists, user invite should be deleted if it exists
         if user_invite is not None:
@@ -152,13 +197,13 @@ class AuthenticationData(ABC):
         try:
             auth_method = self.auth_method_class.objects.get(user=user)
             ## matches with given auth_id
-            return user if auth_method.is_valid(self.auth_id) else None
+            return user if auth_method.is_valid(auth_data=self) else None
         except self.auth_method_class.DoesNotExist:
             ## proceed to create auth method for user
             pass
 
         ## try to create auth method for user
-        new_auth_method = self.auth_method_class.create(user, self.auth_id)
+        new_auth_method = self.auth_method_class.create(user=user, auth_data=self)
 
         return user if new_auth_method is not None else None
 

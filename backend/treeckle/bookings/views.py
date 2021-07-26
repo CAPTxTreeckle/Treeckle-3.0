@@ -56,7 +56,12 @@ class PendingBookingCountView(APIView):
 class BookingsView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
     def get(self, request, requester: User):
-        serializer = GetBookingSerializer(data=request.query_params.dict())
+        query_params = request.query_params.dict()
+
+        if "statuses" in query_params:
+            query_params["statuses"] = query_params["statuses"].split(",")
+
+        serializer = GetBookingSerializer(data=query_params)
 
         serializer.is_valid(raise_exception=True)
         validated_data = serializer.validated_data
@@ -74,7 +79,7 @@ class BookingsView(APIView):
             end_date_time=parse_ms_timestamp_to_datetime(end_date_time)
             if end_date_time is not None
             else make_aware(datetime.max),
-            status=validated_data.get("status", None),
+            statuses=validated_data.get("statuses", None),
         )
 
         data = [booking_to_json(booking) for booking in bookings]

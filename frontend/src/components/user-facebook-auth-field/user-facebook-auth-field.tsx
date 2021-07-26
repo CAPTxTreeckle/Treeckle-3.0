@@ -1,6 +1,4 @@
-import { useState } from "react";
 import { Button } from "semantic-ui-react";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
@@ -10,34 +8,17 @@ import {
 import { useFacebookAuth } from "../../custom-hooks/api/auth-api";
 import { useUpdateSelf } from "../../custom-hooks/api/users-api";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
-import { errorHandlerWrapper, resolveApiError } from "../../utils/error-utils";
+import { resolveApiError } from "../../utils/error-utils";
 import { SelfPatchAction } from "../../types/users";
 
 const LinkButton = () => {
   const dispatch = useAppDispatch();
-  const { email } = useAppSelector(selectCurrentUserDisplayInfo) ?? {};
-  const [isLinking, setLinking] = useState(false);
-  const { updateSelf } = useUpdateSelf();
+  const { loading: isLinking, updateSelf } = useUpdateSelf();
 
   const onFacebookLogin = async (response: fb.StatusResponse) => {
     const { accessToken } = response.authResponse;
 
     try {
-      setLinking(true);
-
-      const { data } = await errorHandlerWrapper(() =>
-        axios.get<{ email: string }>(
-          `https://graph.facebook.com/v11.0/me?fields=email&access_token=${accessToken}`,
-        ),
-      )();
-
-      if (data.email !== email) {
-        toast.error(
-          "Facebook email does not match with Treeckle account email.",
-        );
-        return;
-      }
-
       const updatedSelf = await updateSelf({
         action: SelfPatchAction.Facebook,
         payload: { accessToken },
@@ -50,8 +31,6 @@ const LinkButton = () => {
       }
     } catch (error) {
       resolveApiError(error);
-    } finally {
-      setLinking(false);
     }
   };
 
@@ -117,15 +96,22 @@ type Props = {
 };
 
 function UserFacebookAuthField({ labelClassName }: Props) {
-  const user = useAppSelector(selectCurrentUserDisplayInfo);
+  const { facebookAuth } = useAppSelector(selectCurrentUserDisplayInfo) ?? {};
 
   return (
-    <HorizontalLayoutContainer align="center">
+    <HorizontalLayoutContainer spacing="compact" align="center">
       <span className={labelClassName}>
-        {user?.hasFacebookAuth ? "Linked" : "Not linked"}
+        {facebookAuth ? "Linked" : "Not linked"}
       </span>
 
-      {user?.hasFacebookAuth ? <UnlinkButton /> : <LinkButton />}
+      {facebookAuth ? (
+        <>
+          <span>{`(${facebookAuth.email})`}</span>
+          <UnlinkButton />
+        </>
+      ) : (
+        <LinkButton />
+      )}
     </HorizontalLayoutContainer>
   );
 }

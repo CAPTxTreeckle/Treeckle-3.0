@@ -18,8 +18,8 @@ from treeckle.common.constants import (
     PROFILE_IMAGE,
     IS_SELF,
     HAS_PASSWORD_AUTH,
-    HAS_GOOGLE_AUTH,
-    HAS_FACEBOOK_AUTH,
+    GOOGLE_AUTH,
+    FACEBOOK_AUTH,
 )
 from treeckle.common.parsers import parse_datetime_to_ms_timestamp
 from organizations.models import Organization
@@ -57,12 +57,18 @@ def requester_to_json(requester: User) -> dict:
             HAS_PASSWORD_AUTH: hasattr(
                 requester, PasswordAuthentication.get_related_name()
             ),
-            HAS_GOOGLE_AUTH: hasattr(
-                requester, GoogleAuthentication.get_related_name()
-            ),
-            HAS_FACEBOOK_AUTH: hasattr(
-                requester, FacebookAuthentication.get_related_name()
-            ),
+            GOOGLE_AUTH: {
+                EMAIL: requester.googleauthentication.email,
+                PROFILE_IMAGE: requester.googleauthentication.profile_image,
+            }
+            if hasattr(requester, GoogleAuthentication.get_related_name())
+            else None,
+            FACEBOOK_AUTH: {
+                EMAIL: requester.facebookauthentication.email,
+                PROFILE_IMAGE: requester.facebookauthentication.profile_image,
+            }
+            if hasattr(requester, FacebookAuthentication.get_related_name())
+            else None,
         }
     )
 
@@ -129,14 +135,14 @@ def update_requester(
     classes = ActionClasses.get(action)
 
     if not classes:
-        raise BadRequest(detail="Invalid action", code="invalid_patch_user_action")
+        raise BadRequest(detail="Invalid action.", code="invalid_patch_user_action")
 
     serializer_class = classes.serializer_class
     auth_method_class = classes.auth_method_class
     auth_name = classes.auth_name
 
     if action == PatchUserAction.PASSWORD:
-        ## Do not allow None/user to delete password
+        ## Do not allow None / user to delete password
         serializer = serializer_class(data=payload)
         serializer.is_valid(raise_exception=True)
 
@@ -147,7 +153,7 @@ def update_requester(
         ## try to create new password auth method for user
         new_auth_method = auth_method_class.create(
             user=requester,
-            password=password_auth_data.auth_id,
+            auth_data=password_auth_data,
             check_alt_methods=False,
         )
 
@@ -192,14 +198,16 @@ def update_requester(
 
             auth_data = serializer.validated_data
 
-            if requester.email != auth_data.email:
+            if auth_method_class.objects.filter(auth_id=auth_data.auth_id).exists():
                 raise BadRequest(
-                    detail=f"{auth_name.capitalize()} email does not match with Treeckle account email.",
-                    code="wrong_email",
+                    detail=f"{auth_name.capitalize()} account is already linked to another Treeckle account.",
+                    code=f"{auth_name}_account_linked_to_other_treeckle_account",
                 )
 
             ## try to create new auth method for user
-            new_auth_method = auth_method_class.create(requester, auth_data.auth_id)
+            new_auth_method = auth_method_class.create(
+                user=requester, auth_data=auth_data
+            )
 
             if not requester.profile_image and auth_data.profile_image:
                 requester.profile_image = auth_data.profile_image

@@ -3,8 +3,8 @@ import {
   ACTION,
   EMAIL,
   EMAILS,
-  HAS_FACEBOOK_AUTH,
-  HAS_GOOGLE_AUTH,
+  FACEBOOK_AUTH,
+  GOOGLE_AUTH,
   HAS_PASSWORD_AUTH,
   ID,
   IS_SELF,
@@ -41,8 +41,8 @@ export type UserData = UserInviteData & {
 
 export type SelfData = UserData & {
   [HAS_PASSWORD_AUTH]: boolean;
-  [HAS_GOOGLE_AUTH]: boolean;
-  [HAS_FACEBOOK_AUTH]: boolean;
+  [GOOGLE_AUTH]: { [EMAIL]: string; [PROFILE_IMAGE]: string } | null;
+  [FACEBOOK_AUTH]: { [EMAIL]: string; [PROFILE_IMAGE]: string } | null;
 };
 
 export enum SelfPatchAction {

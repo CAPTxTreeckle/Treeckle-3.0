@@ -97,7 +97,7 @@ function UserPasswordAuthField({ labelClassName }: Props) {
       </HorizontalLayoutContainer>
     </form>
   ) : (
-    <HorizontalLayoutContainer align="center">
+    <HorizontalLayoutContainer spacing="compact" align="center">
       <span className={labelClassName}>
         {user?.hasPasswordAuth ? "Active" : "Inactive"}
       </span>

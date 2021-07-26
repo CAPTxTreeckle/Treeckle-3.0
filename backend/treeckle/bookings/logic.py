@@ -104,7 +104,7 @@ def get_requested_bookings(
     venue_id: Optional[int],
     start_date_time: datetime,
     end_date_time: datetime,
-    status: Optional[BookingStatus],
+    statuses: Optional[Iterable[BookingStatus]],
 ) -> QuerySet[Booking]:
     filtered_bookings = (
         get_bookings(venue__organization=organization)
@@ -118,8 +118,8 @@ def get_requested_bookings(
     if venue_id is not None:
         filtered_bookings = filtered_bookings.filter(venue_id=venue_id)
 
-    if status is not None:
-        filtered_bookings = filtered_bookings.filter(status=status)
+    if statuses is not None:
+        filtered_bookings = filtered_bookings.filter(status__in=statuses)
 
     return filtered_bookings.select_related("booker", "venue")
 
