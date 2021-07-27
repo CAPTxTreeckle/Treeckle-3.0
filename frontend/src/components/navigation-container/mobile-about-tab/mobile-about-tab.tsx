@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Accordion, MenuItem } from "semantic-ui-react";
 import {
   OUR_STORY_PATH,
-  TERMS_AND_CONDITIONS_PATH,
+  TERMS_OF_USE_PATH,
   PRIVACY_POLICY_PATH,
 } from "../../../routes/paths";
 import TabItem from "../tab-item";
@@ -34,8 +34,8 @@ function MobileAboutTab({ onTabClick }: Props) {
           icon={<i className="fas fa-book-spells icon" />}
         />
         <TabItem
-          label="Terms and Conditions"
-          redirectPath={TERMS_AND_CONDITIONS_PATH}
+          label="Terms of Use"
+          redirectPath={TERMS_OF_USE_PATH}
           onTabClick={onTabClick}
           icon={<i className="fas fa-file-contract icon" />}
         />

@@ -21,7 +21,7 @@ import treeckleVideo from "../../assets/utown-video.mp4";
 import {
   OUR_STORY_PATH,
   PRIVACY_POLICY_PATH,
-  TERMS_AND_CONDITIONS_PATH,
+  TERMS_OF_USE_PATH,
 } from "../../routes/paths";
 import styles from "./home-page.module.scss";
 
@@ -153,7 +153,7 @@ function HomePage() {
               </p>
 
               <p>
-                <Link to={TERMS_AND_CONDITIONS_PATH}>Terms and Conditions</Link>
+                <Link to={TERMS_OF_USE_PATH}>Terms of Use</Link>
               </p>
 
               <p>

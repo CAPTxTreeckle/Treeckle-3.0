@@ -1,18 +1,15 @@
 import { Divider } from "semantic-ui-react";
 import StandalonePageLayoutContainer from "../../components/standalone-page-layout-container";
 
-function TermsAndConditionsPage() {
+function TermsOfUsePage() {
   return (
     <StandalonePageLayoutContainer>
-      <h1 className="center-text">Terms and Conditions for Treeckle</h1>
+      <h1 className="center-text">Terms of Use for Treeckle</h1>
 
       <Divider inverted />
 
       <p>Last updated: July 14, 2021</p>
-      <p>
-        Please read these terms and conditions carefully before using Our
-        Service.
-      </p>
+      <p>Please read these terms of use carefully before using Our Service.</p>
 
       <h1>Interpretation and Definitions</h1>
 
@@ -26,7 +23,7 @@ function TermsAndConditionsPage() {
         in plural.
       </p>
       <h2>Definitions</h2>
-      <p>For the purposes of these Terms and Conditions:</p>
+      <p>For the purposes of these Terms of Use:</p>
       <ul>
         <li>
           <p>
@@ -62,19 +59,9 @@ function TermsAndConditionsPage() {
         </li>
         <li>
           <p>
-            <strong>Terms and Conditions</strong> (also referred as
-            &quot;Terms&quot;) mean these Terms and Conditions that form the
-            entire agreement between You and the Company regarding the use of
-            the Service. This Terms and Conditions agreement has been created
-            with the help of the{" "}
-            <a
-              href="https://www.termsfeed.com/terms-conditions-generator/"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              Terms and Conditions Generator
-            </a>
-            .
+            <strong>Terms of Use</strong> (also referred as &quot;Terms&quot;)
+            mean these Terms of Use that form the entire agreement between You
+            and the Company regarding the use of the Service.
           </p>
         </li>
         <li>
@@ -111,21 +98,20 @@ function TermsAndConditionsPage() {
       <Divider inverted />
 
       <p>
-        These are the Terms and Conditions governing the use of this Service and
-        the agreement that operates between You and the Company. These Terms and
-        Conditions set out the rights and obligations of all users regarding the
-        use of the Service.
-      </p>
-      <p>
-        Your access to and use of the Service is conditioned on Your acceptance
-        of and compliance with these Terms and Conditions. These Terms and
-        Conditions apply to all visitors, users and others who access or use the
+        These are the Terms of Use governing the use of this Service and the
+        agreement that operates between You and the Company. These Terms of Use
+        set out the rights and obligations of all users regarding the use of the
         Service.
       </p>
       <p>
+        Your access to and use of the Service is conditioned on Your acceptance
+        of and compliance with these Terms of Use. These Terms of Use apply to
+        all visitors, users and others who access or use the Service.
+      </p>
+      <p>
         By accessing or using the Service You agree to be bound by these Terms
-        and Conditions. If You disagree with any part of these Terms and
-        Conditions then You may not access the Service.
+        of Use. If You disagree with any part of these Terms of Use then You may
+        not access the Service.
       </p>
       <p>
         You represent that you are over the age of 18. The Company does not
@@ -159,7 +145,7 @@ function TermsAndConditionsPage() {
         any such web sites or services.
       </p>
       <p>
-        We strongly advise You to read the terms and conditions and privacy
+        We strongly advise You to read the terms and conditions, and privacy
         policies of any third-party web sites or services that You visit.
       </p>
 
@@ -170,7 +156,7 @@ function TermsAndConditionsPage() {
       <p>
         We may terminate or suspend Your access immediately, without prior
         notice or liability, for any reason whatsoever, including without
-        limitation if You breach these Terms and Conditions.
+        limitation if You breach these Terms of Use.
       </p>
       <p>
         Upon termination, Your right to use the Service will cease immediately.
@@ -320,12 +306,12 @@ function TermsAndConditionsPage() {
       <Divider inverted />
 
       <p>
-        These Terms and Conditions may have been translated if We have made them
+        These Terms of Use may have been translated if We have made them
         available to You on our Service. You agree that the original English
         text shall prevail in the case of a dispute.
       </p>
 
-      <h1>Changes to These Terms and Conditions</h1>
+      <h1>Changes to These Terms of Use</h1>
 
       <Divider inverted />
 
@@ -348,8 +334,7 @@ function TermsAndConditionsPage() {
       <Divider inverted />
 
       <p>
-        If you have any questions about these Terms and Conditions, You can
-        contact us:
+        If you have any questions about these Terms of Use, You can contact us:
       </p>
       <ul>
         <li>
@@ -363,4 +348,4 @@ function TermsAndConditionsPage() {
   );
 }
 
-export default TermsAndConditionsPage;
+export default TermsOfUsePage;

@@ -18,16 +18,7 @@ function PrivacyPolicyPage() {
       <p>
         We use Your Personal data to provide and improve the Service. By using
         the Service, You agree to the collection and use of information in
-        accordance with this Privacy Policy. This Privacy Policy has been
-        created with the help of the{" "}
-        <a
-          href="https://www.termsfeed.com/privacy-policy-generator/"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          Privacy Policy Generator
-        </a>
-        .
+        accordance with this Privacy Policy.
       </p>
 
       <h1>Interpretation and Definitions</h1>
@@ -247,15 +238,7 @@ function PrivacyPolicyPage() {
         Cookies can be &quot;Persistent&quot; or &quot;Session&quot; Cookies.
         Persistent Cookies remain on Your personal computer or mobile device
         when You go offline, while Session Cookies are deleted as soon as You
-        close Your web browser. You can learn more about cookies here:{" "}
-        <a
-          href="https://www.termsfeed.com/blog/cookies/"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          All About Cookies by TermsFeed
-        </a>
-        .
+        close Your web browser.
       </p>
       <p>
         We use both Session and Persistent Cookies for the purposes set out

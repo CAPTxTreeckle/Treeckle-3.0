@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Dropdown } from "semantic-ui-react";
 import {
   OUR_STORY_PATH,
-  TERMS_AND_CONDITIONS_PATH,
+  TERMS_OF_USE_PATH,
   PRIVACY_POLICY_PATH,
 } from "../../../routes/paths";
 
@@ -27,9 +27,9 @@ function DesktopAboutTab() {
         />
         <Dropdown.Item
           as={Link}
-          to={TERMS_AND_CONDITIONS_PATH}
-          active={pathname.startsWith(TERMS_AND_CONDITIONS_PATH)}
-          text="Terms and Conditions"
+          to={TERMS_OF_USE_PATH}
+          active={pathname.startsWith(TERMS_OF_USE_PATH)}
+          text="Terms of Use"
           icon={{ className: "fas fa-file-contract" }}
         />
         <Dropdown.Item

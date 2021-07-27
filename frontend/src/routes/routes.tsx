@@ -35,7 +35,7 @@ import {
   // AUTH_CALLBACK_PATH,
   OUR_STORY_PATH,
   PRIVACY_POLICY_PATH,
-  TERMS_AND_CONDITIONS_PATH,
+  TERMS_OF_USE_PATH,
 } from "./paths";
 import AppLayoutContainer from "../components/app-layout-container";
 import DashboardPage from "../pages/dashboard-page";
@@ -58,13 +58,13 @@ import BookingsCreationPage from "../pages/bookings-creation-page";
 // import AuthCallbackPage from "../pages/auth-callback-page";
 import OurStoryPage from "../pages/our-story-page";
 import PrivacyPolicyPage from "../pages/privacy-policy-page";
-import TermsAndConditionsPage from "../pages/terms-and-conditions-page";
+import TermsOfUsePage from "../pages/terms-of-use-page";
 
 const onVisitScrollToTopPaths = [
   HOME_PATH,
   OUR_STORY_PATH,
   PRIVACY_POLICY_PATH,
-  TERMS_AND_CONDITIONS_PATH,
+  TERMS_OF_USE_PATH,
 ];
 
 function Routes() {
@@ -94,8 +94,8 @@ function Routes() {
               <PrivacyPolicyPage />
             </Route>
 
-            <Route path={TERMS_AND_CONDITIONS_PATH}>
-              <TermsAndConditionsPage />
+            <Route path={TERMS_OF_USE_PATH}>
+              <TermsOfUsePage />
             </Route>
 
             {!isLoggedIn && <Redirect to={HOME_PATH} />}

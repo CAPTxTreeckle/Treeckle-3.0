@@ -24,4 +24,4 @@ export const PROFILE_PATH = `/profile/:${USER_ID}`;
 export const AUTH_CALLBACK_PATH = "/auth/callback";
 export const OUR_STORY_PATH = "/about/our-story";
 export const PRIVACY_POLICY_PATH = "/about/privacy-policy";
-export const TERMS_AND_CONDITIONS_PATH = "/about/terms-and-conditions";
+export const TERMS_OF_USE_PATH = "/about/terms-of-use";
