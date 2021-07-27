@@ -3,6 +3,11 @@
     "husky": "^7.0.1"
   },
   "scripts": {
+    "build": "docker-compose -f docker-compose.stage.yml build --parallel",
+    "push": "docker-compose -f docker-compose.stage.yml push",
+    "pull": "sudo docker-compose -f docker-compose.prod.yml pull",
+    "down": "sudo docker-compose -f docker-compose.prod.yml down",
+    "up": "sudo docker-compose -f docker-compose.prod.yml up -d",
     "prepare": "husky install"
   }
 }
