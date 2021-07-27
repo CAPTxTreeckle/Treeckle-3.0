@@ -1,3 +1,4 @@
+import { Suspense, lazy } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -13,14 +14,14 @@ import ScrollToTopManager from "../managers/scroll-to-top-manager";
 import {
   DASHBOARD_PATH,
   BOOKINGS_PATH,
-  EVENTS_PATH,
-  EVENTS_SIGNED_UP_PATH,
-  EVENTS_SUBSCRIPTIONS_PATH,
-  EVENTS_OWN_PATH,
-  EVENTS_CREATION_PATH,
-  EVENTS_SINGLE_VIEW_PATH,
-  EVENTS_EDIT_PATH,
-  EVENTS_QR_CODE_PATH,
+  // EVENTS_PATH,
+  // EVENTS_SIGNED_UP_PATH,
+  // EVENTS_SUBSCRIPTIONS_PATH,
+  // EVENTS_OWN_PATH,
+  // EVENTS_CREATION_PATH,
+  // EVENTS_SINGLE_VIEW_PATH,
+  // EVENTS_EDIT_PATH,
+  // EVENTS_QR_CODE_PATH,
   ADMIN_BOOKINGS_PATH,
   ADMIN_SETTINGS_PATH,
   ADMIN_USERS_PATH,
@@ -38,27 +39,36 @@ import {
   TERMS_OF_USE_PATH,
 } from "./paths";
 import AppLayoutContainer from "../components/app-layout-container";
-import DashboardPage from "../pages/dashboard-page";
-import EventsPage from "../pages/events-page";
-import BookingsPage from "../pages/bookings-page";
-import AdminBookingsPage from "../pages/admin-bookings-page";
-import AdminUsersPage from "../pages/admin-users-page";
-import AdminSettingsPage from "../pages/admin-settings-page";
-import ProfilePage from "../pages/profile-page";
-import HomePage from "../pages/home-page";
-import AdminVenuesPage from "../pages/admin-venues-page";
-import AdminVenuesCreationPage from "../pages/admin-venues-creation-page";
-import AdminVenuesEditPage from "../pages/admin-venues-edit-page";
-import EventsCreationPage from "../pages/events-creation-page";
-import EventsSingleViewPage from "../pages/events-single-view-page";
-import EventsEditPage from "../pages/events-edit-page";
-import EventsQrCodePage from "../pages/events-qr-code-page";
-import AdminUsersCreationPage from "../pages/admin-users-creation-page";
-import BookingsCreationPage from "../pages/bookings-creation-page";
+
+const DashboardPage = lazy(() => import("../pages/dashboard-page"));
+// const EventsPage = lazy(() => import("../pages/events-page"));
+const BookingsPage = lazy(() => import("../pages/bookings-page"));
+const AdminBookingsPage = lazy(() => import("../pages/admin-bookings-page"));
+const AdminUsersPage = lazy(() => import("../pages/admin-users-page"));
+const AdminSettingsPage = lazy(() => import("../pages/admin-settings-page"));
+const ProfilePage = lazy(() => import("../pages/profile-page"));
+const HomePage = lazy(() => import("../pages/home-page"));
+const AdminVenuesPage = lazy(() => import("../pages/admin-venues-page"));
+const AdminVenuesCreationPage = lazy(
+  () => import("../pages/admin-venues-creation-page"),
+);
+const AdminVenuesEditPage = lazy(
+  () => import("../pages/admin-venues-edit-page"),
+);
+// const EventsCreationPage = lazy(() => import("../pages/events-creation-page"));
+// const EventsSingleViewPage = lazy(() => import("../pages/events-single-view-page"));
+// const EventsEditPage = lazy(() => import("../pages/events-edit-page"));
+// const EventsQrCodePage = lazy(() => import("../pages/events-qr-code-page"));
+const AdminUsersCreationPage = lazy(
+  () => import("../pages/admin-users-creation-page"),
+);
+const BookingsCreationPage = lazy(
+  () => import("../pages/bookings-creation-page"),
+);
 // import AuthCallbackPage from "../pages/auth-callback-page";
-import OurStoryPage from "../pages/our-story-page";
-import PrivacyPolicyPage from "../pages/privacy-policy-page";
-import TermsOfUsePage from "../pages/terms-of-use-page";
+const OurStoryPage = lazy(() => import("../pages/our-story-page"));
+const PrivacyPolicyPage = lazy(() => import("../pages/privacy-policy-page"));
+const TermsOfUsePage = lazy(() => import("../pages/terms-of-use-page"));
 
 const onVisitScrollToTopPaths = [
   HOME_PATH,
@@ -75,50 +85,51 @@ function Routes() {
       <LastLocationProvider>
         <AppLayoutContainer>
           <ScrollToTopManager paths={onVisitScrollToTopPaths} />
-          <Switch>
-            <Route path={HOME_PATH} exact>
-              {isLoggedIn ? <Redirect to={DASHBOARD_PATH} /> : <HomePage />}
-            </Route>
+          <Suspense fallback={null}>
+            <Switch>
+              <Route path={HOME_PATH} exact>
+                {isLoggedIn ? <Redirect to={DASHBOARD_PATH} /> : <HomePage />}
+              </Route>
 
-            {/* {!isLoggedIn && (
+              {/* {!isLoggedIn && (
               <Route path={AUTH_CALLBACK_PATH}>
                 <AuthCallbackPage />
               </Route>
             )} */}
 
-            <Route path={OUR_STORY_PATH} exact>
-              <OurStoryPage />
-            </Route>
+              <Route path={OUR_STORY_PATH} exact>
+                <OurStoryPage />
+              </Route>
 
-            <Route path={PRIVACY_POLICY_PATH} exact>
-              <PrivacyPolicyPage />
-            </Route>
+              <Route path={PRIVACY_POLICY_PATH} exact>
+                <PrivacyPolicyPage />
+              </Route>
 
-            <Route path={TERMS_OF_USE_PATH}>
-              <TermsOfUsePage />
-            </Route>
+              <Route path={TERMS_OF_USE_PATH}>
+                <TermsOfUsePage />
+              </Route>
 
-            {!isLoggedIn && <Redirect to={HOME_PATH} />}
+              {!isLoggedIn && <Redirect to={HOME_PATH} />}
 
-            {/* Authenticated routes  */}
+              {/* Authenticated routes  */}
 
-            <Route path={DASHBOARD_PATH} exact strict>
-              <DashboardPage />
-            </Route>
+              <Route path={DASHBOARD_PATH} exact strict>
+                <DashboardPage />
+              </Route>
 
-            <Route path={BOOKINGS_PATH} exact strict>
-              <BookingsPage />
-            </Route>
+              <Route path={BOOKINGS_PATH} exact strict>
+                <BookingsPage />
+              </Route>
 
-            <Route path={BOOKINGS_CREATION_PATH} exact strict>
-              <BookingsCreationPage />
-            </Route>
+              <Route path={BOOKINGS_CREATION_PATH} exact strict>
+                <BookingsCreationPage />
+              </Route>
 
-            <Route path={PROFILE_PATH} exact strict>
-              <ProfilePage />
-            </Route>
+              <Route path={PROFILE_PATH} exact strict>
+                <ProfilePage />
+              </Route>
 
-            <Route
+              {/* <Route
               path={[
                 EVENTS_PATH,
                 EVENTS_SIGNED_UP_PATH,
@@ -168,73 +179,74 @@ function Routes() {
               strict
             >
               <EventsQrCodePage />
-            </RoleRestrictedRoute>
+            </RoleRestrictedRoute> */}
 
-            <RoleRestrictedRoute
-              allowedRoles={[Role.Admin]}
-              path={ADMIN_BOOKINGS_PATH}
-              exact
-              strict
-            >
-              <AdminBookingsPage />
-            </RoleRestrictedRoute>
+              <RoleRestrictedRoute
+                allowedRoles={[Role.Admin]}
+                path={ADMIN_BOOKINGS_PATH}
+                exact
+                strict
+              >
+                <AdminBookingsPage />
+              </RoleRestrictedRoute>
 
-            <RoleRestrictedRoute
-              allowedRoles={[Role.Admin]}
-              path={ADMIN_VENUES_PATH}
-              exact
-              strict
-            >
-              <AdminVenuesPage />
-            </RoleRestrictedRoute>
+              <RoleRestrictedRoute
+                allowedRoles={[Role.Admin]}
+                path={ADMIN_VENUES_PATH}
+                exact
+                strict
+              >
+                <AdminVenuesPage />
+              </RoleRestrictedRoute>
 
-            <RoleRestrictedRoute
-              allowedRoles={[Role.Admin]}
-              path={ADMIN_VENUES_CREATION_PATH}
-              exact
-              strict
-            >
-              <AdminVenuesCreationPage />
-            </RoleRestrictedRoute>
+              <RoleRestrictedRoute
+                allowedRoles={[Role.Admin]}
+                path={ADMIN_VENUES_CREATION_PATH}
+                exact
+                strict
+              >
+                <AdminVenuesCreationPage />
+              </RoleRestrictedRoute>
 
-            <RoleRestrictedRoute
-              allowedRoles={[Role.Admin]}
-              path={ADMIN_VENUES_EDIT_PATH}
-              exact
-              strict
-            >
-              <AdminVenuesEditPage />
-            </RoleRestrictedRoute>
+              <RoleRestrictedRoute
+                allowedRoles={[Role.Admin]}
+                path={ADMIN_VENUES_EDIT_PATH}
+                exact
+                strict
+              >
+                <AdminVenuesEditPage />
+              </RoleRestrictedRoute>
 
-            <RoleRestrictedRoute
-              allowedRoles={[Role.Admin]}
-              path={[ADMIN_USERS_PATH, ADMIN_USERS_PENDING_REGISTRATION_PATH]}
-              exact
-              strict
-            >
-              <AdminUsersPage />
-            </RoleRestrictedRoute>
+              <RoleRestrictedRoute
+                allowedRoles={[Role.Admin]}
+                path={[ADMIN_USERS_PATH, ADMIN_USERS_PENDING_REGISTRATION_PATH]}
+                exact
+                strict
+              >
+                <AdminUsersPage />
+              </RoleRestrictedRoute>
 
-            <RoleRestrictedRoute
-              allowedRoles={[Role.Admin]}
-              path={ADMIN_USERS_CREATION_PATH}
-              exact
-              strict
-            >
-              <AdminUsersCreationPage />
-            </RoleRestrictedRoute>
+              <RoleRestrictedRoute
+                allowedRoles={[Role.Admin]}
+                path={ADMIN_USERS_CREATION_PATH}
+                exact
+                strict
+              >
+                <AdminUsersCreationPage />
+              </RoleRestrictedRoute>
 
-            <RoleRestrictedRoute
-              allowedRoles={[Role.Admin]}
-              path={ADMIN_SETTINGS_PATH}
-              exact
-              strict
-            >
-              <AdminSettingsPage />
-            </RoleRestrictedRoute>
+              <RoleRestrictedRoute
+                allowedRoles={[Role.Admin]}
+                path={ADMIN_SETTINGS_PATH}
+                exact
+                strict
+              >
+                <AdminSettingsPage />
+              </RoleRestrictedRoute>
 
-            <Redirect to={HOME_PATH} />
-          </Switch>
+              <Redirect to={HOME_PATH} />
+            </Switch>
+          </Suspense>
         </AppLayoutContainer>
       </LastLocationProvider>
     </Router>
