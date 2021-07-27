@@ -12,13 +12,13 @@ const milestones: TimelineElement[] = [
   {
     content: (
       <div>
-        <h2>Developer</h2>
+        <h3>Developer</h3>
 
         <List bulleted>
           <List.Item>Tan Kai Qun, Jeremy</List.Item>
         </List>
 
-        <h2>New features</h2>
+        <h3>New features</h3>
 
         <List bulleted>
           <List.Item>Improve facility booking UI/UX</List.Item>
@@ -46,7 +46,7 @@ const milestones: TimelineElement[] = [
   {
     content: (
       <div>
-        <h2>Developers</h2>
+        <h3>Developers</h3>
 
         <List bulleted>
           <List.Item>Tan Kai Qun, Jeremy</List.Item>

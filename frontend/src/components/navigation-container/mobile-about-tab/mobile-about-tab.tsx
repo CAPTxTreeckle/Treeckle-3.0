@@ -7,6 +7,7 @@ import {
   PRIVACY_POLICY_PATH,
 } from "../../../routes/paths";
 import TabItem from "../tab-item";
+import styles from "./mobile-about-tab.module.scss";
 
 type Props = {
   onTabClick?: () => void;
@@ -19,6 +20,7 @@ function MobileAboutTab({ onTabClick }: Props) {
   return (
     <Accordion as={MenuItem} active={pathname.startsWith("/about")}>
       <Accordion.Title
+        className={styles.title}
         content="About"
         onClick={() => setExpanded(!isExpanded)}
         active={isExpanded}
