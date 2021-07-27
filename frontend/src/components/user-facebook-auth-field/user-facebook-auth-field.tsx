@@ -1,4 +1,4 @@
-import { Button } from "semantic-ui-react";
+import { Button, Popup } from "semantic-ui-react";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
@@ -37,14 +37,21 @@ const LinkButton = () => {
   const { startFacebookAuth } = useFacebookAuth(onFacebookLogin);
 
   return (
-    <Button
-      size="mini"
-      compact
-      color="blue"
+    <Popup
       content="Link"
-      loading={isLinking}
-      onClick={startFacebookAuth}
-      disabled={isLinking}
+      position="top center"
+      size="small"
+      trigger={
+        <Button
+          size="mini"
+          compact
+          color="blue"
+          icon="linkify"
+          loading={isLinking}
+          onClick={startFacebookAuth}
+          disabled={isLinking}
+        />
+      }
     />
   );
 };
@@ -79,14 +86,21 @@ const UnlinkButton = () => {
   };
 
   return (
-    <Button
-      size="mini"
-      compact
-      color="blue"
+    <Popup
       content="Unlink"
-      loading={isUnlinking}
-      onClick={onUnlinkFacebook}
-      disabled={isUnlinking}
+      position="top center"
+      size="small"
+      trigger={
+        <Button
+          size="mini"
+          compact
+          color="blue"
+          icon="unlinkify"
+          loading={isUnlinking}
+          onClick={onUnlinkFacebook}
+          disabled={isUnlinking}
+        />
+      }
     />
   );
 };

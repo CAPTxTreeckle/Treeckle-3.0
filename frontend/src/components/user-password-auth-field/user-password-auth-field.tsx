@@ -1,7 +1,7 @@
 import { useState, useRef, FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { Button, Icon, Input } from "semantic-ui-react";
+import { Button, Icon, Input, Popup } from "semantic-ui-react";
 import { useUpdateSelf } from "../../custom-hooks/api/users-api";
 import { useAppSelector } from "../../redux/hooks";
 import {
@@ -18,7 +18,8 @@ type Props = {
 };
 
 function UserPasswordAuthField({ labelClassName }: Props) {
-  const user = useAppSelector(selectCurrentUserDisplayInfo);
+  const { hasPasswordAuth } =
+    useAppSelector(selectCurrentUserDisplayInfo) ?? {};
   const dispatch = useDispatch();
   const [isSettingPassword, setSettingPassword] = useState(false);
   const [isShowingPassword, setShowingPassword] = useState(false);
@@ -55,7 +56,7 @@ function UserPasswordAuthField({ labelClassName }: Props) {
     <form onSubmit={onSubmit}>
       <HorizontalLayoutContainer>
         <Input
-          size="small"
+          size="mini"
           className={styles.passwordField}
           action
           icon
@@ -77,7 +78,7 @@ function UserPasswordAuthField({ labelClassName }: Props) {
           <Button
             loading={loading}
             disabled={loading}
-            size="small"
+            size="tiny"
             type="submit"
             icon="check"
             color="green"
@@ -85,7 +86,7 @@ function UserPasswordAuthField({ labelClassName }: Props) {
         </Input>
 
         <Button
-          size="small"
+          size="tiny"
           type="button"
           color="red"
           icon="times"
@@ -99,15 +100,22 @@ function UserPasswordAuthField({ labelClassName }: Props) {
   ) : (
     <HorizontalLayoutContainer spacing="compact" align="center">
       <span className={labelClassName}>
-        {user?.hasPasswordAuth ? "Active" : "Inactive"}
+        {hasPasswordAuth ? "Active" : "Inactive"}
       </span>
 
-      <Button
-        onClick={() => setSettingPassword(true)}
-        size="mini"
-        compact
-        color="blue"
-        content={user?.hasPasswordAuth ? "Change" : "Activate"}
+      <Popup
+        content={hasPasswordAuth ? "Change" : "Activate"}
+        position="top center"
+        size="small"
+        trigger={
+          <Button
+            onClick={() => setSettingPassword(true)}
+            size="mini"
+            compact
+            color="blue"
+            icon="edit"
+          />
+        }
       />
     </HorizontalLayoutContainer>
   );

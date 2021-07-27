@@ -1,4 +1,4 @@
-import { Button } from "semantic-ui-react";
+import { Button, Popup } from "semantic-ui-react";
 import {
   GoogleLoginResponse,
   GoogleLoginResponseOffline,
@@ -54,14 +54,21 @@ const LinkButton = () => {
   const loading = googleAuthLoading || isLinking;
 
   return (
-    <Button
-      size="mini"
-      compact
-      color="blue"
+    <Popup
       content="Link"
-      loading={loading}
-      onClick={startGoogleAuth}
-      disabled={!isAvailable || loading}
+      position="top center"
+      size="small"
+      trigger={
+        <Button
+          size="mini"
+          compact
+          color="blue"
+          icon="linkify"
+          loading={loading}
+          onClick={startGoogleAuth}
+          disabled={!isAvailable || loading}
+        />
+      }
     />
   );
 };
@@ -92,14 +99,21 @@ const UnlinkButton = () => {
   };
 
   return (
-    <Button
-      size="mini"
-      compact
-      color="blue"
+    <Popup
       content="Unlink"
-      loading={isUnlinking}
-      onClick={onUnlinkGoogle}
-      disabled={isUnlinking}
+      position="top center"
+      size="small"
+      trigger={
+        <Button
+          size="mini"
+          compact
+          color="blue"
+          icon="unlinkify"
+          loading={isUnlinking}
+          onClick={onUnlinkGoogle}
+          disabled={isUnlinking}
+        />
+      }
     />
   );
 };
