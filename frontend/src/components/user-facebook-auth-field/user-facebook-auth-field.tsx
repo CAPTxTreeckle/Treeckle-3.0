@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { Button, Popup } from "semantic-ui-react";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -106,17 +107,15 @@ const UnlinkButton = () => {
 };
 
 type Props = {
-  labelClassName?: string;
+  children?: ReactNode;
 };
 
-function UserFacebookAuthField({ labelClassName }: Props) {
+function UserFacebookAuthField({ children }: Props) {
   const { facebookAuth } = useAppSelector(selectCurrentUserDisplayInfo) ?? {};
 
   return (
     <HorizontalLayoutContainer spacing="compact" align="center">
-      <span className={labelClassName}>
-        {facebookAuth ? "Linked" : "Not linked"}
-      </span>
+      {children}
 
       {facebookAuth ? (
         <>

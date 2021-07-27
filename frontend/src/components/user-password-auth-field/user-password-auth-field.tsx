@@ -1,4 +1,4 @@
-import { useState, useRef, FormEvent } from "react";
+import { useState, useRef, FormEvent, ReactNode } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { Button, Icon, Input, Popup } from "semantic-ui-react";
@@ -14,10 +14,10 @@ import HorizontalLayoutContainer from "../horizontal-layout-container";
 import styles from "./user-password-auth-field.module.scss";
 
 type Props = {
-  labelClassName?: string;
+  children?: ReactNode;
 };
 
-function UserPasswordAuthField({ labelClassName }: Props) {
+function UserPasswordAuthField({ children }: Props) {
   const { hasPasswordAuth } =
     useAppSelector(selectCurrentUserDisplayInfo) ?? {};
   const dispatch = useDispatch();
@@ -99,9 +99,7 @@ function UserPasswordAuthField({ labelClassName }: Props) {
     </form>
   ) : (
     <HorizontalLayoutContainer spacing="compact" align="center">
-      <span className={labelClassName}>
-        {hasPasswordAuth ? "Active" : "Inactive"}
-      </span>
+      {children}
 
       <Popup
         content={hasPasswordAuth ? "Change" : "Activate"}

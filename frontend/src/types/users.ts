@@ -49,6 +49,7 @@ export enum SelfPatchAction {
   Password = "PASSWORD",
   Google = "GOOGLE",
   Facebook = "FACEBOOK",
+  Name = "NAME",
 }
 
 export type GooglePayloadPostData = {
@@ -63,7 +64,15 @@ export type PasswordPayloadPostData = {
   [PASSWORD]: string;
 };
 
+export type NamePayloadPostData = {
+  [NAME]: string;
+};
+
 export type SelfPatchData =
+  | {
+      [ACTION]: SelfPatchAction.Name;
+      [PAYLOAD]: NamePayloadPostData;
+    }
   | {
       [ACTION]: SelfPatchAction.Password;
       [PAYLOAD]: PasswordPayloadPostData;

@@ -3,12 +3,13 @@ import { Grid, Segment, Image, Divider } from "semantic-ui-react";
 import { displayDateTime } from "../../utils/parser-utils";
 import { UserData } from "../../types/users";
 import UserAuthSection from "../user-auth-section";
+import UserNameChanger from "../user-name-changer";
 import defaultAvatarImage from "../../assets/avatar.png";
-import styles from "./profile-card.module.scss";
+import styles from "./user-profile-card.module.scss";
 
 type Props = UserData;
 
-function ProfileCard({
+function UserProfileCard({
   profileImage,
   name,
   email,
@@ -18,7 +19,7 @@ function ProfileCard({
   isSelf,
 }: Props) {
   return (
-    <Segment className={styles.profileCard} raised padded>
+    <Segment className={styles.userProfileCard} raised padded>
       <Grid columns="2" relaxed="very" padded stackable doubling>
         <Grid.Column width="6" verticalAlign="middle">
           <Image
@@ -31,7 +32,13 @@ function ProfileCard({
           />
         </Grid.Column>
         <Grid.Column width="10">
-          <h2>{name}</h2>
+          {isSelf ? (
+            <UserNameChanger>
+              <h2>{name}</h2>
+            </UserNameChanger>
+          ) : (
+            <h2>{name}</h2>
+          )}
 
           <Divider hidden />
 
@@ -58,4 +65,4 @@ function ProfileCard({
   );
 }
 
-export default ProfileCard;
+export default UserProfileCard;

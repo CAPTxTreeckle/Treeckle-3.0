@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useGetSingleUser } from "../../custom-hooks/api/users-api";
 import PlaceholderWrapper from "../../components/placeholder-wrapper";
-import ProfileCard from "../../components/profile-card";
+import UserProfileCard from "../../components/user-profile-card";
 import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
 
@@ -26,7 +26,7 @@ function ProfilePage() {
       showDefaultMessage={!user}
       defaultMessage="No user found"
     >
-      {userData && <ProfileCard {...userData} />}
+      {userData && <UserProfileCard {...userData} />}
     </PlaceholderWrapper>
   );
 }

@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { Button, Popup } from "semantic-ui-react";
 import {
   GoogleLoginResponse,
@@ -119,17 +120,15 @@ const UnlinkButton = () => {
 };
 
 type Props = {
-  labelClassName?: string;
+  children?: ReactNode;
 };
 
-function UserGoogleAuthField({ labelClassName }: Props) {
+function UserGoogleAuthField({ children }: Props) {
   const { googleAuth } = useAppSelector(selectCurrentUserDisplayInfo) ?? {};
 
   return (
     <HorizontalLayoutContainer spacing="compact" align="center">
-      <span className={labelClassName}>
-        {googleAuth ? "Linked" : "Not linked"}
-      </span>
+      {children}
 
       {googleAuth ? (
         <>

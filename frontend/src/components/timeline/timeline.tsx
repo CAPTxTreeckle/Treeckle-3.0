@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import clsx from "clsx";
+import { useMediaQuery } from "react-responsive";
 import {
   VerticalTimeline,
   VerticalTimelineElement,
@@ -29,8 +30,10 @@ const getThemeColorClassName = (index: number, numElements: number) => {
 };
 
 function Timeline({ elements }: Props) {
+  const isTabletOrLarger = useMediaQuery({ query: "(min-width: 768px)" });
+
   return (
-    <VerticalTimeline className={styles.timeline}>
+    <VerticalTimeline animate={isTabletOrLarger} className={styles.timeline}>
       {elements.map(({ content, meta }, index) => (
         <VerticalTimelineElement
           className={clsx(

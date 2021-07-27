@@ -62,11 +62,15 @@ function UserAuthSection() {
               largeScreen="13"
               widescreen="14"
             >
-              <UserPasswordAuthField
-                labelClassName={
-                  user?.hasPasswordAuth ? styles.greenText : styles.redText
-                }
-              />
+              <UserPasswordAuthField>
+                <span
+                  className={
+                    user?.hasPasswordAuth ? styles.greenText : styles.redText
+                  }
+                >
+                  {user?.hasPasswordAuth ? "Active" : "Inactive"}
+                </span>
+              </UserPasswordAuthField>
             </Grid.Column>
           </Grid.Row>
 
@@ -89,11 +93,15 @@ function UserAuthSection() {
               largeScreen="13"
               widescreen="14"
             >
-              <UserGoogleAuthField
-                labelClassName={
-                  user?.googleAuth ? styles.greenText : styles.redText
-                }
-              />
+              <UserGoogleAuthField>
+                <span
+                  className={
+                    user?.googleAuth ? styles.greenText : styles.redText
+                  }
+                >
+                  {user?.googleAuth ? "Linked" : "Not linked"}
+                </span>
+              </UserGoogleAuthField>
             </Grid.Column>
           </Grid.Row>
 
@@ -116,11 +124,15 @@ function UserAuthSection() {
               largeScreen="13"
               widescreen="14"
             >
-              <UserFacebookAuthField
-                labelClassName={
-                  user?.facebookAuth ? styles.greenText : styles.redText
-                }
-              />
+              <UserFacebookAuthField>
+                <span
+                  className={
+                    user?.facebookAuth ? styles.greenText : styles.redText
+                  }
+                >
+                  {user?.facebookAuth ? "Linked" : "Not linked"}
+                </span>
+              </UserFacebookAuthField>
             </Grid.Column>
           </Grid.Row>
         </Grid>

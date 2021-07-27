@@ -8,6 +8,7 @@ from authentication.models import (
     GoogleAuthentication,
     FacebookAuthentication,
 )
+from .serializers import NameSerializer
 from .models import PatchUserAction
 
 
@@ -27,6 +28,9 @@ class ActionClasses:
         auth_method_class = FacebookAuthentication
         auth_name = PatchUserAction.FACEBOOK.lower()
 
+    class NameClasses:
+        serializer_class = NameSerializer
+
     @classmethod
     def get(cls: "ActionClasses", action: PatchUserAction):
         if action == PatchUserAction.PASSWORD:
@@ -37,3 +41,6 @@ class ActionClasses:
 
         if action == PatchUserAction.FACEBOOK:
             return cls.FacebookAuthenticationClasses
+
+        if action == PatchUserAction.NAME:
+            return cls.NameClasses

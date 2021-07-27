@@ -138,6 +138,19 @@ def update_requester(
         raise BadRequest(detail="Invalid action.", code="invalid_patch_user_action")
 
     serializer_class = classes.serializer_class
+
+    if action == PatchUserAction.NAME:
+        serializer = serializer_class(data=payload)
+        serializer.is_valid(raise_exception=True)
+
+        name = serializer.validated_data.get("name")
+
+        requester.name = name
+        requester.save()
+
+        return requester
+
+    ## for auth actions
     auth_method_class = classes.auth_method_class
     auth_name = classes.auth_name
 

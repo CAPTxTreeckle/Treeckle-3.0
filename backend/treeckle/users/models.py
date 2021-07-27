@@ -11,6 +11,7 @@ class PatchUserAction(models.TextChoices):
     PASSWORD = "PASSWORD"
     GOOGLE = "GOOGLE"
     FACEBOOK = "FACEBOOK"
+    NAME = "NAME"
 
 
 class Role(models.TextChoices):
