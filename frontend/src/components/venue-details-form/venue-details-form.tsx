@@ -25,7 +25,7 @@ import DropdownSelectorFormField from "../dropdown-selector-form-field";
 import { sort, deepTrim } from "../../utils/parser-utils";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 
-const schema = yup.object().shape({
+const SCHEMA = yup.object().shape({
   [NAME]: yup.string().trim().required("Please enter a venue name"),
   [CATEGORY]: yup
     .string()
@@ -77,7 +77,7 @@ type Props = {
   submitButtonProps: ButtonProps;
 };
 
-const defaultFormProps: VenueFormProps = {
+const DEFAULT_VALUES: VenueFormProps = {
   [NAME]: "",
   [CATEGORY]: "",
   [CAPACITY]: "",
@@ -88,12 +88,12 @@ const defaultFormProps: VenueFormProps = {
 };
 
 function VenueDetailsForm({
-  defaultValues = defaultFormProps,
+  defaultValues = DEFAULT_VALUES,
   onSubmit,
   submitButtonProps,
 }: Props) {
   const methods = useForm<VenueFormProps>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(SCHEMA),
     defaultValues,
   });
   const { handleSubmit } = methods;

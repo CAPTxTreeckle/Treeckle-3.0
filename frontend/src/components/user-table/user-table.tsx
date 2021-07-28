@@ -41,7 +41,7 @@ import { resolveApiError } from "../../utils/error-utils";
 
 type ExistingUserViewProps = UserViewProps & UserData;
 
-const userTableStateOptions: TableStateOptions = {
+const USER_TABLE_STATE_OPTIONS: TableStateOptions = {
   searchKeys: [ID, NAME, EMAIL, CREATED_AT_STRING, ROLE],
 };
 
@@ -129,7 +129,7 @@ function UserTable() {
   );
 
   const { processedData, sortBy, setSortBy, onSearchValueChange } =
-    useTableState(userViewData, userTableStateOptions);
+    useTableState(userViewData, USER_TABLE_STATE_OPTIONS);
 
   return (
     <Segment.Group raised>

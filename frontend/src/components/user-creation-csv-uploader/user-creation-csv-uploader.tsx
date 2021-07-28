@@ -8,7 +8,7 @@ import { UserCreationCsvRowData } from "../../types/users";
 import { useAppDispatch } from "../../redux/hooks";
 import { addPendingCreationUsersFromCsvDataAction } from "../../redux/slices/user-creation-slice";
 
-const userCreationCsvTemplate = new Blob(
+const USER_CREATION_CSV_TEMPLATE = new Blob(
   [
     papaparse.unparse({
       fields: ["email", "role (optional/default to resident)"],
@@ -24,7 +24,7 @@ const userCreationCsvTemplate = new Blob(
 );
 
 const onDownloadCsvTemplate = () =>
-  saveAs(userCreationCsvTemplate, "user creation template.csv");
+  saveAs(USER_CREATION_CSV_TEMPLATE, "user creation template.csv");
 
 function UserCreationCsvUploader() {
   const dispatch = useAppDispatch();

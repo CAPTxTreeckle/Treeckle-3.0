@@ -118,7 +118,7 @@ class VenuesView(APIView):
         full_details = validated_data.get("full_details", True)
 
         if full_details:
-            venues = venues.select_related("category")
+            venues = venues.select_related("category", "organization")
 
         data = [venue_to_json(venue, full_details=full_details) for venue in venues]
 

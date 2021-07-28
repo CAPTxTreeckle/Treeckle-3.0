@@ -27,7 +27,6 @@ from .logic import (
     get_requested_bookings,
     booking_to_json,
     create_bookings,
-    delete_bookings,
     DateTimeInterval,
     update_booking_status,
 )

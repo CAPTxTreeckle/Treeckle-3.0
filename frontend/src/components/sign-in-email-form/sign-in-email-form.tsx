@@ -11,7 +11,7 @@ import { CheckAccountPostData } from "../../types/auth";
 import { useCheckAccount } from "../../custom-hooks/api/auth-api";
 import { resolveApiError } from "../../utils/error-utils";
 
-const schema = yup.object().shape({
+const SCHEMA = yup.object().shape({
   [EMAIL]: yup
     .string()
     .trim()
@@ -26,7 +26,7 @@ function SignInEmailForm() {
     useContext(SignInContext);
   const { loading, checkAccount } = useCheckAccount();
   const methods = useForm<SignInEmailFormProps>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(SCHEMA),
     defaultValues: { email: inputEmail },
   });
 

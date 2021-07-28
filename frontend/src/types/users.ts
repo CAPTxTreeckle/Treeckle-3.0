@@ -117,7 +117,7 @@ export enum UserCreationStatus {
   Invalid = "INVALID",
 }
 
-export const userCreationStatuses = Object.values(UserCreationStatus);
+export const USER_CREATION_STATUSES = Object.values(UserCreationStatus);
 
 export const USER_CREATION_STATUS_DETAILS = new Map<
   UserCreationStatus,

@@ -29,7 +29,7 @@ import SearchBar from "../search-bar";
 
 const VENUE_NAME = `${VENUE}.${NAME}`;
 
-const bookingAdminTableStateOptions: TableStateOptions = {
+const BOOKING_ADMIN_TABLE_STATE_OPTIONS: TableStateOptions = {
   searchKeys: [
     ID,
     VENUE_NAME,
@@ -61,7 +61,7 @@ function BookingUserTable() {
   );
 
   const { processedData, sortBy, setSortBy, onSearchValueChange } =
-    useTableState(bookingViewData, bookingAdminTableStateOptions);
+    useTableState(bookingViewData, BOOKING_ADMIN_TABLE_STATE_OPTIONS);
 
   return (
     <Segment.Group raised>

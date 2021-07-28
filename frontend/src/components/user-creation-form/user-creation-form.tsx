@@ -11,12 +11,12 @@ import { Role, UserCreationFormProps, userRoles } from "../../types/users";
 import DropdownSelectorFormField from "../dropdown-selector-form-field";
 import TextAreaFormField from "../text-area-form-field";
 
-const schema = yup.object().shape({
+const SCHEMA = yup.object().shape({
   [ROLE]: yup.mixed<Role>().oneOf(userRoles).required("Please choose a role"),
   [EMAILS]: yup.string().trim().required("Please enter at least 1 email"),
 });
 
-const defaultValues: UserCreationFormProps = {
+const DEFAULT_VALUES: UserCreationFormProps = {
   [ROLE]: Role.Resident,
   [EMAILS]: "",
 };
@@ -28,8 +28,8 @@ const roles = userRoles.map((role) => ({
 
 function UserCreationForm() {
   const methods = useForm<UserCreationFormProps>({
-    resolver: yupResolver(schema),
-    defaultValues,
+    resolver: yupResolver(SCHEMA),
+    defaultValues: DEFAULT_VALUES,
   });
   const dispatch = useAppDispatch();
 

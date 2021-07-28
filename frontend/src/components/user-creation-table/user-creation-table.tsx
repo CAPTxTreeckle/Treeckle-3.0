@@ -36,7 +36,7 @@ import { resolveApiError } from "../../utils/error-utils";
 import UserCreationTableDescriptionSection from "../user-creation-table-description-section";
 import styles from "./user-creation-table.module.scss";
 
-const userCreationTableStateOptions: TableStateOptions = {
+const USER_CREATION_TABLE_STATE_OPTIONS: TableStateOptions = {
   searchKeys: [ID, EMAIL, ROLE, STATUS],
 };
 
@@ -111,7 +111,7 @@ function UserCreationTable() {
   }, [unsuccessfullyCreatedUsers, showUnsuccessfullyCreatedUsers, showModal]);
 
   const { processedData, sortBy, setSortBy, onSearchValueChange } =
-    useTableState(pendingCreationUsers, userCreationTableStateOptions);
+    useTableState(pendingCreationUsers, USER_CREATION_TABLE_STATE_OPTIONS);
 
   const newPendingCreationUsers = useMemo(
     () =>

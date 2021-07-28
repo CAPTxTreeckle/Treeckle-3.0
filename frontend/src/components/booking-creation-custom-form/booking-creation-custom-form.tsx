@@ -30,7 +30,7 @@ import PlaceholderWrapper from "../placeholder-wrapper";
 import BookingCreationErrorAlert from "../booking-creation-error-alert";
 import { deepTrim } from "../../utils/parser-utils";
 
-const schema = yup.object().shape({
+const SCHEMA = yup.object().shape({
   [TITLE]: yup.string().trim().required("Please enter a short booking title"),
   [BOOKING_FORM_RESPONSES]: yup
     .array(
@@ -73,7 +73,7 @@ function BookingCreationCustomForm() {
   }, [getSingleVenue, dispatch, selectedVenue?.id]);
 
   const methods = useForm<BookingFormProps>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(SCHEMA),
     defaultValues: bookingFormProps ?? undefined,
   });
   const { handleSubmit, control, getValues, reset } = methods;

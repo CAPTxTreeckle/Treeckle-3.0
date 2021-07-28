@@ -14,7 +14,7 @@ import { useAppDispatch } from "../../redux/hooks";
 import { updateCurrentUserAction } from "../../redux/slices/current-user-slice";
 import { resolveApiError } from "../../utils/error-utils";
 
-const schema = yup.object().shape({
+const SCHEMA = yup.object().shape({
   [EMAIL]: yup
     .string()
     .trim()
@@ -33,7 +33,7 @@ function SignInAccountForm() {
   const { email = "", name = "" } = loginDetails ?? {};
 
   const methods = useForm<SignInAccountFormProps>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(SCHEMA),
     defaultValues: { email, name, password: "" },
   });
 

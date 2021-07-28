@@ -18,7 +18,7 @@ import {
 } from "../../redux/slices/bookings-slice";
 import HorizontalLayoutContainer from "../../components/horizontal-layout-container";
 
-const options: TabOption[] = [
+const OPTIONS: TabOption[] = [
   {
     name: "Table",
     pane: <BookingUserTable />,
@@ -81,7 +81,7 @@ function BookingsPage() {
         </HorizontalLayoutContainer>
       </h1>
 
-      <Tab options={options} showTitle={false} />
+      <Tab options={OPTIONS} showTitle={false} />
     </>
   );
 }

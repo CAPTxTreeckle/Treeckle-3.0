@@ -1,7 +1,7 @@
 import { Segment, Message, Icon, Grid } from "semantic-ui-react";
 import { capitalCase } from "change-case";
 import {
-  userCreationStatuses,
+  USER_CREATION_STATUSES,
   USER_CREATION_STATUS_DETAILS,
 } from "../../types/users";
 import styles from "./user-creation-table-description-section.module.scss";
@@ -20,7 +20,7 @@ function UserCreationTableDescriptionSection() {
             columns="2"
             stackable
           >
-            {userCreationStatuses.map((status) => {
+            {USER_CREATION_STATUSES.map((status) => {
               const { description, classType } =
                 USER_CREATION_STATUS_DETAILS.get(status) ?? {};
 

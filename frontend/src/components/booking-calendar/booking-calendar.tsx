@@ -40,9 +40,9 @@ const eventPropGetter: EventPropGetter<CalendarBooking> = ({ status }) => ({
   }),
 });
 
-const views = [Views.MONTH, Views.WEEK, Views.DAY];
+const VIEWS = [Views.MONTH, Views.WEEK, Views.DAY];
 
-const components = {
+const COMPONENTS = {
   event: CalendarBookingEvent,
   toolbar: CalendarToolbar,
 };
@@ -63,8 +63,8 @@ function BookingCalendar(props: Props) {
         showMultiDayTimes
         popup
         doShowMoreDrillDown={false}
-        views={views}
-        components={components}
+        views={VIEWS}
+        components={COMPONENTS}
         culture={CURRENT_LOCALE}
         formats={{
           dayHeaderFormat: DAY_HEADER_FORMAT,

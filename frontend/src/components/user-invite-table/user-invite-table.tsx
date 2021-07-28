@@ -38,7 +38,7 @@ import UserRoleChangeButton from "../user-role-change-button";
 
 type UserInviteViewProps = UserViewProps;
 
-const userTableStateOptions: TableStateOptions = {
+const USER_TABLE_STATE_OPTIONS: TableStateOptions = {
   searchKeys: [ID, EMAIL, CREATED_AT_STRING, ROLE],
 };
 
@@ -126,7 +126,7 @@ function UserInviteTable() {
   );
 
   const { processedData, sortBy, setSortBy, onSearchValueChange } =
-    useTableState(userInviteViewData, userTableStateOptions);
+    useTableState(userInviteViewData, USER_TABLE_STATE_OPTIONS);
 
   return (
     <Segment.Group raised>

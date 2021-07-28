@@ -34,7 +34,7 @@ const BOOKER_NAME = `${BOOKER}.${NAME}`;
 const BOOKER_EMAIL = `${BOOKER}.${EMAIL}`;
 const VENUE_NAME = `${VENUE}.${NAME}`;
 
-const bookingAdminTableStateOptions: TableStateOptions = {
+const BOOKING_ADMIN_TABLE_STATE_OPTIONS: TableStateOptions = {
   searchKeys: [
     ID,
     BOOKER_NAME,
@@ -64,7 +64,7 @@ function BookingAdminTable() {
   );
 
   const { processedData, sortBy, setSortBy, onSearchValueChange } =
-    useTableState(bookingViewData, bookingAdminTableStateOptions);
+    useTableState(bookingViewData, BOOKING_ADMIN_TABLE_STATE_OPTIONS);
 
   return (
     <Segment.Group raised>

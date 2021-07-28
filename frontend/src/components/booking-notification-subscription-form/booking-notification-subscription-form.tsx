@@ -23,7 +23,7 @@ type BookingNotificationSubscriptionFormProps =
     [VENUE_ID]: string;
   };
 
-const schema = yup.object().shape({
+const SCHEMA = yup.object().shape({
   [NAME]: yup.string().trim().required("Please enter a name"),
   [EMAIL]: yup
     .string()
@@ -36,7 +36,7 @@ const schema = yup.object().shape({
     .required("Please choose a venue to subscribe to"),
 });
 
-const defaultValues: BookingNotificationSubscriptionFormProps = {
+const DEFAULT_VALUES: BookingNotificationSubscriptionFormProps = {
   [NAME]: "",
   [EMAIL]: "",
   [VENUE_ID]: "",
@@ -44,8 +44,8 @@ const defaultValues: BookingNotificationSubscriptionFormProps = {
 
 function BookingNotificationSubscriptionForm() {
   const methods = useForm<BookingNotificationSubscriptionFormProps>({
-    resolver: yupResolver(schema),
-    defaultValues,
+    resolver: yupResolver(SCHEMA),
+    defaultValues: DEFAULT_VALUES,
   });
   const { venues, loading, getVenues } = useGetVenues();
   const { createBookingNotificationSubscription, loading: isSubmitting } =

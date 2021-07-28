@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { useGetPendingBookingCount } from "../../custom-hooks/api/bookings-api";
 import { useAppDispatch, useDeepEqualAppSelector } from "../../redux/hooks";
 import useInterval from "../../custom-hooks/use-interval";
@@ -15,15 +16,17 @@ function PendingBookingCountManager() {
 
   const delay = role === Role.Admin ? DELAY_INTERVAL : null;
 
-  useInterval(
-    async () => {
-      dispatch(setPendingBookingCountAction({ loading: true }));
-      const count = await getPendingBookingCount();
-      dispatch(setPendingBookingCountAction({ count, loading: false }));
-    },
+  const updatePendingBookingCount = useCallback(async () => {
+    dispatch(setPendingBookingCountAction({ loading: true }));
+    const count = await getPendingBookingCount();
+    dispatch(setPendingBookingCountAction({ count, loading: false }));
+  }, [getPendingBookingCount, dispatch]);
+
+  useInterval({
+    callback: updatePendingBookingCount,
     delay,
-    { fireOnFirstTime: true },
-  );
+    fireOnFirstTime: true,
+  });
 
   return null;
 }

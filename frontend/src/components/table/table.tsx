@@ -14,7 +14,7 @@ export type TableProps<T> = BaseTableProps<T> & {
   setSortBy?: Dispatch<SetStateAction<SortBy | undefined>>;
 };
 
-const tableComponents: TableComponents = {
+const TABLE_COMPONENTS: TableComponents = {
   // eslint-disable-next-line react/prop-types
   SortIndicator: ({ sortOrder, className }) => (
     <div className={className}>
@@ -75,7 +75,7 @@ function Table<T>({
             : rowClassName(props),
         )
       }
-      components={{ ...tableComponents, ...components }}
+      components={{ ...TABLE_COMPONENTS, ...components }}
     />
   );
 }

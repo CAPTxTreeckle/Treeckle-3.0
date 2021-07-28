@@ -43,9 +43,10 @@ type BookingNotificationSubscriptionViewProps =
 
 const VENUE_NAME = `${VENUE}.${NAME}`;
 
-const bookingNotificationSubscriptionTableStateOptions: TableStateOptions = {
-  searchKeys: [ID, NAME, EMAIL, CREATED_AT_STRING, VENUE_NAME],
-};
+const BOOKING_NOTIFICATION_SUBSCRIPTION_TABLE_STATE_OPTIONS: TableStateOptions =
+  {
+    searchKeys: [ID, NAME, EMAIL, CREATED_AT_STRING, VENUE_NAME],
+  };
 
 const ActionButton = ({
   id,
@@ -132,7 +133,7 @@ function BookingNotificationSubscriptionTable() {
   const { processedData, sortBy, setSortBy, onSearchValueChange } =
     useTableState(
       bookingNotificationSubscriptionViewData,
-      bookingNotificationSubscriptionTableStateOptions,
+      BOOKING_NOTIFICATION_SUBSCRIPTION_TABLE_STATE_OPTIONS,
     );
 
   return (

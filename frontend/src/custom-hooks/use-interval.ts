@@ -1,12 +1,14 @@
 import { useEffect, useRef } from "react";
 
-export default function useInterval(
-  callback: () => void,
-  delay: number | null,
-  { fireOnFirstTime }: { fireOnFirstTime: boolean } = {
-    fireOnFirstTime: false,
-  },
-) {
+export default function useInterval({
+  callback,
+  delay,
+  fireOnFirstTime = false,
+}: {
+  callback: () => void;
+  delay: number | null;
+  fireOnFirstTime?: boolean;
+}) {
   const savedCallback = useRef(callback);
 
   // Remember the latest callback if it changes.

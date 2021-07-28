@@ -23,7 +23,7 @@ import DropdownSelectorFormField from "../dropdown-selector-form-field";
 import TextAreaFormField from "../text-area-form-field";
 import styles from "./venue-details-custom-form-field.module.scss";
 
-const typeOptions: DropdownItemProps[] = [
+const TYPE_OPTIONS: DropdownItemProps[] = [
   {
     value: FieldType.Text,
     text: "Short Response",
@@ -51,8 +51,8 @@ const typeOptions: DropdownItemProps[] = [
   },
 ];
 
-const noPlaceholderFieldTypes = [FieldType.Boolean, FieldType.TextDisplay];
-const noRequiredFieldTypes = [FieldType.TextDisplay];
+const NO_PLACEHOLDER_FIELD_TYPES = [FieldType.Boolean, FieldType.TextDisplay];
+const NO_REQUIRED_FIELD_TYPES = [FieldType.TextDisplay];
 
 const MiddleSection = ({
   typeFieldName,
@@ -74,7 +74,7 @@ const MiddleSection = ({
           name={labelFieldName}
         />
 
-        {!noPlaceholderFieldTypes.includes(type) &&
+        {!NO_PLACEHOLDER_FIELD_TYPES.includes(type) &&
           (type === FieldType.TextArea ? (
             <TextAreaFormField
               label="Placeholder Text"
@@ -97,7 +97,7 @@ const RequiredFieldSection = ({
 }) => {
   const type = useWatch({ name: typeFieldName });
 
-  return noRequiredFieldTypes.includes(type) ? null : (
+  return NO_REQUIRED_FIELD_TYPES.includes(type) ? null : (
     <Segment className={styles.requiredFieldContainer}>
       <RadioFormField label="Required" name={requiredFieldName} type="toggle" />
     </Segment>
@@ -129,11 +129,11 @@ function VenueDetailsCustomFormField({
   ) => {
     const type = value as FieldType;
 
-    if (noPlaceholderFieldTypes.includes(type)) {
+    if (NO_PLACEHOLDER_FIELD_TYPES.includes(type)) {
       setValue(placeholderFieldName, "");
     }
 
-    if (noRequiredFieldTypes.includes(type)) {
+    if (NO_REQUIRED_FIELD_TYPES.includes(type)) {
       setValue(requiredFieldName, false);
     }
   };
@@ -148,7 +148,7 @@ function VenueDetailsCustomFormField({
             <DropdownSelectorFormField
               className={styles.selector}
               name={typeFieldName}
-              defaultOptions={typeOptions}
+              defaultOptions={TYPE_OPTIONS}
               required
               onChangeEffect={onSelectFieldType}
             />

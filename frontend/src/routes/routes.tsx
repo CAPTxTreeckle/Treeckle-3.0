@@ -40,6 +40,7 @@ import {
 } from "./paths";
 import AppLayoutContainer from "../components/app-layout-container";
 
+// Code splitting
 const DashboardPage = lazy(() => import("../pages/dashboard-page"));
 // const EventsPage = lazy(() => import("../pages/events-page"));
 const BookingsPage = lazy(() => import("../pages/bookings-page"));
@@ -70,7 +71,7 @@ const OurStoryPage = lazy(() => import("../pages/our-story-page"));
 const PrivacyPolicyPage = lazy(() => import("../pages/privacy-policy-page"));
 const TermsOfUsePage = lazy(() => import("../pages/terms-of-use-page"));
 
-const onVisitScrollToTopPaths = [
+const ON_VISIT_SCROLL_TO_TOP_PATHS = [
   HOME_PATH,
   OUR_STORY_PATH,
   PRIVACY_POLICY_PATH,
@@ -84,7 +85,9 @@ function Routes() {
     <Router>
       <LastLocationProvider>
         <AppLayoutContainer>
-          <ScrollToTopManager paths={onVisitScrollToTopPaths} />
+          <ScrollToTopManager paths={ON_VISIT_SCROLL_TO_TOP_PATHS} />
+          {/* use null since the loading is fast and a loader would flicker momentarily */}
+          {/* require background to be same color as theme color */}
           <Suspense fallback={null}>
             <Switch>
               <Route path={HOME_PATH} exact>
