@@ -35,7 +35,7 @@ export type UserInviteData = BaseData & {
 
 export type UserData = UserInviteData & {
   [NAME]: string;
-  [PROFILE_IMAGE]: string;
+  [PROFILE_IMAGE]: string | null;
   [IS_SELF]?: boolean;
 };
 

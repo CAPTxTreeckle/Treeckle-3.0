@@ -1,7 +1,10 @@
+from typing import Optional
+
 from django.db import models
 
 from treeckle.common.models import TimestampedModel
 from organizations.models import Organization
+from content_delivery_service.models import Image
 
 
 # Create your models here.
@@ -31,7 +34,7 @@ class User(TimestampedModel):
     role = models.CharField(
         max_length=MAX_ROLE_LENGTH, choices=Role.choices, default=Role.RESIDENT
     )
-    profile_image = models.URLField(max_length=500, blank=True)
+    profile_image = models.ForeignKey(Image, null=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f"{self.name} | {self.email} ({self.organization})"

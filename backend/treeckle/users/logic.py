@@ -28,6 +28,7 @@ from authentication.models import (
     GoogleAuthentication,
     FacebookAuthentication,
 )
+from content_delivery_service.models import Image
 from .models import User, UserInvite, PatchUserAction
 
 
@@ -38,7 +39,9 @@ def user_to_json(user: User, requester: User = None) -> dict:
         EMAIL: user.email,
         ORGANIZATION: user.organization.name,
         ROLE: user.role,
-        PROFILE_IMAGE: user.profile_image,
+        PROFILE_IMAGE: None
+        if user.profile_image is None
+        else user.profile_image.image_url,
         CREATED_AT: parse_datetime_to_ms_timestamp(user.created_at),
         UPDATED_AT: parse_datetime_to_ms_timestamp(user.updated_at),
     }
@@ -151,15 +154,20 @@ def update_requester(
         return requester
 
     if action == PatchUserAction.PROFILE_IMAGE:
+        if requester.profile_image is not None:
+            requester.profile_image.delete()
+
         if payload is None:
-            requester.profile_image = ""
+            requester.profile_image = None
         else:
             serializer = serializer_class(data=payload)
             serializer.is_valid(raise_exception=True)
 
             profile_image = serializer.validated_data.get("profile_image")
 
-            requester.profile_image = profile_image
+            requester.profile_image = Image.create(
+                organization=requester.organization, image=profile_image
+            )
 
         requester.save()
 

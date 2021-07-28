@@ -58,7 +58,7 @@ def create_event_sign_up(event: Event, user: User) -> EventSignUp:
     except IntegrityError as e:
         event_sign_up = (
             get_event_sign_ups(event=event, user=user)
-            .select_related("user", "event")
+            .select_related("user__organization", "user__profile_image", "event")
             .get()
         )
 
@@ -69,7 +69,7 @@ def attend_event_sign_up(event: Event, user: User) -> EventSignUp:
     try:
         event_sign_up = (
             get_event_sign_ups(event=event, user=user)
-            .select_related("user", "event")
+            .select_related("user__organization", "user__profile_image", "event")
             .get()
         )
     except EventSignUp.DoesNotExist as e:
@@ -90,7 +90,7 @@ def confirm_event_sign_up(event: Event, user: User) -> EventSignUp:
     try:
         event_sign_up = (
             get_event_sign_ups(event=event, user=user)
-            .select_related("user", "event")
+            .select_related("user__organization", "user__profile_image", "event")
             .get()
         )
     except EventSignUp.DoesNotExist as e:

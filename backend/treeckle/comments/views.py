@@ -28,7 +28,7 @@ class BookingCommentsView(APIView):
     @check_requester_is_booker_or_admin
     def get(self, request, requester: User, booking: Booking):
         booking_comments = get_booking_comments(booking=booking).select_related(
-            "comment__commenter__organization", "booking"
+            "comment__commenter__organization", "comment__commenter__profile_image", "booking"
         )
 
         data = [

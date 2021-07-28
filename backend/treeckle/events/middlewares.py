@@ -11,7 +11,9 @@ def check_requester_event_same_organization(view_method):
     ):
         try:
             event = (
-                get_events(id=event_id).select_related("creator__organization").get()
+                get_events(id=event_id)
+                .select_related("creator__organization", "creator__profile_image")
+                .get()
             )
 
             if event.creator.organization != requester.organization:

@@ -9,6 +9,7 @@ from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from treeckle.common.exceptions import BadRequest
 from treeckle.common.models import TimestampedModel
 
+from content_delivery_service.models import Image
 from users.models import User, UserInvite
 
 
@@ -158,6 +159,7 @@ class AuthenticationData(ABC):
                 get_users(email=self.email)
                 .select_related(
                     "organization",
+                    "profile_image",
                     "passwordauthentication",
                     "googleauthentication",
                     "facebookauthentication",
@@ -185,7 +187,11 @@ class AuthenticationData(ABC):
                 organization=user_invite.organization,
                 name=self.name,
                 email=self.email,
-                profile_image=self.profile_image,
+                profile_image=None
+                if not self.profile_image
+                else Image.create(
+                    organization=user_invite.organization, image=self.profile_image
+                ),
                 role=user_invite.role,
             )
 

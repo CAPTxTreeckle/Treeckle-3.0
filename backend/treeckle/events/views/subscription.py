@@ -89,7 +89,7 @@ class SubscribedEventsView(APIView):
                     queryset=EventCategory.objects.select_related("category"),
                 ),
             )
-            .select_related("creator")
+            .select_related("creator__organization", "creator__profile_image")
         )
 
         data = [

@@ -11,7 +11,9 @@ def check_access(*allowed_roles: Role):
 
             try:
                 requester = (
-                    get_users(id=requester_id).select_related("organization").get()
+                    get_users(id=requester_id)
+                    .select_related("organization", "profile_image")
+                    .get()
                 )
 
             except User.DoesNotExist as e:

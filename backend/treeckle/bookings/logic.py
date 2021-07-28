@@ -121,7 +121,9 @@ def get_requested_bookings(
     if statuses is not None:
         filtered_bookings = filtered_bookings.filter(status__in=statuses)
 
-    return filtered_bookings.select_related("booker", "venue")
+    return filtered_bookings.select_related(
+        "booker__organization", "booker__profile_image", "venue"
+    )
 
 
 def get_valid_new_date_time_intervals(
@@ -278,7 +280,7 @@ def update_booking_status(
             booking
             for booking in get_bookings(
                 id__in=id_to_previous_booking_status_mapping
-            ).select_related("booker__organization", "venue")
+            ).select_related("booker__organization", "booker__profile_image", "venue")
         ]
 
     return updated_bookings, id_to_previous_booking_status_mapping
@@ -289,7 +291,7 @@ def delete_bookings(
 ) -> Sequence[Booking]:
     bookings_to_be_deleted = get_bookings(
         venue__organization=organization, id__in=booking_ids_to_be_deleted
-    ).select_related("booker", "venue")
+    ).select_related("booker__organization", "booker__profile_image", "venue")
 
     deleted_bookings = [booking for booking in bookings_to_be_deleted]
 

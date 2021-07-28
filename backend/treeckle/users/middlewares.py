@@ -42,7 +42,11 @@ def check_requester_user_same_organization(view_method):
         instance, request, requester: User, user_id: int, *args, **kwargs
     ):
         try:
-            user = get_users(id=user_id).select_related("organization").get()
+            user = (
+                get_users(id=user_id)
+                .select_related("organization", "profile_image")
+                .get()
+            )
 
             if user.organization != requester.organization:
                 raise PermissionDenied(

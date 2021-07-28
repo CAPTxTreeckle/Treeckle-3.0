@@ -95,7 +95,7 @@ class UsersView(APIView):
     def get(self, request, requester: User):
         same_organization_users = get_users(
             organization=requester.organization
-        ).select_related("organization")
+        ).select_related("organization", "profile_image")
 
         data = [
             user_to_json(user=user, requester=requester)

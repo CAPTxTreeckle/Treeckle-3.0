@@ -55,7 +55,7 @@ class EventsView(APIView):
                     queryset=EventCategory.objects.select_related("category"),
                 ),
             )
-            .select_related("creator")
+            .select_related("creator__organization", "creator__profile_image")
         )
 
         data = [event_to_json(event, requester) for event in same_organization_events]
@@ -108,7 +108,7 @@ class OwnEventsView(APIView):
                     queryset=EventCategory.objects.select_related("category"),
                 ),
             )
-            .select_related("creator")
+            .select_related("creator__organization", "creator__profile_image")
         )
 
         data = [event_to_json(event, requester) for event in same_creator_events]
@@ -143,7 +143,7 @@ class PublishedEventsView(APIView):
                     queryset=EventCategory.objects.select_related("category"),
                 ),
             )
-            .select_related("creator")
+            .select_related("creator__organization", "creator__profile_image")
         )
 
         data = [
@@ -159,7 +159,9 @@ class SingleEventView(APIView):
     @check_requester_event_same_organization
     @check_event_viewer
     def get(self, request, requester: User, event: Event):
-        sign_ups = get_event_sign_ups(event=event).select_related("user__organization")
+        sign_ups = get_event_sign_ups(event=event).select_related(
+            "user__organization", "user__profile_image"
+        )
 
         data = {
             EVENT: event_to_json(event, requester),

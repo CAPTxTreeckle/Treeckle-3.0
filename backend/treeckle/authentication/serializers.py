@@ -257,6 +257,7 @@ class AccessTokenRefreshSerializer(
                 get_users(id=user_id)
                 .select_related(
                     "organization",
+                    "profile_image",
                     "passwordauthentication",
                     "googleauthentication",
                     "facebookauthentication",

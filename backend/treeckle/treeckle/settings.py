@@ -124,6 +124,7 @@ JAZZMIN_SETTINGS = {
         "authentication.openidauthentication": "fab fa-openid",
         "authentication.passwordauthentication": "fas fa-key",
         "bookings.booking": "fas fa-book",
+        "content_delivery_service.image": "fas fa-image",
         "organizations.organization": "fas fa-sitemap",
         "users.user": "fas fa-users",
         "users.userinvite": "fas fa-user-plus",
