@@ -42,3 +42,7 @@ class PatchRequesterSerializer(serializers.Serializer):
 
 class NameSerializer(serializers.Serializer):
     name = serializers.CharField()
+
+
+class ProfileImageSerializer(serializers.Serializer):
+    profile_image = serializers.CharField()

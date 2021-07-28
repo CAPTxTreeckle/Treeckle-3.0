@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import React from "react";
 import { useDropzone } from "react-dropzone";
 import { Header, Icon } from "semantic-ui-react";
 import styles from "./file-uploader.module.scss";

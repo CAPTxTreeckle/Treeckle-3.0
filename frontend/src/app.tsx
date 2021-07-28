@@ -19,6 +19,7 @@ toast.configure({
   limit: 3,
   transition: Zoom,
   bodyClassName: styles.toastBody,
+  toastClassName: styles.toast,
 });
 
 configure({ axios: axios.create({ baseURL: process.env.REACT_APP_API_URL }) });

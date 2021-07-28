@@ -5,6 +5,7 @@ import {
   Header,
   Button,
   ButtonProps,
+  ModalProps,
 } from "semantic-ui-react";
 
 export type ConfirmationModalProps = {
@@ -16,6 +17,7 @@ export type ConfirmationModalProps = {
   icon?: ReactNode;
   title: ReactNode;
   content: ReactNode;
+  size?: ModalProps["size"];
 };
 
 function ConfirmationModal({
@@ -27,6 +29,7 @@ function ConfirmationModal({
   icon,
   title,
   content,
+  size = "tiny",
 }: ConfirmationModalProps) {
   return (
     <TransitionablePortal
@@ -34,7 +37,7 @@ function ConfirmationModal({
       open={open}
       onHide={onExited}
     >
-      <Modal size="tiny" basic open onClose={onClose}>
+      <Modal size={size} basic open onClose={onClose}>
         <Header icon={Boolean(icon)} align="center">
           {icon}
           {title}

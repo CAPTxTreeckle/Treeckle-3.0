@@ -12,6 +12,7 @@ class PatchUserAction(models.TextChoices):
     GOOGLE = "GOOGLE"
     FACEBOOK = "FACEBOOK"
     NAME = "NAME"
+    PROFILE_IMAGE = "PROFILE_IMAGE"
 
 
 class Role(models.TextChoices):

@@ -1,9 +1,11 @@
+import clsx from "clsx";
 import { capitalCase } from "change-case";
 import { Grid, Segment, Image, Divider } from "semantic-ui-react";
 import { displayDateTime } from "../../utils/parser-utils";
 import { UserData } from "../../types/users";
 import UserAuthSection from "../user-auth-section";
 import UserNameChanger from "../user-name-changer";
+import UserProfileImageChanger from "../user-profile-image-changer";
 import defaultAvatarImage from "../../assets/avatar.png";
 import styles from "./user-profile-card.module.scss";
 
@@ -18,27 +20,33 @@ function UserProfileCard({
   createdAt,
   isSelf,
 }: Props) {
+  const profileImageDisplay = (
+    <Image
+      circular
+      src={profileImage || defaultAvatarImage}
+      className={clsx(isSelf && "pointer")}
+      bordered
+      alt=""
+      centered
+      fluid
+    />
+  );
+  const nameLabel = <h2>{name}</h2>;
+
   return (
     <Segment className={styles.userProfileCard} raised padded>
       <Grid columns="2" relaxed="very" padded stackable doubling>
         <Grid.Column width="6" verticalAlign="middle">
-          <Image
-            src={profileImage || defaultAvatarImage}
-            className={styles.avatar}
-            bordered
-            alt=""
-            centered
-            fluid
-          />
+          {isSelf ? (
+            <UserProfileImageChanger>
+              {profileImageDisplay}
+            </UserProfileImageChanger>
+          ) : (
+            profileImageDisplay
+          )}
         </Grid.Column>
         <Grid.Column width="10">
-          {isSelf ? (
-            <UserNameChanger>
-              <h2>{name}</h2>
-            </UserNameChanger>
-          ) : (
-            <h2>{name}</h2>
-          )}
+          {isSelf ? <UserNameChanger>{nameLabel}</UserNameChanger> : nameLabel}
 
           <Divider hidden />
 

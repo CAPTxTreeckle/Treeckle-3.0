@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import { memo, ReactNode } from "react";
 import { useModal } from "react-modal-hook";
 import { Button, Popup, ButtonProps, Icon } from "semantic-ui-react";
 import ConfirmationModal, {
@@ -12,7 +12,7 @@ export type DeleteModalPropsGetter = (props: {
 }) => Partial<ConfirmationModalProps>;
 
 type Props = Omit<ButtonProps, "onClick"> & {
-  popupContent?: string | null;
+  popupContent?: ReactNode;
   getDeleteModalProps?: DeleteModalPropsGetter;
   onClick?: (props: {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>;

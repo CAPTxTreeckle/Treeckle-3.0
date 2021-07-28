@@ -150,6 +150,21 @@ def update_requester(
 
         return requester
 
+    if action == PatchUserAction.PROFILE_IMAGE:
+        if payload is None:
+            requester.profile_image = ""
+        else:
+            serializer = serializer_class(data=payload)
+            serializer.is_valid(raise_exception=True)
+
+            profile_image = serializer.validated_data.get("profile_image")
+
+            requester.profile_image = profile_image
+
+        requester.save()
+
+        return requester
+
     ## for auth actions
     auth_method_class = classes.auth_method_class
     auth_name = classes.auth_name
@@ -221,10 +236,6 @@ def update_requester(
             new_auth_method = auth_method_class.create(
                 user=requester, auth_data=auth_data
             )
-
-            if not requester.profile_image and auth_data.profile_image:
-                requester.profile_image = auth_data.profile_image
-                requester.save()
 
             if new_auth_method is None:
                 raise InternalServerError(

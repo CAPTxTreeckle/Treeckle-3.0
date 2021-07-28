@@ -50,6 +50,7 @@ export enum SelfPatchAction {
   Google = "GOOGLE",
   Facebook = "FACEBOOK",
   Name = "NAME",
+  ProfileImage = "PROFILE_IMAGE",
 }
 
 export type GooglePayloadPostData = {
@@ -68,7 +69,15 @@ export type NamePayloadPostData = {
   [NAME]: string;
 };
 
+export type ProfileImagePayloadPostData = {
+  [PROFILE_IMAGE]: string;
+} | null;
+
 export type SelfPatchData =
+  | {
+      [ACTION]: SelfPatchAction.ProfileImage;
+      [PAYLOAD]: ProfileImagePayloadPostData;
+    }
   | {
       [ACTION]: SelfPatchAction.Name;
       [PAYLOAD]: NamePayloadPostData;
