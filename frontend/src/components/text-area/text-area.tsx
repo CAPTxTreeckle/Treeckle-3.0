@@ -1,7 +1,7 @@
 import { Ref } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 
-type Props = Parameters<typeof TextareaAutosize>["0"] & {
+type Props = Parameters<typeof TextareaAutosize>[0] & {
   innerRef?: Ref<HTMLTextAreaElement>;
 };
 

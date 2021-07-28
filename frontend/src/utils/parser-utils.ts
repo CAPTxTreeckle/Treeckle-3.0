@@ -94,7 +94,7 @@ export function sort<T>(
   {
     props,
     reverse = false,
-  }: { props?: Parameters<typeof arraySort>["1"]; reverse?: boolean } = {},
+  }: { props?: Parameters<typeof arraySort>[1]; reverse?: boolean } = {},
 ) {
   return arraySort([...array], props, { reverse });
 }

@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction, useCallback } from "react";
+import { ReactNode, useCallback } from "react";
 import { useModal } from "react-modal-hook";
 import { toast } from "react-toastify";
 import { Button, Icon, Popup } from "semantic-ui-react";
@@ -14,7 +14,7 @@ import ConfirmationModal from "../confirmation-modal";
 
 type Props = {
   children: ReactNode;
-  setSelectedImage: Dispatch<SetStateAction<string | null | undefined>>;
+  setSelectedImage: (selectedImage?: string | null) => void;
 };
 
 function UserProfileImageOptionsPopup({ children, setSelectedImage }: Props) {

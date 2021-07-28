@@ -48,7 +48,7 @@ const ActionButtons = ({ id, role, email }: UserInviteViewProps) => {
   const dispatch = useAppDispatch();
 
   const updateUserInvite = useCallback(
-    async (data: Parameters<typeof _updateUserInvite>["1"]) => {
+    async (data: Parameters<typeof _updateUserInvite>[1]) => {
       try {
         const updatedUserInvite = await _updateUserInvite(id, data);
 

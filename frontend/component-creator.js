@@ -29,8 +29,10 @@ function ${componentName}({}: Props) {
 export default ${componentName};
 `;
 const styleFileContent = `.${styleClassName} {
-}`;
-const indexFileContent = `export { default } from "./${componentFoldername}";`;
+}
+`;
+const indexFileContent = `export { default } from "./${componentFoldername}";
+`;
 
 const pathToFile = `./src/components/${componentFoldername}/`;
 

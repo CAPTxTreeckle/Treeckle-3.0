@@ -59,7 +59,6 @@ function ImageCropper({
           cropShape={cropShape}
           minZoom={minZoom}
           maxZoom={maxZoom}
-          onMediaLoaded={(mediaSize) => console.log(mediaSize)}
         />
       </div>
 

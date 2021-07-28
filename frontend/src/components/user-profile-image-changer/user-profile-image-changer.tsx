@@ -1,5 +1,5 @@
-import { ReactNode, useState } from "react";
-import ImageCropper from "../image-cropper";
+import { ElementRef, useRef, ReactNode, useState, useEffect } from "react";
+import ImageUploadCropper from "../image-upload-cropper";
 import UserProfileImageOptionsPopup from "../user-profile-image-options-popup";
 
 type Props = {
@@ -8,13 +8,20 @@ type Props = {
 
 function UserProfileImageChanger({ children }: Props) {
   const [selectedImage, setSelectedImage] = useState<string | null>();
+  const imageUploadCropperRef =
+    useRef<ElementRef<typeof ImageUploadCropper>>(null);
+
+  useEffect(() => {
+    if (selectedImage !== null) {
+      imageUploadCropperRef.current?.setOriginalImage(selectedImage);
+    }
+  }, [selectedImage]);
 
   return selectedImage !== undefined ? (
-    <ImageCropper
-      image={selectedImage ?? ""}
+    <ImageUploadCropper
+      ref={imageUploadCropperRef}
       aspectRatio={1}
-      onCancel={() => setSelectedImage(undefined)}
-      onCropImage={(image) => console.log(image)}
+      onOriginalImageChange={setSelectedImage}
     />
   ) : (
     <UserProfileImageOptionsPopup setSelectedImage={setSelectedImage}>

@@ -31,7 +31,8 @@ export default function useImageCropperState({
 
     try {
       setCropping(true);
-      const croppedImage = "";
+      const croppedImage = image;
+      // TODO: implement crop loic
       //   (await getCroppedImage(image, croppedAreaPixels)) ?? "";
       onCropImage(croppedImage);
     } catch (error) {

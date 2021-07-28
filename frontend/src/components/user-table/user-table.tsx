@@ -51,7 +51,7 @@ const ActionButtons = ({ id, role, email, isSelf }: ExistingUserViewProps) => {
   const dispatch = useAppDispatch();
 
   const updateUser = useCallback(
-    async (data: Parameters<typeof _updateUser>["1"]) => {
+    async (data: Parameters<typeof _updateUser>[1]) => {
       try {
         const updatedUser = await _updateUser(id, data);
 
