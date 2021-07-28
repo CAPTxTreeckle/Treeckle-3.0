@@ -8,6 +8,7 @@
     "pull": "sudo docker-compose -f docker-compose.prod.yml pull",
     "down": "sudo docker-compose -f docker-compose.prod.yml down",
     "up": "sudo docker-compose -f docker-compose.prod.yml up -d",
+    "clean": "sudo docker image prune -a",
     "prepare": "husky install"
   }
 }
