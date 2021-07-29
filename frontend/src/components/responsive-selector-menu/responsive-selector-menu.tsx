@@ -6,6 +6,7 @@ import {
   MenuItemProps,
   DropdownProps,
 } from "semantic-ui-react";
+import styles from "./responsive-selector-menu.module.scss";
 
 export type ResponsiveSelectorMenuOption = {
   key?: Key;
@@ -16,9 +17,17 @@ type Props = {
   options: ResponsiveSelectorMenuOption[];
   activeIndex?: number;
   onChange?: (selectedIndex: number) => void;
+  dropdownOnly?: boolean;
+  loading?: boolean;
 };
 
-function ResponsiveSelectorMenu({ options, activeIndex, onChange }: Props) {
+function ResponsiveSelectorMenu({
+  options,
+  activeIndex,
+  onChange,
+  dropdownOnly = false,
+  loading = false,
+}: Props) {
   const isTabletOrLarger = useMediaQuery({ query: "(min-width: 768px)" });
 
   const _options = useMemo(
@@ -42,21 +51,24 @@ function ResponsiveSelectorMenu({ options, activeIndex, onChange }: Props) {
     onChange?.(selectedIndex);
   };
 
-  return isTabletOrLarger ? (
+  return dropdownOnly || !isTabletOrLarger ? (
+    <div className={styles.dropdownWrapper}>
+      <Dropdown
+        selection
+        options={_options}
+        defaultValue={activeIndex !== undefined ? undefined : 0}
+        value={activeIndex}
+        onChange={_onChange}
+        loading={loading}
+      />
+    </div>
+  ) : (
     <Menu
       items={_options}
       fluid
       defaultActiveIndex={activeIndex !== undefined ? undefined : 0}
       activeIndex={activeIndex}
       onItemClick={_onChange}
-    />
-  ) : (
-    <Dropdown
-      selection
-      options={_options}
-      defaultValue={activeIndex !== undefined ? undefined : 0}
-      value={activeIndex}
-      onChange={_onChange}
     />
   );
 }

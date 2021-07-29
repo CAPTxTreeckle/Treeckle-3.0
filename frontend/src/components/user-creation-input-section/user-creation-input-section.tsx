@@ -1,4 +1,3 @@
-import clsx from "clsx";
 import { Segment, Grid, Message, Icon } from "semantic-ui-react";
 import UserCreationForm from "../user-creation-form";
 import UserCreationCsvUploader from "../user-creation-csv-uploader";
@@ -23,10 +22,7 @@ function UserCreationInputSection() {
             </Message>
           </Grid.Column>
         </Grid.Row>
-        <Grid.Row
-          className={clsx(styles.inputContainer, styles.important)}
-          columns="2"
-        >
+        <Grid.Row className={styles.inputContainer} columns="2">
           <Grid.Column className={styles.column}>
             <UserCreationForm />
           </Grid.Column>

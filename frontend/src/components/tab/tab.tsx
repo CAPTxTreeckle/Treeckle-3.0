@@ -10,12 +10,16 @@ export type TabOption = {
 
 type Props = {
   options: TabOption[];
-  activeIndex?: number;
-  onChange?: (selectedIndex: number) => void;
   showTitle?: boolean;
-};
+} & Omit<Parameters<typeof ResponsiveSelectorMenu>[0], "options">;
 
-function Tab({ options, activeIndex, onChange, showTitle = true }: Props) {
+function Tab({
+  options,
+  activeIndex,
+  onChange,
+  showTitle = true,
+  ...otherSelectorMenuProps
+}: Props) {
   const [_activeIndex, _setActiveIndex] = useState(activeIndex ?? 0);
 
   useEffect(() => {
@@ -26,23 +30,22 @@ function Tab({ options, activeIndex, onChange, showTitle = true }: Props) {
 
   const option = options[_activeIndex];
 
-  return (
-    option && (
-      <>
-        {showTitle && <h1>{option.title ?? option.name}</h1>}
-        <ResponsiveSelectorMenu
-          options={options}
-          activeIndex={activeIndex}
-          onChange={(selectedIndex) => {
-            _setActiveIndex(selectedIndex);
-            onChange?.(selectedIndex);
-          }}
-        />
+  return option ? (
+    <>
+      {showTitle && <h1>{option.title ?? option.name}</h1>}
+      <ResponsiveSelectorMenu
+        options={options}
+        activeIndex={_activeIndex}
+        onChange={(selectedIndex) => {
+          _setActiveIndex(selectedIndex);
+          onChange?.(selectedIndex);
+        }}
+        {...otherSelectorMenuProps}
+      />
 
-        {option.pane}
-      </>
-    )
-  );
+      {option.pane}
+    </>
+  ) : null;
 }
 
 export default Tab;

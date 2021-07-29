@@ -2,6 +2,8 @@ import { useCallback, useEffect } from "react";
 import { Popup, Button } from "semantic-ui-react";
 import BookingAdminTable from "../../components/booking-admin-table";
 import HorizontalLayoutContainer from "../../components/horizontal-layout-container";
+import BookingAdminCalendarsSection from "../../components/booking-admin-calendars-section";
+import Tab, { TabOption } from "../../components/tab";
 import { useGetBookings } from "../../custom-hooks/api/bookings-api";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
@@ -9,6 +11,17 @@ import {
   setBookingsAction,
 } from "../../redux/slices/bookings-slice";
 import { refreshPendingBookingCountThunk } from "../../redux/slices/pending-booking-count-slice";
+
+const OPTIONS: TabOption[] = [
+  {
+    name: "Table",
+    pane: <BookingAdminTable />,
+  },
+  {
+    name: "Calendars",
+    pane: <BookingAdminCalendarsSection />,
+  },
+];
 
 function AdminBookingsPage() {
   const { getBookings: _getBookings } = useGetBookings();
@@ -49,7 +62,7 @@ function AdminBookingsPage() {
         </HorizontalLayoutContainer>
       </h1>
 
-      <BookingAdminTable />
+      <Tab options={OPTIONS} showTitle={false} />
     </>
   );
 }

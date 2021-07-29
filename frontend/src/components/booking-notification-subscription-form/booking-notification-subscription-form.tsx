@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Form, Header } from "semantic-ui-react";
+import { DropdownItemProps, Form, Header } from "semantic-ui-react";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import { FormProvider, useForm } from "react-hook-form";
@@ -52,7 +52,7 @@ function BookingNotificationSubscriptionForm() {
     useCreateBookingNotificationSubscription();
   const dispatch = useAppDispatch();
 
-  const sortedVenueOptions = useMemo(
+  const sortedVenueOptions: DropdownItemProps[] = useMemo(
     () =>
       sort(
         venues.map(({ id, venueFormProps: { name } }) => ({

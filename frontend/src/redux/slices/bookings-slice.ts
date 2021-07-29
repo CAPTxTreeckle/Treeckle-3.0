@@ -151,6 +151,13 @@ export const selectBookingsByUserId = createSelector(
     allBookings.filter(({ booker: { id } }) => id === userId),
 );
 
+export const selectBookingsByVenueId = createSelector(
+  selectAllBookings,
+  (_: unknown, venueId: number) => venueId,
+  (allBookings, venueId) =>
+    allBookings.filter(({ venue: { id } }) => id === venueId),
+);
+
 export const selectPendingBookings = createSelector(
   selectAllBookings,
   (allBookings) =>
