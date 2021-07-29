@@ -6,7 +6,7 @@ export default function useImageCropperState({
   onCropImage,
 }: {
   image: string;
-  onCropImage: (croppedImage: string) => void;
+  onCropImage: (croppedImage: string) => Promise<unknown> | void;
 }) {
   const [crop, setCrop] = useState<Point>({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -34,7 +34,7 @@ export default function useImageCropperState({
       const croppedImage = image;
       // TODO: implement crop loic
       //   (await getCroppedImage(image, croppedAreaPixels)) ?? "";
-      onCropImage(croppedImage);
+      await onCropImage(croppedImage);
     } catch (error) {
       console.log(error, error?.response);
     } finally {

@@ -49,7 +49,7 @@ function FileUploader({
         {title}
       </Header>
       {description && (
-        <p>
+        <p className={styles.description}>
           <strong>{description}</strong>
         </p>
       )}

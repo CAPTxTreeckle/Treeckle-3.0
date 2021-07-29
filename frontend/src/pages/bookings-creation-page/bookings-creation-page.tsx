@@ -14,7 +14,7 @@ function BookingsCreationPage() {
         to={BOOKINGS_PATH}
       >
         <Button.Content hidden content="Cancel Booking Creation" />
-        <Button.Content visible content={<Icon name="close" fitted />} />
+        <Button.Content visible content={<Icon name="times" fitted />} />
       </Button>
 
       <h1>Booking Creation</h1>

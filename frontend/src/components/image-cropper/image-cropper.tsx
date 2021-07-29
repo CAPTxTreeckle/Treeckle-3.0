@@ -1,5 +1,5 @@
 import Cropper from "react-easy-crop";
-import { Divider, Button } from "semantic-ui-react";
+import { Divider, Button, Popup } from "semantic-ui-react";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import useImageCropperState from "../../custom-hooks/use-image-cropper-state";
 import styles from "./image-cropper.module.scss";
@@ -9,7 +9,7 @@ const DEFAULT_ASPECT_RATIO = 4 / 3;
 type Props = {
   image: string;
   aspectRatio?: number;
-  onCropImage: (croppedImage: string) => void;
+  onCropImage: (croppedImage: string) => Promise<unknown> | void;
   onCancel?: () => void;
   showGrid?: boolean;
   cropShape?: "rect" | "round";
@@ -66,28 +66,47 @@ function ImageCropper({
 
       <HorizontalLayoutContainer spacing="compact" justify="center">
         {onCancel && (
-          <Button
-            type="button"
-            icon="close"
-            color="red"
+          <Popup
             content="Cancel"
-            onClick={onCancel}
+            position="top center"
+            trigger={
+              <Button
+                className={styles.actionButton}
+                icon="times"
+                color="red"
+                onClick={onCancel}
+                disabled={isCropping}
+              />
+            }
           />
         )}
-        <Button
-          type="button"
-          icon="repeat"
-          secondary
+        <Popup
           content="Reset"
-          onClick={reset}
+          position="top center"
+          trigger={
+            <Button
+              className={styles.actionButton}
+              icon="redo alternate"
+              secondary
+              onClick={reset}
+              disabled={isCropping}
+            />
+          }
         />
-        <Button
-          type="button"
-          icon="checkmark"
-          color="green"
+
+        <Popup
           content="Confirm"
-          onClick={onCropConfirm}
-          loading={isCropping}
+          position="top center"
+          trigger={
+            <Button
+              className={styles.actionButton}
+              icon="checkmark"
+              color="green"
+              onClick={onCropConfirm}
+              loading={isCropping}
+              disabled={isCropping}
+            />
+          }
         />
       </HorizontalLayoutContainer>
     </div>
