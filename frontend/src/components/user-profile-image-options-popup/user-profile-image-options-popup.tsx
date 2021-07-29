@@ -75,9 +75,7 @@ function UserProfileImageOptionsPopup({ children, setSelectedImage }: Props) {
         <Button.Group vertical>
           <Button
             icon="camera"
-            content={`${
-              profileImage ? "Change photo" : "Upload photo"
-            } (coming soon)`}
+            content={profileImage ? "Change photo" : "Upload photo"}
             disabled={loading}
             onClick={() => setSelectedImage(null)}
           />

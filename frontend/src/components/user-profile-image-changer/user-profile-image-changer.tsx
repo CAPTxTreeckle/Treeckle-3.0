@@ -1,5 +1,6 @@
 import { ReactNode, useCallback } from "react";
 import { toast } from "react-toastify";
+import { Button, Divider } from "semantic-ui-react";
 import { useUpdateSelf } from "../../custom-hooks/api/users-api";
 import useImageUploadCropperState from "../../custom-hooks/use-image-upload-cropper-state";
 import { useAppDispatch } from "../../redux/hooks";
@@ -7,6 +8,7 @@ import { updateCurrentUserAction } from "../../redux/slices/current-user-slice";
 import { SelfPatchAction } from "../../types/users";
 import { resolveApiError } from "../../utils/error-utils";
 import FileUploader from "../file-uploader";
+import HorizontalLayoutContainer from "../horizontal-layout-container";
 import ImageCropper from "../image-cropper";
 import UserProfileImageOptionsPopup from "../user-profile-image-options-popup";
 
@@ -54,13 +56,26 @@ function UserProfileImageChanger({ children }: Props) {
 
     if (originalImage === null) {
       return (
-        <FileUploader
-          onAcceptFiles={onAcceptImageFile}
-          accept={IMAGE_FILE_TYPES}
-          maxFileSize={1000000}
-          title="Drag and drop, or click here to upload photo."
-          description="Maximum accepted photo size is 1MB."
-        />
+        <>
+          <FileUploader
+            onAcceptFiles={onAcceptImageFile}
+            accept={IMAGE_FILE_TYPES}
+            maxFileSize={1000000}
+            title="Drag and drop, or click here to upload photo."
+            description="Maximum accepted photo size is 1MB."
+          />
+
+          <Divider />
+
+          <HorizontalLayoutContainer justify="center">
+            <Button
+              color="red"
+              icon="times"
+              content="Cancel"
+              onClick={() => setOriginalImage(undefined)}
+            />
+          </HorizontalLayoutContainer>
+        </>
       );
     }
 
