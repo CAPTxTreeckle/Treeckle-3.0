@@ -35,7 +35,9 @@ class User(TimestampedModel):
     role = models.CharField(
         max_length=MAX_ROLE_LENGTH, choices=Role.choices, default=Role.RESIDENT
     )
-    profile_image = models.ForeignKey(Image, null=True, on_delete=models.SET_NULL)
+    profile_image = models.ForeignKey(
+        Image, null=True, blank=True, on_delete=models.SET_NULL
+    )
 
     def __str__(self):
         return f"{self.name} | {self.email} ({self.organization})"
