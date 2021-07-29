@@ -182,16 +182,21 @@ class AuthenticationData(ABC):
 
         ## user invite exists but not user
         if user is None:
+            if self.profile_image:
+                image = Image(
+                    organization=user_invite.organization, image_url=self.profile_image
+                )
+                image.upload_image_to_server()
+                image.save()
+            else:
+                image = None
+
             ## create a new user and delete user invite
             user = User.objects.create(
                 organization=user_invite.organization,
                 name=self.name,
                 email=self.email,
-                profile_image=None
-                if not self.profile_image
-                else Image.create(
-                    organization=user_invite.organization, image=self.profile_image
-                ),
+                profile_image=image,
                 role=user_invite.role,
             )
 

@@ -154,22 +154,46 @@ def update_requester(
         return requester
 
     if action == PatchUserAction.PROFILE_IMAGE:
-        if requester.profile_image is not None:
-            requester.profile_image.delete()
-
         if payload is None:
+            old_profile_image = requester.profile_image
             requester.profile_image = None
+
+            requester.save()
+
+            ## only delete if requester can be updated successfully
+            if old_profile_image:
+                old_profile_image.delete()
+
+            return requester
+
+        serializer = serializer_class(data=payload)
+        serializer.is_valid(raise_exception=True)
+
+        image_data = serializer.validated_data.get("profile_image")
+
+        if requester.profile_image:
+            ## make a copy so that we can delete image from server after all db operations
+            old_profile_image = requester.profile_image.copy()
+            profile_image = requester.profile_image
         else:
-            serializer = serializer_class(data=payload)
-            serializer.is_valid(raise_exception=True)
+            old_profile_image = None
+            profile_image = Image()
 
-            profile_image = serializer.validated_data.get("profile_image")
+        profile_image.organization = requester.organization
+        profile_image.image_url = image_data
 
-            requester.profile_image = Image.create(
-                organization=requester.organization, image=profile_image
-            )
+        ## need to upload to server first before saving
+        ## so that image_id can be retrieved and stored
+        profile_image.upload_image_to_server()
+
+        profile_image.save()
+
+        requester.profile_image = profile_image
 
         requester.save()
+
+        if old_profile_image:
+            old_profile_image.delete_image_from_server()
 
         return requester
 

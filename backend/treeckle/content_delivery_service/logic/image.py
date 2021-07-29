@@ -19,13 +19,15 @@ imagekit = ImageKit(
 # - https://pypi.org/project/imagekitio/
 
 
-def delete_image(image_id: str) -> None:
+## Legacy
+def delete_image(image_id: str):
     if not image_id:
         return
 
     imagekit.delete_file(image_id)
 
 
+## Legacy
 def upload_image(base64_image: str, filename: Optional[str] = None) -> tuple[str, str]:
     if not base64_image:
         return "", ""
@@ -38,16 +40,3 @@ def upload_image(base64_image: str, filename: Optional[str] = None) -> tuple[str
     image_id = data.get("fileId", "")
 
     return image_id, image_url
-
-
-def image_cleanup(sender, instance, **kwargs):
-    if not instance.image_id:
-        return
-
-    imagekit = ImageKit(
-        private_key=IMAGEKIT_PRIVATE_KEY,
-        public_key=IMAGEKIT_PUBLIC_KEY,
-        url_endpoint=os.path.join(IMAGEKIT_BASE_URL, image.organization.name),
-    )
-
-    imagekit.delete_file(instance.image_id)
