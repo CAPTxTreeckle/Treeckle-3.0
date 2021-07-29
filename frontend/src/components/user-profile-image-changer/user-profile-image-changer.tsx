@@ -57,9 +57,9 @@ function UserProfileImageChanger({ children }: Props) {
         <FileUploader
           onAcceptFiles={onAcceptImageFile}
           accept={IMAGE_FILE_TYPES}
-          maxFileSize={2000000}
+          maxFileSize={1000000}
           title="Drag and drop, or click here to upload photo."
-          description="Maximum accepted photo size is 2MB."
+          description="Maximum accepted photo size is 1MB."
         />
       );
     }
@@ -70,6 +70,7 @@ function UserProfileImageChanger({ children }: Props) {
         onCropImage={onUploadProfileImage}
         onCancel={() => setOriginalImage(undefined)}
         aspectRatio={1}
+        cropShape="round"
       />
     );
   };

@@ -52,13 +52,16 @@ export function useGetPendingBookingCount() {
 
   const getPendingBookingCount = useCallback(async () => {
     try {
-      return await errorHandlerWrapper(async () => {
-        const { data: pendingCount } = await apiCall();
+      return await errorHandlerWrapper(
+        async () => {
+          const { data: pendingCount } = await apiCall();
 
-        console.log("GET /bookings/pendingcount success:", pendingCount);
+          console.log("GET /bookings/pendingcount success:", pendingCount);
 
-        return pendingCount;
-      }, "GET /bookings/pendingcount error:")();
+          return pendingCount;
+        },
+        { logMessageLabel: "GET /bookings/pendingcount error:" },
+      )();
     } catch (error) {
       console.log("GET /bookings/pendingcount error:", error, error?.response);
 
@@ -89,13 +92,16 @@ export function useGetBookings() {
       );
 
       try {
-        return await errorHandlerWrapper(async () => {
-          const { data: bookings = [] } = await apiCall({ url });
+        return await errorHandlerWrapper(
+          async () => {
+            const { data: bookings = [] } = await apiCall({ url });
 
-          console.log(`GET ${url} success:`, bookings);
+            console.log(`GET ${url} success:`, bookings);
 
-          return bookings;
-        }, `GET ${url} error:`)();
+            return bookings;
+          },
+          { logMessageLabel: `GET ${url} error:` },
+        )();
       } catch (error) {
         resolveApiError(error);
 
@@ -119,21 +125,24 @@ export function useCreateBookings() {
 
   const createBookings = useMemo(
     () =>
-      errorHandlerWrapper(async (bookingPostData: BookingPostData) => {
-        console.log("POST /bookings/ data:", bookingPostData);
+      errorHandlerWrapper(
+        async (bookingPostData: BookingPostData) => {
+          console.log("POST /bookings/ data:", bookingPostData);
 
-        const { data: bookings = [] } = await apiCall({
-          data: bookingPostData,
-        });
+          const { data: bookings = [] } = await apiCall({
+            data: bookingPostData,
+          });
 
-        console.log("POST /bookings/ success:", bookings);
+          console.log("POST /bookings/ success:", bookings);
 
-        if (bookings.length === 0) {
-          throw new Error("No bookings were created.");
-        }
+          if (bookings.length === 0) {
+            throw new Error("No bookings were created.");
+          }
 
-        return bookings;
-      }, "POST /bookings/ error:"),
+          return bookings;
+        },
+        { logMessageLabel: "POST /bookings/ error:" },
+      ),
     [apiCall],
   );
 
@@ -168,7 +177,7 @@ export function useUpdateBookingStatus() {
 
           return updatedBookings;
         },
-        "PATCH /bookings/:bookingId error:",
+        { logMessageLabel: "PATCH /bookings/:bookingId error:" },
       ),
     [apiCall],
   );
@@ -186,17 +195,20 @@ export function useDeleteBooking() {
 
   const deleteBooking = useMemo(
     () =>
-      errorHandlerWrapper(async (bookingId: number | string) => {
-        const url = `/bookings/${bookingId}`;
+      errorHandlerWrapper(
+        async (bookingId: number | string) => {
+          const url = `/bookings/${bookingId}`;
 
-        const { data: deletedBooking } = await apiCall({
-          url,
-        });
+          const { data: deletedBooking } = await apiCall({
+            url,
+          });
 
-        console.log(`DELETE ${url} success:`, deletedBooking);
+          console.log(`DELETE ${url} success:`, deletedBooking);
 
-        return deletedBooking;
-      }, "DELETE /bookings/:bookingId error:"),
+          return deletedBooking;
+        },
+        { logMessageLabel: "DELETE /bookings/:bookingId error:" },
+      ),
     [apiCall],
   );
 

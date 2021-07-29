@@ -25,7 +25,10 @@ export function resolveApiError(error: ApiResponseError) {
 
 export function errorHandlerWrapper<T extends unknown[], R = unknown>(
   fn: (...args: T) => Promise<R>,
-  logMessageLabel = "Error",
+  {
+    logMessageLabel = "Error",
+    defaultErrorMessage = "An unknown error has occurred.",
+  }: { logMessageLabel?: string; defaultErrorMessage?: string } = {},
 ) {
   return async (...args: T) => {
     try {
@@ -35,13 +38,13 @@ export function errorHandlerWrapper<T extends unknown[], R = unknown>(
 
       if (error?.isAxiosError) {
         const axiosError = error as AxiosError;
-        const { detail = "An unknown error has occurred." } =
+        const { detail = defaultErrorMessage } =
           axiosError?.response?.data ?? {};
 
         throw new ApiResponseError(detail, "error");
       } else if (error?.toString() !== "Cancel") {
         throw new ApiResponseError(
-          error?.message || "An unknown error has occurred.",
+          error?.message || defaultErrorMessage,
           "error",
         );
       } else {

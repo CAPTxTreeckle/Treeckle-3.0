@@ -35,7 +35,6 @@ export default function useOptionsState(
   }, [existingOptions]);
 
   const onSelect = (values: string[]) => {
-    console.log("Select:", values);
     const newOptions = values
       .filter((value) => !uniqueValues.has(value))
       .map(

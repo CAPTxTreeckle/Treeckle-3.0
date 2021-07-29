@@ -24,11 +24,14 @@ export function useGetUserInvites() {
 
   const getUserInvites = useCallback(async () => {
     try {
-      return await errorHandlerWrapper(async () => {
-        const { data: userInvites = [] } = await apiCall();
-        console.log("GET /users/invite success:", userInvites);
-        return userInvites;
-      }, "GET /users/invite error:")();
+      return await errorHandlerWrapper(
+        async () => {
+          const { data: userInvites = [] } = await apiCall();
+          console.log("GET /users/invite success:", userInvites);
+          return userInvites;
+        },
+        { logMessageLabel: "GET /users/invite error:" },
+      )();
     } catch (error) {
       resolveApiError(error);
 
@@ -50,17 +53,20 @@ export function useCreateUserInvites() {
 
   const createUserInvites = useMemo(
     () =>
-      errorHandlerWrapper(async (invitations: UserInvitePostData[]) => {
-        const { data: userInvites = [] } = await apiCall({
-          data: { invitations },
-        });
-        console.log("POST /users/invite success:", userInvites);
+      errorHandlerWrapper(
+        async (invitations: UserInvitePostData[]) => {
+          const { data: userInvites = [] } = await apiCall({
+            data: { invitations },
+          });
+          console.log("POST /users/invite success:", userInvites);
 
-        if (userInvites.length === 0) {
-          throw new Error("No new users were created.");
-        }
-        return userInvites;
-      }, "POST /users/invite error:"),
+          if (userInvites.length === 0) {
+            throw new Error("No new users were created.");
+          }
+          return userInvites;
+        },
+        { logMessageLabel: "POST /users/invite error:" },
+      ),
     [apiCall],
   );
 
@@ -92,7 +98,7 @@ export function useUpdateUserInvite() {
 
           return updatedUserInvite;
         },
-        "PATCH /users/invite/:userInviteId error:",
+        { logMessageLabel: "PATCH /users/invite/:userInviteId error:" },
       ),
     [apiCall],
   );
@@ -110,17 +116,20 @@ export function useDeleteUserInvite() {
 
   const deleteUserInvite = useMemo(
     () =>
-      errorHandlerWrapper(async (userInviteId: number | string) => {
-        const url = `/users/invite/${userInviteId}`;
+      errorHandlerWrapper(
+        async (userInviteId: number | string) => {
+          const url = `/users/invite/${userInviteId}`;
 
-        const { data: deletedUserInvite } = await apiCall({
-          url,
-        });
+          const { data: deletedUserInvite } = await apiCall({
+            url,
+          });
 
-        console.log(`DELETE ${url} success:`, deletedUserInvite);
+          console.log(`DELETE ${url} success:`, deletedUserInvite);
 
-        return deletedUserInvite;
-      }, "DELETE /users/invite/:userInviteId error:"),
+          return deletedUserInvite;
+        },
+        { logMessageLabel: "DELETE /users/invite/:userInviteId error:" },
+      ),
     [apiCall],
   );
 
@@ -139,11 +148,14 @@ export function useGetUsers() {
 
   const getUsers = useCallback(async () => {
     try {
-      return await errorHandlerWrapper(async () => {
-        const { data: users = [] } = await apiCall();
-        console.log("GET /users/ success:", users);
-        return users;
-      }, "GET /users/ error:")();
+      return await errorHandlerWrapper(
+        async () => {
+          const { data: users = [] } = await apiCall();
+          console.log("GET /users/ success:", users);
+          return users;
+        },
+        { logMessageLabel: "GET /users/ error:" },
+      )();
     } catch (error) {
       resolveApiError(error);
 
@@ -165,13 +177,16 @@ export function useGetSelf() {
 
   const getSelf = useCallback(async () => {
     try {
-      return await errorHandlerWrapper(async () => {
-        const { data: self } = await apiCall();
+      return await errorHandlerWrapper(
+        async () => {
+          const { data: self } = await apiCall();
 
-        console.log("GET /users/self success:", self);
+          console.log("GET /users/self success:", self);
 
-        return self;
-      }, "GET /users/self error:")();
+          return self;
+        },
+        { logMessageLabel: "GET /users/self error:" },
+      )();
     } catch (error) {
       resolveApiError(error);
 
@@ -193,14 +208,19 @@ export function useUpdateSelf() {
 
   const updateSelf = useMemo(
     () =>
-      errorHandlerWrapper(async (data: SelfPatchData) => {
-        const { data: self } = await apiCall({
-          data,
-        });
-        console.log(`PATCH /users/self success:`, self);
+      errorHandlerWrapper(
+        async (data: SelfPatchData) => {
+          console.log("PATCH /users/self data:", data);
 
-        return self;
-      }, "PATCH /users/self error:"),
+          const { data: self } = await apiCall({
+            data,
+          });
+          console.log("PATCH /users/self success:", self);
+
+          return self;
+        },
+        { logMessageLabel: "PATCH /users/self error:" },
+      ),
     [apiCall],
   );
 
@@ -220,14 +240,17 @@ export function useGetSingleUser() {
       const url = `/users/${userId}`;
 
       try {
-        return await errorHandlerWrapper(async () => {
-          const { data: user } = await apiCall({
-            url,
-          });
-          console.log(`GET ${url} success:`, user);
+        return await errorHandlerWrapper(
+          async () => {
+            const { data: user } = await apiCall({
+              url,
+            });
+            console.log(`GET ${url} success:`, user);
 
-          return user;
-        }, `GET ${url} error:`)();
+            return user;
+          },
+          { logMessageLabel: `GET ${url} error:` },
+        )();
       } catch (error) {
         resolveApiError(error);
         return undefined;
@@ -261,7 +284,7 @@ export function useUpdateUser() {
 
           return updatedUser;
         },
-        "PATCH /users/:userId error:",
+        { logMessageLabel: "PATCH /users/:userId error:" },
       ),
     [apiCall],
   );
@@ -280,17 +303,20 @@ export function useDeleteUser() {
 
   const deleteUser = useMemo(
     () =>
-      errorHandlerWrapper(async (userId: number | string) => {
-        const url = `/users/${userId}`;
+      errorHandlerWrapper(
+        async (userId: number | string) => {
+          const url = `/users/${userId}`;
 
-        const { data: deletedUser } = await apiCall({
-          url,
-        });
+          const { data: deletedUser } = await apiCall({
+            url,
+          });
 
-        console.log(`DELETE ${url} success:`, deletedUser);
+          console.log(`DELETE ${url} success:`, deletedUser);
 
-        return deletedUser;
-      }, "DELETE /users/:userId error:"),
+          return deletedUser;
+        },
+        { logMessageLabel: "DELETE /users/:userId error:" },
+      ),
     [apiCall],
   );
 

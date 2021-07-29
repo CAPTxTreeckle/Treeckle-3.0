@@ -228,15 +228,18 @@ export function useCheckAccount() {
 
   const checkAccount = useMemo(
     () =>
-      errorHandlerWrapper(async (data: CheckAccountPostData) => {
-        console.log("POST /gateway/check data:", data);
+      errorHandlerWrapper(
+        async (data: CheckAccountPostData) => {
+          console.log("POST /gateway/check data:", data);
 
-        const { data: loginDetails } = await apiCall({ data });
+          const { data: loginDetails } = await apiCall({ data });
 
-        console.log("POST /gateway/check success:", loginDetails);
+          console.log("POST /gateway/check success:", loginDetails);
 
-        return loginDetails;
-      }, "POST /gateway/check error:"),
+          return loginDetails;
+        },
+        { logMessageLabel: "POST /gateway/check error:" },
+      ),
     [apiCall],
   );
 
@@ -254,15 +257,18 @@ export function useGoogleLogin() {
 
   const googleLogin = useMemo(
     () =>
-      errorHandlerWrapper(async (data: GoogleLoginPostData) => {
-        console.log("POST /gateway/google data:", data);
+      errorHandlerWrapper(
+        async (data: GoogleLoginPostData) => {
+          console.log("POST /gateway/google data:", data);
 
-        const { data: authData } = await apiCall({ data });
+          const { data: authData } = await apiCall({ data });
 
-        console.log("POST /gateway/google success:", authData);
+          console.log("POST /gateway/google success:", authData);
 
-        return authData;
-      }, "POST /gateway/google error:"),
+          return authData;
+        },
+        { logMessageLabel: "POST /gateway/google error:" },
+      ),
     [apiCall],
   );
 
@@ -280,15 +286,18 @@ export function useFacebookLogin() {
 
   const facebookLogin = useMemo(
     () =>
-      errorHandlerWrapper(async (data: FacebookLoginPostData) => {
-        console.log("POST /gateway/facebook data:", data);
+      errorHandlerWrapper(
+        async (data: FacebookLoginPostData) => {
+          console.log("POST /gateway/facebook data:", data);
 
-        const { data: authData } = await apiCall({ data });
+          const { data: authData } = await apiCall({ data });
 
-        console.log("POST /gateway/facebook success:", authData);
+          console.log("POST /gateway/facebook success:", authData);
 
-        return authData;
-      }, "POST /gateway/facebook error:"),
+          return authData;
+        },
+        { logMessageLabel: "POST /gateway/facebook error:" },
+      ),
     [apiCall],
   );
 
@@ -306,15 +315,18 @@ export function usePasswordLogin() {
 
   const passwordLogin = useMemo(
     () =>
-      errorHandlerWrapper(async (data: PasswordLoginPostData) => {
-        console.log("POST /gateway/login data:", data);
+      errorHandlerWrapper(
+        async (data: PasswordLoginPostData) => {
+          console.log("POST /gateway/login data:", data);
 
-        const { data: authData } = await login({ data });
+          const { data: authData } = await login({ data });
 
-        console.log("POST /gateway/login success:", authData);
+          console.log("POST /gateway/login success:", authData);
 
-        return authData;
-      }, "POST /gateway/login error:"),
+          return authData;
+        },
+        { logMessageLabel: "POST /gateway/login error:" },
+      ),
 
     [login],
   );

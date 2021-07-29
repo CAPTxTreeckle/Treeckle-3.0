@@ -87,11 +87,14 @@ export function useGetVenueCategories() {
 
   const getVenueCategories = useCallback(async () => {
     try {
-      return await errorHandlerWrapper(async () => {
-        const { data: categories = [] } = await apiCall();
-        console.log("GET /venues/categories success:", categories);
-        return categories;
-      }, "GET /venues/categories error:")();
+      return await errorHandlerWrapper(
+        async () => {
+          const { data: categories = [] } = await apiCall();
+          console.log("GET /venues/categories success:", categories);
+          return categories;
+        },
+        { logMessageLabel: "GET /venues/categories error:" },
+      )();
     } catch (error) {
       resolveApiError(error);
 
@@ -122,14 +125,17 @@ export function useGetVenues() {
       );
 
       try {
-        return await errorHandlerWrapper(async () => {
-          const { data: venues = [] } = await apiCall({ url });
+        return await errorHandlerWrapper(
+          async () => {
+            const { data: venues = [] } = await apiCall({ url });
 
-          console.log(`GET ${url} success:`, venues);
-          const parsedVenues = venues.map((venue) => parseVenueData(venue));
-          setVenues(parsedVenues);
-          return parsedVenues;
-        }, `GET ${url} error:`)();
+            console.log(`GET ${url} success:`, venues);
+            const parsedVenues = venues.map((venue) => parseVenueData(venue));
+            setVenues(parsedVenues);
+            return parsedVenues;
+          },
+          { logMessageLabel: `GET ${url} error:` },
+        )();
       } catch (error) {
         resolveApiError(error);
 
@@ -154,15 +160,18 @@ export function useCreateVenue() {
 
   const createVenue = useMemo(
     () =>
-      errorHandlerWrapper(async (venueFormProps: VenueFormProps) => {
-        const data: VenuePostData = parseVenueFormProps(venueFormProps);
-        const { data: venue } = await apiCall({
-          data,
-        });
-        console.log("POST /venues/ success:", venue);
+      errorHandlerWrapper(
+        async (venueFormProps: VenueFormProps) => {
+          const data: VenuePostData = parseVenueFormProps(venueFormProps);
+          const { data: venue } = await apiCall({
+            data,
+          });
+          console.log("POST /venues/ success:", venue);
 
-        return venue;
-      }, "POST /venues/ error:"),
+          return venue;
+        },
+        { logMessageLabel: "POST /venues/ error:" },
+      ),
     [apiCall],
   );
 
@@ -179,17 +188,20 @@ export function useDeleteVenue() {
 
   const deleteVenue = useMemo(
     () =>
-      errorHandlerWrapper(async (venueId: number) => {
-        const url = `/venues/${venueId}`;
+      errorHandlerWrapper(
+        async (venueId: number) => {
+          const url = `/venues/${venueId}`;
 
-        const { data: deletedVenue } = await apiCall({
-          url,
-        });
+          const { data: deletedVenue } = await apiCall({
+            url,
+          });
 
-        console.log(`DELETE ${url} success:`, deletedVenue);
+          console.log(`DELETE ${url} success:`, deletedVenue);
 
-        return deletedVenue;
-      }, `DELETE /venues/:venueId error:`),
+          return deletedVenue;
+        },
+        { logMessageLabel: `DELETE /venues/:venueId error:` },
+      ),
     [apiCall],
   );
 
@@ -210,18 +222,21 @@ export function useGetSingleVenue() {
       const url = `/venues/${venueId}`;
 
       try {
-        return await errorHandlerWrapper(async () => {
-          const { data: venue } = await apiCall({
-            url,
-          });
+        return await errorHandlerWrapper(
+          async () => {
+            const { data: venue } = await apiCall({
+              url,
+            });
 
-          console.log(`GET ${url} success:`, venue);
+            console.log(`GET ${url} success:`, venue);
 
-          const parsedVenue = parseVenueData(venue);
-          setVenue(parsedVenue);
+            const parsedVenue = parseVenueData(venue);
+            setVenue(parsedVenue);
 
-          return parsedVenue;
-        })();
+            return parsedVenue;
+          },
+          { logMessageLabel: `GET ${url} error:` },
+        )();
       } catch (error) {
         resolveApiError(error);
 
@@ -260,7 +275,7 @@ export function useUpdateVenue() {
 
           return venue;
         },
-        `PUT /venues/:venueId error:`,
+        { logMessageLabel: `PUT /venues/:venueId error:` },
       ),
     [apiCall],
   );
@@ -282,16 +297,20 @@ export function useGetBookingNotificationSubscriptions() {
 
   const getBookingNotificationSubscriptions = useCallback(async () => {
     try {
-      return await errorHandlerWrapper(async () => {
-        const { data: bookingNotificationSubscriptions = [] } = await apiCall();
+      return await errorHandlerWrapper(
+        async () => {
+          const { data: bookingNotificationSubscriptions = [] } =
+            await apiCall();
 
-        console.log(
-          `GET /venues/subscriptions success:`,
-          bookingNotificationSubscriptions,
-        );
+          console.log(
+            `GET /venues/subscriptions success:`,
+            bookingNotificationSubscriptions,
+          );
 
-        return bookingNotificationSubscriptions;
-      }, `GET /venues/subscriptions error:`)();
+          return bookingNotificationSubscriptions;
+        },
+        { logMessageLabel: `GET /venues/subscriptions error:` },
+      )();
     } catch (error) {
       resolveApiError(error);
       return [];
@@ -331,7 +350,7 @@ export function useCreateBookingNotificationSubscription() {
 
           return bookingNotificationSubscriptions;
         },
-        "POST /venues/:venueId/subscriptions error:",
+        { logMessageLabel: "POST /venues/:venueId/subscriptions error:" },
       ),
     [apiCall],
   );
@@ -350,20 +369,26 @@ export function useDeleteBookingNotificationSubscription() {
 
   const deleteBookingNotificationSubscription = useMemo(
     () =>
-      errorHandlerWrapper(async (subscriptionId: number | string) => {
-        const url = `/venues/subscriptions/${subscriptionId}`;
+      errorHandlerWrapper(
+        async (subscriptionId: number | string) => {
+          const url = `/venues/subscriptions/${subscriptionId}`;
 
-        const { data: deletedBookingNotificationSubscription } = await apiCall({
-          url,
-        });
+          const { data: deletedBookingNotificationSubscription } =
+            await apiCall({
+              url,
+            });
 
-        console.log(
-          `DELETE ${url} success:`,
-          deletedBookingNotificationSubscription,
-        );
+          console.log(
+            `DELETE ${url} success:`,
+            deletedBookingNotificationSubscription,
+          );
 
-        return deletedBookingNotificationSubscription;
-      }, `DELETE /venues/subscription/:subscriptionId error:`),
+          return deletedBookingNotificationSubscription;
+        },
+        {
+          logMessageLabel: `DELETE /venues/subscription/:subscriptionId error:`,
+        },
+      ),
     [apiCall],
   );
 

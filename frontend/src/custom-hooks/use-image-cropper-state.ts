@@ -1,5 +1,7 @@
 import { useCallback, useState } from "react";
 import { Area, Point } from "react-easy-crop/types";
+import { errorHandlerWrapper, resolveApiError } from "../utils/error-utils";
+import { getCroppedImage } from "../utils/image-utils";
 
 export default function useImageCropperState({
   image,
@@ -31,12 +33,19 @@ export default function useImageCropperState({
 
     try {
       setCropping(true);
-      const croppedImage = image;
-      // TODO: implement crop loic
-      //   (await getCroppedImage(image, croppedAreaPixels)) ?? "";
+      const croppedImage =
+        (await errorHandlerWrapper(
+          () => getCroppedImage({ src: image, croppedAreaPixels }),
+          {
+            logMessageLabel: "Crop image error:",
+            defaultErrorMessage:
+              "An error has occurred while cropping the image.",
+          },
+        )()) ?? "";
+
       await onCropImage(croppedImage);
     } catch (error) {
-      console.log(error, error?.response);
+      resolveApiError(error);
     } finally {
       setCropping(false);
     }
