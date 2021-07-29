@@ -34,7 +34,7 @@ class UserInvitesView(APIView):
     def get(self, request, requester: User):
         same_organization_user_invites = get_user_invites(
             organization=requester.organization
-        )
+        ).select_related("organization")
 
         data = [
             user_invite_to_json(user_invite)
