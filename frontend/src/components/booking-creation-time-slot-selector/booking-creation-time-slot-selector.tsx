@@ -103,10 +103,12 @@ function BookingCreationTimeSlotSelector() {
     const endDateTime = end.getTime();
 
     getBookings({
-      venueId,
-      statuses: [BookingStatus.Approved, BookingStatus.Pending],
-      startDateTime,
-      endDateTime,
+      queryParams: {
+        venueId,
+        statuses: [BookingStatus.Approved, BookingStatus.Pending],
+        startDateTime,
+        endDateTime,
+      },
     });
   }, [getBookings, venueId, visibleDateRange]);
 

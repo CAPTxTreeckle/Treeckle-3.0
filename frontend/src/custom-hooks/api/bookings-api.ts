@@ -50,9 +50,9 @@ export function useGetPendingBookingCount() {
       { manual: true },
     );
 
-  const getPendingBookingCount = useCallback(async () => {
-    try {
-      return await errorHandlerWrapper(
+  const getPendingBookingCount = useMemo(
+    () =>
+      errorHandlerWrapper(
         async () => {
           const { data: pendingCount } = await apiCall();
 
@@ -61,13 +61,9 @@ export function useGetPendingBookingCount() {
           return pendingCount;
         },
         { logMessageLabel: "GET /bookings/pendingcount error:" },
-      )();
-    } catch (error) {
-      console.log("GET /bookings/pendingcount error:", error, error?.response);
-
-      return 0;
-    }
-  }, [apiCall]);
+      ),
+    [apiCall],
+  );
 
   return { pendingCount, loading, getPendingBookingCount };
 }
@@ -82,7 +78,13 @@ export function useGetBookings() {
     );
 
   const getBookings = useCallback(
-    async (queryParams?: BookingGetQueryParams) => {
+    async ({
+      queryParams,
+      resolveError = true,
+    }: {
+      queryParams?: BookingGetQueryParams;
+      resolveError?: boolean;
+    } = {}) => {
       const url = stringifyUrl(
         {
           url: "/bookings/",
@@ -103,6 +105,10 @@ export function useGetBookings() {
           { logMessageLabel: `GET ${url} error:` },
         )();
       } catch (error) {
+        if (!resolveError) {
+          throw error;
+        }
+
         resolveApiError(error);
 
         return [];

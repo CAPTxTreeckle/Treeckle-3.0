@@ -11,6 +11,7 @@ import {
   setBookingsAction,
 } from "../../redux/slices/bookings-slice";
 import { refreshPendingBookingCountThunk } from "../../redux/slices/pending-booking-count-slice";
+import { resolveApiError } from "../../utils/error-utils";
 
 const OPTIONS: TabOption[] = [
   {
@@ -29,10 +30,15 @@ function AdminBookingsPage() {
   const dispatch = useAppDispatch();
 
   const getBookings = useCallback(async () => {
-    dispatch(setBookingsAction({ loading: true }));
-    const bookings = await _getBookings();
-    dispatch(setBookingsAction({ bookings, loading: false }));
-    dispatch(refreshPendingBookingCountThunk());
+    try {
+      dispatch(setBookingsAction({ loading: true }));
+      const bookings = await _getBookings({ resolveError: false });
+      dispatch(setBookingsAction({ bookings, loading: false }));
+      dispatch(refreshPendingBookingCountThunk());
+    } catch (error) {
+      dispatch(setBookingsAction({ loading: false }));
+      resolveApiError(error);
+    }
   }, [_getBookings, dispatch]);
 
   useEffect(() => {

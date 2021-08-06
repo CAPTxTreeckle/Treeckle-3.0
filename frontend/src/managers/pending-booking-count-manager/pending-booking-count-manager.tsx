@@ -17,9 +17,13 @@ function PendingBookingCountManager() {
   const delay = role === Role.Admin ? DELAY_INTERVAL : null;
 
   const updatePendingBookingCount = useCallback(async () => {
-    dispatch(setPendingBookingCountAction({ loading: true }));
-    const count = await getPendingBookingCount();
-    dispatch(setPendingBookingCountAction({ count, loading: false }));
+    try {
+      dispatch(setPendingBookingCountAction({ loading: true }));
+      const count = await getPendingBookingCount();
+      dispatch(setPendingBookingCountAction({ count, loading: false }));
+    } catch (error) {
+      dispatch(setPendingBookingCountAction({ loading: false }));
+    }
   }, [getPendingBookingCount, dispatch]);
 
   useInterval({

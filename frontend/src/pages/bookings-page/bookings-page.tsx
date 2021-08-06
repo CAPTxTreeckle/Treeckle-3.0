@@ -39,7 +39,7 @@ function BookingsPage() {
 
   const getBookings = useCallback(async () => {
     dispatch(setBookingsAction({ loading: true }));
-    const bookings = await _getBookings({ userId });
+    const bookings = await _getBookings({ queryParams: { userId } });
     dispatch(setBookingsAction({ bookings, loading: false }));
   }, [_getBookings, dispatch, userId]);
 
