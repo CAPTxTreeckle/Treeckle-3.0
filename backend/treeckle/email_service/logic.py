@@ -87,6 +87,7 @@ def send_created_booking_emails(bookings: Iterable[Booking]) -> None:
     cc_emails = [
         subscription.email
         for subscription in get_booking_notification_subscriptions(venue_id=venue.id)
+        if subscription.email != booker.email
     ]
 
     email = EmailMultiAlternatives(
@@ -144,6 +145,7 @@ def send_updated_booking_emails(
             for subscription in get_booking_notification_subscriptions(
                 venue_id=venue.id
             )
+            if subscription.email != booker.email
         ]
 
         email = EmailMultiAlternatives(
