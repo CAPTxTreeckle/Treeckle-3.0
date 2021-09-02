@@ -20,6 +20,7 @@ toast.configure({
   transition: Zoom,
   bodyClassName: styles.toastBody,
   toastClassName: styles.toast,
+  theme: "colored",
 });
 
 configure({ axios: axios.create({ baseURL: process.env.REACT_APP_API_URL }) });
