@@ -44,7 +44,8 @@ export default function useImageCropperState({
         )()) ?? "";
 
       await onCropImage(croppedImage);
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       resolveApiError(error);
     } finally {
       setCropping(false);

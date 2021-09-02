@@ -68,7 +68,8 @@ export function useAxiosWithTokenRefresh<T>(
         setLoading(true);
         const response = await apiCall(config, options);
         return response;
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         if (!isForbiddenOrNotAuthenticated(error)) {
           throw error;
         }
@@ -91,7 +92,8 @@ export function useAxiosWithTokenRefresh<T>(
           dispatch(updateCurrentUserAction(authData));
 
           return response;
-        } catch (error) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
           console.log("Error after token refresh:", error, error?.response);
           if (isForbiddenOrNotAuthenticated(error)) {
             // kick user out

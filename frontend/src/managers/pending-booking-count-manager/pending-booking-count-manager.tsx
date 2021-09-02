@@ -21,7 +21,8 @@ function PendingBookingCountManager() {
       dispatch(setPendingBookingCountAction({ loading: true }));
       const count = await getPendingBookingCount();
       dispatch(setPendingBookingCountAction({ count, loading: false }));
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       dispatch(setPendingBookingCountAction({ loading: false }));
     }
   }, [getPendingBookingCount, dispatch]);

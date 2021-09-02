@@ -41,7 +41,8 @@ const LinkButton = () => {
 
         dispatch(updateCurrentUserAction({ user: updatedSelf }));
       }
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       resolveApiError(error);
     }
   };
@@ -94,7 +95,8 @@ const UnlinkButton = () => {
 
         dispatch(updateCurrentUserAction({ user: updatedSelf }));
       }
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       resolveApiError(error);
     }
   };

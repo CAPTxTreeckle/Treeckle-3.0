@@ -16,7 +16,8 @@ function AdminVenuesCreationPage() {
       await createVenue(venueFormProps);
       toast.success("The new venue has been created successfully.");
       history.push(ADMIN_VENUES_PATH);
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       resolveApiError(error);
     }
   };

@@ -47,7 +47,8 @@ function UserPasswordAuthField({ children }: Props) {
 
         toast.success("Your password has been updated successfully.");
       }
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       resolveApiError(error);
     }
   };

@@ -27,7 +27,8 @@ function AdminVenuesEditPage() {
       await updateVenue(venue?.id ?? venueId, data);
       toast.success("The venue has been updated successfully.");
       history.push(ADMIN_VENUES_PATH);
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       resolveApiError(error);
     }
   };

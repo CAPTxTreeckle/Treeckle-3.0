@@ -21,7 +21,8 @@ function VenueFormGalleryItem({ id, venueFormProps, getVenues }: Props) {
       await deleteVenue(id);
       getVenues();
       toast.success("The venue has been deleted successfully.");
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       resolveApiError(error);
     }
   };

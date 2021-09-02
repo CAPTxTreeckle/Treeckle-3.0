@@ -50,7 +50,8 @@ function SignInAccountForm() {
       toast.success("Signed in successfully.");
 
       dispatch(updateCurrentUserAction(authData));
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       resolveApiError(error);
     }
   };

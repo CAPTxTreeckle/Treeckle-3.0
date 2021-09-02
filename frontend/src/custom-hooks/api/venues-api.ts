@@ -95,7 +95,8 @@ export function useGetVenueCategories() {
         },
         { logMessageLabel: "GET /venues/categories error:" },
       )();
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       resolveApiError(error);
 
       return [];
@@ -136,7 +137,8 @@ export function useGetVenues() {
           },
           { logMessageLabel: `GET ${url} error:` },
         )();
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         resolveApiError(error);
 
         setVenues([]);
@@ -237,7 +239,8 @@ export function useGetSingleVenue() {
           },
           { logMessageLabel: `GET ${url} error:` },
         )();
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         resolveApiError(error);
 
         setVenue(undefined);
@@ -311,7 +314,8 @@ export function useGetBookingNotificationSubscriptions() {
         },
         { logMessageLabel: `GET /venues/subscriptions error:` },
       )();
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       resolveApiError(error);
       return [];
     }

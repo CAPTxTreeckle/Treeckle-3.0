@@ -55,7 +55,8 @@ const ActionButtons = ({ id, role, email }: UserInviteViewProps) => {
         dispatch(updateUserInviteAction(updatedUserInvite));
 
         toast.success("The user's role has been updated successfully.");
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         resolveApiError(error);
       }
     },
@@ -77,7 +78,8 @@ const ActionButtons = ({ id, role, email }: UserInviteViewProps) => {
 
             dispatch(deleteUserInviteAction(deletedUserInviteId));
             hideModal();
-          } catch (error) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          } catch (error: any) {
             resolveApiError(error);
           }
         },

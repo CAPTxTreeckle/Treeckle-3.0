@@ -58,7 +58,8 @@ function BookingCreationFinalizeView() {
       toast.success("New booking(s) created successfully.");
 
       dispatch(successBookingFormSubmissionAction(createdBookings));
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       resolveApiError(error);
     }
   };

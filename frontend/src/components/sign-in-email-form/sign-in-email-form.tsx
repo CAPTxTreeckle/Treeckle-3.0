@@ -41,7 +41,8 @@ function SignInEmailForm() {
       const loginDetails = await checkAccount(deepTrim(formData));
       setLoginDetails(loginDetails);
       setInputEmail(loginDetails.email);
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       resolveApiError(error);
     }
   };

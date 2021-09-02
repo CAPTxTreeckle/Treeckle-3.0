@@ -30,7 +30,8 @@ export function useGetTotalBookingCount() {
       console.log(`GET /bookings/totalcount success:`, totalBookingCount);
 
       return totalBookingCount;
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       console.log(`GET /bookings/totalcount error:`, error, error?.response);
 
       return 0;
@@ -104,7 +105,8 @@ export function useGetBookings() {
           },
           { logMessageLabel: `GET ${url} error:` },
         )();
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         if (!resolveError) {
           throw error;
         }

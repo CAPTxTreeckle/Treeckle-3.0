@@ -58,7 +58,8 @@ const ActionButtons = ({ id, role, email, isSelf }: ExistingUserViewProps) => {
         toast.success("The user's role has been updated successfully.");
 
         dispatch(updateUserAction(updatedUser));
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         resolveApiError(error);
       }
     },
@@ -79,7 +80,8 @@ const ActionButtons = ({ id, role, email, isSelf }: ExistingUserViewProps) => {
             dispatch(deleteUserAction(deletedUserId));
             toast.success("The user has been deleted successfully.");
             hideModal();
-          } catch (error) {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          } catch (error: any) {
             resolveApiError(error);
           }
         },

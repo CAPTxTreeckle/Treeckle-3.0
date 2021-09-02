@@ -35,7 +35,8 @@ function AdminBookingsPage() {
       const bookings = await _getBookings({ resolveError: false });
       dispatch(setBookingsAction({ bookings, loading: false }));
       dispatch(refreshPendingBookingCountThunk());
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       dispatch(setBookingsAction({ loading: false }));
       resolveApiError(error);
     }

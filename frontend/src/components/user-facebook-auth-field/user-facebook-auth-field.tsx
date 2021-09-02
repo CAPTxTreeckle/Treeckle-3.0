@@ -30,7 +30,8 @@ const LinkButton = () => {
 
         dispatch(updateCurrentUserAction({ user: updatedSelf }));
       }
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       resolveApiError(error);
     }
   };
@@ -81,7 +82,8 @@ const UnlinkButton = () => {
           status === "connected" && window.FB?.logout();
         });
       }
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       resolveApiError(error);
     }
   };

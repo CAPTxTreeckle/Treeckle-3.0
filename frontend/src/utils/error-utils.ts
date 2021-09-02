@@ -33,7 +33,8 @@ export function errorHandlerWrapper<T extends unknown[], R = unknown>(
   return async (...args: T) => {
     try {
       return (await fn(...args)) as R;
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       console.log(`${logMessageLabel}:`, args, error, error?.response);
 
       if (error?.isAxiosError) {

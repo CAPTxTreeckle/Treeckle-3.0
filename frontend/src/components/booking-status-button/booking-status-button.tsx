@@ -42,7 +42,8 @@ function BookingStatusButton({ bookingId, status, adminView }: Props) {
         if (action !== BookingStatusAction.Cancel) {
           dispatch(refreshPendingBookingCountThunk());
         }
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         resolveApiError(error);
       }
     };

@@ -32,7 +32,8 @@ export function useGetUserInvites() {
         },
         { logMessageLabel: "GET /users/invite error:" },
       )();
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       resolveApiError(error);
 
       return [];
@@ -156,7 +157,8 @@ export function useGetUsers() {
         },
         { logMessageLabel: "GET /users/ error:" },
       )();
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       resolveApiError(error);
 
       return [];
@@ -187,7 +189,8 @@ export function useGetSelf() {
         },
         { logMessageLabel: "GET /users/self error:" },
       )();
-    } catch (error) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
       resolveApiError(error);
 
       return undefined;
@@ -251,7 +254,8 @@ export function useGetSingleUser() {
           },
           { logMessageLabel: `GET ${url} error:` },
         )();
-      } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
         resolveApiError(error);
         return undefined;
       }

@@ -2,7 +2,8 @@ export function loadFromLocalStorage(key: string) {
   try {
     const serializedState = localStorage.getItem(key);
     return serializedState === null ? undefined : JSON.parse(serializedState);
-  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     console.warn(error);
     localStorage.removeItem("key");
     return undefined;
@@ -18,7 +19,8 @@ export function saveToLocalStorage(key: string, object: unknown) {
   try {
     const serializedState = JSON.stringify(object);
     localStorage.setItem(key, serializedState);
-  } catch (error) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     console.warn(error);
   }
 }
