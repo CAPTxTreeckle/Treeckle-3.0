@@ -420,6 +420,12 @@ function PrivacyPolicyPage() {
         functionality of Our Service, or We are legally obligated to retain this
         data for longer time periods.
       </p>
+      <p>
+        If you would like to request for the removal of Your Personal Data from
+        our Service, you can email us at{" "}
+        <a href="mailto:treeckle@googlegroups.com">treeckle@googlegroups.com</a>
+        .
+      </p>
       <h2>Transfer of Your Personal Data</h2>
       <p>
         Your information, including Personal Data, is processed at the
