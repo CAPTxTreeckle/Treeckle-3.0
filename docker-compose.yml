@@ -27,6 +27,7 @@ services:
         REACT_APP_API_URL: http://localhost/api
         REACT_APP_GOOGLE_CLIENT_ID: 858509158388-d943lj9isgh7oaumkoj65kqvq1ehgt14.apps.googleusercontent.com
         REACT_APP_FACEBOOK_APP_ID: 498179211295170
+        PUBLIC_URL: http://localhost
     networks:
       - frontend
     restart: always
