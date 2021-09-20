@@ -93,7 +93,7 @@ function VenueDetailsForm({
   submitButtonProps,
 }: Props) {
   const methods = useForm<VenueFormProps>({
-    resolver: yupResolver(SCHEMA),
+    resolver: yupResolver<yup.AnyObjectSchema>(SCHEMA),
     defaultValues,
   });
   const { handleSubmit } = methods;

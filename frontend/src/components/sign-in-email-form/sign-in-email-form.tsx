@@ -26,7 +26,7 @@ function SignInEmailForm() {
     useContext(SignInContext);
   const { loading, checkAccount } = useCheckAccount();
   const methods = useForm<SignInEmailFormProps>({
-    resolver: yupResolver(SCHEMA),
+    resolver: yupResolver<yup.AnyObjectSchema>(SCHEMA),
     defaultValues: { email: inputEmail },
   });
 

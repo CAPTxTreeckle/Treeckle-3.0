@@ -28,7 +28,7 @@ const roles = userRoles.map((role) => ({
 
 function UserCreationForm() {
   const methods = useForm<UserCreationFormProps>({
-    resolver: yupResolver(SCHEMA),
+    resolver: yupResolver<yup.AnyObjectSchema>(SCHEMA),
     defaultValues: DEFAULT_VALUES,
   });
   const dispatch = useAppDispatch();

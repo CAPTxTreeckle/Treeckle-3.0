@@ -44,7 +44,7 @@ const DEFAULT_VALUES: BookingNotificationSubscriptionFormProps = {
 
 function BookingNotificationSubscriptionForm() {
   const methods = useForm<BookingNotificationSubscriptionFormProps>({
-    resolver: yupResolver(SCHEMA),
+    resolver: yupResolver<yup.AnyObjectSchema>(SCHEMA),
     defaultValues: DEFAULT_VALUES,
   });
   const { venues, loading, getVenues } = useGetVenues();

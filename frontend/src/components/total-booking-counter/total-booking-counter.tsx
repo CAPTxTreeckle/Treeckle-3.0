@@ -1,4 +1,4 @@
-import { useEffect, memo, useRef } from "react";
+import { useEffect, memo, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { Icon } from "semantic-ui-react";
 import { useCountUp } from "react-countup";
@@ -10,16 +10,24 @@ const CounterViewer = ({
   totalBookingCount: number;
 }) => {
   const countUpRef = useRef<HTMLSpanElement | null>(null);
+  const [loading, setLoading] = useState(false);
   const { ref, inView } = useInView({ delay: 250 });
   const { start, reset } = useCountUp({
     ref: countUpRef,
     start: 0,
     end: totalBookingCount,
     duration: 2,
+    onStart: () => setLoading(true),
+    onEnd: () => setLoading(false),
   });
 
   useEffect(() => {
-    inView ? start?.() : reset?.();
+    if (inView) {
+      start();
+    } else {
+      reset();
+      setLoading(false);
+    }
   }, [inView, start, reset]);
 
   return (
@@ -28,6 +36,7 @@ const CounterViewer = ({
         countUpRef.current = element;
         ref(element);
       }}
+      aria-busy={loading}
     />
   );
 };
