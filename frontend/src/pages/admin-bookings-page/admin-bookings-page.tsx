@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   selectBookingsLoadingState,
   setBookingsAction,
+  updateBookingsAction,
 } from "../../redux/slices/bookings-slice";
 import { refreshPendingBookingCountThunk } from "../../redux/slices/pending-booking-count-slice";
 import { resolveApiError } from "../../utils/error-utils";
@@ -29,21 +30,28 @@ function AdminBookingsPage() {
   const loading = useAppSelector(selectBookingsLoadingState);
   const dispatch = useAppDispatch();
 
-  const getBookings = useCallback(async () => {
-    try {
-      dispatch(setBookingsAction({ loading: true }));
-      const bookings = await _getBookings({ resolveError: false });
-      dispatch(setBookingsAction({ bookings, loading: false }));
-      dispatch(refreshPendingBookingCountThunk());
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      dispatch(setBookingsAction({ loading: false }));
-      resolveApiError(error);
-    }
-  }, [_getBookings, dispatch]);
+  const getBookings = useCallback(
+    async (
+      bookingsAction: typeof setBookingsAction | typeof updateBookingsAction,
+    ) => {
+      try {
+        dispatch(bookingsAction({ loading: true }));
+        const bookings = await _getBookings({
+          resolveError: false,
+        });
+        dispatch(bookingsAction({ bookings, loading: false }));
+        dispatch(refreshPendingBookingCountThunk());
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        dispatch(bookingsAction({ loading: false }));
+        resolveApiError(error);
+      }
+    },
+    [_getBookings, dispatch],
+  );
 
   useEffect(() => {
-    getBookings();
+    getBookings(setBookingsAction);
   }, [getBookings]);
 
   return (
@@ -58,7 +66,7 @@ function AdminBookingsPage() {
               <Button
                 icon="redo alternate"
                 color="blue"
-                onClick={getBookings}
+                onClick={() => getBookings(updateBookingsAction)}
                 loading={loading}
                 disabled={loading}
               />

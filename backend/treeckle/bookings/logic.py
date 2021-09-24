@@ -64,7 +64,9 @@ def get_non_overlapping_date_time_intervals(
     return non_overlapping_date_time_intervals
 
 
-def booking_to_json(booking: Booking, include_comments: bool = False):
+def booking_to_json(
+    booking: Booking, full_details: bool = False, include_comments: bool = False
+):
     data = {
         ID: booking.id,
         CREATED_AT: parse_datetime_to_ms_timestamp(booking.created_at),
@@ -75,21 +77,27 @@ def booking_to_json(booking: Booking, include_comments: bool = False):
         START_DATE_TIME: parse_datetime_to_ms_timestamp(booking.start_date_time),
         END_DATE_TIME: parse_datetime_to_ms_timestamp(booking.end_date_time),
         STATUS: booking.status,
-        FORM_RESPONSE_DATA: booking.form_response_data,
     }
 
-    if include_comments:
-        booking_comments = get_booking_comments(booking=booking).select_related(
-            "comment__commenter__organization", "booking"
-        )
-
+    if full_details:
         data.update(
             {
-                COMMENTS: [
-                    booking_comment_to_json(comment) for comment in booking_comments
-                ]
+                FORM_RESPONSE_DATA: booking.form_response_data,
             }
         )
+
+    # if include_comments:
+    #     booking_comments = get_booking_comments(booking=booking).select_related(
+    #         "comment__commenter__organization", "booking"
+    #     )
+
+    #     data.update(
+    #         {
+    #             COMMENTS: [
+    #                 booking_comment_to_json(comment) for comment in booking_comments
+    #             ]
+    #         }
+    #     )
 
     return data
 

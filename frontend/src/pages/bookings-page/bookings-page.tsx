@@ -15,6 +15,7 @@ import {
 import {
   selectBookingsLoadingState,
   setBookingsAction,
+  updateBookingsAction,
 } from "../../redux/slices/bookings-slice";
 import HorizontalLayoutContainer from "../../components/horizontal-layout-container";
 
@@ -37,14 +38,19 @@ function BookingsPage() {
 
   const dispatch = useAppDispatch();
 
-  const getBookings = useCallback(async () => {
-    dispatch(setBookingsAction({ loading: true }));
-    const bookings = await _getBookings({ queryParams: { userId } });
-    dispatch(setBookingsAction({ bookings, loading: false }));
-  }, [_getBookings, dispatch, userId]);
+  const getBookings = useCallback(
+    async (
+      bookingsAction: typeof setBookingsAction | typeof updateBookingsAction,
+    ) => {
+      dispatch(bookingsAction({ loading: true }));
+      const bookings = await _getBookings({ queryParams: { userId } });
+      dispatch(bookingsAction({ bookings, loading: false }));
+    },
+    [_getBookings, dispatch, userId],
+  );
 
   useEffect(() => {
-    getBookings();
+    getBookings(setBookingsAction);
   }, [getBookings]);
 
   return (
@@ -70,7 +76,7 @@ function BookingsPage() {
               <Button
                 icon="redo alternate"
                 color="blue"
-                onClick={getBookings}
+                onClick={() => getBookings(updateBookingsAction)}
                 loading={loading}
                 disabled={loading}
               />

@@ -23,7 +23,7 @@ from organizations.models import Organization
 from .models import VenueCategory, Venue, BookingNotificationSubscription
 
 
-def venue_to_json(venue: Venue, full_details: bool = True) -> dict:
+def venue_to_json(venue: Venue, full_details: bool = False) -> dict:
     data = {
         ID: venue.id,
         CREATED_AT: parse_datetime_to_ms_timestamp(venue.created_at),

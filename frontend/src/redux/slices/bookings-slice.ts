@@ -68,6 +68,25 @@ const updateBookings = ({
   bookingsAdapter[updateFn](state.bookings, bookings);
 };
 
+const updateBookingsActionGenerator =
+  (updateFn: "setAll" | "upsertMany") =>
+  (
+    state: BookingsState,
+    { payload: { bookings, loading } }: PayloadAction<UpdateAction>,
+  ) => {
+    if (bookings) {
+      updateBookings({
+        state,
+        updateFn,
+        bookingsToBeUpdated: bookings,
+      });
+    }
+
+    if (loading !== undefined) {
+      state.loading = loading;
+    }
+  };
+
 const initialState: BookingsState = {
   users: usersAdapter.getInitialState(),
   venues: venuesAdapter.getInitialState(),
@@ -80,38 +99,8 @@ const bookingsSlice = createSlice({
   initialState,
   reducers: {
     resetBookingsAction: () => initialState,
-    setBookingsAction: (
-      state,
-      { payload: { bookings, loading } }: PayloadAction<UpdateAction>,
-    ) => {
-      if (bookings) {
-        updateBookings({
-          state,
-          updateFn: "setAll",
-          bookingsToBeUpdated: bookings,
-        });
-      }
-
-      if (loading !== undefined) {
-        state.loading = loading;
-      }
-    },
-    updateBookingsAction: (
-      state,
-      { payload: { bookings, loading } }: PayloadAction<UpdateAction>,
-    ) => {
-      if (bookings) {
-        updateBookings({
-          state,
-          updateFn: "upsertMany",
-          bookingsToBeUpdated: bookings,
-        });
-      }
-
-      if (loading !== undefined) {
-        state.loading = loading;
-      }
-    },
+    setBookingsAction: updateBookingsActionGenerator("setAll"),
+    updateBookingsAction: updateBookingsActionGenerator("upsertMany"),
   },
 });
 

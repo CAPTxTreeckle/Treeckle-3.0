@@ -21,7 +21,7 @@ function BookingAdminCalendarsSection() {
   );
 
   useEffect(() => {
-    getVenues({ fullDetails: false });
+    getVenues();
   }, [getVenues]);
 
   return (

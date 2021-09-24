@@ -6,8 +6,8 @@ import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-sl
 import { Role } from "../../types/users";
 import { setPendingBookingCountAction } from "../../redux/slices/pending-booking-count-slice";
 
-// 5 mins
-const DELAY_INTERVAL = 1000 * 60 * 5;
+// 30 mins
+const DELAY_INTERVAL = 1000 * 60 * 30;
 
 function PendingBookingCountManager() {
   const dispatch = useAppDispatch();

@@ -5,7 +5,7 @@ from .models import Venue, BookingNotificationSubscription
 
 class GetVenueSerializer(serializers.Serializer):
     category = serializers.CharField(max_length=255, required=False)
-    full_details = serializers.BooleanField(default=True, required=False)
+    full_details = serializers.BooleanField(default=False, required=False)
 
 
 class VenueSerializer(serializers.ModelSerializer):

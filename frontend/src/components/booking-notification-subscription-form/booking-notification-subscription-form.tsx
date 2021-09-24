@@ -65,7 +65,7 @@ function BookingNotificationSubscriptionForm() {
   );
 
   useEffect(() => {
-    getVenues({ fullDetails: false });
+    getVenues();
   }, [getVenues]);
 
   const { handleSubmit, reset } = methods;

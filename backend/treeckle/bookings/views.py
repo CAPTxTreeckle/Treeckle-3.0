@@ -81,7 +81,11 @@ class BookingsView(APIView):
             statuses=validated_data.get("statuses", None),
         )
 
-        data = [booking_to_json(booking) for booking in bookings]
+        full_details = validated_data.get("full_details", False)
+
+        data = [
+            booking_to_json(booking, full_details=full_details) for booking in bookings
+        ]
 
         return Response(data, status=status.HTTP_200_OK)
 
@@ -132,12 +136,13 @@ class SingleBookingView(APIView):
     @check_requester_booking_same_organization
     @check_requester_is_booker_or_admin
     def get(self, request, requester: User, booking: Booking):
-        data = booking_to_json(booking, include_comments=True)
+        data = booking_to_json(booking, full_details=True)
 
         return Response(data, status=status.HTTP_200_OK)
 
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
     @check_requester_booking_same_organization
+    @check_requester_is_booker_or_admin
     def patch(self, request, requester: User, booking: Booking):
         serializer = PatchSingleBookingSerializer(data=request.data)
 
@@ -162,7 +167,7 @@ class SingleBookingView(APIView):
     @check_access(Role.ADMIN)
     @check_requester_booking_same_organization
     def delete(self, request, requester: User, booking: Booking):
-        data = booking_to_json(booking)
+        data = booking_to_json(booking, full_details=True)
 
         booking.delete()
 

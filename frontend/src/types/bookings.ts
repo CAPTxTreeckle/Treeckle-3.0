@@ -14,6 +14,7 @@ import {
   USER_ID,
   VENUE,
   STATUSES,
+  FULL_DETAILS,
 } from "../constants";
 import { BaseData } from "./base";
 import { UserData } from "./users";
@@ -25,6 +26,7 @@ export type BookingGetQueryParams = {
   [START_DATE_TIME]?: number | string | null;
   [END_DATE_TIME]?: number | string | null;
   [STATUSES]?: BookingStatus[] | null;
+  [FULL_DETAILS]?: boolean | string | number | null;
 };
 
 export type BookingPostData = {
@@ -46,7 +48,7 @@ export type BookingData = BaseData & {
   [START_DATE_TIME]: number;
   [END_DATE_TIME]: number;
   [STATUS]: BookingStatus;
-  [FORM_RESPONSE_DATA]: BookingFormResponse[];
+  [FORM_RESPONSE_DATA]?: BookingFormResponse[];
 };
 
 export type BookingFormResponse = BookingFormFieldProps & {

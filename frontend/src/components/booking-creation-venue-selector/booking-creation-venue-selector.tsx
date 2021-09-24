@@ -17,7 +17,7 @@ function BookingCreationVenueSelector() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    getVenues({ category: selectedCategory });
+    getVenues({ category: selectedCategory, fullDetails: true });
   }, [getVenues, selectedCategory]);
 
   const sortedVenues = useMemo(

@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import { useGetVenues } from "../../custom-hooks/api/venues-api";
 import VenueFormGalleryItem from "../venue-form-gallery-item";
@@ -6,10 +6,15 @@ import { sort } from "../../utils/parser-utils";
 import styles from "./venue-form-gallery.module.scss";
 
 function VenueFormGallery() {
-  const { venues, loading, getVenues } = useGetVenues();
+  const { venues, loading, getVenues: _getVenues } = useGetVenues();
   const sortedVenues = useMemo(
     () => sort(venues, { props: "venueFormProps.name" }),
     [venues],
+  );
+
+  const getVenues = useCallback(
+    () => _getVenues({ fullDetails: true }),
+    [_getVenues],
   );
 
   useEffect(() => {

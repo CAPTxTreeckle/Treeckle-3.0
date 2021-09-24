@@ -54,7 +54,7 @@ def check_requester_is_booker_or_admin(view_method):
                     code="no_access_booking_permission",
                 )
 
-        except (PermissionDenied,) as e:
+        except PermissionDenied as e:
             raise NotFound(detail="No booking found.", code="no_booking_found")
 
         return view_method(

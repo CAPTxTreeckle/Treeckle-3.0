@@ -157,6 +157,45 @@ export function useCreateBookings() {
   return { loading, createBookings };
 }
 
+export function useGetSingleBooking() {
+  const [{ data: booking, loading }, apiCall] =
+    useAxiosWithTokenRefresh<BookingData>(
+      {
+        method: "get",
+      },
+      { manual: true },
+    );
+
+  const getSingleBooking = useCallback(
+    async (bookingId: number | string) => {
+      const url = `/bookings/${bookingId}`;
+
+      try {
+        return await errorHandlerWrapper(
+          async () => {
+            const { data: booking } = await apiCall({
+              url,
+            });
+
+            console.log(`GET ${url} success:`, booking);
+
+            return booking;
+          },
+          { logMessageLabel: `GET ${url} error:` },
+        )();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        resolveApiError(error);
+
+        return undefined;
+      }
+    },
+    [apiCall],
+  );
+
+  return { booking, loading, getSingleBooking };
+}
+
 export function useUpdateBookingStatus() {
   const [{ loading }, apiCall] = useAxiosWithTokenRefresh<BookingData[]>(
     {

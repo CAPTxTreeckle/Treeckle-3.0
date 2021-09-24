@@ -11,6 +11,7 @@ class GetBookingSerializer(serializers.Serializer):
     statuses = serializers.MultipleChoiceField(
         choices=BookingStatus.choices, required=False
     )
+    full_details = serializers.BooleanField(default=False, required=False)
 
     def validate(self, data):
         """

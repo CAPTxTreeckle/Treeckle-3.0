@@ -14,6 +14,9 @@ import {
 import BookingDetailsView from "../booking-details-view";
 import BookingStatusButton from "../booking-status-button";
 import styles from "./booking-base-table.module.scss";
+import { useGetSingleBooking } from "../../custom-hooks/api/bookings-api";
+import { useAppDispatch } from "../../redux/hooks";
+import { updateBookingsAction } from "../../redux/slices/bookings-slice";
 
 export type BookingViewProps = BookingData & {
   [START_DATE_TIME_STRING]: string;
@@ -54,6 +57,9 @@ function BookingBaseTable({
   children,
   ...props
 }: Props) {
+  const { getSingleBooking } = useGetSingleBooking();
+  const dispatch = useAppDispatch();
+
   const StatusButtonRenderer: ColumnShape<BookingViewProps>["cellRenderer"] =
     useCallback(
       ({ rowData: { status, id } }) =>
@@ -68,6 +74,21 @@ function BookingBaseTable({
       [adminView],
     );
 
+  const onRowExpand: TableProps<BookingViewProps>["onRowExpand"] = async ({
+    expanded,
+    rowData: { id, formResponseData },
+  }) => {
+    if (!expanded || formResponseData) {
+      return;
+    }
+
+    const booking = await getSingleBooking(id);
+
+    if (booking) {
+      dispatch(updateBookingsAction({ bookings: [booking] }));
+    }
+  };
+
   return (
     <Segment className={styles.bookingBaseTable}>
       <AutoResizer>
@@ -79,6 +100,7 @@ function BookingBaseTable({
             estimatedRowHeight={50}
             fixed
             expandColumnKey={ACTION}
+            onRowExpand={onRowExpand}
             {...props}
           >
             {children}

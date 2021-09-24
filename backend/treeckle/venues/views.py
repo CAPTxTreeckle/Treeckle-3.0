@@ -115,7 +115,7 @@ class VenuesView(APIView):
             category=validated_data.get("category", None),
         )
 
-        full_details = validated_data.get("full_details", True)
+        full_details = validated_data.get("full_details", False)
 
         if full_details:
             venues = venues.select_related("category", "organization")
@@ -145,7 +145,7 @@ class VenuesView(APIView):
         except IntegrityError as e:
             raise Conflict(detail="Venue already exists.", code="venue_exists")
 
-        data = venue_to_json(new_venue)
+        data = venue_to_json(new_venue, full_details=True)
 
         return Response(data, status=status.HTTP_201_CREATED)
 
@@ -154,7 +154,7 @@ class SingleVenueView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
     @check_requester_venue_same_organization
     def get(self, request, requester: User, venue: Venue):
-        data = venue_to_json(venue)
+        data = venue_to_json(venue, full_details=True)
 
         return Response(data, status=status.HTTP_200_OK)
 
@@ -181,14 +181,14 @@ class SingleVenueView(APIView):
         except IntegrityError as e:
             raise Conflict(detail="Venue already exists.", code="venue_exists")
 
-        data = venue_to_json(updated_venue)
+        data = venue_to_json(updated_venue, full_details=True)
 
         return Response(data, status=status.HTTP_200_OK)
 
     @check_access(Role.ADMIN)
     @check_requester_venue_same_organization
     def delete(self, request, requester: User, venue: Venue):
-        data = venue_to_json(venue)
+        data = venue_to_json(venue, full_details=True)
         venue.delete()
         delete_unused_venue_categories(organization=venue.organization)
 
