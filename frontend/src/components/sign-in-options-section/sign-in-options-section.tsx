@@ -6,6 +6,7 @@ import {
   GoogleLoginResponse,
   GoogleLoginResponseOffline,
 } from "react-google-login";
+import MicrosoftLogin from "react-microsoft-login";
 import { SignInContext } from "../../contexts/sign-in-provider";
 import {
   useFacebookAuth,
@@ -114,12 +115,35 @@ const FacebookLoginButton = () => {
   );
 };
 
+const MicrosoftLoginButton = () => {
+  return (
+    <MicrosoftLogin
+      clientId={process.env.REACT_APP_MICROSOFT_CLIENT_ID ?? ""}
+      authCallback={(error, result, instance) => {
+        console.log(error, result, instance);
+      }}
+      graphScopes={["user.read"]}
+      redirectUri={process.env.PUBLIC_URL}
+      withUserData
+      debug
+    >
+      <Button
+        icon="microsoft"
+        color="black"
+        content="Sign in with Microsoft"
+        fluid
+      />
+    </MicrosoftLogin>
+  );
+};
+
 function SignInOptionsSection() {
   return (
     <div className={clsx(styles.signInOptionsSection, styles.important)}>
       <PasswordLoginButton />
       <GoogleLoginButton />
       <FacebookLoginButton />
+      <MicrosoftLoginButton />
 
       {/* <Button
         content="Sign in with NUSNET"
