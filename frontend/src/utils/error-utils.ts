@@ -1,4 +1,4 @@
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 import { StatusCodes } from "http-status-codes";
 import { toast, TypeOptions } from "react-toastify";
 
@@ -37,10 +37,10 @@ export function errorHandlerWrapper<T extends unknown[], R = unknown>(
     } catch (error: any) {
       console.log(`${logMessageLabel}:`, args, error, error?.response);
 
-      if (error?.isAxiosError) {
+      if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
         const { detail = defaultErrorMessage } =
-          axiosError?.response?.data ?? {};
+          axiosError?.response?.data ?? ({} as { detail?: string });
 
         throw new ApiResponseError(detail, "error");
       } else if (error?.toString() !== "Cancel") {
