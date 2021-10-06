@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { capitalCase } from "change-case";
 import { Column } from "react-base-table";
-import { Button, Popup, Segment } from "semantic-ui-react";
+import { Button, Icon, Popup, Segment } from "semantic-ui-react";
 import { toast } from "react-toastify";
 import {
   ACTIONS,
@@ -29,7 +29,7 @@ import UserBaseTable, { UserViewProps } from "../user-base-table";
 import UserEmailRenderer from "../user-email-renderer";
 import UserNameRenderer from "../user-name-renderer";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import DeleteButton, { DeleteModalPropsGetter } from "../delete-button";
+import ConfirmationModalButton from "../confirmation-modal-button";
 import UserRoleChangeButton from "../user-role-change-button";
 import {
   deleteUserAction,
@@ -38,6 +38,7 @@ import {
   updateUserAction,
 } from "../../redux/slices/users-slice";
 import { resolveApiError } from "../../utils/error-utils";
+import { ConfirmationModalPropsGetter } from "../confirmation-modal";
 
 type ExistingUserViewProps = UserViewProps & UserData;
 
@@ -66,7 +67,7 @@ const ActionButtons = ({ id, role, email, isSelf }: ExistingUserViewProps) => {
     [dispatch, _updateUser, id],
   );
 
-  const getDeleteUserModalProps: DeleteModalPropsGetter = useCallback(
+  const getDeleteUserModalProps: ConfirmationModalPropsGetter = useCallback(
     ({ hideModal }) => ({
       title: "Delete Existing User",
       content: `Are you sure you want to the delete existing user (${email})?`,
@@ -74,6 +75,10 @@ const ActionButtons = ({ id, role, email, isSelf }: ExistingUserViewProps) => {
         disabled: loading,
         loading,
         onClick: async () => {
+          if (loading) {
+            return;
+          }
+
           try {
             const { id: deletedUserId } = await deleteUser(id);
 
@@ -86,6 +91,7 @@ const ActionButtons = ({ id, role, email, isSelf }: ExistingUserViewProps) => {
           }
         },
       },
+      icon: <Icon name="trash alternate outline" />,
     }),
     [email, loading, id, deleteUser, dispatch],
   );
@@ -98,10 +104,13 @@ const ActionButtons = ({ id, role, email, isSelf }: ExistingUserViewProps) => {
         compact
         disabled={isSelf}
       />
-      <DeleteButton
-        getDeleteModalProps={getDeleteUserModalProps}
+      <ConfirmationModalButton
+        getConfirmationModalProps={getDeleteUserModalProps}
         compact
-        disabled={isSelf}
+        disabled={isSelf || loading}
+        loading={loading}
+        icon="trash alternate"
+        color="red"
       />
     </>
   );

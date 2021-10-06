@@ -2,7 +2,7 @@ import { capitalCase } from "change-case";
 import { useCallback, useEffect, useMemo } from "react";
 import { Column } from "react-base-table";
 import { toast } from "react-toastify";
-import { Segment, Popup, Button } from "semantic-ui-react";
+import { Segment, Popup, Button, Icon } from "semantic-ui-react";
 import {
   CREATED_AT_STRING,
   ID,
@@ -28,7 +28,8 @@ import {
 } from "../../redux/slices/user-invites-slice";
 import { resolveApiError } from "../../utils/error-utils";
 import { displayDateTime } from "../../utils/parser-utils";
-import DeleteButton, { DeleteModalPropsGetter } from "../delete-button";
+import { ConfirmationModalPropsGetter } from "../confirmation-modal";
+import ConfirmationModalButton from "../confirmation-modal-button";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../search-bar";
@@ -63,30 +64,36 @@ const ActionButtons = ({ id, role, email }: UserInviteViewProps) => {
     [dispatch, _updateUserInvite, id],
   );
 
-  const getDeleteUserInviteModalProps: DeleteModalPropsGetter = useCallback(
-    ({ hideModal }) => ({
-      title: "Delete Pending Registration User",
-      content: `Are you sure you want to delete the pending registration user (${email})?`,
-      yesButtonProps: {
-        disabled: loading,
-        loading,
-        onClick: async () => {
-          try {
-            const { id: deletedUserInviteId } = await deleteUserInvite(id);
+  const getDeleteUserInviteModalProps: ConfirmationModalPropsGetter =
+    useCallback(
+      ({ hideModal }) => ({
+        title: "Delete Pending Registration User",
+        content: `Are you sure you want to delete the pending registration user (${email})?`,
+        yesButtonProps: {
+          disabled: loading,
+          loading,
+          onClick: async () => {
+            if (loading) {
+              return;
+            }
 
-            toast.success("The user has been deleted successfully.");
+            try {
+              const { id: deletedUserInviteId } = await deleteUserInvite(id);
 
-            dispatch(deleteUserInviteAction(deletedUserInviteId));
-            hideModal();
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          } catch (error: any) {
-            resolveApiError(error);
-          }
+              toast.success("The user has been deleted successfully.");
+
+              dispatch(deleteUserInviteAction(deletedUserInviteId));
+              hideModal();
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            } catch (error: any) {
+              resolveApiError(error);
+            }
+          },
         },
-      },
-    }),
-    [email, loading, id, deleteUserInvite, dispatch],
-  );
+        icon: <Icon name="trash alternate outline" />,
+      }),
+      [email, loading, id, deleteUserInvite, dispatch],
+    );
 
   return (
     <>
@@ -96,9 +103,13 @@ const ActionButtons = ({ id, role, email }: UserInviteViewProps) => {
         updateRole={updateUserInvite}
         compact
       />
-      <DeleteButton
-        getDeleteModalProps={getDeleteUserInviteModalProps}
+      <ConfirmationModalButton
+        getConfirmationModalProps={getDeleteUserInviteModalProps}
         compact
+        icon="trash alternate"
+        color="red"
+        loading={loading}
+        disabled={loading}
       />
     </>
   );

@@ -20,6 +20,12 @@ export type ConfirmationModalProps = {
   size?: ModalProps["size"];
 };
 
+export type ConfirmationModalPropsGetter = (props: {
+  open: boolean;
+  onExited: () => void;
+  hideModal: () => void;
+}) => Partial<ConfirmationModalProps>;
+
 function ConfirmationModal({
   open,
   onExited,

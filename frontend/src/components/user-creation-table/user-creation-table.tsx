@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { capitalCase } from "change-case";
 import { toast } from "react-toastify";
 import { useModal } from "react-modal-hook";
-import { Button, List, Popup, Segment } from "semantic-ui-react";
+import { Button, Icon, List, Popup, Segment } from "semantic-ui-react";
 import { AutoResizer, Column } from "react-base-table";
 import {
   PendingCreationUser,
@@ -18,7 +18,7 @@ import useTableState, {
 } from "../../custom-hooks/use-table-state";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
-import DeleteButton, { DeleteModalPropsGetter } from "../delete-button";
+import ConfirmationModalButton from "../confirmation-modal-button";
 import BaseModal from "../base-modal";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
@@ -34,6 +34,7 @@ import {
 import { useCreateUserInvites } from "../../custom-hooks/api/users-api";
 import { resolveApiError } from "../../utils/error-utils";
 import UserCreationTableDescriptionSection from "../user-creation-table-description-section";
+import { ConfirmationModalPropsGetter } from "../confirmation-modal";
 import styles from "./user-creation-table.module.scss";
 
 const USER_CREATION_TABLE_STATE_OPTIONS: TableStateOptions = {
@@ -56,9 +57,11 @@ const ActionButton = ({ id }: PendingCreationUser) => {
   const dispatch = useAppDispatch();
 
   return (
-    <DeleteButton
+    <Button
       compact
       onClick={() => dispatch(removePendingCreationUserAction(id))}
+      icon="trash alternate"
+      color="red"
     />
   );
 };
@@ -121,14 +124,17 @@ function UserCreationTable() {
     [pendingCreationUsers],
   );
 
-  const getClearAllModalProps: DeleteModalPropsGetter = useCallback(
+  const getClearAllModalProps: ConfirmationModalPropsGetter = useCallback(
     ({ hideModal }) => ({
       title: "Clear All Pending Creation Users",
       content: "Are you sure you want to clear all pending creation users?",
-      onYes: () => {
-        dispatch(resetUserCreationAction());
-        hideModal();
+      yesButtonProps: {
+        onClick: () => {
+          dispatch(resetUserCreationAction());
+          hideModal();
+        },
       },
+      icon: <Icon name="trash alternate outline" />,
     }),
     [dispatch],
   );
@@ -143,7 +149,11 @@ function UserCreationTable() {
         updateNewPendingCreationUsersToCreatedAction(createdUserInvites),
       );
 
-      toast.success("New user(s) created successfully.");
+      toast.success(
+        `New user${
+          createdUserInvites.length === 1 ? "" : "s"
+        } created successfully.`,
+      );
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       resolveApiError(error);
@@ -249,11 +259,11 @@ function UserCreationTable() {
 
       <Segment secondary>
         <HorizontalLayoutContainer justify="end">
-          <DeleteButton
-            icon={null}
+          <ConfirmationModalButton
             content="Clear All"
             disabled={pendingCreationUsers.length === 0}
-            getDeleteModalProps={getClearAllModalProps}
+            getConfirmationModalProps={getClearAllModalProps}
+            color="red"
           />
           <Button
             content="Create Users"

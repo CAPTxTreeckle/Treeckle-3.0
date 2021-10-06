@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Segment, Button, Grid } from "semantic-ui-react";
@@ -22,6 +22,8 @@ import BookingCreationErrorAlert from "../booking-creation-error-alert";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import LinkifyTextViewer from "../linkify-text-viewer";
 import PlaceholderWrapper from "../placeholder-wrapper";
+import ConfirmationModalButton from "../confirmation-modal-button";
+import { ConfirmationModalPropsGetter } from "../confirmation-modal";
 
 function BookingCreationFinalizeView() {
   const selectedVenue = useAppSelector(selectSelectedVenue);
@@ -37,32 +39,63 @@ function BookingCreationFinalizeView() {
   const isValid =
     selectedVenue && newBookingPeriods && newBookingPeriods.length > 0 && title;
 
-  const onSubmit = async () => {
-    if (
-      selectedVenue?.id === undefined ||
-      !newBookingPeriods ||
-      !title ||
-      loading
-    ) {
-      return;
-    }
+  const getConfirmBookingsModalProps: ConfirmationModalPropsGetter =
+    useCallback(
+      ({ hideModal }) => ({
+        title: `Submit Booking Request${
+          newBookingPeriods?.length === 1 ? "" : "s"
+        }`,
+        content: `Are you sure you want to submit the booking request${
+          newBookingPeriods?.length === 1 ? "" : "s"
+        }?`,
+        yesButtonProps: {
+          disabled: loading,
+          loading,
+          onClick: async () => {
+            if (
+              selectedVenue?.id === undefined ||
+              !newBookingPeriods ||
+              !title ||
+              loading
+            ) {
+              return;
+            }
 
-    try {
-      const createdBookings = await createBookings({
+            try {
+              const createdBookings = await createBookings({
+                title,
+                venueId: selectedVenue.id,
+                dateTimeRanges: newBookingPeriods,
+                formResponseData: bookingFormResponses ?? [],
+              });
+
+              toast.success(
+                `New booking${
+                  createdBookings.length === 1 ? "" : "s"
+                } created successfully.`,
+              );
+
+              dispatch(successBookingFormSubmissionAction(createdBookings));
+              hideModal();
+
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            } catch (error: any) {
+              resolveApiError(error);
+            }
+          },
+        },
+        icon: <i className="far fa-book icon" />,
+      }),
+      [
+        selectedVenue?.id,
+        newBookingPeriods,
         title,
-        venueId: selectedVenue.id,
-        dateTimeRanges: newBookingPeriods,
-        formResponseData: bookingFormResponses ?? [],
-      });
-
-      toast.success("New booking(s) created successfully.");
-
-      dispatch(successBookingFormSubmissionAction(createdBookings));
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
-    }
-  };
+        bookingFormResponses,
+        loading,
+        dispatch,
+        createBookings,
+      ],
+    );
 
   // cleanup on unmount
   useEffect(() => {
@@ -92,7 +125,9 @@ function BookingCreationFinalizeView() {
                 <>
                   <Grid.Row>
                     <Grid.Column width="4">
-                      <strong>Booking period(s):</strong>
+                      <strong>{`Booking period${
+                        newBookingPeriods.length === 1 ? "" : "s"
+                      }:`}</strong>
                     </Grid.Column>
                     <Grid.Column width="12">
                       {`1. ${displayDateTimeRange(
@@ -181,12 +216,12 @@ function BookingCreationFinalizeView() {
               disabled={loading}
             />
 
-            <Button
+            <ConfirmationModalButton
               color="blue"
               content="Submit"
               loading={loading}
               disabled={!isValid || loading}
-              onClick={onSubmit}
+              getConfirmationModalProps={getConfirmBookingsModalProps}
             />
           </HorizontalLayoutContainer>
         )}

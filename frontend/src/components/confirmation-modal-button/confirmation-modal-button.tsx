@@ -1,19 +1,13 @@
 import { memo, ReactNode } from "react";
 import { useModal } from "react-modal-hook";
-import { Button, Popup, ButtonProps, Icon } from "semantic-ui-react";
+import { Button, Popup, ButtonProps } from "semantic-ui-react";
 import ConfirmationModal, {
-  ConfirmationModalProps,
+  ConfirmationModalPropsGetter,
 } from "../confirmation-modal";
-
-export type DeleteModalPropsGetter = (props: {
-  open: boolean;
-  onExited: () => void;
-  hideModal: () => void;
-}) => Partial<ConfirmationModalProps>;
 
 type Props = Omit<ButtonProps, "onClick"> & {
   popupContent?: ReactNode;
-  getDeleteModalProps?: DeleteModalPropsGetter;
+  getConfirmationModalProps?: ConfirmationModalPropsGetter;
   onClick?: (props: {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>;
     data: ButtonProps;
@@ -21,21 +15,23 @@ type Props = Omit<ButtonProps, "onClick"> & {
   }) => void;
 };
 
-const defaultGetDeleteModalProps = ({
+const defaultGetConfirmationModalProps = ({
   hideModal,
 }: {
   hideModal: () => void;
 }) => ({
-  title: "Delete",
-  content: "Are you sure you want to delete?",
+  // title: "Delete",
+  // content: "Are you sure you want to delete?",
+  title: "Confirm",
+  content: "Do you want to confirm?",
   yesButtonProps: { onClick: hideModal },
   noButtonProps: { onClick: hideModal },
-  icon: <Icon name="trash alternate outline" />,
+  // icon: <Icon name="trash alternate outline" />,
 });
 
-function DeleteButton({
+function ConfirmationModalButton({
   popupContent = null,
-  getDeleteModalProps,
+  getConfirmationModalProps,
   onClick = ({ showModal }) => showModal(),
   ...props
 }: Props) {
@@ -46,12 +42,12 @@ function DeleteButton({
         onExited={onExited}
         onClose={hideModal}
         {...{
-          ...defaultGetDeleteModalProps({ hideModal }),
-          ...getDeleteModalProps?.({ open, onExited, hideModal }),
+          ...defaultGetConfirmationModalProps({ hideModal }),
+          ...getConfirmationModalProps?.({ open, onExited, hideModal }),
         }}
       />
     ),
-    [getDeleteModalProps],
+    [getConfirmationModalProps],
   );
 
   return (
@@ -61,8 +57,8 @@ function DeleteButton({
       disabled={!popupContent}
       trigger={
         <Button
-          icon="trash alternate"
-          color="red"
+          // icon="trash alternate"
+          // color="red"
           onClick={(event, data) => onClick({ event, data, showModal })}
           {...props}
         />
@@ -73,4 +69,4 @@ function DeleteButton({
   );
 }
 
-export default memo(DeleteButton);
+export default memo(ConfirmationModalButton);

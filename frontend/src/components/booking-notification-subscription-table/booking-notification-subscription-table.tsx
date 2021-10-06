@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { AutoResizer, Column } from "react-base-table";
-import { Button, Popup, Segment } from "semantic-ui-react";
+import { Button, Icon, Popup, Segment } from "semantic-ui-react";
 import { toast } from "react-toastify";
 import {
   ACTION,
@@ -31,8 +31,9 @@ import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../search-bar";
 import Table from "../table";
 import UserEmailRenderer from "../user-email-renderer";
-import DeleteButton, { DeleteModalPropsGetter } from "../delete-button";
+import ConfirmationModalButton from "../confirmation-modal-button";
 import { resolveApiError } from "../../utils/error-utils";
+import { ConfirmationModalPropsGetter } from "../confirmation-modal";
 import styles from "./booking-notification-subscription-table.module.scss";
 
 type BookingNotificationSubscriptionViewProps =
@@ -56,7 +57,7 @@ const ActionButton = ({
     useDeleteBookingNotificationSubscription();
   const dispatch = useAppDispatch();
 
-  const getDeleteBookingNotificationSubscriptionModalProps: DeleteModalPropsGetter =
+  const getDeleteBookingNotificationSubscriptionModalProps: ConfirmationModalPropsGetter =
     useCallback(
       ({ hideModal }) => ({
         title: "Delete Booking Notification Subscription",
@@ -65,6 +66,10 @@ const ActionButton = ({
           disabled: loading,
           loading,
           onClick: async () => {
+            if (loading) {
+              return;
+            }
+
             try {
               const { id: deletedBookingNotificationSubscriptionId } =
                 await deleteBookingNotificationSubscription(id);
@@ -85,14 +90,21 @@ const ActionButton = ({
             }
           },
         },
+        icon: <Icon name="trash alternate outline" />,
       }),
       [email, loading, id, deleteBookingNotificationSubscription, dispatch],
     );
 
   return (
-    <DeleteButton
+    <ConfirmationModalButton
       compact
-      getDeleteModalProps={getDeleteBookingNotificationSubscriptionModalProps}
+      getConfirmationModalProps={
+        getDeleteBookingNotificationSubscriptionModalProps
+      }
+      icon="trash alternate"
+      color="red"
+      loading={loading}
+      disabled={loading}
     />
   );
 };
