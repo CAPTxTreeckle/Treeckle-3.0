@@ -33,7 +33,7 @@ function SignInAccountForm() {
   const { email = "", name = "" } = loginDetails ?? {};
 
   const methods = useForm<SignInAccountFormProps>({
-    resolver: yupResolver<yup.AnyObjectSchema>(SCHEMA),
+    resolver: yupResolver(SCHEMA),
     defaultValues: { email, name, password: "" },
   });
 

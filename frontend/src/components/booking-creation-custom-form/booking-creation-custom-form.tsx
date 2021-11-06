@@ -73,7 +73,7 @@ function BookingCreationCustomForm() {
   }, [getSingleVenue, dispatch, selectedVenue?.id]);
 
   const methods = useForm<BookingFormProps>({
-    resolver: yupResolver<yup.AnyObjectSchema>(SCHEMA),
+    resolver: yupResolver(SCHEMA),
     defaultValues: bookingFormProps ?? undefined,
   });
   const { handleSubmit, control, getValues, reset } = methods;

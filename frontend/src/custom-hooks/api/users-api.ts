@@ -3,6 +3,7 @@ import { useAxiosWithTokenRefresh } from "./auth-api";
 import {
   SelfData,
   SelfPatchData,
+  SingleUserInvitePostData,
   UserData,
   UserInviteData,
   UserInvitePatchData,
@@ -44,7 +45,10 @@ export function useGetUserInvites() {
 }
 
 export function useCreateUserInvites() {
-  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<UserInviteData[]>(
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<
+    UserInviteData[],
+    UserInvitePostData
+  >(
     {
       url: "/users/invite",
       method: "post",
@@ -55,7 +59,7 @@ export function useCreateUserInvites() {
   const createUserInvites = useMemo(
     () =>
       errorHandlerWrapper(
-        async (invitations: UserInvitePostData[]) => {
+        async (invitations: SingleUserInvitePostData[]) => {
           const { data: userInvites = [] } = await apiCall({
             data: { invitations },
           });
@@ -78,7 +82,10 @@ export function useCreateUserInvites() {
 }
 
 export function useUpdateUserInvite() {
-  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<UserInviteData>(
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<
+    UserInviteData,
+    UserInvitePatchData
+  >(
     {
       method: "patch",
     },
@@ -201,7 +208,10 @@ export function useGetSelf() {
 }
 
 export function useUpdateSelf() {
-  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<SelfData>(
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<
+    SelfData,
+    SelfPatchData
+  >(
     {
       url: "/users/self",
       method: "patch",
@@ -267,7 +277,10 @@ export function useGetSingleUser() {
 }
 
 export function useUpdateUser() {
-  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<UserData>(
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<
+    UserData,
+    UserPatchData
+  >(
     {
       method: "patch",
     },

@@ -7,6 +7,7 @@ import {
   GOOGLE_AUTH,
   HAS_PASSWORD_AUTH,
   ID,
+  INVITATIONS,
   IS_SELF,
   NAME,
   ORGANIZATION,
@@ -95,9 +96,13 @@ export type SelfPatchData =
       [PAYLOAD]: FacebookPayloadPostData;
     };
 
-export type UserInvitePostData = {
+export type SingleUserInvitePostData = {
   [EMAIL]: string;
   [ROLE]: Role;
+};
+
+export type UserInvitePostData = {
+  [INVITATIONS]: SingleUserInvitePostData[];
 };
 
 export type UserInvitePatchData = {

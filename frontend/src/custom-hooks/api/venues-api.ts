@@ -152,7 +152,10 @@ export function useGetVenues() {
 }
 
 export function useCreateVenue() {
-  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<VenueData>(
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<
+    VenueData,
+    VenuePostData
+  >(
     {
       url: "/venues/",
       method: "post",
@@ -254,7 +257,10 @@ export function useGetSingleVenue() {
 }
 
 export function useUpdateVenue() {
-  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<VenueData>(
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<
+    VenueData,
+    VenuePutData
+  >(
     {
       method: "put",
     },
@@ -329,13 +335,15 @@ export function useGetBookingNotificationSubscriptions() {
 }
 
 export function useCreateBookingNotificationSubscription() {
-  const [{ loading }, apiCall] =
-    useAxiosWithTokenRefresh<BookingNotificationSubscriptionData>(
-      {
-        method: "post",
-      },
-      { manual: true },
-    );
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<
+    BookingNotificationSubscriptionData,
+    BookingNotificationSubscriptionPostData
+  >(
+    {
+      method: "post",
+    },
+    { manual: true },
+  );
 
   const createBookingNotificationSubscription = useMemo(
     () =>

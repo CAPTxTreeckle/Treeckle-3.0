@@ -80,3 +80,4 @@ export const ACCESS_TOKEN = "accessToken";
 export const PAYLOAD = "payload";
 export const TOKENS = "tokens";
 export const STATUSES = "statuses";
+export const INVITATIONS = "invitations";

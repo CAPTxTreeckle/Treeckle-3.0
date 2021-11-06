@@ -14,6 +14,7 @@ import {
   GoogleLoginPostData,
   LoginDetails,
   PasswordLoginPostData,
+  TokenRefreshPostData,
 } from "../../types/auth";
 import {
   errorHandlerWrapper,
@@ -26,17 +27,20 @@ import {
 } from "../../redux/slices/current-user-slice";
 import { resetAppState } from "../../redux/store";
 
-export function useAxiosWithTokenRefresh<T>(
+export function useAxiosWithTokenRefresh<TResponse, TBody = undefined>(
   config: AxiosRequestConfig,
   options?: Options,
 ): [
-  ResponseValues<T, Error>,
-  (config?: AxiosRequestConfig, options?: RefetchOptions) => AxiosPromise<T>,
+  ResponseValues<TResponse, TBody, Error>,
+  (
+    config?: AxiosRequestConfig<TBody>,
+    options?: RefetchOptions,
+  ) => AxiosPromise<TResponse>,
   () => void,
 ] {
   const { access, refresh } = useAppSelector(selectCurrentUserTokens) ?? {};
   const dispatch = useAppDispatch();
-  const [responseValues, apiCall, cancel] = useAxios<T>(
+  const [responseValues, apiCall, cancel] = useAxios<TResponse, TBody, Error>(
     {
       ...config,
       headers: {
@@ -49,7 +53,10 @@ export function useAxiosWithTokenRefresh<T>(
       manual: true,
     },
   );
-  const [, tokenRefresh] = useAxios<AuthenticationData>(
+  const [, tokenRefresh] = useAxios<
+    AuthenticationData,
+    Partial<TokenRefreshPostData>
+  >(
     {
       url: "/gateway/refresh",
       method: "post",
@@ -61,9 +68,9 @@ export function useAxiosWithTokenRefresh<T>(
 
   const apiCallWithTokenRefresh = useCallback(
     async (
-      config?: AxiosRequestConfig,
+      config?: AxiosRequestConfig<TBody>,
       options?: RefetchOptions,
-    ): Promise<AxiosResponse<T>> => {
+    ): Promise<AxiosResponse<TResponse>> => {
       try {
         setLoading(true);
         const response = await apiCall(config, options);
@@ -220,7 +227,7 @@ export function useFacebookAuth(
 }
 
 export function useCheckAccount() {
-  const [{ loading }, apiCall] = useAxios<LoginDetails>(
+  const [{ loading }, apiCall] = useAxios<LoginDetails, CheckAccountPostData>(
     {
       url: "/gateway/check",
       method: "post",
@@ -249,7 +256,10 @@ export function useCheckAccount() {
 }
 
 export function useGoogleLogin() {
-  const [{ loading }, apiCall] = useAxios<AuthenticationData>(
+  const [{ loading }, apiCall] = useAxios<
+    AuthenticationData,
+    GoogleLoginPostData
+  >(
     {
       url: "/gateway/google",
       method: "post",
@@ -278,7 +288,10 @@ export function useGoogleLogin() {
 }
 
 export function useFacebookLogin() {
-  const [{ loading }, apiCall] = useAxios<AuthenticationData>(
+  const [{ loading }, apiCall] = useAxios<
+    AuthenticationData,
+    FacebookLoginPostData
+  >(
     {
       url: "/gateway/facebook",
       method: "post",
@@ -307,7 +320,10 @@ export function useFacebookLogin() {
 }
 
 export function usePasswordLogin() {
-  const [{ loading }, login] = useAxios<AuthenticationData>(
+  const [{ loading }, login] = useAxios<
+    AuthenticationData,
+    PasswordLoginPostData
+  >(
     {
       url: "/gateway/login",
       method: "post",

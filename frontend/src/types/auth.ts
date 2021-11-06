@@ -14,6 +14,10 @@ export type AuthenticationData = {
   };
 };
 
+export type TokenRefreshPostData = {
+  [REFRESH]: string;
+};
+
 export type CheckAccountPostData = {
   [EMAIL]: string;
 };

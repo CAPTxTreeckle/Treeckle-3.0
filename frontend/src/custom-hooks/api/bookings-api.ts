@@ -123,7 +123,10 @@ export function useGetBookings() {
 }
 
 export function useCreateBookings() {
-  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<BookingData[]>(
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<
+    BookingData[],
+    BookingPostData
+  >(
     {
       url: "/bookings/",
       method: "post",
@@ -197,7 +200,10 @@ export function useGetSingleBooking() {
 }
 
 export function useUpdateBookingStatus() {
-  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<BookingData[]>(
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<
+    BookingData[],
+    BookingPatchData
+  >(
     {
       method: "patch",
     },
