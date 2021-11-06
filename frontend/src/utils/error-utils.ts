@@ -39,7 +39,8 @@ export function errorHandlerWrapper<T extends unknown[], R = unknown>(
 
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
-        const { detail = defaultErrorMessage } = axiosError?.response?.data;
+        const { detail = defaultErrorMessage } =
+          axiosError?.response?.data ?? {};
 
         throw new ApiResponseError(detail, "error");
       } else if (error?.toString() !== "Cancel") {
@@ -48,6 +49,8 @@ export function errorHandlerWrapper<T extends unknown[], R = unknown>(
           "error",
         );
       } else {
+        console.log(error?.message, defaultErrorMessage);
+        console.log("test");
         throw new ApiResponseError(error);
       }
     }
