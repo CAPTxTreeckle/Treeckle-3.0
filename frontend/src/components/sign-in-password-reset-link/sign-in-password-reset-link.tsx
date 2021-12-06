@@ -18,7 +18,7 @@ function SignInPasswordResetLink() {
     try {
       await passwordReset({ email });
 
-      toast.info("You have requested to reset your password.");
+      toast.info("An email has been sent to reset your password.");
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
