@@ -198,6 +198,7 @@ def create_bookings(
     return new_bookings
 
 
+@transaction.atomic
 def update_booking_status(
     booking: Booking, action: BookingStatusAction, user: User
 ) -> tuple[Sequence[Booking], dict[int, BookingStatus]]:
@@ -277,19 +278,18 @@ def update_booking_status(
 
     id_to_previous_booking_status_mapping[booking.id] = current_booking_status
 
-    with transaction.atomic():
-        ## reject clashing pending bookings
-        clashing_pending_bookings.update(status=BookingStatus.REJECTED)
+    ## reject clashing pending bookings
+    clashing_pending_bookings.update(status=BookingStatus.REJECTED)
 
-        ## update current booking to APPROVED
-        booking.save(update_fields=["status"])
+    ## update current booking to APPROVED
+    booking.save(update_fields=["status"])
 
-        updated_bookings = [
-            booking
-            for booking in get_bookings(
-                id__in=id_to_previous_booking_status_mapping
-            ).select_related("booker__organization", "booker__profile_image", "venue")
-        ]
+    updated_bookings = [
+        booking
+        for booking in get_bookings(
+            id__in=id_to_previous_booking_status_mapping
+        ).select_related("booker__organization", "booker__profile_image", "venue")
+    ]
 
     return updated_bookings, id_to_previous_booking_status_mapping
 

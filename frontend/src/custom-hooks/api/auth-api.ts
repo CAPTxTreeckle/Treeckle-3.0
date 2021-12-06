@@ -182,7 +182,7 @@ export function useFacebookAuth(
         return;
       }
 
-      const startfacebookClientLogin = () =>
+      const startFacebookClientLogin = () =>
         window.FB?.login(
           (response) => {
             console.log("Facebook Client login response:", response);
@@ -216,9 +216,9 @@ export function useFacebookAuth(
         );
 
       if (response.status === "connected") {
-        window.FB?.logout(startfacebookClientLogin);
+        window.FB?.logout(startFacebookClientLogin);
       } else {
-        startfacebookClientLogin();
+        startFacebookClientLogin();
       }
     });
   }, [callback]);

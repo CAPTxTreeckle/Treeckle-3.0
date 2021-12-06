@@ -1,6 +1,5 @@
 import os
 import requests
-from typing import Optional
 
 from rest_framework import serializers, exceptions
 
@@ -23,7 +22,8 @@ from treeckle.common.constants import (
 from treeckle.common.exceptions import InternalServerError, BadRequest
 from users.models import User
 from users.logic import requester_to_json, get_users
-from .logic import get_authenticated_data, get_login_details
+from email_service.logic import send_password_reset_email
+from .logic import get_authenticated_data, get_login_details, reset_password
 
 from .models import (
     AuthenticationData,
@@ -284,3 +284,27 @@ class CheckAccountSerializer(BaseAuthenticationSerializer):
             self.raise_invalid_user()
 
         return login_details
+
+
+class PasswordResetSerializer(BaseAuthenticationSerializer):
+    email = serializers.EmailField()
+
+    def validate(self, attrs):
+        email = attrs[EMAIL]
+
+        try:
+            user = get_users(email=email).get()
+        except User.DoesNotExist as e:
+            self.raise_invalid_user()
+
+        new_password = reset_password(user=user)
+
+        if new_password is None:
+            raise InternalServerError(
+                detail="An error has occurred while resetting the password.",
+                code="fail_to_reset_password",
+            )
+
+        send_password_reset_email(user=user, new_password=new_password)
+
+        return email

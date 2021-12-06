@@ -95,7 +95,7 @@ def get_or_create_venue_category(
     return venue_category
 
 
-def delete_unused_venue_categories(organization: Organization) -> None:
+def delete_unused_venue_categories(organization: Organization):
     organization.venuecategory_set.filter(venue=None).delete()
 
 

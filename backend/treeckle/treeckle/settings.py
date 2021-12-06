@@ -14,6 +14,8 @@ import os
 from pathlib import Path
 from datetime import timedelta
 
+from .common.constants import SUPPORT_EMAIL
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -105,7 +107,7 @@ ANYMAIL = {
 
 EMAIL_BACKEND = "anymail.backends.sendinblue.EmailBackend"
 DEFAULT_FROM_EMAIL = "Treeckle <no-reply@treeckle.com>"
-SERVER_EMAIL = "treeckle@googlegroups.com"
+SERVER_EMAIL = SUPPORT_EMAIL
 
 ## Django admin theming
 ## https://django-jazzmin.readthedocs.io/index.html

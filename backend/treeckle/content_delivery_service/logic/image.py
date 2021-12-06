@@ -1,6 +1,7 @@
 import os
 from typing import Optional
-from uuid import uuid4
+
+from django.utils.crypto import get_random_string
 
 from imagekitio import ImageKit
 
@@ -32,7 +33,7 @@ def upload_image(base64_image: str, filename: Optional[str] = None) -> tuple[str
     if not base64_image:
         return "", ""
 
-    image_name = filename if filename else str(uuid4())
+    image_name = filename if filename else get_random_string(length=20)
     _, image_file = base64_image.split(":", 1)
 
     data = imagekit.upload(file=image_file, file_name=image_name).get("response", {})

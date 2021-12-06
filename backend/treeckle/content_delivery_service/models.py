@@ -1,9 +1,9 @@
 import os
 from typing import Optional
-from uuid import uuid4
 
 from django.db import models
 from django.db.models.signals import post_delete
+from django.utils.crypto import get_random_string
 
 from imagekitio import ImageKit
 
@@ -48,7 +48,7 @@ class Image(TimestampedModel):
         if not self.image_url or is_url(self.image_url):
             return
 
-        image_name = filename if filename else str(uuid4())
+        image_name = filename if filename else get_random_string(length=20)
         _, image_file = self.image_url.split(":", 1)
 
         data = imagekit.upload(

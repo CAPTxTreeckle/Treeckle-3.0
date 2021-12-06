@@ -4,7 +4,7 @@ import requests
 from typing import Sequence, Iterable, Optional
 
 from django.db.models import QuerySet
-from django.db import transaction, models
+from django.db import transaction
 
 from treeckle.common.exceptions import InternalServerError, BadRequest
 from treeckle.common.constants import (
@@ -219,8 +219,8 @@ def update_requester(
 
         if new_auth_method is None:
             raise InternalServerError(
-                detail=f"An error has occurred while updating the {auth_name}.",
-                code=f"no_new_{auth_name}_auth",
+                detail="An error has occurred while updating the password.",
+                code="fail_to_update_password",
             )
 
     elif action in (PatchUserAction.GOOGLE, PatchUserAction.FACEBOOK):
@@ -272,7 +272,7 @@ def update_requester(
             if new_auth_method is None:
                 raise InternalServerError(
                     detail=f"An error has occurred while linking the {auth_name} account.",
-                    code=f"no_new_{auth_name}_auth",
+                    code=f"fail_to_link_{auth_name}_account",
                 )
 
     return requester

@@ -7,16 +7,36 @@ from django.core.mail import get_connection, EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
-from treeckle.common.constants import DATE_TIME_FORMAT
-from organizations.models import Organization
+from treeckle.common.constants import DATE_TIME_FORMAT, SUPPORT_EMAIL
 from venues.logic import get_booking_notification_subscriptions
-from users.models import UserInvite
+from users.models import UserInvite, User
 from bookings.models import Booking, BookingStatus
 
 HOST = os.getenv("HOST")
 
 
-def send_user_invite_emails(user_invites: Iterable[UserInvite]) -> None:
+def send_password_reset_email(user: User, new_password: str):
+    subject = f"Reset your Treeckle password"
+    html_message = render_to_string(
+        "password_reset_email_template.html",
+        context={
+            "name": user.name,
+            "email": user.email,
+            "password": new_password,
+            "host": HOST,
+            "support_email": SUPPORT_EMAIL,
+        },
+    )
+    plain_message = strip_tags(html_message)
+
+    email = EmailMultiAlternatives(subject=subject, body=plain_message, to=[user.email])
+    email.attach_alternative(html_message, "text/html")
+
+    connection = get_connection(fail_silently=True)
+    connection.send_messages([email])
+
+
+def send_user_invite_emails(user_invites: Iterable[UserInvite]):
     if not user_invites:
         return
 
@@ -48,7 +68,7 @@ def send_user_invite_emails(user_invites: Iterable[UserInvite]) -> None:
     connection.send_messages(emails)
 
 
-def send_created_booking_emails(bookings: Iterable[Booking]) -> None:
+def send_created_booking_emails(bookings: Iterable[Booking]):
     if not bookings:
         return
 
@@ -102,7 +122,7 @@ def send_created_booking_emails(bookings: Iterable[Booking]) -> None:
 def send_updated_booking_emails(
     bookings: Iterable[Booking],
     id_to_previous_booking_status_mapping: dict[int:BookingStatus],
-) -> None:
+):
     if not bookings:
         return
 
