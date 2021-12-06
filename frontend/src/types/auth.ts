@@ -22,6 +22,8 @@ export type CheckAccountPostData = {
   [EMAIL]: string;
 };
 
+export type PasswordResetPostData = CheckAccountPostData;
+
 export type LoginDetails = {
   [NAME]?: string;
   [EMAIL]: string;

@@ -6,6 +6,7 @@ import SignInEmailForm from "../sign-in-email-form";
 import SignInAccountForm from "../sign-in-account-form";
 import SignInOtherOptionsLink from "../sign-in-other-options-link";
 import { LoginDetails } from "../../types/auth";
+import SignInPasswordResetLink from "../sign-in-password-reset-link";
 import styles from "./sign-in-section.module.scss";
 
 const getTitleAndSection = (
@@ -43,7 +44,13 @@ function SignInSection() {
       </Modal.Header>
       <Modal.Content className={styles.signInSection}>
         {section}
-        {isPasswordSignIn && <SignInOtherOptionsLink />}
+        <div className="center-text">
+          {isPasswordSignIn && <SignInOtherOptionsLink />}
+          <br />
+          {isPasswordSignIn && loginDetails?.name && (
+            <SignInPasswordResetLink />
+          )}
+        </div>
       </Modal.Content>
     </>
   );

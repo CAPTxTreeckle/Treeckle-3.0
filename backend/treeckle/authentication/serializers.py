@@ -20,10 +20,10 @@ from treeckle.common.constants import (
     TOKENS,
 )
 from treeckle.common.exceptions import InternalServerError, BadRequest
-from users.models import User
-from users.logic import requester_to_json, get_users
+from users.models import User, UserInvite
+from users.logic import requester_to_json, get_users, get_user_invites
 from email_service.logic import send_password_reset_email
-from .logic import get_authenticated_data, get_login_details, reset_password
+from .logic import get_authenticated_data, reset_password
 
 from .models import (
     AuthenticationData,
@@ -278,12 +278,19 @@ class CheckAccountSerializer(BaseAuthenticationSerializer):
     def validate(self, attrs):
         email = attrs[EMAIL]
 
-        login_details = get_login_details(email=email)
+        try:
+            user = get_users(email=email).get()
+            return {EMAIL: user.email, NAME: user.name}
+        except User.DoesNotExist as e:
+            pass
 
-        if login_details is None:
-            self.raise_invalid_user()
+        try:
+            user_invite = get_user_invites(email=email).get()
+            return {EMAIL: user_invite.email}
+        except UserInvite.DoesNotExist as e:
+            pass
 
-        return login_details
+        self.raise_invalid_user()
 
 
 class PasswordResetSerializer(BaseAuthenticationSerializer):
@@ -307,4 +314,4 @@ class PasswordResetSerializer(BaseAuthenticationSerializer):
 
         send_password_reset_email(user=user, new_password=new_password)
 
-        return email
+        return {EMAIL: user.email, NAME: user.name}

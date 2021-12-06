@@ -14,6 +14,7 @@ import {
   GoogleLoginPostData,
   LoginDetails,
   PasswordLoginPostData,
+  PasswordResetPostData,
   TokenRefreshPostData,
 } from "../../types/auth";
 import {
@@ -253,6 +254,35 @@ export function useCheckAccount() {
   );
 
   return { loading, checkAccount };
+}
+
+export function usePasswordReset() {
+  const [{ loading }, apiCall] = useAxios<LoginDetails, PasswordResetPostData>(
+    {
+      url: "/gateway/reset",
+      method: "post",
+    },
+    { manual: true },
+  );
+
+  const passwordReset = useMemo(
+    () =>
+      errorHandlerWrapper(
+        async (data: PasswordResetPostData) => {
+          console.log("POST /gateway/reset data:", data);
+
+          const { data: loginDetails } = await apiCall({ data });
+
+          console.log("POST /gateway/reset success:", loginDetails);
+
+          return loginDetails;
+        },
+        { logMessageLabel: "POST /gateway/reset error:" },
+      ),
+    [apiCall],
+  );
+
+  return { loading, passwordReset };
 }
 
 export function useGoogleLogin() {
