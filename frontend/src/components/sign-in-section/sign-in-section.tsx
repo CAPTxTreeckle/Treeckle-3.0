@@ -44,13 +44,13 @@ function SignInSection() {
       </Modal.Header>
       <Modal.Content className={styles.signInSection}>
         {section}
-        <div className="center-text">
-          {isPasswordSignIn && <SignInOtherOptionsLink />}
-          <br />
-          {isPasswordSignIn && loginDetails?.name && (
-            <SignInPasswordResetLink />
-          )}
-        </div>
+        {isPasswordSignIn && (
+          <div className="center-text">
+            <SignInOtherOptionsLink />
+            <br />
+            {loginDetails?.name && <SignInPasswordResetLink />}
+          </div>
+        )}
       </Modal.Content>
     </>
   );
