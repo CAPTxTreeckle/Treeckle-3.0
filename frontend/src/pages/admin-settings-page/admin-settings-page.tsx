@@ -1,4 +1,5 @@
 import { Icon, Message, Segment } from "semantic-ui-react";
+
 import BookingNotificationSubscriptionForm from "../../components/booking-notification-subscription-form";
 import BookingNotificationSubscriptionTable from "../../components/booking-notification-subscription-table";
 

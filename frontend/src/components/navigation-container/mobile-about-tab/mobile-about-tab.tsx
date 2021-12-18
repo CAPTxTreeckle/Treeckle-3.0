@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Accordion, MenuItem } from "semantic-ui-react";
+
 import {
   OUR_STORY_PATH,
-  TERMS_OF_USE_PATH,
   PRIVACY_POLICY_PATH,
+  TERMS_OF_USE_PATH,
 } from "../../../routes/paths";
 import TabItem from "../tab-item";
 import styles from "./mobile-about-tab.module.scss";

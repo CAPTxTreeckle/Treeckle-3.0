@@ -1,7 +1,8 @@
 import Cropper from "react-easy-crop";
-import { Divider, Button, Popup } from "semantic-ui-react";
-import HorizontalLayoutContainer from "../horizontal-layout-container";
+import { Button, Divider, Popup } from "semantic-ui-react";
+
 import useImageCropperState from "../../custom-hooks/use-image-cropper-state";
+import HorizontalLayoutContainer from "../horizontal-layout-container";
 import styles from "./image-cropper.module.scss";
 
 const DEFAULT_ASPECT_RATIO = 4 / 3;

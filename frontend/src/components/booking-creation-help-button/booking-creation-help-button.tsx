@@ -1,5 +1,6 @@
 import { useModal } from "react-modal-hook";
 import { Button, Popup } from "semantic-ui-react";
+
 import { useAppSelector } from "../../redux/hooks";
 import { selectSelectedVenue } from "../../redux/slices/booking-creation-slice";
 import BaseModal from "../base-modal";

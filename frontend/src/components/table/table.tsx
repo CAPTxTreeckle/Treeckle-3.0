@@ -1,14 +1,16 @@
+import "react-base-table/styles.css";
+
+import clsx from "clsx";
 import { Dispatch, Key, SetStateAction, useMemo } from "react";
 import BaseTable, {
-  TableComponents,
   BaseTableProps,
   SortOrder,
+  TableComponents,
 } from "react-base-table";
-import clsx from "clsx";
 import { Icon } from "semantic-ui-react";
+
 import { SortBy } from "../../custom-hooks/use-table-state";
 import styles from "./table.module.scss";
-import "react-base-table/styles.css";
 
 export type TableProps<T> = BaseTableProps<T> & {
   setSortBy?: Dispatch<SetStateAction<SortBy | undefined>>;

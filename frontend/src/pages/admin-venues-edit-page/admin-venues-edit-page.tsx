@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button, Icon } from "semantic-ui-react";
+
+import PlaceholderWrapper from "../../components/placeholder-wrapper";
+import VenueDetailsForm from "../../components/venue-details-form";
 import {
   useGetSingleVenue,
   useUpdateVenue,
@@ -9,8 +12,6 @@ import {
 import { ADMIN_VENUES_PATH } from "../../routes/paths";
 import { VenueFormProps } from "../../types/venues";
 import { resolveApiError } from "../../utils/error-utils";
-import PlaceholderWrapper from "../../components/placeholder-wrapper";
-import VenueDetailsForm from "../../components/venue-details-form";
 
 function AdminVenuesEditPage() {
   const history = useHistory();

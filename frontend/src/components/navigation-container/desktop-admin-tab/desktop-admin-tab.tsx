@@ -1,14 +1,15 @@
 import clsx from "clsx";
 import { Link, useLocation } from "react-router-dom";
 import { Dropdown } from "semantic-ui-react";
-import PendingBookingCountLabel from "../../pending-booking-count-label";
+
 import {
   ADMIN_BOOKINGS_PATH,
-  ADMIN_USERS_PATH,
   ADMIN_SETTINGS_PATH,
+  ADMIN_USERS_PATH,
   ADMIN_VENUES_PATH,
 } from "../../../routes/paths";
 import HorizontalLayoutContainer from "../../horizontal-layout-container";
+import PendingBookingCountLabel from "../../pending-booking-count-label";
 
 function DesktopAdminTab() {
   const { pathname } = useLocation();

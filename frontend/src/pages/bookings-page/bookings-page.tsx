@@ -1,23 +1,24 @@
 import { useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Popup } from "semantic-ui-react";
-import { BOOKINGS_CREATION_PATH } from "../../routes/paths";
+
+import BookingUserCalendar from "../../components/booking-user-calendar";
+import BookingUserTable from "../../components/booking-user-table";
+import HorizontalLayoutContainer from "../../components/horizontal-layout-container";
 import Tab, { TabOption } from "../../components/tab";
 import { useGetBookings } from "../../custom-hooks/api/bookings-api";
-import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
-import BookingUserTable from "../../components/booking-user-table";
-import BookingUserCalendar from "../../components/booking-user-calendar";
 import {
-  useDeepEqualAppSelector,
   useAppDispatch,
   useAppSelector,
+  useDeepEqualAppSelector,
 } from "../../redux/hooks";
 import {
   selectBookingsLoadingState,
   setBookingsAction,
   updateBookingsAction,
 } from "../../redux/slices/bookings-slice";
-import HorizontalLayoutContainer from "../../components/horizontal-layout-container";
+import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
+import { BOOKINGS_CREATION_PATH } from "../../routes/paths";
 
 const OPTIONS: TabOption[] = [
   {

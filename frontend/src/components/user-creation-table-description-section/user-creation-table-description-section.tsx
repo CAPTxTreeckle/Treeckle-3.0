@@ -1,8 +1,9 @@
-import { Segment, Message, Icon, Grid } from "semantic-ui-react";
 import { capitalCase } from "change-case";
+import { Grid, Icon, Message, Segment } from "semantic-ui-react";
+
 import {
-  USER_CREATION_STATUSES,
   USER_CREATION_STATUS_DETAILS,
+  USER_CREATION_STATUSES,
 } from "../../types/users";
 import styles from "./user-creation-table-description-section.module.scss";
 

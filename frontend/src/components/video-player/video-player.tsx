@@ -1,5 +1,6 @@
 import { useState } from "react";
 import ReactPlayer from "react-player/youtube";
+
 import PlaceholderWrapper from "../placeholder-wrapper";
 import styles from "./video-player.module.scss";
 

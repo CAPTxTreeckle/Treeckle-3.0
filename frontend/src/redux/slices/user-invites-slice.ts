@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 import { userInvitesAdapter } from "../entities";
 import type { RootState } from "../store";
 

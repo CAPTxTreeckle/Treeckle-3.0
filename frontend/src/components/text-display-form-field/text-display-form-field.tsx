@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { Form, SemanticWIDTHS } from "semantic-ui-react";
+
 import TextArea from "../text-area";
 import styles from "./text-display-form-field.module.scss";
 

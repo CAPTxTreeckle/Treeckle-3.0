@@ -1,7 +1,8 @@
 import { useCallback, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Segment, Button, Grid } from "semantic-ui-react";
+import { Button, Grid, Segment } from "semantic-ui-react";
+
 import { useCreateBookings } from "../../custom-hooks/api/bookings-api";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
@@ -19,11 +20,11 @@ import { FieldType } from "../../types/venues";
 import { resolveApiError } from "../../utils/error-utils";
 import { displayDateTimeRange } from "../../utils/parser-utils";
 import BookingCreationErrorAlert from "../booking-creation-error-alert";
+import { ConfirmationModalPropsGetter } from "../confirmation-modal";
+import ConfirmationModalButton from "../confirmation-modal-button";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import LinkifyTextViewer from "../linkify-text-viewer";
 import PlaceholderWrapper from "../placeholder-wrapper";
-import ConfirmationModalButton from "../confirmation-modal-button";
-import { ConfirmationModalPropsGetter } from "../confirmation-modal";
 
 function BookingCreationFinalizeView() {
   const selectedVenue = useAppSelector(selectSelectedVenue);

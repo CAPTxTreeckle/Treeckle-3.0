@@ -1,5 +1,6 @@
-import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import equal from "fast-deep-equal";
+
 import {
   BookingCreationStep,
   BookingData,

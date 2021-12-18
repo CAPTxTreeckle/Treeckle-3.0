@@ -1,25 +1,27 @@
+import "react-big-calendar/lib/css/react-big-calendar.css";
+
 import clsx from "clsx";
 import {
   Calendar,
+  CalendarProps,
   EventPropGetter,
   Views,
-  CalendarProps,
 } from "react-big-calendar";
+
+import { BOOKER, END, START, STATUS, TITLE, VENUE_NAME } from "../../constants";
+import { BookingStatus } from "../../types/bookings";
+import { UserData } from "../../types/users";
 import {
   CURRENT_LOCALE,
   dateLocalizer,
-  dayPropGetter,
   DAY_HEADER_FORMAT,
+  dayPropGetter,
   slotPropGetter,
   weekRangeFormat,
 } from "../../utils/calendar-utils";
 import CalendarBookingEvent from "../calendar-booking-event";
 import CalendarToolbar from "../calendar-toolbar";
-import { TITLE, BOOKER, START, END, STATUS, VENUE_NAME } from "../../constants";
-import { BookingStatus } from "../../types/bookings";
-import { UserData } from "../../types/users";
 import styles from "./booking-calendar.module.scss";
-import "react-big-calendar/lib/css/react-big-calendar.css";
 
 export type CalendarBooking = {
   [TITLE]: string;

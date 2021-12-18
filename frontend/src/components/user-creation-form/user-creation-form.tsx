@@ -4,7 +4,8 @@ import { FormProvider, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Form } from "semantic-ui-react";
 import * as yup from "yup";
-import { ROLE, EMAILS } from "../../constants";
+
+import { EMAILS, ROLE } from "../../constants";
 import { useAppDispatch } from "../../redux/hooks";
 import { addPendingCreationUsersFromInputDataAction } from "../../redux/slices/user-creation-slice";
 import { Role, UserCreationFormProps, userRoles } from "../../types/users";

@@ -1,18 +1,19 @@
-import { useContext } from "react";
-import { toast } from "react-toastify";
-import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { useContext } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { Button, Form } from "semantic-ui-react";
-import FormField from "../form-field";
+import * as yup from "yup";
+
+import { EMAIL, NAME, PASSWORD } from "../../constants";
 import { SignInContext } from "../../contexts/sign-in-provider";
-import { NAME, EMAIL, PASSWORD } from "../../constants";
-import { PasswordLoginPostData } from "../../types/auth";
 import { usePasswordLogin } from "../../custom-hooks/api/auth-api";
-import { deepTrim } from "../../utils/parser-utils";
 import { useAppDispatch } from "../../redux/hooks";
 import { updateCurrentUserAction } from "../../redux/slices/current-user-slice";
+import { PasswordLoginPostData } from "../../types/auth";
 import { resolveApiError } from "../../utils/error-utils";
+import { deepTrim } from "../../utils/parser-utils";
+import FormField from "../form-field";
 
 const SCHEMA = yup.object().shape({
   [EMAIL]: yup

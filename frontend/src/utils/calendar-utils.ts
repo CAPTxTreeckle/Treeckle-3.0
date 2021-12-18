@@ -1,31 +1,32 @@
 import {
+  endOfDay,
+  endOfMonth,
+  endOfWeek,
+  format,
+  getDay,
+  isBefore,
+  isPast,
+  isSameMonth,
+  max,
+  min,
+  parse,
+  startOfDay,
+  startOfMonth,
+  startOfToday,
+  startOfWeek,
+} from "date-fns";
+import { enUS } from "date-fns/locale";
+import {
   dateFnsLocalizer,
-  DateRangeFormatFunction,
-  DateRange,
   DateLocalizer,
+  DateRange,
+  DateRangeFormatFunction,
   DayPropGetter,
   SlotPropGetter,
 } from "react-big-calendar";
-import {
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  isSameMonth,
-  startOfMonth,
-  endOfMonth,
-  max,
-  min,
-  endOfDay,
-  startOfToday,
-  isBefore,
-  isPast,
-  endOfWeek,
-  startOfDay,
-} from "date-fns";
-import { enUS } from "date-fns/locale";
+
+import { END, START } from "../constants";
 import { sort } from "./parser-utils";
-import { START, END } from "../constants";
 
 export const CURRENT_LOCALE = "en-US";
 export const DAY_HEADER_FORMAT = "EEEE dd MMMM";

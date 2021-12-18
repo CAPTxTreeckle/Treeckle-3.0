@@ -1,17 +1,18 @@
 import { useMemo } from "react";
 import { Column } from "react-base-table";
 import { Segment } from "semantic-ui-react";
+
 import {
-  VENUE,
-  NAME,
-  ID,
-  START_DATE_TIME_STRING,
-  END_DATE_TIME_STRING,
-  CREATED_AT_STRING,
-  STATUS,
   CREATED_AT,
+  CREATED_AT_STRING,
   END_DATE_TIME,
+  END_DATE_TIME_STRING,
+  ID,
+  NAME,
   START_DATE_TIME,
+  START_DATE_TIME_STRING,
+  STATUS,
+  VENUE,
 } from "../../constants";
 import useTableState, {
   TableStateOptions,

@@ -1,11 +1,12 @@
 import React, { Key, SyntheticEvent, useMemo } from "react";
 import { useMediaQuery } from "react-responsive";
 import {
-  Menu,
   Dropdown,
-  MenuItemProps,
   DropdownProps,
+  Menu,
+  MenuItemProps,
 } from "semantic-ui-react";
+
 import styles from "./responsive-selector-menu.module.scss";
 
 export type ResponsiveSelectorMenuOption = {

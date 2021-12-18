@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { AutoResizer, Column } from "react-base-table";
-import { Button, Icon, Popup, Segment } from "semantic-ui-react";
 import { toast } from "react-toastify";
+import { Button, Icon, Popup, Segment } from "semantic-ui-react";
+
 import {
   ACTION,
   CREATED_AT,
@@ -25,15 +26,15 @@ import {
   setBookingNotificationSubscriptionsAction,
 } from "../../redux/slices/booking-notification-subscription-slice";
 import { BookingNotificationSubscriptionData } from "../../types/venues";
+import { resolveApiError } from "../../utils/error-utils";
 import { displayDateTime } from "../../utils/parser-utils";
+import { ConfirmationModalPropsGetter } from "../confirmation-modal";
+import ConfirmationModalButton from "../confirmation-modal-button";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../search-bar";
 import Table from "../table";
 import UserEmailRenderer from "../user-email-renderer";
-import ConfirmationModalButton from "../confirmation-modal-button";
-import { resolveApiError } from "../../utils/error-utils";
-import { ConfirmationModalPropsGetter } from "../confirmation-modal";
 import styles from "./booking-notification-subscription-table.module.scss";
 
 type BookingNotificationSubscriptionViewProps =

@@ -1,20 +1,21 @@
-import { ReactNode, useRef, useEffect } from "react";
-import { Segment, Progress } from "semantic-ui-react";
+import { ReactNode, useEffect, useRef } from "react";
 import { useModal } from "react-modal-hook";
-import { BookingCreationStep } from "../../types/bookings";
-import BookingCreationHelpButton from "../booking-creation-help-button";
-import BookingCreationCategorySelector from "../booking-creation-category-selector";
-import BookingCreationVenueSelector from "../booking-creation-venue-selector";
-import BookingCreationTimeSlotSelector from "../booking-creation-time-slot-selector";
-import BookingCreationCustomForm from "../booking-creation-custom-form";
-import BookingCreationFinalizeView from "../booking-creation-finalize-view";
-import HorizontalLayoutContainer from "../horizontal-layout-container";
-import ConfirmationModal from "../confirmation-modal";
+import { Progress, Segment } from "semantic-ui-react";
+
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   resetBookingCreationAction,
   selectCurrentCreationStep,
 } from "../../redux/slices/booking-creation-slice";
+import { BookingCreationStep } from "../../types/bookings";
+import BookingCreationCategorySelector from "../booking-creation-category-selector";
+import BookingCreationCustomForm from "../booking-creation-custom-form";
+import BookingCreationFinalizeView from "../booking-creation-finalize-view";
+import BookingCreationHelpButton from "../booking-creation-help-button";
+import BookingCreationTimeSlotSelector from "../booking-creation-time-slot-selector";
+import BookingCreationVenueSelector from "../booking-creation-venue-selector";
+import ConfirmationModal from "../confirmation-modal";
+import HorizontalLayoutContainer from "../horizontal-layout-container";
 import styles from "./booking-creation-section.module.scss";
 
 const BOOKING_CREATION_STEP_DETAILS = new Map<

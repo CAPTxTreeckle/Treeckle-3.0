@@ -1,4 +1,5 @@
 import { Grid } from "semantic-ui-react";
+
 import { BookingData } from "../../types/bookings";
 import { FieldType } from "../../types/venues";
 import LinkifyTextViewer from "../linkify-text-viewer";

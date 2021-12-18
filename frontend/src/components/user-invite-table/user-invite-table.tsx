@@ -2,14 +2,15 @@ import { capitalCase } from "change-case";
 import { useCallback, useEffect, useMemo } from "react";
 import { Column } from "react-base-table";
 import { toast } from "react-toastify";
-import { Segment, Popup, Button, Icon } from "semantic-ui-react";
+import { Button, Icon, Popup, Segment } from "semantic-ui-react";
+
 import {
-  CREATED_AT_STRING,
-  ID,
-  EMAIL,
-  CREATED_AT,
-  ROLE,
   ACTIONS,
+  CREATED_AT,
+  CREATED_AT_STRING,
+  EMAIL,
+  ID,
+  ROLE,
 } from "../../constants";
 import {
   useDeleteUserInvite,

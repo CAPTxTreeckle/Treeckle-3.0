@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import type { RootState, AppThunk } from "../store";
+
+import type { AppThunk, RootState } from "../store";
 import { selectPendingBookings } from "./bookings-slice";
 
 type PendingBookingCountState = {

@@ -1,7 +1,8 @@
-import { ReactNode } from "react";
 import clsx from "clsx";
+import { ReactNode } from "react";
 import { useController } from "react-hook-form";
 import { Form, Ref } from "semantic-ui-react";
+
 import styles from "./radio-form-field.module.scss";
 
 type Props = {

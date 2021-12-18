@@ -1,40 +1,41 @@
-import { useCallback, useMemo, useEffect } from "react";
-import clsx from "clsx";
 import { capitalCase } from "change-case";
-import { toast } from "react-toastify";
-import { useModal } from "react-modal-hook";
-import { Button, Icon, List, Popup, Segment } from "semantic-ui-react";
+import clsx from "clsx";
+import { useCallback, useEffect, useMemo } from "react";
 import { AutoResizer, Column } from "react-base-table";
-import {
-  PendingCreationUser,
-  UserCreationStatus,
-  USER_CREATION_STATUS_DETAILS,
-} from "../../types/users";
-import Table, { TableProps } from "../table";
-import SearchBar from "../search-bar";
+import { useModal } from "react-modal-hook";
+import { toast } from "react-toastify";
+import { Button, Icon, List, Popup, Segment } from "semantic-ui-react";
+
 import { ACTION, EMAIL, ID, ROLE, STATUS } from "../../constants";
+import { useCreateUserInvites } from "../../custom-hooks/api/users-api";
 import useTableState, {
   TableStateOptions,
 } from "../../custom-hooks/use-table-state";
-import PlaceholderWrapper from "../placeholder-wrapper";
-import HorizontalLayoutContainer from "../horizontal-layout-container";
-import ConfirmationModalButton from "../confirmation-modal-button";
-import BaseModal from "../base-modal";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   removePendingCreationUserAction,
-  toggleUnsuccessfullyCreatedUsersAction,
   resetUserCreationAction,
   selectPendingCreationUsers,
+  selectShowUnsuccessfullyCreatedUsers,
   selectUnsuccessfullyCreatedUsers,
+  toggleUnsuccessfullyCreatedUsersAction,
   updateNewPendingCreationUsersToCreatedAction,
   updateUnsuccessfullyCreatedUsersAction,
-  selectShowUnsuccessfullyCreatedUsers,
 } from "../../redux/slices/user-creation-slice";
-import { useCreateUserInvites } from "../../custom-hooks/api/users-api";
+import {
+  PendingCreationUser,
+  USER_CREATION_STATUS_DETAILS,
+  UserCreationStatus,
+} from "../../types/users";
 import { resolveApiError } from "../../utils/error-utils";
-import UserCreationTableDescriptionSection from "../user-creation-table-description-section";
+import BaseModal from "../base-modal";
 import { ConfirmationModalPropsGetter } from "../confirmation-modal";
+import ConfirmationModalButton from "../confirmation-modal-button";
+import HorizontalLayoutContainer from "../horizontal-layout-container";
+import PlaceholderWrapper from "../placeholder-wrapper";
+import SearchBar from "../search-bar";
+import Table, { TableProps } from "../table";
+import UserCreationTableDescriptionSection from "../user-creation-table-description-section";
 import styles from "./user-creation-table.module.scss";
 
 const USER_CREATION_TABLE_STATE_OPTIONS: TableStateOptions = {

@@ -1,17 +1,18 @@
-import { useMemo, useState } from "react";
 import { capitalCase } from "change-case";
+import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
 import { Button, Popup } from "semantic-ui-react";
+
 import { useUpdateBookingStatus } from "../../custom-hooks/api/bookings-api";
-import {
-  BookingStatus,
-  BOOKING_STATUS_DETAILS,
-  BookingStatusAction,
-} from "../../types/bookings";
-import { resolveApiError } from "../../utils/error-utils";
 import { useAppDispatch } from "../../redux/hooks";
 import { updateBookingsAction } from "../../redux/slices/bookings-slice";
 import { refreshPendingBookingCountThunk } from "../../redux/slices/pending-booking-count-slice";
+import {
+  BOOKING_STATUS_DETAILS,
+  BookingStatus,
+  BookingStatusAction,
+} from "../../types/bookings";
+import { resolveApiError } from "../../utils/error-utils";
 import styles from "./booking-status-button.module.scss";
 
 type Props = {

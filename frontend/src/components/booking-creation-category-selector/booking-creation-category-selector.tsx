@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from "react";
-import { Segment, Grid, Card, Header } from "semantic-ui-react";
+import { Card, Grid, Header, Segment } from "semantic-ui-react";
+
 import { useGetVenueCategories } from "../../custom-hooks/api/venues-api";
 import { useAppDispatch } from "../../redux/hooks";
 import { chooseVenueCategoryAction } from "../../redux/slices/booking-creation-slice";

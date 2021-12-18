@@ -1,5 +1,6 @@
-import { ReactNode, useState, createContext } from "react";
 import clsx from "clsx";
+import { createContext, ReactNode, useState } from "react";
+
 import styles from "./page-body.module.scss";
 
 type PageBodyContextType = {

@@ -1,9 +1,10 @@
+import { FormProvider, useForm } from "react-hook-form";
 import { Card, Form, Header } from "semantic-ui-react";
-import { useForm, FormProvider } from "react-hook-form";
-import { BookingFormFieldProps, VenueFormProps } from "../../types/venues";
-import PlaceholderWrapper from "../placeholder-wrapper";
+
 import { BOOKING_FORM_FIELDS } from "../../constants";
+import { BookingFormFieldProps, VenueFormProps } from "../../types/venues";
 import CustomFormFieldRenderer from "../custom-form-field-renderer";
+import PlaceholderWrapper from "../placeholder-wrapper";
 import styles from "./venue-booking-display-form.module.scss";
 
 type Props = {

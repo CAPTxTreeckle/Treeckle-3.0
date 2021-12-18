@@ -1,4 +1,5 @@
 import { Divider } from "semantic-ui-react";
+
 import StandalonePageLayoutContainer from "../../components/standalone-page-layout-container";
 
 function TermsOfUsePage() {

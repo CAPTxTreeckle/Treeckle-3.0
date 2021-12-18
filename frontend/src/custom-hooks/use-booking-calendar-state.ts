@@ -1,14 +1,15 @@
-import { useState, useMemo, useCallback } from "react";
-import { View, Views } from "react-big-calendar";
 import {
-  set,
   getHours,
+  getMilliseconds,
   getMinutes,
   getSeconds,
-  getMilliseconds,
+  set,
 } from "date-fns";
-import { BookingData, BookingStatus } from "../types/bookings";
+import { useCallback, useMemo, useState } from "react";
+import { View, Views } from "react-big-calendar";
+
 import { CalendarBooking } from "../components/booking-calendar";
+import { BookingData, BookingStatus } from "../types/bookings";
 
 export default function useBookingCalendarState({
   bookings,

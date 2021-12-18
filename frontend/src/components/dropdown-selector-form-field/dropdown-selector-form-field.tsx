@@ -7,9 +7,10 @@ import {
   Ref,
   SemanticWIDTHS,
 } from "semantic-ui-react";
+
+import { DEFAULT_ARRAY } from "../../constants";
 import useOptionsState from "../../custom-hooks/use-options-state";
 import { sanitizeArray } from "../../utils/parser-utils";
-import { DEFAULT_ARRAY } from "../../constants";
 
 type Props = {
   className?: string;

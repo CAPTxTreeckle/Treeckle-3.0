@@ -1,32 +1,33 @@
-import { useEffect, useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useModal } from "react-modal-hook";
 import {
-  Segment,
   Button,
-  TransitionablePortal,
-  Modal,
+  Grid,
+  Icon,
   Label,
   Message,
-  Icon,
-  Grid,
+  Modal,
+  Segment,
+  TransitionablePortal,
 } from "semantic-ui-react";
+
+import { DEFAULT_ARRAY } from "../../constants";
 import { useGetBookings } from "../../custom-hooks/api/bookings-api";
+import useBookingCreationCalendarState from "../../custom-hooks/use-booking-creation-calendar-state";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   backFromBookingPeriodsSelectionAction,
-  updateBookingPeriodsAction,
   confirmBookingPeriodsAction,
   selectNewBookingPeriods,
   selectSelectedVenue,
+  updateBookingPeriodsAction,
 } from "../../redux/slices/booking-creation-slice";
+import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
 import { BookingStatus } from "../../types/bookings";
+import { displayDateTimeRange } from "../../utils/parser-utils";
+import BookingCalendar, { CalendarBooking } from "../booking-calendar";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import PlaceholderWrapper from "../placeholder-wrapper";
-import BookingCalendar, { CalendarBooking } from "../booking-calendar";
-import useBookingCreationCalendarState from "../../custom-hooks/use-booking-creation-calendar-state";
-import { DEFAULT_ARRAY } from "../../constants";
-import { displayDateTimeRange } from "../../utils/parser-utils";
-import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
 import styles from "./booking-creation-time-slot-selector.module.scss";
 
 function BookingCreationTimeSlotSelector() {

@@ -1,6 +1,7 @@
-import { Segment, Grid, Message, Icon } from "semantic-ui-react";
-import UserCreationForm from "../user-creation-form";
+import { Grid, Icon, Message, Segment } from "semantic-ui-react";
+
 import UserCreationCsvUploader from "../user-creation-csv-uploader";
+import UserCreationForm from "../user-creation-form";
 import styles from "./user-creation-input-section.module.scss";
 
 function UserCreationInputSection() {

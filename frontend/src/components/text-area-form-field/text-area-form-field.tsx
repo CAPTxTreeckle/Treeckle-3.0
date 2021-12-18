@@ -1,8 +1,9 @@
-import { ReactNode, memo } from "react";
 import get from "lodash/get";
 import pickBy from "lodash/pickBy";
+import { memo, ReactNode } from "react";
 import { useFormContext } from "react-hook-form";
 import { Form, SemanticWIDTHS } from "semantic-ui-react";
+
 import TextArea from "../text-area";
 
 type Props = {

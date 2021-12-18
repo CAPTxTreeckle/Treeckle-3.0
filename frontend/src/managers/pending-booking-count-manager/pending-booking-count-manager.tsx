@@ -1,10 +1,11 @@
 import { useCallback } from "react";
+
 import { useGetPendingBookingCount } from "../../custom-hooks/api/bookings-api";
-import { useAppDispatch, useDeepEqualAppSelector } from "../../redux/hooks";
 import useInterval from "../../custom-hooks/use-interval";
+import { useAppDispatch, useDeepEqualAppSelector } from "../../redux/hooks";
 import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
-import { Role } from "../../types/users";
 import { setPendingBookingCountAction } from "../../redux/slices/pending-booking-count-slice";
+import { Role } from "../../types/users";
 
 // 30 mins
 const DELAY_INTERVAL = 1000 * 60 * 30;

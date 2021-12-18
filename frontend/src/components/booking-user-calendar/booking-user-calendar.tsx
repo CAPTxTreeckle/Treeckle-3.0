@@ -1,4 +1,5 @@
 import { Segment } from "semantic-ui-react";
+
 import useBookingCalendarState from "../../custom-hooks/use-booking-calendar-state";
 import { useAppSelector, useDeepEqualAppSelector } from "../../redux/hooks";
 import { selectBookingsByUserId } from "../../redux/slices/bookings-slice";

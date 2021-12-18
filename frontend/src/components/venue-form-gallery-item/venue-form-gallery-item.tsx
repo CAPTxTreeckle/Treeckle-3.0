@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Button, Segment } from "semantic-ui-react";
+
 import { VENUE_ID } from "../../constants";
 import { useDeleteVenue } from "../../custom-hooks/api/venues-api";
 import { ADMIN_VENUES_EDIT_PATH } from "../../routes/paths";

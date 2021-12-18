@@ -1,10 +1,10 @@
-import {
-  SelfData,
-  GooglePayloadPostData,
-  FacebookPayloadPostData,
-  PasswordPayloadPostData,
-} from "./users";
 import { ACCESS, EMAIL, NAME, REFRESH, TOKENS, USER } from "../constants";
+import {
+  FacebookPayloadPostData,
+  GooglePayloadPostData,
+  PasswordPayloadPostData,
+  SelfData,
+} from "./users";
 
 export type AuthenticationData = {
   [USER]: SelfData;

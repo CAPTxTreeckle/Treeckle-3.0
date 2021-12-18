@@ -1,23 +1,24 @@
-import { useEffect } from "react";
 import clsx from "clsx";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
+import { Link } from "react-router-dom";
 import {
-  Transition,
-  Image,
   Button,
-  Segment,
   Container,
   Divider,
   Grid,
   Icon,
+  Image,
+  Segment,
+  Transition,
 } from "semantic-ui-react";
-import { resetAppState } from "../../redux/store";
-import useScrollToTopScroller from "../../custom-hooks/use-scroll-to-top-scroller";
-import TotalBookingCounter from "../../components/total-booking-counter";
-import SignInButton from "../../components/sign-in-button";
+
 import treeckleLogo from "../../assets/treeckle-outline-min.png";
 import treeckleVideo from "../../assets/utown-video.mp4";
+import SignInButton from "../../components/sign-in-button";
+import TotalBookingCounter from "../../components/total-booking-counter";
+import useScrollToTopScroller from "../../custom-hooks/use-scroll-to-top-scroller";
+import { resetAppState } from "../../redux/store";
 import {
   OUR_STORY_PATH,
   PRIVACY_POLICY_PATH,

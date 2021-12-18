@@ -1,13 +1,14 @@
 import clsx from "clsx";
 import { Link, useLocation } from "react-router-dom";
-import { Dropdown, Menu, Image } from "semantic-ui-react";
 import { toast } from "react-toastify";
-import { PROFILE_PATH } from "../../../routes/paths";
+import { Dropdown, Image, Menu } from "semantic-ui-react";
+
+import defaultAvatarImage from "../../../assets/avatar.png";
 import { USER_ID } from "../../../constants";
 import { useDeepEqualAppSelector } from "../../../redux/hooks";
 import { selectCurrentUserDisplayInfo } from "../../../redux/slices/current-user-slice";
 import { resetAppState } from "../../../redux/store";
-import defaultAvatarImage from "../../../assets/avatar.png";
+import { PROFILE_PATH } from "../../../routes/paths";
 
 function UserTab() {
   const { id, name, profileImage } =

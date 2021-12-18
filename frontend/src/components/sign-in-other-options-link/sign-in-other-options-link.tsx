@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { Label } from "semantic-ui-react";
+
 import { SignInContext } from "../../contexts/sign-in-provider";
 import styles from "./sign-in-other-options-link.module.scss";
 

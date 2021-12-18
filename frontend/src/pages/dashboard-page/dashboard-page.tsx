@@ -1,6 +1,6 @@
+import LinkifyTextViewer from "../../components/linkify-text-viewer";
 import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
-import LinkifyTextViewer from "../../components/linkify-text-viewer";
 import styles from "./dashboard-page.module.scss";
 
 function DashboardPage() {

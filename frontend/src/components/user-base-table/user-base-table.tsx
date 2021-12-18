@@ -1,8 +1,9 @@
-import { Segment } from "semantic-ui-react";
 import { AutoResizer } from "react-base-table";
-import Table, { TableProps } from "../table";
+import { Segment } from "semantic-ui-react";
+
 import { CREATED_AT_STRING } from "../../constants";
 import { UserInviteData } from "../../types/users";
+import Table, { TableProps } from "../table";
 import styles from "./user-base-table.module.scss";
 
 export type UserViewProps = UserInviteData & {

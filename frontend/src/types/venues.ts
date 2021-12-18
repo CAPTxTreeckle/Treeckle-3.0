@@ -1,22 +1,22 @@
-import { BaseData } from "./base";
 import {
-  CATEGORY,
-  LABEL,
-  TYPE,
-  PLACEHOLDER,
-  CAPACITY,
-  REQUIRED,
   BOOKING_FORM_FIELDS,
+  CAPACITY,
+  CATEGORY,
+  EMAIL,
+  FORM_FIELD_DATA,
+  FULL_DETAILS,
   IC_CONTACT_NUMBER,
   IC_EMAIL,
   IC_NAME,
+  LABEL,
   NAME,
-  FORM_FIELD_DATA,
   ORGANIZATION,
-  FULL_DETAILS,
-  EMAIL,
+  PLACEHOLDER,
+  REQUIRED,
+  TYPE,
   VENUE,
 } from "../constants";
+import { BaseData } from "./base";
 
 export type VenueGetQueryParams = {
   [CATEGORY]?: string | null;

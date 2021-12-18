@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useMemo } from "react";
 import { capitalCase } from "change-case";
+import { useCallback, useEffect, useMemo } from "react";
 import { Column } from "react-base-table";
-import { Button, Icon, Popup, Segment } from "semantic-ui-react";
 import { toast } from "react-toastify";
+import { Button, Icon, Popup, Segment } from "semantic-ui-react";
+
 import {
   ACTIONS,
   CREATED_AT,
@@ -20,25 +21,25 @@ import {
 import useTableState, {
   TableStateOptions,
 } from "../../custom-hooks/use-table-state";
-import { UserData } from "../../types/users";
-import { displayDateTime } from "../../utils/parser-utils";
-import HorizontalLayoutContainer from "../horizontal-layout-container";
-import PlaceholderWrapper from "../placeholder-wrapper";
-import SearchBar from "../search-bar";
-import UserBaseTable, { UserViewProps } from "../user-base-table";
-import UserEmailRenderer from "../user-email-renderer";
-import UserNameRenderer from "../user-name-renderer";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import ConfirmationModalButton from "../confirmation-modal-button";
-import UserRoleChangeButton from "../user-role-change-button";
 import {
   deleteUserAction,
   selectUsers,
   setUsersAction,
   updateUserAction,
 } from "../../redux/slices/users-slice";
+import { UserData } from "../../types/users";
 import { resolveApiError } from "../../utils/error-utils";
+import { displayDateTime } from "../../utils/parser-utils";
 import { ConfirmationModalPropsGetter } from "../confirmation-modal";
+import ConfirmationModalButton from "../confirmation-modal-button";
+import HorizontalLayoutContainer from "../horizontal-layout-container";
+import PlaceholderWrapper from "../placeholder-wrapper";
+import SearchBar from "../search-bar";
+import UserBaseTable, { UserViewProps } from "../user-base-table";
+import UserEmailRenderer from "../user-email-renderer";
+import UserNameRenderer from "../user-name-renderer";
+import UserRoleChangeButton from "../user-role-change-button";
 
 type ExistingUserViewProps = UserViewProps & UserData;
 

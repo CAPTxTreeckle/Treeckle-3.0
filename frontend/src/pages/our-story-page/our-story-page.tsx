@@ -1,9 +1,10 @@
 import { Image, List } from "semantic-ui-react";
-import VideoPlayer from "../../components/video-player";
-import Timeline, { TimelineElement } from "../../components/timeline";
-import StandalonePageLayoutContainer from "../../components/standalone-page-layout-container";
-import treeckleLogo from "../../assets/treeckle-title-side-transparent.png";
+
 import treecklePoster from "../../assets/treeckle-poster-min.jpg";
+import treeckleLogo from "../../assets/treeckle-title-side-transparent.png";
+import StandalonePageLayoutContainer from "../../components/standalone-page-layout-container";
+import Timeline, { TimelineElement } from "../../components/timeline";
+import VideoPlayer from "../../components/video-player";
 
 const milestones: TimelineElement[] = [
   {

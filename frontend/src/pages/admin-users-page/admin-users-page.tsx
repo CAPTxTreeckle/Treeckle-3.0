@@ -1,13 +1,14 @@
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { Button, Icon } from "semantic-ui-react";
+
+import Tab, { TabOption } from "../../components/tab";
+import UserInviteTable from "../../components/user-invite-table";
+import UserTable from "../../components/user-table";
 import {
   ADMIN_USERS_CREATION_PATH,
   ADMIN_USERS_PATH,
   ADMIN_USERS_PENDING_REGISTRATION_PATH,
 } from "../../routes/paths";
-import Tab, { TabOption } from "../../components/tab";
-import UserTable from "../../components/user-table";
-import UserInviteTable from "../../components/user-invite-table";
 
 const OPTIONS: TabOption[] = [
   {

@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useDropzone } from "react-dropzone";
 import { Header, Icon } from "semantic-ui-react";
+
 import styles from "./file-uploader.module.scss";
 
 type Props = {

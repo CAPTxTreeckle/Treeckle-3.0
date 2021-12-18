@@ -1,20 +1,21 @@
 import { SemanticCOLORS } from "semantic-ui-react";
+
 import {
   ACTION,
   BOOKER,
   BOOKING_FORM_RESPONSES,
   DATE_TIME_RANGES,
   END_DATE_TIME,
-  RESPONSE,
   FORM_RESPONSE_DATA,
+  FULL_DETAILS,
+  RESPONSE,
   START_DATE_TIME,
   STATUS,
+  STATUSES,
   TITLE,
-  VENUE_ID,
   USER_ID,
   VENUE,
-  STATUSES,
-  FULL_DETAILS,
+  VENUE_ID,
 } from "../constants";
 import { BaseData } from "./base";
 import { UserData } from "./users";

@@ -5,6 +5,7 @@ import {
   SetStateAction,
   useState,
 } from "react";
+
 import { LoginDetails } from "../types/auth";
 
 type SignInContextType = {

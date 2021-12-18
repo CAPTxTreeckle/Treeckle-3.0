@@ -6,6 +6,7 @@ import {
 } from "react-beautiful-dnd";
 import { useFieldArray } from "react-hook-form";
 import { Button, Form, Popup } from "semantic-ui-react";
+
 import { BOOKING_FORM_FIELDS } from "../../constants";
 import { FieldType, VenueFormProps } from "../../types/venues";
 import VenueDetailsCustomFormField from "../venue-details-custom-form-field";

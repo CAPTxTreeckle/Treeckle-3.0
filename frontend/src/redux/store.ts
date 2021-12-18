@@ -1,25 +1,26 @@
-import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
+import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
+
 import { loadFromLocalStorage } from "../utils/local-storage-utils";
-import currentUserReducer, {
-  updateCurrentUserAction,
-} from "./slices/current-user-slice";
-import bookingsReducer, { resetBookingsAction } from "./slices/bookings-slice";
 import bookingCreationReducer, {
   resetBookingCreationAction,
 } from "./slices/booking-creation-slice";
-import userCreationReducer, {
-  resetUserCreationAction,
-} from "./slices/user-creation-slice";
-import usersReducer, { resetUsersAction } from "./slices/users-slice";
-import userInvitesReducer, {
-  resetUserInvitesAction,
-} from "./slices/user-invites-slice";
 import bookingNotificiationSubscriptionReducer, {
   resetBookingNotificationSubscriptionsAction,
 } from "./slices/booking-notification-subscription-slice";
+import bookingsReducer, { resetBookingsAction } from "./slices/bookings-slice";
+import currentUserReducer, {
+  updateCurrentUserAction,
+} from "./slices/current-user-slice";
 import pendingBookingCountReducer, {
   resetPendingBookingCountAction,
 } from "./slices/pending-booking-count-slice";
+import userCreationReducer, {
+  resetUserCreationAction,
+} from "./slices/user-creation-slice";
+import userInvitesReducer, {
+  resetUserInvitesAction,
+} from "./slices/user-invites-slice";
+import usersReducer, { resetUsersAction } from "./slices/users-slice";
 
 const store = configureStore({
   reducer: {

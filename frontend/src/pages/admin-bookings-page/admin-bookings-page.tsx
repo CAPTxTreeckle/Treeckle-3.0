@@ -1,8 +1,9 @@
 import { useCallback, useEffect } from "react";
-import { Popup, Button } from "semantic-ui-react";
+import { Button, Popup } from "semantic-ui-react";
+
+import BookingAdminCalendarsSection from "../../components/booking-admin-calendars-section";
 import BookingAdminTable from "../../components/booking-admin-table";
 import HorizontalLayoutContainer from "../../components/horizontal-layout-container";
-import BookingAdminCalendarsSection from "../../components/booking-admin-calendars-section";
 import Tab, { TabOption } from "../../components/tab";
 import { useGetBookings } from "../../custom-hooks/api/bookings-api";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";

@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { useState } from "react";
-import { Input, Icon } from "semantic-ui-react";
+import { Icon, Input } from "semantic-ui-react";
+
 import styles from "./search-bar.module.scss";
 
 type Props = {

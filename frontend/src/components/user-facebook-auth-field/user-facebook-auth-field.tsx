@@ -1,16 +1,17 @@
 import { ReactNode } from "react";
-import { Button, Popup } from "semantic-ui-react";
 import { toast } from "react-toastify";
+import { Button, Popup } from "semantic-ui-react";
+
+import { useFacebookAuth } from "../../custom-hooks/api/auth-api";
+import { useUpdateSelf } from "../../custom-hooks/api/users-api";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   selectCurrentUserDisplayInfo,
   updateCurrentUserAction,
 } from "../../redux/slices/current-user-slice";
-import { useFacebookAuth } from "../../custom-hooks/api/auth-api";
-import { useUpdateSelf } from "../../custom-hooks/api/users-api";
-import HorizontalLayoutContainer from "../horizontal-layout-container";
-import { resolveApiError } from "../../utils/error-utils";
 import { SelfPatchAction } from "../../types/users";
+import { resolveApiError } from "../../utils/error-utils";
+import HorizontalLayoutContainer from "../horizontal-layout-container";
 
 const LinkButton = () => {
   const dispatch = useAppDispatch();

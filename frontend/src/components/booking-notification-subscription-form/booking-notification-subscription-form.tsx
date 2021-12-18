@@ -1,22 +1,23 @@
-import { useEffect, useMemo } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { DropdownItemProps, Form, Header } from "semantic-ui-react";
-import { toast } from "react-toastify";
-import * as yup from "yup";
+import { useEffect, useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { DropdownItemProps, Form, Header } from "semantic-ui-react";
+import * as yup from "yup";
+
 import { EMAIL, NAME, VENUE_ID } from "../../constants";
-import { BookingNotificationSubscriptionPostData } from "../../types/venues";
-import { deepTrim, sort } from "../../utils/parser-utils";
 import {
   useCreateBookingNotificationSubscription,
   useGetVenues,
 } from "../../custom-hooks/api/venues-api";
-import FormField from "../form-field";
-import DropdownSelectorFormField from "../dropdown-selector-form-field";
 import { useAppDispatch } from "../../redux/hooks";
-import { resolveApiError } from "../../utils/error-utils";
-import styles from "./booking-notification-subscription-form.module.scss";
 import { updateBookingNotificationSubscriptionAction } from "../../redux/slices/booking-notification-subscription-slice";
+import { BookingNotificationSubscriptionPostData } from "../../types/venues";
+import { resolveApiError } from "../../utils/error-utils";
+import { deepTrim, sort } from "../../utils/parser-utils";
+import DropdownSelectorFormField from "../dropdown-selector-form-field";
+import FormField from "../form-field";
+import styles from "./booking-notification-subscription-form.module.scss";
 
 type BookingNotificationSubscriptionFormProps =
   BookingNotificationSubscriptionPostData & {

@@ -1,4 +1,5 @@
-import { Label, Icon } from "semantic-ui-react";
+import { Icon, Label } from "semantic-ui-react";
+
 import { useDeepEqualAppSelector } from "../../redux/hooks";
 import { selectPendingBookingCount } from "../../redux/slices/pending-booking-count-slice";
 import styles from "./pending-booking-count-label.module.scss";

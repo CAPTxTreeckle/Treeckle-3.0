@@ -1,6 +1,7 @@
-import { ReactNode } from "react";
 import clsx from "clsx";
-import { Segment, Loader, SemanticSIZES, Dimmer } from "semantic-ui-react";
+import { ReactNode } from "react";
+import { Dimmer, Loader, Segment, SemanticSIZES } from "semantic-ui-react";
+
 import styles from "./placeholder-wrapper.module.scss";
 
 type Props = {

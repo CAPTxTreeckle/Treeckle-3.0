@@ -1,24 +1,25 @@
 import {
-  createSlice,
-  PayloadAction,
   createSelector,
+  createSlice,
   EntityState,
+  PayloadAction,
 } from "@reduxjs/toolkit";
 import { normalize } from "normalizr";
+
+import { BOOKER, VENUE } from "../../constants";
 import { BookingData, BookingStatus } from "../../types/bookings";
-import { VENUE, BOOKER } from "../../constants";
-import {
-  UserEntityType,
-  VenueEntityType,
-  BookingEntityType,
-  bookingEntity,
-  usersAdapter,
-  venuesAdapter,
-  bookingsAdapter,
-} from "../entities";
-import type { RootState } from "../store";
 import { UserData } from "../../types/users";
 import { VenueData } from "../../types/venues";
+import {
+  bookingEntity,
+  BookingEntityType,
+  bookingsAdapter,
+  UserEntityType,
+  usersAdapter,
+  VenueEntityType,
+  venuesAdapter,
+} from "../entities";
+import type { RootState } from "../store";
 
 type Entities = {
   users: { [key: string]: UserEntityType };

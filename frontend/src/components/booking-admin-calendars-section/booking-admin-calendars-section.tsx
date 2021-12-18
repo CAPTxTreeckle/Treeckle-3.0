@@ -1,9 +1,10 @@
 import { useEffect, useMemo } from "react";
+
 import { useGetVenues } from "../../custom-hooks/api/venues-api";
 import { sort } from "../../utils/parser-utils";
-import Tab, { TabOption } from "../tab";
 import BookingVenueCalendar from "../booking-venue-calendar";
 import PlaceholderWrapper from "../placeholder-wrapper";
+import Tab, { TabOption } from "../tab";
 
 function BookingAdminCalendarsSection() {
   const { venues, loading, getVenues } = useGetVenues();

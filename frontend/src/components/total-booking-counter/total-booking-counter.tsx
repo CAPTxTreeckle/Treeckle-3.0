@@ -1,7 +1,8 @@
-import { useEffect, memo, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
+import { useCountUp } from "react-countup";
 import { useInView } from "react-intersection-observer";
 import { Icon } from "semantic-ui-react";
-import { useCountUp } from "react-countup";
+
 import { useGetTotalBookingCount } from "../../custom-hooks/api/bookings-api";
 
 const CounterViewer = ({

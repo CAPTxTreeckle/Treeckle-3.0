@@ -1,17 +1,19 @@
-import { Provider as ReduxProvider } from "react-redux";
-import { toast, Zoom } from "react-toastify";
-import axios from "axios";
-import { configure } from "axios-hooks";
-import { TransitionGroup } from "react-transition-group";
-import { ModalProvider } from "react-modal-hook";
-import store from "./redux/store";
 // import "semantic-ui-css/semantic.min.css";
 import "react-toastify/dist/ReactToastify.min.css";
-import LocalStorageUserManager from "./managers/local-storage-user-manager";
-import LocalStorageBookingCreationManager from "./managers/local-storage-booking-creation-manager";
-import PendingBookingCountManager from "./managers/pending-booking-count-manager";
-import Routes from "./routes";
+
+import axios from "axios";
+import { configure } from "axios-hooks";
+import { ModalProvider } from "react-modal-hook";
+import { Provider as ReduxProvider } from "react-redux";
+import { toast, Zoom } from "react-toastify";
+import { TransitionGroup } from "react-transition-group";
+
 import styles from "./app.module.scss";
+import LocalStorageBookingCreationManager from "./managers/local-storage-booking-creation-manager";
+import LocalStorageUserManager from "./managers/local-storage-user-manager";
+import PendingBookingCountManager from "./managers/pending-booking-count-manager";
+import store from "./redux/store";
+import Routes from "./routes";
 
 toast.configure({
   position: "bottom-center",

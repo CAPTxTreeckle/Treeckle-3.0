@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { DropdownItemProps } from "semantic-ui-react";
+
 import { sanitizeArray } from "../utils/parser-utils";
 
 export default function useOptionsState(

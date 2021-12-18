@@ -1,15 +1,16 @@
-import { useContext } from "react";
-import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { useContext } from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { Form } from "semantic-ui-react";
-import FormField from "../form-field";
+import * as yup from "yup";
+
 import { EMAIL } from "../../constants";
-import { deepTrim } from "../../utils/parser-utils";
 import { SignInContext } from "../../contexts/sign-in-provider";
-import { CheckAccountPostData } from "../../types/auth";
 import { useCheckAccount } from "../../custom-hooks/api/auth-api";
+import { CheckAccountPostData } from "../../types/auth";
 import { resolveApiError } from "../../utils/error-utils";
+import { deepTrim } from "../../utils/parser-utils";
+import FormField from "../form-field";
 
 const SCHEMA = yup.object().shape({
   [EMAIL]: yup

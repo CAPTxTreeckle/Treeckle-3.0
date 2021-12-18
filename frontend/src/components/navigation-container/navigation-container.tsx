@@ -1,22 +1,23 @@
-import { ReactNode, useState, useEffect } from "react";
-import { Sidebar, Menu, Segment, Container } from "semantic-ui-react";
+import { ReactNode, useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import LogoTab from "./logo-tab";
-import DashboardTab from "./dashboard-tab";
-import BookingsTab from "./bookings-tab";
-// import EventsTab from "./events-tab";
-import RoleRestrictedWrapper from "../role-restricted-wrapper";
-import MobileAdminTab from "./mobile-admin-tab";
-import MobileAboutTab from "./mobile-about-tab";
-import DesktopAdminTab from "./desktop-admin-tab";
-import DesktopAboutTab from "./desktop-about-tab";
-import SidebarTab from "./sidebar-tab";
+import { Container, Menu, Segment, Sidebar } from "semantic-ui-react";
+
 import { Role } from "../../types/users";
 import FullPageContainer from "../full-page-container";
+import PageBody from "../page-body";
+// import EventsTab from "./events-tab";
+import RoleRestrictedWrapper from "../role-restricted-wrapper";
+import BookingsTab from "./bookings-tab";
+import DashboardTab from "./dashboard-tab";
+import DesktopAboutTab from "./desktop-about-tab";
+import DesktopAdminTab from "./desktop-admin-tab";
+import LogoTab from "./logo-tab";
+import MobileAboutTab from "./mobile-about-tab";
+import MobileAdminTab from "./mobile-admin-tab";
+import styles from "./navigation-container.module.scss";
+import SidebarTab from "./sidebar-tab";
 import TopBar from "./top-bar";
 import UserTab from "./user-tab";
-import PageBody from "../page-body";
-import styles from "./navigation-container.module.scss";
 
 type Props = {
   children: ReactNode;

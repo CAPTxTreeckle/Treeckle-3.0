@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
-import { Button, Icon } from "semantic-ui-react";
 import { useLastLocation } from "react-router-last-location";
-import { ADMIN_USERS_PATH } from "../../routes/paths";
+import { Button, Icon } from "semantic-ui-react";
+
 import UserCreationInputSection from "../../components/user-creation-input-section";
 import UserCreationTable from "../../components/user-creation-table";
+import { ADMIN_USERS_PATH } from "../../routes/paths";
 
 function AdminUsersCreationPage() {
   const lastLocation = useLastLocation();

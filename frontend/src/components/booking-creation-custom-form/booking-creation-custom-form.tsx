@@ -1,18 +1,20 @@
-import { useEffect, useRef } from "react";
-import { useForm, FormProvider, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useEffect, useRef } from "react";
+import { FormProvider, useFieldArray, useForm } from "react-hook-form";
+import { Button, Form, Ref, Segment } from "semantic-ui-react";
 import * as yup from "yup";
-import { Button, Segment, Form, Ref } from "semantic-ui-react";
+
 import {
   BOOKING_FORM_RESPONSES,
   REQUIRED,
   RESPONSE,
   TITLE,
 } from "../../constants";
+import { useGetSingleVenue } from "../../custom-hooks/api/venues-api";
 import {
-  useDeepEqualAppSelector,
   useAppDispatch,
   useAppSelector,
+  useDeepEqualAppSelector,
 } from "../../redux/hooks";
 import {
   backFromBookingFormAction,
@@ -22,13 +24,12 @@ import {
   syncVenueAction,
 } from "../../redux/slices/booking-creation-slice";
 import { BookingFormProps } from "../../types/bookings";
-import HorizontalLayoutContainer from "../horizontal-layout-container";
-import FormField from "../form-field";
-import CustomFormFieldRenderer from "../custom-form-field-renderer";
-import { useGetSingleVenue } from "../../custom-hooks/api/venues-api";
-import PlaceholderWrapper from "../placeholder-wrapper";
-import BookingCreationErrorAlert from "../booking-creation-error-alert";
 import { deepTrim } from "../../utils/parser-utils";
+import BookingCreationErrorAlert from "../booking-creation-error-alert";
+import CustomFormFieldRenderer from "../custom-form-field-renderer";
+import FormField from "../form-field";
+import HorizontalLayoutContainer from "../horizontal-layout-container";
+import PlaceholderWrapper from "../placeholder-wrapper";
 
 const SCHEMA = yup.object().shape({
   [TITLE]: yup.string().trim().required("Please enter a short booking title"),

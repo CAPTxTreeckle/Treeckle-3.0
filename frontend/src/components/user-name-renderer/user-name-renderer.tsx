@@ -1,6 +1,6 @@
-import { UserData } from "../../types/users";
-import { PROFILE_PATH } from "../../routes/paths";
 import { USER_ID } from "../../constants";
+import { PROFILE_PATH } from "../../routes/paths";
+import { UserData } from "../../types/users";
 import styles from "./user-name-renderer.module.scss";
 
 type Props<T> = {

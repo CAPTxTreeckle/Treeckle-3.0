@@ -1,12 +1,13 @@
-import { Button, Icon, Popup } from "semantic-ui-react";
 import { saveAs } from "file-saver";
 import papaparse from "papaparse";
 import { toast } from "react-toastify";
-import HorizontalLayoutContainer from "../horizontal-layout-container";
-import FileUploader from "../file-uploader";
-import { UserCreationCsvRowData } from "../../types/users";
+import { Button, Icon, Popup } from "semantic-ui-react";
+
 import { useAppDispatch } from "../../redux/hooks";
 import { addPendingCreationUsersFromCsvDataAction } from "../../redux/slices/user-creation-slice";
+import { UserCreationCsvRowData } from "../../types/users";
+import FileUploader from "../file-uploader";
+import HorizontalLayoutContainer from "../horizontal-layout-container";
 
 const USER_CREATION_CSV_TEMPLATE = new Blob(
   [

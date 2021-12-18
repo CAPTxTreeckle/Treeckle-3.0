@@ -1,8 +1,9 @@
-import { schema } from "normalizr";
 import { createEntityAdapter } from "@reduxjs/toolkit";
-import { UserData, UserInviteData } from "../types/users";
+import { schema } from "normalizr";
+
+import { BOOKER, VENUE } from "../constants";
 import { BookingData } from "../types/bookings";
-import { VENUE, BOOKER } from "../constants";
+import { UserData, UserInviteData } from "../types/users";
 import {
   BookingNotificationSubscriptionData,
   VenueData,

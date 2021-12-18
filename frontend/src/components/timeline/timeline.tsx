@@ -1,11 +1,13 @@
-import { ReactNode } from "react";
+import "react-vertical-timeline-component/style.min.css";
+
 import clsx from "clsx";
+import { ReactNode } from "react";
 import { useMediaQuery } from "react-responsive";
 import {
   VerticalTimeline,
   VerticalTimelineElement,
 } from "react-vertical-timeline-component";
-import "react-vertical-timeline-component/style.min.css";
+
 import styles from "./timeline.module.scss";
 
 export type TimelineElement = {

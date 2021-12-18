@@ -1,4 +1,4 @@
-import { ID, CREATED_AT, UPDATED_AT } from "../constants";
+import { CREATED_AT, ID, UPDATED_AT } from "../constants";
 
 export type BaseData = {
   [ID]: number;

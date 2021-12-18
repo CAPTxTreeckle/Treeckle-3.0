@@ -1,10 +1,11 @@
 import { useEffect, useMemo } from "react";
-import { Segment, Grid, Card, Header, Button } from "semantic-ui-react";
+import { Button, Card, Grid, Header, Segment } from "semantic-ui-react";
+
 import { useGetVenues } from "../../custom-hooks/api/venues-api";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
-  resetBookingCreationAction,
   chooseVenueAction,
+  resetBookingCreationAction,
   selectSelectedCategory,
 } from "../../redux/slices/booking-creation-slice";
 import { sort } from "../../utils/parser-utils";

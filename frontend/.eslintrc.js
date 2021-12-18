@@ -8,6 +8,7 @@ module.exports = {
     sourceType: "module", // Allows for the use of imports
     project: "./tsconfig.json",
   },
+  plugins: ["simple-import-sort"],
   extends: [
     "airbnb",
     "airbnb-typescript",
@@ -43,5 +44,7 @@ module.exports = {
     "default-case": "off",
     "no-console": "off",
     "consistent-return": "off",
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
   },
 };

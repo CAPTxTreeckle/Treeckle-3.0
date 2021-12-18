@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { TransitionablePortal, Modal, ModalProps } from "semantic-ui-react";
+import { Modal, ModalProps, TransitionablePortal } from "semantic-ui-react";
 
 type Props = {
   open: boolean;

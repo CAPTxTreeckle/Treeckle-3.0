@@ -1,5 +1,5 @@
-import TabItem from "../tab-item";
 import { DASHBOARD_PATH } from "../../../routes/paths";
+import TabItem from "../tab-item";
 
 type Props = {
   onTabClick?: () => void;

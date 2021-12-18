@@ -1,12 +1,19 @@
-import { useCallback, useMemo, useState } from "react";
+import { AxiosPromise, AxiosRequestConfig, AxiosResponse } from "axios";
 import useAxios, { Options, RefetchOptions, ResponseValues } from "axios-hooks";
+import { useCallback, useMemo, useState } from "react";
 import {
   GoogleLoginResponse,
   GoogleLoginResponseOffline,
   useGoogleLogin as useGoogleLoginClient,
 } from "react-google-login";
 import { toast } from "react-toastify";
-import { AxiosRequestConfig, AxiosPromise, AxiosResponse } from "axios";
+
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import {
+  selectCurrentUserTokens,
+  updateCurrentUserAction,
+} from "../../redux/slices/current-user-slice";
+import { resetAppState } from "../../redux/store";
 import {
   AuthenticationData,
   CheckAccountPostData,
@@ -21,12 +28,6 @@ import {
   errorHandlerWrapper,
   isForbiddenOrNotAuthenticated,
 } from "../../utils/error-utils";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import {
-  updateCurrentUserAction,
-  selectCurrentUserTokens,
-} from "../../redux/slices/current-user-slice";
-import { resetAppState } from "../../redux/store";
 
 export function useAxiosWithTokenRefresh<TResponse, TBody = undefined>(
   config: AxiosRequestConfig,

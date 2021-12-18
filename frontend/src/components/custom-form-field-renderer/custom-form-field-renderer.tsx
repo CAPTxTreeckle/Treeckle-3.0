@@ -1,4 +1,4 @@
-import { FieldType, BookingFormFieldProps } from "../../types/venues";
+import { BookingFormFieldProps, FieldType } from "../../types/venues";
 import FormField from "../form-field";
 import LinkifyTextViewer from "../linkify-text-viewer";
 import RadioFormField from "../radio-form-field";

@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { MenuItem, Icon, IconProps } from "semantic-ui-react";
+import { Icon, IconProps, MenuItem } from "semantic-ui-react";
 
 type Props = {
   label: ReactNode;

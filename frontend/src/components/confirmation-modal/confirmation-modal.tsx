@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
 import {
-  TransitionablePortal,
-  Modal,
-  Header,
   Button,
   ButtonProps,
+  Header,
+  Modal,
   ModalProps,
+  TransitionablePortal,
 } from "semantic-ui-react";
 
 export type ConfirmationModalProps = {

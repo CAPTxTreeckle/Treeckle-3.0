@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction, createSelector } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+
 import { EMAIL_REGEX, NON_COMMA_SPACE_REGEX } from "../../constants";
 import {
   PendingCreationUser,

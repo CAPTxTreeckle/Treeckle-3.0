@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from "react";
-import { useAxiosWithTokenRefresh } from "./auth-api";
+
+import { DEFAULT_ARRAY } from "../../constants";
 import {
   SelfData,
   SelfPatchData,
@@ -11,7 +12,7 @@ import {
   UserPatchData,
 } from "../../types/users";
 import { errorHandlerWrapper, resolveApiError } from "../../utils/error-utils";
-import { DEFAULT_ARRAY } from "../../constants";
+import { useAxiosWithTokenRefresh } from "./auth-api";
 
 export function useGetUserInvites() {
   const [{ data: userInvites = DEFAULT_ARRAY, loading }, apiCall] =

@@ -1,21 +1,22 @@
-import { useState, useMemo, useCallback } from "react";
-import { DateRange, SlotInfo, stringOrDate, Views } from "react-big-calendar";
 import {
-  isWithinInterval,
-  isFuture,
   areIntervalsOverlapping,
+  isFuture,
   isSameDay,
+  isWithinInterval,
 } from "date-fns";
 import equal from "fast-deep-equal";
+import { useCallback, useMemo, useState } from "react";
+import { DateRange, SlotInfo, stringOrDate, Views } from "react-big-calendar";
+
+import { CalendarBooking } from "../components/booking-calendar";
+import { STATUS } from "../constants";
+import { BookingData, BookingStatus, DateTimeRange } from "../types/bookings";
+import { UserData } from "../types/users";
 import {
-  getVisibleRangeInCalendarMonth,
   getVisibleRange,
+  getVisibleRangeInCalendarMonth,
   mergeDateRanges,
 } from "../utils/calendar-utils";
-import { BookingData, BookingStatus, DateTimeRange } from "../types/bookings";
-import { STATUS } from "../constants";
-import { UserData } from "../types/users";
-import { CalendarBooking } from "../components/booking-calendar";
 import useBookingCalendarState from "./use-booking-calendar-state";
 
 const NEW_BOOKING = "New booking";

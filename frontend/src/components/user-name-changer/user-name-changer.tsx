@@ -1,7 +1,8 @@
 import { FormEvent, ReactNode, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { Input, Button, Popup } from "semantic-ui-react";
+import { Button, Input, Popup } from "semantic-ui-react";
+
 import { useUpdateSelf } from "../../custom-hooks/api/users-api";
 import { useAppSelector } from "../../redux/hooks";
 import {

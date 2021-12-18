@@ -1,6 +1,7 @@
+import arraySort from "array-sort";
 import { format, isSameDay } from "date-fns";
 import { StringifiableRecord } from "query-string";
-import arraySort from "array-sort";
+
 import { DATE_FORMAT, DATE_TIME_FORMAT, TIME_FORMAT } from "../constants";
 
 export function deepTrim<T>(value: T): T {

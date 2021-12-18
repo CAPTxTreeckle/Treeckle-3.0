@@ -1,16 +1,17 @@
 import { useEffect } from "react";
 import { Grid, Icon } from "semantic-ui-react";
+
 import { useGetSelf } from "../../custom-hooks/api/users-api";
-import PlaceholderWrapper from "../placeholder-wrapper";
-import UserPasswordAuthField from "../user-password-auth-field";
-import UserGoogleAuthField from "../user-google-auth-field";
-import UserFacebookAuthField from "../user-facebook-auth-field";
-import styles from "./user-auth-section.module.scss";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   selectCurrentUserDisplayInfo,
   updateCurrentUserAction,
 } from "../../redux/slices/current-user-slice";
+import PlaceholderWrapper from "../placeholder-wrapper";
+import UserFacebookAuthField from "../user-facebook-auth-field";
+import UserGoogleAuthField from "../user-google-auth-field";
+import UserPasswordAuthField from "../user-password-auth-field";
+import styles from "./user-auth-section.module.scss";
 
 function UserAuthSection() {
   const { getSelf, loading } = useGetSelf();

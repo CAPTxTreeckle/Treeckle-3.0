@@ -1,8 +1,8 @@
-import { InputHTMLAttributes, ReactNode, memo } from "react";
 import get from "lodash/get";
 import pickBy from "lodash/pickBy";
-import { Form, SemanticWIDTHS } from "semantic-ui-react";
+import { InputHTMLAttributes, memo, ReactNode } from "react";
 import { useFormContext } from "react-hook-form";
+import { Form, SemanticWIDTHS } from "semantic-ui-react";
 
 type Props = {
   className?: string;

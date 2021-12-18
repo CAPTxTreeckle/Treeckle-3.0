@@ -1,29 +1,30 @@
-import { useEffect, useState, useMemo } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { Form, Header, Segment, ButtonProps } from "semantic-ui-react";
+import { useEffect, useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { ButtonProps, Form, Header, Segment } from "semantic-ui-react";
+import * as yup from "yup";
+
 import {
-  CATEGORY,
-  LABEL,
-  TYPE,
-  PHONE_NUM_REGEX,
-  PLACEHOLDER,
-  CAPACITY,
-  REQUIRED,
   BOOKING_FORM_FIELDS,
+  CAPACITY,
+  CATEGORY,
   IC_CONTACT_NUMBER,
   IC_EMAIL,
   IC_NAME,
+  LABEL,
   NAME,
+  PHONE_NUM_REGEX,
+  PLACEHOLDER,
+  REQUIRED,
+  TYPE,
 } from "../../constants";
-import FormField from "../form-field";
-import VenueDetailsCustomFormFieldsSection from "../venue-details-custom-form-fields-section";
-import { FieldType, VenueFormProps } from "../../types/venues";
 import { useGetVenueCategories } from "../../custom-hooks/api/venues-api";
+import { FieldType, VenueFormProps } from "../../types/venues";
+import { deepTrim, sort } from "../../utils/parser-utils";
 import DropdownSelectorFormField from "../dropdown-selector-form-field";
-import { sort, deepTrim } from "../../utils/parser-utils";
+import FormField from "../form-field";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
+import VenueDetailsCustomFormFieldsSection from "../venue-details-custom-form-fields-section";
 
 const SCHEMA = yup.object().shape({
   [NAME]: yup.string().trim().required("Please enter a venue name"),

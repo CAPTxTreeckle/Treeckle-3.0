@@ -1,8 +1,9 @@
-import { useEffect, useMemo, useCallback } from "react";
-import PlaceholderWrapper from "../placeholder-wrapper";
+import { useCallback, useEffect, useMemo } from "react";
+
 import { useGetVenues } from "../../custom-hooks/api/venues-api";
-import VenueFormGalleryItem from "../venue-form-gallery-item";
 import { sort } from "../../utils/parser-utils";
+import PlaceholderWrapper from "../placeholder-wrapper";
+import VenueFormGalleryItem from "../venue-form-gallery-item";
 import styles from "./venue-form-gallery.module.scss";
 
 function VenueFormGallery() {

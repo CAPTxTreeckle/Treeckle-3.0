@@ -1,10 +1,11 @@
 import clsx from "clsx";
 import { Link, useLocation } from "react-router-dom";
 import { Dropdown } from "semantic-ui-react";
+
 import {
   OUR_STORY_PATH,
-  TERMS_OF_USE_PATH,
   PRIVACY_POLICY_PATH,
+  TERMS_OF_USE_PATH,
 } from "../../../routes/paths";
 
 function DesktopAboutTab() {

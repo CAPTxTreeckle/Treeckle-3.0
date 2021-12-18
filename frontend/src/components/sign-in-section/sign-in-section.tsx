@@ -1,11 +1,12 @@
 import { useContext } from "react";
-import { Modal, Header } from "semantic-ui-react";
+import { Header, Modal } from "semantic-ui-react";
+
 import { SignInContext } from "../../contexts/sign-in-provider";
-import SignInOptionsSection from "../sign-in-options-section";
-import SignInEmailForm from "../sign-in-email-form";
-import SignInAccountForm from "../sign-in-account-form";
-import SignInOtherOptionsLink from "../sign-in-other-options-link";
 import { LoginDetails } from "../../types/auth";
+import SignInAccountForm from "../sign-in-account-form";
+import SignInEmailForm from "../sign-in-email-form";
+import SignInOptionsSection from "../sign-in-options-section";
+import SignInOtherOptionsLink from "../sign-in-other-options-link";
 import SignInPasswordResetLink from "../sign-in-password-reset-link";
 import styles from "./sign-in-section.module.scss";
 

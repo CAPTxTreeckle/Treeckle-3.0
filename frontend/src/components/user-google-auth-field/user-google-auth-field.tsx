@@ -1,10 +1,11 @@
 import { ReactNode } from "react";
-import { Button, Popup } from "semantic-ui-react";
 import {
   GoogleLoginResponse,
   GoogleLoginResponseOffline,
 } from "react-google-login";
 import { toast } from "react-toastify";
+import { Button, Popup } from "semantic-ui-react";
+
 import { useGoogleAuth } from "../../custom-hooks/api/auth-api";
 import { useUpdateSelf } from "../../custom-hooks/api/users-api";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -12,9 +13,9 @@ import {
   selectCurrentUserDisplayInfo,
   updateCurrentUserAction,
 } from "../../redux/slices/current-user-slice";
+import { SelfPatchAction } from "../../types/users";
 import { resolveApiError } from "../../utils/error-utils";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
-import { SelfPatchAction } from "../../types/users";
 
 const LinkButton = () => {
   const dispatch = useAppDispatch();

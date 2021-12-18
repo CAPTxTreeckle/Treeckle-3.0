@@ -1,16 +1,17 @@
 import { useState } from "react";
-import { Accordion, MenuItem } from "semantic-ui-react";
 import { useLocation } from "react-router-dom";
-import TabItem from "../tab-item";
+import { Accordion, MenuItem } from "semantic-ui-react";
+
 import {
   ADMIN_BOOKINGS_PATH,
-  ADMIN_USERS_PATH,
   ADMIN_SETTINGS_PATH,
+  ADMIN_USERS_PATH,
   ADMIN_VENUES_PATH,
 } from "../../../routes/paths";
-import PendingBookingCountLabel from "../../pending-booking-count-label";
-import styles from "./mobile-admin-tab.module.scss";
 import HorizontalLayoutContainer from "../../horizontal-layout-container";
+import PendingBookingCountLabel from "../../pending-booking-count-label";
+import TabItem from "../tab-item";
+import styles from "./mobile-admin-tab.module.scss";
 
 type Props = {
   onTabClick?: () => void;

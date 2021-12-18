@@ -1,11 +1,12 @@
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { Button, Container, Segment, Transition } from "semantic-ui-react";
-import { HOME_PATH } from "../../routes/paths";
+
 import useScrollToTopScroller from "../../custom-hooks/use-scroll-to-top-scroller";
-import styles from "./standalone-page-layout-container.module.scss";
 import { useAppSelector } from "../../redux/hooks";
 import { selectIsLoggedIn } from "../../redux/slices/current-user-slice";
+import { HOME_PATH } from "../../routes/paths";
+import styles from "./standalone-page-layout-container.module.scss";
 
 type Props = {
   children: ReactNode;

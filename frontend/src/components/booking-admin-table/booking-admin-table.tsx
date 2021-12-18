@@ -1,34 +1,35 @@
 import { useMemo } from "react";
 import { Column } from "react-base-table";
 import { Segment } from "semantic-ui-react";
+
 import {
-  NAME,
-  START_DATE_TIME_STRING,
-  END_DATE_TIME_STRING,
-  CREATED_AT_STRING,
-  START_DATE_TIME,
-  END_DATE_TIME,
-  CREATED_AT,
-  STATUS,
-  EMAIL,
   BOOKER,
+  CREATED_AT,
+  CREATED_AT_STRING,
+  EMAIL,
+  END_DATE_TIME,
+  END_DATE_TIME_STRING,
   ID,
+  NAME,
+  START_DATE_TIME,
+  START_DATE_TIME_STRING,
+  STATUS,
   VENUE,
 } from "../../constants";
 import useTableState, {
   TableStateOptions,
 } from "../../custom-hooks/use-table-state";
-import { displayDateTime } from "../../utils/parser-utils";
-import PlaceholderWrapper from "../placeholder-wrapper";
-import SearchBar from "../search-bar";
-import UserNameRenderer from "../user-name-renderer";
-import UserEmailRenderer from "../user-email-renderer";
-import BookingBaseTable, { BookingViewProps } from "../booking-base-table";
 import { useAppSelector } from "../../redux/hooks";
 import {
   selectAllBookings,
   selectBookingsLoadingState,
 } from "../../redux/slices/bookings-slice";
+import { displayDateTime } from "../../utils/parser-utils";
+import BookingBaseTable, { BookingViewProps } from "../booking-base-table";
+import PlaceholderWrapper from "../placeholder-wrapper";
+import SearchBar from "../search-bar";
+import UserEmailRenderer from "../user-email-renderer";
+import UserNameRenderer from "../user-name-renderer";
 
 const BOOKER_NAME = `${BOOKER}.${NAME}`;
 const BOOKER_EMAIL = `${BOOKER}.${EMAIL}`;

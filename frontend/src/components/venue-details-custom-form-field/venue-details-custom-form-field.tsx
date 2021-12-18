@@ -9,17 +9,18 @@ import {
   Popup,
   Segment,
 } from "semantic-ui-react";
+
 import {
+  BOOKING_FORM_FIELDS,
   LABEL,
-  TYPE,
   PLACEHOLDER,
   REQUIRED,
-  BOOKING_FORM_FIELDS,
+  TYPE,
 } from "../../constants";
 import { FieldType, VenueFormProps } from "../../types/venues";
+import DropdownSelectorFormField from "../dropdown-selector-form-field";
 import FormField from "../form-field";
 import RadioFormField from "../radio-form-field";
-import DropdownSelectorFormField from "../dropdown-selector-form-field";
 import TextAreaFormField from "../text-area-form-field";
 import styles from "./venue-details-custom-form-field.module.scss";
 

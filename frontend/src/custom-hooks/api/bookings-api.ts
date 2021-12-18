@@ -1,8 +1,9 @@
 import useAxios from "axios-hooks";
-import { useCallback, useMemo } from "react";
-import { stringifyUrl } from "query-string";
 import { snakeCase } from "change-case";
-import { useAxiosWithTokenRefresh } from "./auth-api";
+import { stringifyUrl } from "query-string";
+import { useCallback, useMemo } from "react";
+
+import { DEFAULT_ARRAY } from "../../constants";
 import {
   BookingData,
   BookingGetQueryParams,
@@ -12,7 +13,7 @@ import {
 } from "../../types/bookings";
 import { errorHandlerWrapper, resolveApiError } from "../../utils/error-utils";
 import { changeKeyCase } from "../../utils/parser-utils";
-import { DEFAULT_ARRAY } from "../../constants";
+import { useAxiosWithTokenRefresh } from "./auth-api";
 
 export function useGetTotalBookingCount() {
   const [{ data: totalBookingCount = 0, loading }, apiCall] = useAxios<number>(

@@ -1,6 +1,7 @@
 import { memo, ReactNode } from "react";
 import { useModal } from "react-modal-hook";
-import { Button, Popup, ButtonProps } from "semantic-ui-react";
+import { Button, ButtonProps, Popup } from "semantic-ui-react";
+
 import ConfirmationModal, {
   ConfirmationModalPropsGetter,
 } from "../confirmation-modal";

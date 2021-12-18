@@ -1,7 +1,8 @@
-import { Image, MenuItem } from "semantic-ui-react";
 import { Link } from "react-router-dom";
-import { DASHBOARD_PATH } from "../../../routes/paths";
+import { Image, MenuItem } from "semantic-ui-react";
+
 import treeckleLogo from "../../../assets/treeckle-title-side-transparent.png";
+import { DASHBOARD_PATH } from "../../../routes/paths";
 
 type Props = {
   onTabClick?: () => void;

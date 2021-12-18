@@ -1,8 +1,9 @@
-import { useState } from "react";
 import clsx from "clsx";
-import { Button, TransitionablePortal, Modal } from "semantic-ui-react";
-import SignInSection from "../sign-in-section";
+import { useState } from "react";
+import { Button, Modal, TransitionablePortal } from "semantic-ui-react";
+
 import SignInProvider from "../../contexts/sign-in-provider";
+import SignInSection from "../sign-in-section";
 import styles from "./sign-in-button.module.scss";
 
 function SignInButton() {

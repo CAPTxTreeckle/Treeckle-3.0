@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button, Icon } from "semantic-ui-react";
+
 import VenueFormGallery from "../../components/venue-form-gallery";
 import { ADMIN_VENUES_CREATION_PATH } from "../../routes/paths";
 

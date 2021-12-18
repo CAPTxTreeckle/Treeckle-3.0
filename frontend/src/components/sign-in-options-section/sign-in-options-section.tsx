@@ -1,11 +1,12 @@
-import { useContext } from "react";
 import clsx from "clsx";
-import { toast } from "react-toastify";
-import { Button } from "semantic-ui-react";
+import { useContext } from "react";
 import {
   GoogleLoginResponse,
   GoogleLoginResponseOffline,
 } from "react-google-login";
+import { toast } from "react-toastify";
+import { Button } from "semantic-ui-react";
+
 import { SignInContext } from "../../contexts/sign-in-provider";
 import {
   useFacebookAuth,

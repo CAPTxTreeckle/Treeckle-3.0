@@ -1,19 +1,18 @@
-import { Suspense, lazy } from "react";
+import { lazy, Suspense } from "react";
 import {
   BrowserRouter as Router,
+  Redirect,
   Route,
   Switch,
-  Redirect,
 } from "react-router-dom";
 import { LastLocationProvider } from "react-router-last-location";
-import { Role } from "../types/users";
+
+import AppLayoutContainer from "../components/app-layout-container";
+import ScrollToTopManager from "../managers/scroll-to-top-manager";
 import { useAppSelector } from "../redux/hooks";
 import { selectIsLoggedIn } from "../redux/slices/current-user-slice";
-import RoleRestrictedRoute from "./role-restricted-route";
-import ScrollToTopManager from "../managers/scroll-to-top-manager";
+import { Role } from "../types/users";
 import {
-  DASHBOARD_PATH,
-  BOOKINGS_PATH,
   // EVENTS_PATH,
   // EVENTS_SIGNED_UP_PATH,
   // EVENTS_SUBSCRIPTIONS_PATH,
@@ -24,21 +23,23 @@ import {
   // EVENTS_QR_CODE_PATH,
   ADMIN_BOOKINGS_PATH,
   ADMIN_SETTINGS_PATH,
+  ADMIN_USERS_CREATION_PATH,
   ADMIN_USERS_PATH,
-  PROFILE_PATH,
-  HOME_PATH,
-  ADMIN_VENUES_PATH,
+  ADMIN_USERS_PENDING_REGISTRATION_PATH,
   ADMIN_VENUES_CREATION_PATH,
   ADMIN_VENUES_EDIT_PATH,
-  ADMIN_USERS_CREATION_PATH,
-  ADMIN_USERS_PENDING_REGISTRATION_PATH,
+  ADMIN_VENUES_PATH,
   BOOKINGS_CREATION_PATH,
+  BOOKINGS_PATH,
+  DASHBOARD_PATH,
+  HOME_PATH,
   // AUTH_CALLBACK_PATH,
   OUR_STORY_PATH,
   PRIVACY_POLICY_PATH,
+  PROFILE_PATH,
   TERMS_OF_USE_PATH,
 } from "./paths";
-import AppLayoutContainer from "../components/app-layout-container";
+import RoleRestrictedRoute from "./role-restricted-route";
 
 // Code splitting
 const DashboardPage = lazy(() => import("../pages/dashboard-page"));

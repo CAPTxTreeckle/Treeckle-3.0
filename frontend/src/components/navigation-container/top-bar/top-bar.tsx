@@ -1,6 +1,7 @@
-import { ReactNode } from "react";
 import clsx from "clsx";
+import { ReactNode } from "react";
 import { Menu } from "semantic-ui-react";
+
 import styles from "./top-bar.module.scss";
 
 type Props = {

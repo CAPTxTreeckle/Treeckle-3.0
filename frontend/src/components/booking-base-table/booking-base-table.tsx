@@ -1,22 +1,23 @@
 import { useCallback } from "react";
 import { AutoResizer, Column, ColumnShape } from "react-base-table";
 import { Segment } from "semantic-ui-react";
-import Table, { TableProps } from "../table";
-import { BookingData } from "../../types/bookings";
+
 import {
-  START_DATE_TIME_STRING,
-  END_DATE_TIME_STRING,
-  CREATED_AT_STRING,
-  ID,
   ACTION,
+  CREATED_AT_STRING,
+  END_DATE_TIME_STRING,
+  ID,
+  START_DATE_TIME_STRING,
   STATUS,
 } from "../../constants";
-import BookingDetailsView from "../booking-details-view";
-import BookingStatusButton from "../booking-status-button";
-import styles from "./booking-base-table.module.scss";
 import { useGetSingleBooking } from "../../custom-hooks/api/bookings-api";
 import { useAppDispatch } from "../../redux/hooks";
 import { updateBookingsAction } from "../../redux/slices/bookings-slice";
+import { BookingData } from "../../types/bookings";
+import BookingDetailsView from "../booking-details-view";
+import BookingStatusButton from "../booking-status-button";
+import Table, { TableProps } from "../table";
+import styles from "./booking-base-table.module.scss";
 
 export type BookingViewProps = BookingData & {
   [START_DATE_TIME_STRING]: string;
