@@ -91,7 +91,7 @@
     "start": "react-scripts start",
     "start:https": "HTTPS=true SSL_CRT_FILE=localhost.pem SSL_KEY_FILE=localhost-key.pem react-scripts start",
     "prebuild": "yarn format && yarn lint --fix",
-    "build": "set CI= && react-scripts build",
+    "build": "react-scripts build",
     "postbuild": "gzipper compress --verbose --brotli --remove-larger --exclude mp4,pdf ./build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
