@@ -5,7 +5,7 @@ import { configure } from "axios-hooks";
 import { TransitionGroup } from "react-transition-group";
 import { ModalProvider } from "react-modal-hook";
 import store from "./redux/store";
-import "semantic-ui-css/semantic.min.css";
+// import "semantic-ui-css/semantic.min.css";
 import "react-toastify/dist/ReactToastify.min.css";
 import LocalStorageUserManager from "./managers/local-storage-user-manager";
 import LocalStorageBookingCreationManager from "./managers/local-storage-booking-creation-manager";
