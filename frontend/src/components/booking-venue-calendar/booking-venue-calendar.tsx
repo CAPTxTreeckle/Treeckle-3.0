@@ -28,22 +28,20 @@ function BookingVenueCalendar({
   } = useBookingCalendarState({ bookings: venueBookings });
 
   return (
-    <>
-      <Segment className={styles.bookingVenueCalendar} raised>
-        <h2>{name} Bookings</h2>
+    <Segment className={styles.bookingVenueCalendar} raised>
+      <h2>{name} Bookings</h2>
 
-        <BookingCalendar
-          events={calendarBookings}
-          view={view}
-          date={dateView}
-          scrollToTime={dateView}
-          onView={onView}
-          onNavigate={onNavigate}
-          onSelectEvent={onSelectEvent}
-          onDrillDown={onDrillDown}
-        />
-      </Segment>
-    </>
+      <BookingCalendar
+        events={calendarBookings}
+        view={view}
+        date={dateView}
+        scrollToTime={dateView}
+        onView={onView}
+        onNavigate={onNavigate}
+        onSelectEvent={onSelectEvent}
+        onDrillDown={onDrillDown}
+      />
+    </Segment>
   );
 }
 

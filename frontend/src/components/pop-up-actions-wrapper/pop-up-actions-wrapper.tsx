@@ -4,6 +4,7 @@ import {
   ReactNode,
   SetStateAction,
   useCallback,
+  useMemo,
   useState,
 } from "react";
 import {
@@ -55,10 +56,13 @@ function PopupActionsWrapper({
     setPopupOpen(false);
   }, []);
 
+  const contextValue = useMemo(
+    () => ({ extraContent, setExtraContent, closePopup }),
+    [extraContent, closePopup],
+  );
+
   return (
-    <PopupActionsWrapperContext.Provider
-      value={{ extraContent, setExtraContent, closePopup }}
-    >
+    <PopupActionsWrapperContext.Provider value={contextValue}>
       <Popup
         inverted={inverted}
         trigger={children}

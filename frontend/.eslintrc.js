@@ -35,6 +35,15 @@ module.exports = {
     "react/require-default-props": "off",
     "react/no-array-index-key": "off",
     "react/react-in-jsx-scope": "off",
+    "react/jsx-no-useless-fragment": ["error", { allowExpressions: true }],
+    "react/function-component-definition": [
+      "error",
+      {
+        namedComponents: ["function-declaration", "arrow-function"],
+        unnamedComponents: "function-expression",
+      },
+    ],
+    "react/no-unstable-nested-components": ["error", { allowAsProps: true }],
     "import/prefer-default-export": "off",
     "jsx-a11y/label-has-associated-control": "off",
     "jsx-a11y/click-events-have-key-events": "off",
@@ -44,6 +53,14 @@ module.exports = {
     "default-case": "off",
     "no-console": "off",
     "consistent-return": "off",
+    "no-restricted-exports": [
+      "error",
+      {
+        restrictedNamedExports: [
+          "then", // this will cause tons of confusion when your module is dynamically `import()`ed, and will break in most node ESM versions
+        ],
+      },
+    ],
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
   },

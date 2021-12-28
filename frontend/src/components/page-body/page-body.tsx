@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useMemo, useState } from "react";
 
 import styles from "./page-body.module.scss";
 
@@ -37,9 +37,11 @@ function PageBody({ className, children }: Props) {
     Element | (Window & typeof globalThis) | null
   >(window);
 
+  const contextValue = useMemo(() => ({ body }), [body]);
+
   return (
     <div ref={setBody} className={clsx(styles.pageBody, className)}>
-      <PageBodyContext.Provider value={{ body }}>
+      <PageBodyContext.Provider value={contextValue}>
         {children}
       </PageBodyContext.Provider>
     </div>

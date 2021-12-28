@@ -3,6 +3,7 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  useMemo,
   useState,
 } from "react";
 
@@ -40,17 +41,20 @@ function SignInProvider({ children }: Props) {
   const [inputEmail, setInputEmail] = useState("");
   const [loginDetails, setLoginDetails] = useState<LoginDetails>();
 
+  const contextValue = useMemo(
+    () => ({
+      isPasswordSignIn,
+      setPasswordSignIn,
+      inputEmail,
+      setInputEmail,
+      loginDetails,
+      setLoginDetails,
+    }),
+    [isPasswordSignIn, inputEmail, loginDetails],
+  );
+
   return (
-    <SignInContext.Provider
-      value={{
-        isPasswordSignIn,
-        setPasswordSignIn,
-        inputEmail,
-        setInputEmail,
-        loginDetails,
-        setLoginDetails,
-      }}
-    >
+    <SignInContext.Provider value={contextValue}>
       {children}
     </SignInContext.Provider>
   );
