@@ -4,6 +4,12 @@ ARG REACT_APP_GOOGLE_CLIENT_ID
 ARG REACT_APP_FACEBOOK_APP_ID
 ARG PUBLIC_URL
 
+## new issue appeared on 28/12/2021. Fix: https://github.com/docker/getting-started/issues/124
+RUN apk add --no-cache --virtual .build-deps \
+    python3 \
+    make \
+    g++
+
 ## set custom working directory
 WORKDIR /app
 

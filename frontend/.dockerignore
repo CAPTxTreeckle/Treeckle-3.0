@@ -1,3 +1,6 @@
+## ssl certificate
+*.pem
+
 ## git
 .gitignore
 
