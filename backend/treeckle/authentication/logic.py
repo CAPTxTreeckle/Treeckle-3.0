@@ -7,8 +7,8 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 from treeckle.common.constants import REFRESH, ACCESS, TOKENS, USER
 
-from users.models import User, UserInvite
-from users.logic import requester_to_json, get_users, get_user_invites
+from users.models import User
+from users.logic import requester_to_json
 from .models import PasswordAuthentication, PasswordAuthenticationData
 
 

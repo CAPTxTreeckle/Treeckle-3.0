@@ -4,7 +4,7 @@ from typing import Optional
 from django.db import models, transaction
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.password_validation import validate_password
-from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
+from django.core.exceptions import ValidationError
 
 from treeckle.common.exceptions import BadRequest
 from treeckle.common.models import TimestampedModel

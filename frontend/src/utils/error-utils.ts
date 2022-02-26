@@ -49,8 +49,6 @@ export function errorHandlerWrapper<T extends unknown[], R = unknown>(
           "error",
         );
       } else {
-        console.log(error?.message, defaultErrorMessage);
-        console.log("test");
         throw new ApiResponseError(error);
       }
     }

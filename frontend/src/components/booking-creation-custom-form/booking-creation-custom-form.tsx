@@ -47,7 +47,7 @@ const SCHEMA = yup.object().shape({
                 : yup
                     .boolean()
                     .required("An error has occurred")
-                    .oneOf([true], "This field must be checked"),
+                    .isTrue("This field must be checked"),
             ),
           }),
         })

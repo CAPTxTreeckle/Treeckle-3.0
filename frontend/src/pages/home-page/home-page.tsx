@@ -175,7 +175,9 @@ function HomePage() {
             </Grid.Column>
           </Grid>
           <Divider inverted section />
-          <p>© 2019-2021 Treeckle. All Rights Reserved.</p>
+          <p>
+            © 2019-{new Date().getFullYear()} Treeckle. All Rights Reserved.
+          </p>
         </Container>
       </Segment>
 
