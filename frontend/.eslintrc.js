@@ -25,6 +25,7 @@ module.exports = {
         endOfLine: "auto",
       },
     ],
+    "@typescript-eslint/return-await": ["error", "in-try-catch"],
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-shadow": "off",
     "@typescript-eslint/no-unused-expressions": "off",
