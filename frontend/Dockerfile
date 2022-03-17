@@ -5,10 +5,12 @@ ARG REACT_APP_FACEBOOK_APP_ID
 ARG PUBLIC_URL
 
 ## new issue appeared on 28/12/2021. Fix: https://github.com/docker/getting-started/issues/124
+## git is required for semantic ui css fix
 RUN apk add --no-cache --virtual .build-deps \
     python3 \
     make \
-    g++
+    g++ \
+    git
 
 ## set custom working directory
 WORKDIR /app
