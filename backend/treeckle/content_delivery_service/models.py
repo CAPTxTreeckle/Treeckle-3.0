@@ -65,7 +65,7 @@ def image_cleanup(sender, instance: Image, **kwargs):
     instance.delete_image_from_server()
 
 
-## set up listener to delete profile image when a user is deleted
+## set up listener to delete image from server when an image object is deleted
 post_delete.connect(
     image_cleanup,
     sender=Image,
