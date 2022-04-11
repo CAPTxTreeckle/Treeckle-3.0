@@ -11,6 +11,7 @@ import {
   TITLE,
 } from "../../constants";
 import { useGetSingleVenue } from "../../custom-hooks/api/venues-api";
+import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 import {
   useAppDispatch,
   useAppSelector,
@@ -62,6 +63,8 @@ function BookingCreationCustomForm() {
   const { getSingleVenue, loading } = useGetSingleVenue();
   const dispatch = useAppDispatch();
   const formRef = useRef<HTMLFormElement>(null);
+
+  useScrollToTop();
 
   useEffect(() => {
     if (selectedVenue?.id !== undefined) {

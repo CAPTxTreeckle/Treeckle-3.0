@@ -2,9 +2,12 @@ import { Link } from "react-router-dom";
 import { Button, Icon } from "semantic-ui-react";
 
 import BookingCreationSection from "../../components/booking-creation-section";
+import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 import { BOOKINGS_PATH } from "../../routes/paths";
 
 function BookingsCreationPage() {
+  useScrollToTop();
+
   return (
     <>
       <Button

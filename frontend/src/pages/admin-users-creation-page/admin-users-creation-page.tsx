@@ -4,10 +4,13 @@ import { Button, Icon } from "semantic-ui-react";
 
 import UserCreationInputSection from "../../components/user-creation-input-section";
 import UserCreationTable from "../../components/user-creation-table";
+import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 import { ADMIN_USERS_PATH } from "../../routes/paths";
 
 function AdminUsersCreationPage() {
   const lastLocation = useLastLocation();
+
+  useScrollToTop();
 
   return (
     <>

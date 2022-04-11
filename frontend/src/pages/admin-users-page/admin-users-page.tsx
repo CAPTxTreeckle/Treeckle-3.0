@@ -4,6 +4,7 @@ import { Button, Icon } from "semantic-ui-react";
 import Tab, { TabOption } from "../../components/tab";
 import UserInviteTable from "../../components/user-invite-table";
 import UserTable from "../../components/user-table";
+import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 import {
   ADMIN_USERS_CREATION_PATH,
   ADMIN_USERS_PATH,
@@ -31,6 +32,8 @@ const ADMIN_USERS_CATEGORY_PATHS = [
 function AdminUsersPage() {
   const history = useHistory();
   const location = useLocation();
+
+  useScrollToTop();
 
   const activeIndex = (() => {
     const index = ADMIN_USERS_CATEGORY_PATHS.indexOf(location.pathname);

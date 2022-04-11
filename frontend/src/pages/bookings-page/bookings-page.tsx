@@ -7,6 +7,7 @@ import BookingUserTable from "../../components/booking-user-table";
 import HorizontalLayoutContainer from "../../components/horizontal-layout-container";
 import Tab, { TabOption } from "../../components/tab";
 import { useGetBookings } from "../../custom-hooks/api/bookings-api";
+import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 import {
   useAppDispatch,
   useAppSelector,
@@ -38,6 +39,8 @@ function BookingsPage() {
     useDeepEqualAppSelector(selectCurrentUserDisplayInfo) ?? {};
 
   const dispatch = useAppDispatch();
+
+  useScrollToTop();
 
   const getBookings = useCallback(
     async (

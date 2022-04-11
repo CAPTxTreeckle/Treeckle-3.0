@@ -4,6 +4,7 @@ import { Button, Icon } from "semantic-ui-react";
 
 import VenueDetailsForm from "../../components/venue-details-form";
 import { useCreateVenue } from "../../custom-hooks/api/venues-api";
+import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 import { ADMIN_VENUES_PATH } from "../../routes/paths";
 import { VenueFormProps } from "../../types/venues";
 import { resolveApiError } from "../../utils/error-utils";
@@ -11,6 +12,8 @@ import { resolveApiError } from "../../utils/error-utils";
 function AdminVenuesCreationPage() {
   const history = useHistory();
   const { createVenue } = useCreateVenue();
+
+  useScrollToTop();
 
   const onCreateVenue = async (venueFormProps: VenueFormProps) => {
     try {

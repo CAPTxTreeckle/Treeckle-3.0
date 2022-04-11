@@ -1,10 +1,13 @@
 import LinkifyTextViewer from "../../components/linkify-text-viewer";
+import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
 import styles from "./dashboard-page.module.scss";
 
 function DashboardPage() {
   const { name } = useAppSelector(selectCurrentUserDisplayInfo) ?? {};
+
+  useScrollToTop();
 
   return (
     <div className={styles.dashboardPage}>

@@ -1,8 +1,11 @@
 import { Divider } from "semantic-ui-react";
 
 import StandalonePageLayoutContainer from "../../components/standalone-page-layout-container";
+import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 
 function PrivacyPolicyPage() {
+  useScrollToTop();
+
   return (
     <StandalonePageLayoutContainer>
       <h1 className="center-text">Privacy Policy for Treeckle</h1>

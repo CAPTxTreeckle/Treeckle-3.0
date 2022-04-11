@@ -2,8 +2,11 @@ import { Icon, Message, Segment } from "semantic-ui-react";
 
 import BookingNotificationSubscriptionForm from "../../components/booking-notification-subscription-form";
 import BookingNotificationSubscriptionTable from "../../components/booking-notification-subscription-table";
+import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 
 function AdminSettingsPage() {
+  useScrollToTop();
+
   return (
     <>
       <h1>Booking Notification Subscriptions</h1>

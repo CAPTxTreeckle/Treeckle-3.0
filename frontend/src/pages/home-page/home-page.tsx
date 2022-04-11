@@ -17,6 +17,7 @@ import treeckleLogo from "../../assets/treeckle-outline-min.png";
 import treeckleVideo from "../../assets/utown-video.mp4";
 import SignInButton from "../../components/sign-in-button";
 import TotalBookingCounter from "../../components/total-booking-counter";
+import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 import useScrollToTopScroller from "../../custom-hooks/use-scroll-to-top-scroller";
 import { resetAppState } from "../../redux/store";
 import {
@@ -30,6 +31,8 @@ function HomePage() {
   const isTabletOrLarger = useMediaQuery({ query: "(min-width: 768px)" });
   const { showScroller, scrollerStyle, scrollToTop } =
     useScrollToTopScroller(300);
+
+  useScrollToTop();
 
   useEffect(() => {
     resetAppState();

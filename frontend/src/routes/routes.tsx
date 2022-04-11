@@ -8,7 +8,6 @@ import {
 import { LastLocationProvider } from "react-router-last-location";
 
 import AppLayoutContainer from "../components/app-layout-container";
-import ScrollToTopManager from "../managers/scroll-to-top-manager";
 import { useAppSelector } from "../redux/hooks";
 import { selectIsLoggedIn } from "../redux/slices/current-user-slice";
 import { Role } from "../types/users";
@@ -72,13 +71,6 @@ const OurStoryPage = lazy(() => import("../pages/our-story-page"));
 const PrivacyPolicyPage = lazy(() => import("../pages/privacy-policy-page"));
 const TermsOfUsePage = lazy(() => import("../pages/terms-of-use-page"));
 
-const ON_VISIT_SCROLL_TO_TOP_PATHS = [
-  HOME_PATH,
-  OUR_STORY_PATH,
-  PRIVACY_POLICY_PATH,
-  TERMS_OF_USE_PATH,
-];
-
 function Routes() {
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
 
@@ -86,7 +78,6 @@ function Routes() {
     <Router>
       <LastLocationProvider>
         <AppLayoutContainer>
-          <ScrollToTopManager paths={ON_VISIT_SCROLL_TO_TOP_PATHS} />
           {/* use null since the loading is fast and a loader would flicker momentarily */}
           {/* require background to be same color as theme color */}
           <Suspense fallback={null}>

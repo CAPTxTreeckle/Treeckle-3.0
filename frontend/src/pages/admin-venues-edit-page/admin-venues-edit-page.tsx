@@ -9,6 +9,7 @@ import {
   useGetSingleVenue,
   useUpdateVenue,
 } from "../../custom-hooks/api/venues-api";
+import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 import { ADMIN_VENUES_PATH } from "../../routes/paths";
 import { VenueFormProps } from "../../types/venues";
 import { resolveApiError } from "../../utils/error-utils";
@@ -18,6 +19,8 @@ function AdminVenuesEditPage() {
   const { venueId } = useParams<{ venueId: string }>();
   const { venue, loading, getSingleVenue } = useGetSingleVenue();
   const { updateVenue } = useUpdateVenue();
+
+  useScrollToTop();
 
   useEffect(() => {
     getSingleVenue(venueId);

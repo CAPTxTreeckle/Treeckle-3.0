@@ -2,6 +2,7 @@ import { useEffect, useMemo } from "react";
 import { Button, Card, Grid, Header, Segment } from "semantic-ui-react";
 
 import { useGetVenues } from "../../custom-hooks/api/venues-api";
+import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   chooseVenueAction,
@@ -16,6 +17,8 @@ function BookingCreationVenueSelector() {
   const selectedCategory = useAppSelector(selectSelectedCategory);
   const { venues, loading, getVenues } = useGetVenues();
   const dispatch = useAppDispatch();
+
+  useScrollToTop();
 
   useEffect(() => {
     getVenues({ category: selectedCategory, fullDetails: true });

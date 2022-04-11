@@ -2,9 +2,12 @@ import { Link } from "react-router-dom";
 import { Button, Icon } from "semantic-ui-react";
 
 import VenueFormGallery from "../../components/venue-form-gallery";
+import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 import { ADMIN_VENUES_CREATION_PATH } from "../../routes/paths";
 
 function AdminVenuesPage() {
+  useScrollToTop();
+
   return (
     <>
       <Button

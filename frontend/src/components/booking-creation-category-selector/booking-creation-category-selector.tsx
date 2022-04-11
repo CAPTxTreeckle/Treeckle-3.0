@@ -2,6 +2,7 @@ import { useEffect, useMemo } from "react";
 import { Card, Grid, Header, Segment } from "semantic-ui-react";
 
 import { useGetVenueCategories } from "../../custom-hooks/api/venues-api";
+import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 import { useAppDispatch } from "../../redux/hooks";
 import { chooseVenueCategoryAction } from "../../redux/slices/booking-creation-slice";
 import { sort } from "../../utils/parser-utils";
@@ -11,6 +12,8 @@ function BookingCreationCategorySelector() {
   const { venueCategories, getVenueCategories, loading } =
     useGetVenueCategories();
   const dispatch = useAppDispatch();
+
+  useScrollToTop();
 
   useEffect(() => {
     getVenueCategories();

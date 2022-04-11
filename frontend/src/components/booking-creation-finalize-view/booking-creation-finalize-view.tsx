@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { Button, Grid, Segment } from "semantic-ui-react";
 
 import { useCreateBookings } from "../../custom-hooks/api/bookings-api";
+import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   backFromBookingFinalizationAction,
@@ -34,6 +35,8 @@ function BookingCreationFinalizeView() {
   const { createBookings, loading } = useCreateBookings();
   const history = useHistory();
   const dispatch = useAppDispatch();
+
+  useScrollToTop();
 
   const { venueFormProps } = selectedVenue ?? {};
   const { title, bookingFormResponses } = bookingFormProps ?? {};

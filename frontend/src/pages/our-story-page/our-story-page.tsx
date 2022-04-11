@@ -5,6 +5,7 @@ import treeckleLogo from "../../assets/treeckle-title-side-transparent.png";
 import StandalonePageLayoutContainer from "../../components/standalone-page-layout-container";
 import Timeline, { TimelineElement } from "../../components/timeline";
 import VideoPlayer from "../../components/video-player";
+import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 
 const milestones: TimelineElement[] = [
   {
@@ -91,6 +92,8 @@ const milestones: TimelineElement[] = [
 ];
 
 function OurStoryPage() {
+  useScrollToTop();
+
   return (
     <StandalonePageLayoutContainer>
       <h1>Our Story</h1>

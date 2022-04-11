@@ -14,6 +14,7 @@ import {
 import { DEFAULT_ARRAY } from "../../constants";
 import { useGetBookings } from "../../custom-hooks/api/bookings-api";
 import useBookingCreationCalendarState from "../../custom-hooks/use-booking-creation-calendar-state";
+import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   backFromBookingPeriodsSelectionAction,
@@ -37,6 +38,8 @@ function BookingCreationTimeSlotSelector() {
     useAppSelector(selectNewBookingPeriods) ?? DEFAULT_ARRAY;
   const user = useAppSelector(selectCurrentUserDisplayInfo) ?? null;
   const dispatch = useAppDispatch();
+
+  useScrollToTop();
 
   const { bookings: existingBookings, loading, getBookings } = useGetBookings();
 
