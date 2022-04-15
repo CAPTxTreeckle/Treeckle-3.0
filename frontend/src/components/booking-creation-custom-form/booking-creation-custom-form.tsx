@@ -25,7 +25,7 @@ import {
   syncVenueAction,
 } from "../../redux/slices/booking-creation-slice";
 import { BookingFormProps } from "../../types/bookings";
-import { deepTrim } from "../../utils/parser-utils";
+import { deepTrim } from "../../utils/transform-utils";
 import BookingCreationErrorAlert from "../booking-creation-error-alert";
 import CustomFormFieldRenderer from "../custom-form-field-renderer";
 import FormField from "../form-field";

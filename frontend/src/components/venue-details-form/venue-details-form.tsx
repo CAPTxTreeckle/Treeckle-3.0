@@ -20,7 +20,7 @@ import {
 } from "../../constants";
 import { useGetVenueCategories } from "../../custom-hooks/api/venues-api";
 import { FieldType, VenueFormProps } from "../../types/venues";
-import { deepTrim, sort } from "../../utils/parser-utils";
+import { deepTrim, sort } from "../../utils/transform-utils";
 import DropdownSelectorFormField from "../dropdown-selector-form-field";
 import FormField from "../form-field";
 import HorizontalLayoutContainer from "../horizontal-layout-container";

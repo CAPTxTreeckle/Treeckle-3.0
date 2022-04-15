@@ -19,7 +19,7 @@ import {
 import { BOOKINGS_PATH } from "../../routes/paths";
 import { FieldType } from "../../types/venues";
 import { resolveApiError } from "../../utils/error-utils";
-import { displayDateTimeRange } from "../../utils/parser-utils";
+import { displayDateTimeRange } from "../../utils/transform-utils";
 import BookingCreationErrorAlert from "../booking-creation-error-alert";
 import { ConfirmationModalPropsGetter } from "../confirmation-modal";
 import ConfirmationModalButton from "../confirmation-modal-button";

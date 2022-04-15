@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { DropdownItemProps } from "semantic-ui-react";
 
-import { sanitizeArray } from "../utils/parser-utils";
+import { sanitizeArray } from "../utils/transform-utils";
 
 export default function useOptionsState(
   existingOptions: string[] | DropdownItemProps[],

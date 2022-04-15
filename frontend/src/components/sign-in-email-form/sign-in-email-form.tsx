@@ -9,7 +9,7 @@ import { SignInContext } from "../../contexts/sign-in-provider";
 import { useCheckAccount } from "../../custom-hooks/api/auth-api";
 import { CheckAccountPostData } from "../../types/auth";
 import { resolveApiError } from "../../utils/error-utils";
-import { deepTrim } from "../../utils/parser-utils";
+import { deepTrim } from "../../utils/transform-utils";
 import FormField from "../form-field";
 
 const SCHEMA = yup.object().shape({

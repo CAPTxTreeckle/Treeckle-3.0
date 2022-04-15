@@ -26,7 +26,7 @@ import {
 } from "react-big-calendar";
 
 import { END, START } from "../constants";
-import { sort } from "./parser-utils";
+import { sort } from "./transform-utils";
 
 export const CURRENT_LOCALE = "en-US";
 export const DAY_HEADER_FORMAT = "EEEE dd MMMM";

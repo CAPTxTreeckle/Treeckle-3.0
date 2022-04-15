@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo } from "react";
 
 import { useGetVenues } from "../../custom-hooks/api/venues-api";
-import { sort } from "../../utils/parser-utils";
+import { sort } from "../../utils/transform-utils";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import VenueFormGalleryItem from "../venue-form-gallery-item";
 import styles from "./venue-form-gallery.module.scss";

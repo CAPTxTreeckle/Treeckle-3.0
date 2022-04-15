@@ -9,7 +9,7 @@ import {
   resetBookingCreationAction,
   selectSelectedCategory,
 } from "../../redux/slices/booking-creation-slice";
-import { sort } from "../../utils/parser-utils";
+import { sort } from "../../utils/transform-utils";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import PlaceholderWrapper from "../placeholder-wrapper";
 

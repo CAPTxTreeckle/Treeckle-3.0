@@ -27,7 +27,7 @@ import {
 } from "../../redux/slices/booking-notification-subscription-slice";
 import { BookingNotificationSubscriptionData } from "../../types/venues";
 import { resolveApiError } from "../../utils/error-utils";
-import { displayDateTime } from "../../utils/parser-utils";
+import { displayDateTime } from "../../utils/transform-utils";
 import { ConfirmationModalPropsGetter } from "../confirmation-modal";
 import ConfirmationModalButton from "../confirmation-modal-button";
 import HorizontalLayoutContainer from "../horizontal-layout-container";

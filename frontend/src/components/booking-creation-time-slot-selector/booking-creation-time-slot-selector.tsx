@@ -25,7 +25,7 @@ import {
 } from "../../redux/slices/booking-creation-slice";
 import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
 import { BookingStatus } from "../../types/bookings";
-import { displayDateTimeRange } from "../../utils/parser-utils";
+import { displayDateTimeRange } from "../../utils/transform-utils";
 import BookingCalendar, { CalendarBooking } from "../booking-calendar";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import PlaceholderWrapper from "../placeholder-wrapper";

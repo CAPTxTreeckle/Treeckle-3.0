@@ -24,7 +24,7 @@ import {
   selectAllBookings,
   selectBookingsLoadingState,
 } from "../../redux/slices/bookings-slice";
-import { displayDateTime } from "../../utils/parser-utils";
+import { displayDateTime } from "../../utils/transform-utils";
 import BookingBaseTable, { BookingViewProps } from "../booking-base-table";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../search-bar";

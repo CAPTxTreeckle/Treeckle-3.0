@@ -2,7 +2,7 @@ import throttle from "lodash/throttle";
 import { Key, useMemo, useState } from "react";
 import { SortOrder } from "react-base-table";
 
-import { sort } from "../utils/parser-utils";
+import { sort } from "../utils/transform-utils";
 import { generateSearchEngine } from "../utils/search-utils";
 
 export type SortBy = {

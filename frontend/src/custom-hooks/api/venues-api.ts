@@ -14,7 +14,7 @@ import {
   VenueViewProps,
 } from "../../types/venues";
 import { errorHandlerWrapper, resolveApiError } from "../../utils/error-utils";
-import { changeKeyCase } from "../../utils/parser-utils";
+import { changeKeyCase } from "../../utils/transform-utils";
 import { useAxiosWithTokenRefresh } from "./auth-api";
 
 function parseVenueFormProps(

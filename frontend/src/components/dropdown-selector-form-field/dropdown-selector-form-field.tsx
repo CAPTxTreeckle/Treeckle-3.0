@@ -10,7 +10,7 @@ import {
 
 import { DEFAULT_ARRAY } from "../../constants";
 import useOptionsState from "../../custom-hooks/use-options-state";
-import { sanitizeArray } from "../../utils/parser-utils";
+import { sanitizeArray } from "../../utils/transform-utils";
 
 type Props = {
   className?: string;

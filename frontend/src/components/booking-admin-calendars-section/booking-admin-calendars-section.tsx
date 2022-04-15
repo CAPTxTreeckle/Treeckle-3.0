@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 
 import { useGetVenues } from "../../custom-hooks/api/venues-api";
-import { sort } from "../../utils/parser-utils";
+import { sort } from "../../utils/transform-utils";
 import BookingVenueCalendar from "../booking-venue-calendar";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import Tab, { TabOption } from "../tab";

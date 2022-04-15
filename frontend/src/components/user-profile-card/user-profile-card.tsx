@@ -4,7 +4,7 @@ import { Divider, Grid, Image, Segment } from "semantic-ui-react";
 
 import defaultAvatarImage from "../../assets/avatar.png";
 import { UserData } from "../../types/users";
-import { displayDateTime } from "../../utils/parser-utils";
+import { displayDateTime } from "../../utils/transform-utils";
 import UserAuthSection from "../user-auth-section";
 import UserNameChanger from "../user-name-changer";
 import UserProfileImageChanger from "../user-profile-image-changer";

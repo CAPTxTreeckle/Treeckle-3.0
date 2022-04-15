@@ -12,7 +12,7 @@ import { useAppDispatch } from "../../redux/hooks";
 import { updateCurrentUserAction } from "../../redux/slices/current-user-slice";
 import { PasswordLoginPostData } from "../../types/auth";
 import { resolveApiError } from "../../utils/error-utils";
-import { deepTrim } from "../../utils/parser-utils";
+import { deepTrim } from "../../utils/transform-utils";
 import FormField from "../form-field";
 
 const SCHEMA = yup.object().shape({

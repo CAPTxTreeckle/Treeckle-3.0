@@ -12,7 +12,7 @@ import {
   BookingStatusAction,
 } from "../../types/bookings";
 import { errorHandlerWrapper, resolveApiError } from "../../utils/error-utils";
-import { changeKeyCase } from "../../utils/parser-utils";
+import { changeKeyCase } from "../../utils/transform-utils";
 import { useAxiosWithTokenRefresh } from "./auth-api";
 
 export function useGetTotalBookingCount() {

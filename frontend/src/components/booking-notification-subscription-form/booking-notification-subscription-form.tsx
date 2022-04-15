@@ -14,7 +14,7 @@ import { useAppDispatch } from "../../redux/hooks";
 import { updateBookingNotificationSubscriptionAction } from "../../redux/slices/booking-notification-subscription-slice";
 import { BookingNotificationSubscriptionPostData } from "../../types/venues";
 import { resolveApiError } from "../../utils/error-utils";
-import { deepTrim, sort } from "../../utils/parser-utils";
+import { deepTrim, sort } from "../../utils/transform-utils";
 import DropdownSelectorFormField from "../dropdown-selector-form-field";
 import FormField from "../form-field";
 import styles from "./booking-notification-subscription-form.module.scss";
