@@ -1,5 +1,6 @@
 import { saveAs } from "file-saver";
 import papaparse from "papaparse";
+import { Accept } from "react-dropzone";
 import { toast } from "react-toastify";
 import { Button, Icon, Popup } from "semantic-ui-react";
 
@@ -23,6 +24,10 @@ const USER_CREATION_CSV_TEMPLATE = new Blob(
   ],
   { type: "text/csv;charset=utf-8" },
 );
+
+const acceptedFileTypes: Accept = {
+  "text/csv": [".csv"],
+};
 
 const onDownloadCsvTemplate = () =>
   saveAs(USER_CREATION_CSV_TEMPLATE, "user creation template.csv");
@@ -83,10 +88,10 @@ function UserCreationCsvUploader() {
       </HorizontalLayoutContainer>
 
       <FileUploader
-        onAcceptFiles={onAcceptCsvFile}
+        onDropAccepted={onAcceptCsvFile}
         icon={<i className="fas fa-file-csv icon" />}
         title="Drag and drop, or click here to upload CSV file."
-        accept="text/csv"
+        accept={acceptedFileTypes}
       />
     </>
   );

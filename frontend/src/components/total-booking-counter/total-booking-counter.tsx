@@ -12,7 +12,9 @@ const CounterViewer = ({
 }) => {
   const countUpRef = useRef<HTMLSpanElement | null>(null);
   const [loading, setLoading] = useState(false);
-  const { ref, inView } = useInView({ delay: 250 });
+  const { ref, inView } = useInView({
+    delay: 250,
+  });
   const { start, reset } = useCountUp({
     ref: countUpRef,
     start: 0,
@@ -45,13 +47,14 @@ const CounterViewer = ({
 function TotalBookingCounter() {
   const { totalBookingCount, loading, getTotalBookingCount } =
     useGetTotalBookingCount();
-  const { ref, inView } = useInView({ triggerOnce: true });
-
-  useEffect(() => {
-    if (inView) {
-      getTotalBookingCount();
-    }
-  }, [inView, getTotalBookingCount]);
+  const { ref } = useInView({
+    triggerOnce: true,
+    onChange: (inView) => {
+      if (inView) {
+        getTotalBookingCount();
+      }
+    },
+  });
 
   return (
     <div ref={ref}>

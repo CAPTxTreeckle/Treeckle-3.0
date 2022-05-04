@@ -1,37 +1,26 @@
 import clsx from "clsx";
-import { useDropzone } from "react-dropzone";
+import { DropzoneOptions, useDropzone } from "react-dropzone";
 import { Header, Icon } from "semantic-ui-react";
 
 import styles from "./file-uploader.module.scss";
 
 type Props = {
-  accept?: string | string[];
-  multiple?: boolean;
-  onAcceptFiles: (files: File[]) => void;
-  maxFileSize?: number;
   icon?: React.ReactNode;
   title?: string;
   description?: string;
-  disabled?: boolean;
-};
+} & DropzoneOptions;
 
 function FileUploader({
-  accept,
-  multiple = false,
-  onAcceptFiles,
-  maxFileSize,
   icon = <Icon name="file alternate" />,
   title = "Drag and drop, or click here to upload file.",
   description,
-  disabled,
+  multiple = false,
+  ...dropzoneOptions
 }: Props) {
   const { getRootProps, getInputProps, isFocused, isDragAccept, isDragReject } =
     useDropzone({
-      accept,
       multiple,
-      onDropAccepted: onAcceptFiles,
-      maxSize: maxFileSize,
-      disabled,
+      ...dropzoneOptions,
     });
 
   return (

@@ -5,7 +5,7 @@ import axios from "axios";
 import { configure } from "axios-hooks";
 import { ModalProvider } from "react-modal-hook";
 import { Provider as ReduxProvider } from "react-redux";
-import { toast, Zoom } from "react-toastify";
+import { ToastContainer, Zoom } from "react-toastify";
 import { TransitionGroup } from "react-transition-group";
 
 import styles from "./app.module.scss";
@@ -15,22 +15,21 @@ import PendingBookingCountManager from "./managers/pending-booking-count-manager
 import store from "./redux/store";
 import Routes from "./routes";
 
-toast.configure({
-  position: "bottom-center",
-  autoClose: 4000,
-  limit: 3,
-  transition: Zoom,
-  bodyClassName: styles.toastBody,
-  toastClassName: styles.toast,
-  theme: "colored",
-});
-
 configure({ axios: axios.create({ baseURL: process.env.REACT_APP_API_URL }) });
 
 function App() {
   return (
     <ReduxProvider store={store}>
       <ModalProvider rootComponent={TransitionGroup}>
+        <ToastContainer
+          position="bottom-center"
+          autoClose={4000}
+          limit={3}
+          transition={Zoom}
+          bodyClassName={styles.toastBody}
+          toastClassName={styles.toast}
+          theme="colored"
+        />
         <LocalStorageUserManager />
         <LocalStorageBookingCreationManager />
         <PendingBookingCountManager />

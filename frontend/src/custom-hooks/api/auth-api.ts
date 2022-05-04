@@ -13,7 +13,6 @@ import {
   selectCurrentUserTokens,
   updateCurrentUserAction,
 } from "../../redux/slices/current-user-slice";
-import { resetAppState } from "../../redux/store";
 import {
   AuthenticationData,
   CheckAccountPostData,
@@ -26,6 +25,7 @@ import {
 } from "../../types/auth";
 import {
   errorHandlerWrapper,
+  EXPIRED_SESSION_MSG,
   isForbiddenOrNotAuthenticated,
 } from "../../utils/error-utils";
 
@@ -77,14 +77,13 @@ export function useAxiosWithTokenRefresh<TResponse, TBody = undefined>(
         setLoading(true);
         const response = await apiCall(config, options);
         return response;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
+      } catch (error) {
         if (!isForbiddenOrNotAuthenticated(error)) {
           throw error;
         }
 
         try {
-          console.log("Error before token refresh:", error, error?.response);
+          console.log("Error before token refresh:", error);
 
           const { data: authData } = await tokenRefresh();
 
@@ -101,18 +100,14 @@ export function useAxiosWithTokenRefresh<TResponse, TBody = undefined>(
           dispatch(updateCurrentUserAction(authData));
 
           return response;
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-          console.log("Error after token refresh:", error, error?.response);
+        } catch (error) {
+          console.log("Error after token refresh:", error);
+
           if (isForbiddenOrNotAuthenticated(error)) {
-            // kick user out
-            resetAppState();
-            throw new Error(
-              "Your current session has expired. Please log in again.",
-            );
-          } else {
-            throw error;
+            throw new Error(EXPIRED_SESSION_MSG);
           }
+
+          throw error;
         }
       } finally {
         setLoading(false);

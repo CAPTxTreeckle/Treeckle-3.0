@@ -1,4 +1,5 @@
 import { ReactNode, useCallback } from "react";
+import { Accept } from "react-dropzone";
 import { toast } from "react-toastify";
 import { Button, Divider } from "semantic-ui-react";
 
@@ -13,7 +14,12 @@ import HorizontalLayoutContainer from "../horizontal-layout-container";
 import ImageCropper from "../image-cropper";
 import UserProfileImageOptionsPopup from "../user-profile-image-options-popup";
 
-const IMAGE_FILE_TYPES = ["image/jpeg", "image/png", "image/gif"];
+const acceptedFileTypes: Accept = {
+  "image/jpeg": [],
+  "image/png": [],
+  "image/gif": [],
+  "image/webp": [],
+};
 
 type Props = {
   children: ReactNode;
@@ -60,9 +66,9 @@ function UserProfileImageChanger({ children }: Props) {
       return (
         <>
           <FileUploader
-            onAcceptFiles={onAcceptImageFile}
-            accept={IMAGE_FILE_TYPES}
-            maxFileSize={1000000}
+            onDropAccepted={onAcceptImageFile}
+            accept={acceptedFileTypes}
+            maxSize={1000000}
             title="Drag and drop, or click here to upload photo."
             description="Maximum accepted photo size is 1MB."
           />
