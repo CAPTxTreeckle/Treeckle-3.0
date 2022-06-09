@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Grid, Icon } from "semantic-ui-react";
 
 import { useGetSelf } from "../../custom-hooks/api/users-api";
@@ -14,13 +14,16 @@ import UserPasswordAuthField from "../user-password-auth-field";
 import styles from "./user-auth-section.module.scss";
 
 function UserAuthSection() {
-  const { getSelf, loading } = useGetSelf();
+  const { getSelf } = useGetSelf();
+  // cannot use loading in useGetSelf since need to set loading to true initially
+  const [loading, setLoading] = useState(true);
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectCurrentUserDisplayInfo);
 
   useEffect(() => {
     (async () => {
       const self = await getSelf();
+      setLoading(false);
       if (!self) {
         return;
       }
