@@ -28,7 +28,6 @@ export default function useTableState<T>(
         keys: searchKeys,
         threshold: 0,
         ignoreLocation: true,
-        fieldNormWeight: 1, // TODO: remove once typing is fixed
       }),
     [data, searchKeys],
   );

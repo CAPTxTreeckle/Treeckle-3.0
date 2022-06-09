@@ -63,7 +63,7 @@ function BookingBaseTable({
 
   const StatusButtonRenderer: ColumnShape<BookingViewProps>["cellRenderer"] =
     useCallback(
-      ({ rowData: { status, id } }) =>
+      ({ rowData: { status, id } }: { rowData: BookingViewProps }) =>
         status &&
         id !== undefined && (
           <BookingStatusButton
