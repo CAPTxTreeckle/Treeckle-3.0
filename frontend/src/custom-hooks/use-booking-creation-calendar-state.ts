@@ -13,6 +13,7 @@ import { STATUS } from "../constants";
 import { BookingData, BookingStatus, DateTimeRange } from "../types/bookings";
 import { UserData } from "../types/users";
 import {
+  getRepeatedDateRanges,
   getVisibleRange,
   getVisibleRangeInCalendarMonth,
   mergeDateRanges,
@@ -108,6 +109,27 @@ export default function useBookingCreationCalendarState({
     [allBookings],
   );
 
+  const onRepeatSlot = useCallback(
+    (start: Date, end: Date, occurrences: number) => {
+      const mergedDateRanges = mergeDateRanges(
+        newBookings
+          .map(({ start, end }) => ({ start, end }))
+          .concat(getRepeatedDateRanges(start, end, occurrences)),
+      );
+
+      const updatedNewBookings = mergedDateRanges.map((dateRange) => ({
+        title: NEW_BOOKING,
+        booker: user,
+        ...dateRange,
+        status: null,
+        venueName: null,
+      }));
+
+      didUpdateNewBookingPeriods(updatedNewBookings);
+    },
+    [user, newBookings, didUpdateNewBookingPeriods],
+  );
+
   const onSelectSlot = useCallback(
     ({ action, start, end }: SlotInfo) => {
       const selectedRange: DateRange = {
@@ -179,6 +201,7 @@ export default function useBookingCreationCalendarState({
     view,
     dateView,
     onRangeChange,
+    onRepeatSlot,
     onView: setView,
     onSelectSlot,
     onNavigate: setDateView,

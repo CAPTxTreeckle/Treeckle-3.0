@@ -1,4 +1,3 @@
-import { addDays, addMonths } from "date-fns";
 import React, { useMemo, useState } from "react";
 import {
   Button,
@@ -8,28 +7,22 @@ import {
   Label,
   Modal,
 } from "semantic-ui-react";
+import useBookingCreationCalendarState from "../../custom-hooks/use-booking-creation-calendar-state";
+import { getRepeatedDateRanges } from "../../utils/calendar-utils";
 
 import { CalendarBooking } from "../booking-calendar";
 
 type Props = {
   event: CalendarBooking | null;
   setEvent: React.Dispatch<React.SetStateAction<CalendarBooking | null>>;
-};
+} & Pick<ReturnType<typeof useBookingCreationCalendarState>, "onRepeatSlot">;
 
-function CalendarBookingRepeatModal({ event, setEvent }: Props) {
-  const [occurrences, setOccurrences] = useState("");
+function CalendarBookingRepeatModal({ event, setEvent, onRepeatSlot }: Props) {
+  const [occurrences, setOccurrences] = useState("1");
 
   const repeatedTimeslots = useMemo(() => {
-    const output = [];
-    if (!event || occurrences.length === 0) return [];
-
-    for (let i = 0; i < Number(occurrences); i += 1) {
-      output.push([
-        addDays(event.start, 7 * (i + 1)),
-        addDays(event.end, 7 * (i + 1)),
-      ]);
-    }
-    return output;
+    if (!event) return [];
+    return getRepeatedDateRanges(event.start, event.end, Number(occurrences));
   }, [event, occurrences]);
 
   return (
@@ -58,7 +51,7 @@ function CalendarBookingRepeatModal({ event, setEvent }: Props) {
           </Input>
           <Header>Preview Repeated Dates</Header>
           <HeaderSubheader>Event will be repeated on:</HeaderSubheader>
-          {repeatedTimeslots.map(([start, end]) => (
+          {repeatedTimeslots.map(({ start, end }) => (
             <div key={start.toString()}>
               <p>{start.toString()}</p>
               <p>{end.toString()}</p>
@@ -70,7 +63,15 @@ function CalendarBookingRepeatModal({ event, setEvent }: Props) {
         <Button color="black" onClick={() => setEvent(null)}>
           Cancel
         </Button>
-        <Button content="Confirm" onClick={() => setEvent(null)} positive />
+        <Button
+          content="Confirm"
+          onClick={() => {
+            if (!event) return;
+            onRepeatSlot(event.start, event.end, Number(occurrences));
+            setEvent(null);
+          }}
+          positive
+        />
       </Modal.Actions>
     </Modal>
   );

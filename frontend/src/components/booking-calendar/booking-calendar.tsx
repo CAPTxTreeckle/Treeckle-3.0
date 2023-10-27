@@ -44,14 +44,13 @@ const eventPropGetter: EventPropGetter<CalendarBooking> = ({ status }) => ({
 
 const VIEWS = [Views.MONTH, Views.WEEK, Views.DAY];
 
-const COMPONENTS = {
-  event: CalendarBookingEvent,
-  toolbar: CalendarToolbar,
-};
-
-type Props = Omit<CalendarProps<CalendarBooking>, "localizer">;
+type Props = Omit<CalendarProps<CalendarBooking>, "localizer"> &
+  Partial<{
+    onRepeatSlot: (start: Date, end: Date, occurrences: number) => void;
+  }>;
 
 function BookingCalendar(props: Props) {
+  const { onRepeatSlot } = props;
   return (
     <div className={styles.calendarWrapper}>
       <Calendar
@@ -66,7 +65,12 @@ function BookingCalendar(props: Props) {
         popup
         doShowMoreDrillDown={false}
         views={VIEWS}
-        components={COMPONENTS}
+        components={{
+          event: (eventProps) => (
+            <CalendarBookingEvent onRepeatSlot={onRepeatSlot} {...eventProps} />
+          ),
+          toolbar: CalendarToolbar,
+        }}
         culture={CURRENT_LOCALE}
         formats={{
           dayHeaderFormat: DAY_HEADER_FORMAT,

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Popup } from "semantic-ui-react";
+import useBookingCreationCalendarState from "../../custom-hooks/use-booking-creation-calendar-state";
 
 import { displayDateTimeRange } from "../../utils/transform-utils";
 import { CalendarBooking } from "../booking-calendar";
@@ -10,9 +11,11 @@ import styles from "./calendar-booking-event.module.scss";
 type Props = {
   title: string;
   event: CalendarBooking;
-};
+} & Partial<
+  Pick<ReturnType<typeof useBookingCreationCalendarState>, "onRepeatSlot">
+>;
 
-function CalendarBookingEvent({ title, event }: Props) {
+function CalendarBookingEvent({ title, event, onRepeatSlot }: Props) {
   const [modalEvent, setModalEvent] = useState<CalendarBooking | null>(null);
 
   return (
@@ -35,18 +38,26 @@ function CalendarBookingEvent({ title, event }: Props) {
             )}
             {event.venueName && <div>{event.venueName}</div>}
             <div>{displayDateTimeRange(event.start, event.end)}</div>
-            <Button
-              className={styles.repeatButton}
-              content="Repeat"
-              onClick={() => setModalEvent(event)}
-            />
+            {onRepeatSlot && (
+              <Button
+                className={styles.repeatButton}
+                content="Repeat"
+                onClick={() => setModalEvent(event)}
+              />
+            )}
           </Popup.Content>
         }
         openOnTriggerMouseEnter
         hoverable
         hideOnScroll
       />
-      <CalendarBookingRepeatModal event={modalEvent} setEvent={setModalEvent} />
+      {onRepeatSlot && (
+        <CalendarBookingRepeatModal
+          event={modalEvent}
+          setEvent={setModalEvent}
+          onRepeatSlot={onRepeatSlot}
+        />
+      )}
     </>
   );
 }

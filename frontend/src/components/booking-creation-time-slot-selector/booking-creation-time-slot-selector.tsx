@@ -90,6 +90,7 @@ function BookingCreationTimeSlotSelector() {
     onView,
     onSelectSlot,
     onNavigate,
+    onRepeatSlot,
     onSelectEvent,
     onSelecting,
     removeNewBooking,
@@ -218,6 +219,7 @@ function BookingCreationTimeSlotSelector() {
           onSelecting={onSelecting}
           onDoubleClickEvent={removeNewBooking}
           onDrillDown={onDrillDown}
+          onRepeatSlot={onRepeatSlot}
           selectable
         />
       </Segment>
