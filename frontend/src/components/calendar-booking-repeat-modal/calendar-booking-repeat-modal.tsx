@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { toast } from "react-toastify";
 import {
   Button,
   Header,
@@ -68,6 +69,11 @@ function CalendarBookingRepeatModal({ event, setEvent, onRepeatSlot }: Props) {
           onClick={() => {
             if (!event) return;
             onRepeatSlot(event.start, event.end, Number(occurrences));
+            toast.success(
+              `Successfully added ${occurrences} more event${
+                occurrences === "1" ? "" : "s"
+              }`,
+            );
             setEvent(null);
           }}
           positive
