@@ -57,9 +57,8 @@ function CalendarBookingRepeatModal({ event, setEvent, onRepeatSlot }: Props) {
             <Label basic>times</Label>
           </Input>
           <Header>Preview Repeated Dates</Header>
-          {/* TODO make dynamic columns */}
           {/* TODO fix styling instead of inline styles */}
-          <Grid columns={5}>
+          <Grid stackable columns={5}>
             {repeatedTimeslots.map((range, index) => (
               <Grid.Column stretched key={index} style={{ paddingBottom: 0 }}>
                 <Label style={{ display: "flex", justifyContent: "center" }}>
