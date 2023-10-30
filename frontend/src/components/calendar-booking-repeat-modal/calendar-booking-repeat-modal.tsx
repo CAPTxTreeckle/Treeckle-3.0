@@ -10,6 +10,8 @@ import {
 
 import { CalendarBooking } from "../booking-calendar";
 
+const MAX_REPEAT_TIMES = 10;
+
 type Props = {
   event: CalendarBooking | null;
   setEvent: React.Dispatch<React.SetStateAction<CalendarBooking | null>>;
@@ -41,7 +43,10 @@ function CalendarBookingRepeatModal({ event, setEvent, onRepeatSlot }: Props) {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               const { value } = e.target;
               const re = /^[0-9\b]+$/;
-              if (value === "" || (value.length <= 2 && re.test(value))) {
+              if (
+                value === "" ||
+                (re.test(value) && Number(value) <= MAX_REPEAT_TIMES)
+              ) {
                 setOccurrences(value);
               }
             }}
