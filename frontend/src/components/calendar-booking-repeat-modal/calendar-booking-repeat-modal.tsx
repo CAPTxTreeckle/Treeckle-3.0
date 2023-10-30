@@ -1,15 +1,12 @@
 import React, { useMemo, useState } from "react";
 import { toast } from "react-toastify";
-import {
-  Button,
-  Header,
-  HeaderSubheader,
-  Input,
-  Label,
-  Modal,
-} from "semantic-ui-react";
+import { Button, Grid, Header, Input, Label, Modal } from "semantic-ui-react";
 import useBookingCreationCalendarState from "../../custom-hooks/use-booking-creation-calendar-state";
 import { getRepeatedDateRanges } from "../../utils/calendar-utils";
+import {
+  displayDateTime,
+  displayDateTimeRange,
+} from "../../utils/transform-utils";
 
 import { CalendarBooking } from "../booking-calendar";
 
@@ -32,8 +29,12 @@ function CalendarBookingRepeatModal({ event, setEvent, onRepeatSlot }: Props) {
       <Modal.Content>
         <Modal.Description>
           <Header>Event Details</Header>
-          <p>{event?.start.toString()}</p>
-          <p>{event?.end.toString()}</p>
+          <Label style={{ marginBottom: "1rem" }}>
+            {event
+              ? displayDateTimeRange(event.start, event.end)
+              : "Event not found"}
+          </Label>
+          <br />
           <Input
             labelPosition="right"
             type="tel"
@@ -51,13 +52,18 @@ function CalendarBookingRepeatModal({ event, setEvent, onRepeatSlot }: Props) {
             <Label basic>times</Label>
           </Input>
           <Header>Preview Repeated Dates</Header>
-          <HeaderSubheader>Event will be repeated on:</HeaderSubheader>
-          {repeatedTimeslots.map(({ start, end }) => (
-            <div key={start.toString()}>
-              <p>{start.toString()}</p>
-              <p>{end.toString()}</p>
-            </div>
-          ))}
+          {/* TODO make dynamic columns */}
+          {/* TODO fix styling instead of inline styles */}
+          <Grid columns={5}>
+            {repeatedTimeslots.map((range, index) => (
+              <Grid.Column stretched key={index} style={{ paddingBottom: 0 }}>
+                <Label style={{ display: "flex", justifyContent: "center" }}>
+                  {displayDateTime(range.start)}
+                </Label>
+              </Grid.Column>
+            ))}
+          </Grid>
+          <br />
         </Modal.Description>
       </Modal.Content>
       <Modal.Actions>
