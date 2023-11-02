@@ -1,6 +1,16 @@
-.booking-preview-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 1rem;
-    text-align: center;
-  }
+.eventDetails {
+  margin-bottom: 1rem !important;
+}
+
+.repeatInput {
+  width: 4rem !important;
+}
+
+.gridColumn {
+  padding-bottom: 0 !important;
+  min-width: 175px !important;
+}
+.gridLabels {
+  display: flex !important;
+  justify-content: center !important;
+}

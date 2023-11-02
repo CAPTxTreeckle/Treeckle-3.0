@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { toast } from "react-toastify";
-import { Button, Header, Input, Label, Modal } from "semantic-ui-react";
+import { Button, Grid, Header, Input, Label, Modal } from "semantic-ui-react";
 import useBookingCreationCalendarState from "../../custom-hooks/use-booking-creation-calendar-state";
 import { getRepeatedDateRanges } from "../../utils/calendar-utils";
 import {
@@ -31,7 +31,7 @@ function CalendarBookingRepeatModal({ event, setEvent, onRepeatSlot }: Props) {
       <Modal.Content>
         <Modal.Description>
           <Header>Event Details</Header>
-          <Label style={{ marginBottom: "1rem" }}>
+          <Label className={styles.eventDetails}>
             {event
               ? displayDateTimeRange(event.start, event.end)
               : "Event not found"}
@@ -53,16 +53,19 @@ function CalendarBookingRepeatModal({ event, setEvent, onRepeatSlot }: Props) {
             value={occurrences}
           >
             <Label basic>Repeat weekly</Label>
-            <input style={{ width: "4rem" }} />
+            <input className={styles.repeatInput} />
             <Label basic>times</Label>
           </Input>
           <Header>Preview Repeated Dates</Header>
-          {/* TODO fix styling instead of inline styles */}
-          <div className={styles["booking-preview-grid"]}>
+          <Grid>
             {repeatedTimeslots.map((range, index) => (
-              <Label key={index}>{displayDateTime(range.start)}</Label>
+              <Grid.Column key={index} className={styles.gridColumn}>
+                <Label clasName={styles.gridLabels}>
+                  {displayDateTime(range.start)}
+                </Label>
+              </Grid.Column>
             ))}
-          </div>
+          </Grid>
           <br />
         </Modal.Description>
       </Modal.Content>
