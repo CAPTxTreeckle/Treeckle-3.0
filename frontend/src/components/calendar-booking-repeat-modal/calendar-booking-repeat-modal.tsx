@@ -1,13 +1,13 @@
 import React, { useMemo, useState } from "react";
 import { toast } from "react-toastify";
-import { Button, Grid, Header, Input, Label, Modal } from "semantic-ui-react";
+import { Button, Header, Input, Label, Modal } from "semantic-ui-react";
 import useBookingCreationCalendarState from "../../custom-hooks/use-booking-creation-calendar-state";
 import { getRepeatedDateRanges } from "../../utils/calendar-utils";
 import {
   displayDateTime,
   displayDateTimeRange,
 } from "../../utils/transform-utils";
-
+import styles from "./calendar-booking-repeat-modal.module.scss";
 import { CalendarBooking } from "../booking-calendar";
 
 const MAX_REPEAT_TIMES = 10;
@@ -58,15 +58,11 @@ function CalendarBookingRepeatModal({ event, setEvent, onRepeatSlot }: Props) {
           </Input>
           <Header>Preview Repeated Dates</Header>
           {/* TODO fix styling instead of inline styles */}
-          <Grid stackable columns={5}>
+          <div className={styles["booking-preview-grid"]}>
             {repeatedTimeslots.map((range, index) => (
-              <Grid.Column stretched key={index} style={{ paddingBottom: 0 }}>
-                <Label style={{ display: "flex", justifyContent: "center" }}>
-                  {displayDateTime(range.start)}
-                </Label>
-              </Grid.Column>
+              <Label key={index}>{displayDateTime(range.start)}</Label>
             ))}
-          </Grid>
+          </div>
           <br />
         </Modal.Description>
       </Modal.Content>
