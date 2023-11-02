@@ -6,11 +6,9 @@
   width: 4rem !important;
 }
 
-.gridColumn {
-  padding-bottom: 0 !important;
-  min-width: 175px !important;
-}
-.gridLabels {
-  display: flex !important;
-  justify-content: center !important;
+.bookingPreviewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  gap: 1rem;
+  text-align: center;
 }

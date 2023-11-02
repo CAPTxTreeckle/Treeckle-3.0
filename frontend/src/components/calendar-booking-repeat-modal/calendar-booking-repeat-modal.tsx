@@ -57,15 +57,11 @@ function CalendarBookingRepeatModal({ event, setEvent, onRepeatSlot }: Props) {
             <Label basic>times</Label>
           </Input>
           <Header>Preview Repeated Dates</Header>
-          <Grid>
+          <div className={styles.bookingPreviewGrid}>
             {repeatedTimeslots.map((range, index) => (
-              <Grid.Column key={index} className={styles.gridColumn}>
-                <Label clasName={styles.gridLabels}>
-                  {displayDateTime(range.start)}
-                </Label>
-              </Grid.Column>
+              <Label key={index}>{displayDateTime(range.start)}</Label>
             ))}
-          </Grid>
+          </div>
           <br />
         </Modal.Description>
       </Modal.Content>
