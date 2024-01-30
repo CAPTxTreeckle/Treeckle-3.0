@@ -1,0 +1,14 @@
+.eventDetails {
+  margin-bottom: 1rem !important;
+}
+
+.repeatInput {
+  width: 4rem !important;
+}
+
+.bookingPreviewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+  gap: 1rem;
+  text-align: center;
+}

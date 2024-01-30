@@ -1,4 +1,5 @@
 import {
+  addDays,
   endOfDay,
   endOfMonth,
   endOfWeek,
@@ -120,4 +121,19 @@ export function mergeDateRanges(dateRanges: DateRange[]): DateRange[] {
   });
 
   return mergedDateRanges;
+}
+
+export function getRepeatedDateRanges(
+  start: Date,
+  end: Date,
+  occurrences: number,
+) {
+  const output: DateRange[] = [];
+  for (let i = 0; i < Number(occurrences); i += 1) {
+    output.push({
+      start: addDays(start, 7 * (i + 1)),
+      end: addDays(end, 7 * (i + 1)),
+    });
+  }
+  return output;
 }
