@@ -1,0 +1,39 @@
+name: Frontend Beta CI/CD
+
+on:
+  push:
+    branches: ["master"]
+    paths:
+      - frontend/**
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Digital Ocean droplet via SSH action
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          passphrase: ${{ secrets.SSH_PASSPHRASE }}
+          script: |
+            ls
+            cd /home/treeckle/Treeckle-3.0
+
+            # Temp store changes
+            git stash
+
+            # Pull from git repo
+            git checkout master || true # Force return true so exit code is not 1
+            git pull
+
+            # Build
+            cd frontend
+            echo "${{secrets.SUDO_PASSWORD}}" | sudo -S bash ./build.sh
+            cd ..
+            echo "${{secrets.SUDO_PASSWORD}}" | sudo docker-compose -f ./docker-compose.prod.yml up -d
+
+            # Restore changes
+            git stash pop
