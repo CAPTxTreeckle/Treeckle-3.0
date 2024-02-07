@@ -35,21 +35,28 @@ services:
 
   ## entry point for treeckle app containers
   app-reverse-proxy:
-    image: jermytan/treeckle-reverse-proxy:production
+    image: jermytan/treeckle-reverse-proxy:latest
     volumes:
       - static-volume:/app/static
     networks:
       - service
       - frontend
+      - frontend-beta
       - backend
     restart: always
     environment:
-      - VIRTUAL_HOST=treeckle.com
+      - VIRTUAL_HOST=treeckle.com,beta.treeckle.com
       - VIRTUAL_PORT=80
-      - LETSENCRYPT_HOST=treeckle.com
+      - LETSENCRYPT_HOST=treeckle.com,beta.treeckle.com
       - LETSENCRYPT_EMAIL=treeckle@googlegroups.com
 
   ## can only be accessed within frontend network
+  frontend-staging:
+    image: jermytan/treeckle-frontend:latest
+    networks:
+      - frontend-beta
+    restart: always
+
   frontend:
     image: jermytan/treeckle-frontend:production
     networks:
@@ -84,6 +91,7 @@ services:
 networks:
   service:
   frontend:
+  frontend-beta:
   backend:
 
 volumes:
