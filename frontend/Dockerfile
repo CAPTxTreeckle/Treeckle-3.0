@@ -24,7 +24,6 @@ RUN yarn install
 ## build project
 RUN NODE_OPTIONS=--max_old_space_size=4096 REACT_APP_API_URL=${REACT_APP_API_URL} REACT_APP_GOOGLE_CLIENT_ID=${REACT_APP_GOOGLE_CLIENT_ID} REACT_APP_FACEBOOK_APP_ID=${REACT_APP_FACEBOOK_APP_ID} PUBLIC_URL=${PUBLIC_URL} yarn build
 
-
 ## prepare nginx
 FROM fholzer/nginx-brotli
 
