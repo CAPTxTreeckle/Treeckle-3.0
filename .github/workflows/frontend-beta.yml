@@ -31,9 +31,9 @@ jobs:
 
             # Build
             cd frontend
-            echo "${{secrets.SUDO_PASSWORD}}" | sudo -S bash ./build.sh
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S bash ./build.sh
             cd ..
-            echo "${{secrets.SUDO_PASSWORD}}" | sudo docker-compose -f ./docker-compose.prod.yml up -d
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo docker-compose -f ./docker-compose.prod.yml up -d
 
             # Restore changes
             git stash pop

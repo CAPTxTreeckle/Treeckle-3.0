@@ -35,7 +35,7 @@ services:
 
   ## entry point for treeckle app containers
   app-reverse-proxy:
-    image: jermytan/treeckle-reverse-proxy:latest
+    image: jermytan/treeckle-reverse-proxy:production
     volumes:
       - static-volume:/app/static
     networks:
@@ -52,7 +52,7 @@ services:
 
   ## can only be accessed within frontend network
   frontend-staging:
-    image: jermytan/treeckle-frontend:latest
+    image: jermytan/treeckle-frontend:staging
     networks:
       - frontend-beta
     restart: always

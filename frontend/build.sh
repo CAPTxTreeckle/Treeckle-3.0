@@ -16,4 +16,4 @@ done < $env_file
 
 echo $build_args
 
-sudo docker build . -t jermytan/treeckle-frontend $build_args
+sudo docker build . -t jermytan/treeckle-frontend:staging $build_args
