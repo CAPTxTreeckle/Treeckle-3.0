@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useLocation, RouteComponentProps } from "react-router-dom";
-import ReactGA from "react-ga";
+import { useLocation } from "react-router-dom";
+import ReactGA from "react-ga4";
 
 ReactGA.initialize(process.env.REACT_APP_GA_TRACKING_ID ?? "");
 
@@ -10,12 +10,12 @@ export default function GaProvider() {
   useEffect(() => {
     if (!location) return;
     ReactGA.set({ page: location.pathname });
-    ReactGA.pageview(location.pathname);
+    ReactGA.send({ hitType: "pageview", page: location.pathname });
   }, [location]);
 
   useEffect(() => {
     ReactGA.set({ page: window.location.pathname });
-    ReactGA.pageview(window.location.pathname);
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
   }, []);
 
   return <div />;
