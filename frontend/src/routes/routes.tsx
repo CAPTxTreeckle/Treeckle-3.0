@@ -39,6 +39,7 @@ import {
   TERMS_OF_USE_PATH,
 } from "./paths";
 import RoleRestrictedRoute from "./role-restricted-route";
+import GaProvider from "../components/ga-provider";
 
 // Code splitting
 const DashboardPage = lazy(() => import("../pages/dashboard-page"));
@@ -244,6 +245,7 @@ function Routes() {
           </Suspense>
         </AppLayoutContainer>
       </LastLocationProvider>
+      <GaProvider />
     </Router>
   );
 }
