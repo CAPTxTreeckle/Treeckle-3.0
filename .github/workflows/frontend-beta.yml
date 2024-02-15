@@ -37,4 +37,4 @@ jobs:
             echo "${{ secrets.SUDO_PASSWORD }}" | sudo docker-compose -f ./docker-compose.prod.yml up -d
 
             # Restore changes
-            git stash pop
+            git stash pop || true # Force return true in case no changes stashed
