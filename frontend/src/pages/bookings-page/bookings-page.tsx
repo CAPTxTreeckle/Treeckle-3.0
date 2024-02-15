@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button, Icon, Popup } from "semantic-ui-react";
+import { useMediaQuery } from "react-responsive";
 
 import BookingUserCalendar from "../../components/booking-user-calendar";
 import BookingUserTable from "../../components/booking-user-table";
@@ -33,6 +34,10 @@ const OPTIONS: TabOption[] = [
 ];
 
 function BookingsPage() {
+  const { name } = useAppSelector(selectCurrentUserDisplayInfo) ?? {};
+
+  const isTabletOrLarger = useMediaQuery({ query: "(min-width: 768px)" });
+
   const { getBookings: _getBookings } = useGetBookings();
   const loading = useAppSelector(selectBookingsLoadingState);
   const { id: userId } =
@@ -59,17 +64,13 @@ function BookingsPage() {
 
   return (
     <>
-      <Button
-        animated="vertical"
-        fluid
-        color="teal"
-        as={Link}
-        to={BOOKINGS_CREATION_PATH}
-      >
-        <Button.Content hidden content="Create New Bookings" />
-        <Button.Content visible content={<Icon name="plus" fitted />} />
-      </Button>
-
+      <h2>Welcome, {name}!</h2>
+      <p>
+        <strong>Note:</strong> Treeckle is currently in development and we are
+        working hard towards making residential life better for you. For urgent
+        queries or if you have found any bugs, please contact us at
+        treeckle@googlegroups.com.
+      </p>
       <h1>
         <HorizontalLayoutContainer align="center">
           <span>My Bookings</span>
@@ -90,6 +91,18 @@ function BookingsPage() {
           />
         </HorizontalLayoutContainer>
       </h1>
+      <Button
+        animated="vertical"
+        fluid
+        color="teal"
+        as={Link}
+        to={BOOKINGS_CREATION_PATH}
+      >
+        <Button.Content hidden content="Create New Bookings" />
+        <Button.Content visible content={<Icon name="plus" fitted />} />
+      </Button>
+
+      {isTabletOrLarger ? <div /> : <br />}
 
       <Tab options={OPTIONS} showTitle={false} />
     </>

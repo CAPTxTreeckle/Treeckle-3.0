@@ -3,7 +3,7 @@ import { Button, Icon } from "semantic-ui-react";
 
 import BookingCreationSection from "../../components/booking-creation-section";
 import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
-import { BOOKINGS_PATH } from "../../routes/paths";
+import { DASHBOARD_PATH } from "../../routes/paths";
 
 function BookingsCreationPage() {
   useScrollToTop();
@@ -15,7 +15,7 @@ function BookingsCreationPage() {
         fluid
         color="red"
         as={Link}
-        to={BOOKINGS_PATH}
+        to={DASHBOARD_PATH}
       >
         <Button.Content hidden content="Cancel Booking Creation" />
         <Button.Content visible content={<Icon name="times" fitted />} />

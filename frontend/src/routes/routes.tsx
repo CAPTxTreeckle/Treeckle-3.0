@@ -29,7 +29,6 @@ import {
   ADMIN_VENUES_EDIT_PATH,
   ADMIN_VENUES_PATH,
   BOOKINGS_CREATION_PATH,
-  BOOKINGS_PATH,
   DASHBOARD_PATH,
   HOME_PATH,
   // AUTH_CALLBACK_PATH,
@@ -42,7 +41,6 @@ import RoleRestrictedRoute from "./role-restricted-route";
 import GaProvider from "../components/ga-provider";
 
 // Code splitting
-const DashboardPage = lazy(() => import("../pages/dashboard-page"));
 // const EventsPage = lazy(() => import("../pages/events-page"));
 const BookingsPage = lazy(() => import("../pages/bookings-page"));
 const AdminBookingsPage = lazy(() => import("../pages/admin-bookings-page"));
@@ -110,10 +108,6 @@ function Routes() {
               {/* Authenticated routes  */}
 
               <Route path={DASHBOARD_PATH} exact strict>
-                <DashboardPage />
-              </Route>
-
-              <Route path={BOOKINGS_PATH} exact strict>
                 <BookingsPage />
               </Route>
 

@@ -16,7 +16,7 @@ import {
   selectSelectedVenue,
   successBookingFormSubmissionAction,
 } from "../../redux/slices/booking-creation-slice";
-import { BOOKINGS_PATH } from "../../routes/paths";
+import { DASHBOARD_PATH } from "../../routes/paths";
 import { FieldType } from "../../types/venues";
 import { resolveApiError } from "../../utils/error-utils";
 import { displayDateTimeRange } from "../../utils/transform-utils";
@@ -208,7 +208,7 @@ function BookingCreationFinalizeView() {
             <Button
               color="blue"
               content="Done"
-              onClick={() => history.push(BOOKINGS_PATH)}
+              onClick={() => history.push(DASHBOARD_PATH)}
             />
           </HorizontalLayoutContainer>
         ) : (
