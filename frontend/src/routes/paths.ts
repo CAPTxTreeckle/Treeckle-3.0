@@ -2,8 +2,7 @@ import { EVENT_ID, USER_ID, VENUE_ID } from "../constants";
 
 export const HOME_PATH = "/";
 export const DASHBOARD_PATH = "/dashboard";
-export const BOOKINGS_PATH = "/bookings";
-export const BOOKINGS_CREATION_PATH = "/bookings/create";
+export const BOOKINGS_CREATION_PATH = "/dashboard/create";
 export const EVENTS_PATH = "/events";
 export const EVENTS_SIGNED_UP_PATH = "/events/signedup";
 export const EVENTS_SUBSCRIPTIONS_PATH = "/events/subscriptions";

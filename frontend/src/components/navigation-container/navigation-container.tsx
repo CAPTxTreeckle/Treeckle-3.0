@@ -7,7 +7,6 @@ import FullPageContainer from "../full-page-container";
 import PageBody from "../page-body";
 // import EventsTab from "./events-tab";
 import RoleRestrictedWrapper from "../role-restricted-wrapper";
-import BookingsTab from "./bookings-tab";
 import DashboardTab from "./dashboard-tab";
 import DesktopAboutTab from "./desktop-about-tab";
 import DesktopAdminTab from "./desktop-admin-tab";
@@ -47,7 +46,6 @@ function NavigationContainer({ children }: Props) {
       >
         <LogoTab onTabClick={closeSidebar} />
         <DashboardTab onTabClick={closeSidebar} />
-        <BookingsTab onTabClick={closeSidebar} />
         {/* <EventsTab onTabClick={closeSidebar} /> */}
         <MobileAboutTab onTabClick={closeSidebar} />
         <RoleRestrictedWrapper allowedRoles={[Role.Admin]}>
@@ -62,7 +60,6 @@ function NavigationContainer({ children }: Props) {
               <>
                 <LogoTab />
                 <DashboardTab />
-                <BookingsTab />
                 {/* <EventsTab /> */}
                 <DesktopAboutTab />
                 <RoleRestrictedWrapper allowedRoles={[Role.Admin]}>
