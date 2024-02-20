@@ -1,15 +1,12 @@
-name: Deploy to Beta Site
+name: Deploy from Master
 
 on:
-  pull_request:
+  push:
     branches: ["master"]
-    types: ["opened"]
-    paths:
-      - frontend/**
   workflow_dispatch:
 
 jobs:
-  deploy-frontend:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to Digital Ocean droplet via SSH action
@@ -28,14 +25,14 @@ jobs:
             git stash
 
             # Pull from git repo
-            git checkout ${{ github.event.pull_request.head.sha || 'master' }} || true # Force return true so exit code is not 1
+            git checkout master || true # Force return true so exit code is not 1
             git pull
 
             # Build
             cd frontend
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S bash ./build.sh
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S bash ./build-prod.sh
             cd ..
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo docker-compose -f ./docker-compose.prod.yml up -d frontend
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo docker-compose -f ./docker-compose.prod.yml up -d
 
             # Restore changes
-            git stash pop || true # Force return true in case no changes stashed
+            git stash pop
