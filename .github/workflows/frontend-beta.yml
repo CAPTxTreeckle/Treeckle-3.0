@@ -1,8 +1,9 @@
 name: Deploy to Beta Site
 
 on:
-  push:
+  pull_request:
     branches: ["master"]
+    types: ["opened"]
     paths:
       - frontend/**
   workflow_dispatch:
@@ -27,7 +28,7 @@ jobs:
             git stash
 
             # Pull from git repo
-            git checkout master || true # Force return true so exit code is not 1
+            git checkout ${{ github.event.pull_request.head.sha || 'master' }} || true # Force return true so exit code is not 1
             git pull
 
             # Clear space
