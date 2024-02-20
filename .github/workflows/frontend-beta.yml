@@ -31,11 +31,14 @@ jobs:
             git checkout ${{ github.event.pull_request.head.sha || 'master' }} || true # Force return true so exit code is not 1
             git pull
 
+            # Clear space
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker image prune -f
+
             # Build
             cd frontend
             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S bash ./build.sh
             cd ..
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo docker-compose -f ./docker-compose.prod.yml up -d frontend
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker-compose -f ./docker-compose.prod.yml up -d frontend
 
             # Restore changes
             git stash pop || true # Force return true in case no changes stashed

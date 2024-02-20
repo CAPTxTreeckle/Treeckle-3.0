@@ -1,12 +1,10 @@
-name: Deploy from Master
+name: Deploy
 
 on:
-  push:
-    branches: ["master"]
   workflow_dispatch:
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to Digital Ocean droplet via SSH action
@@ -28,11 +26,14 @@ jobs:
             git checkout master || true # Force return true so exit code is not 1
             git pull
 
+            # Clear space
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker image prune -f
+
             # Build
             cd frontend
             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S bash ./build-prod.sh
             cd ..
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo docker-compose -f ./docker-compose.prod.yml up -d
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker-compose -f ./docker-compose.prod.yml up -d
 
             # Restore changes
-            git stash pop
+            git stash pop || true # Force return true in case no changes stashed
