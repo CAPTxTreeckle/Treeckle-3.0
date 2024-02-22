@@ -1,4 +1,4 @@
-name: Deploy to Beta Site
+name: Deploy to Beta
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy-frontend:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to Digital Ocean droplet via SSH action
@@ -34,11 +34,19 @@ jobs:
             # Clear space
             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker image prune -f
 
-            # Build
+            # Build frontend
             cd frontend
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S bash ./build.sh
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S bash ./build-prod.sh
+
+            # Build backend
+            cd backend
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker build -t jermytan/treeckle-backe
+            nd:production .
+
+            # Deploy
             cd ..
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker-compose -f ./docker-compose.prod.yml up -d frontend
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker-compose -f ./docker-compose.prod.yml up -d frontend-staging
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker-compose -f ./docker-compose.prod.yml up -d backend-staging
 
             # Restore changes
             git stash pop || true # Force return true in case no changes stashed

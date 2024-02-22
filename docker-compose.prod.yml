@@ -77,6 +77,19 @@ services:
     depends_on:
       - db
 
+  backend-staging:
+    image: jermytan/treeckle-backend:latest
+    command: sh -c "cd treeckle && gunicorn treeckle.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - static-volume:/app/static
+    networks:
+      - backend
+    restart: always
+    env_file:
+      - .env.backend.prod
+    depends_on:
+      - db
+
   ## can only be accessed within backend network
   db:
     image: postgres:13-alpine
