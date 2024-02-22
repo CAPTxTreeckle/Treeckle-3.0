@@ -28,7 +28,7 @@ jobs:
             git stash
 
             # Pull from git repo
-            git checkout ${{ github.event.pull_request.head.sha || 'master' }} || true # Force return true so exit code is not 1
+            git checkout master || true # Force return true so exit code is not 1
             git pull
 
             # Clear space
@@ -36,15 +36,15 @@ jobs:
 
             # Build frontend
             cd frontend
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S bash ./build-prod.sh
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S bash ./build.sh
+            cd ..
 
             # Build backend
             cd backend
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker build -t jermytan/treeckle-backe
-            nd:production .
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker build -t jermytan/treeckle-backend:latest .
+            cd ..
 
             # Deploy
-            cd ..
             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker-compose -f ./docker-compose.prod.yml up -d frontend-staging
             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker-compose -f ./docker-compose.prod.yml up -d backend-staging
 
