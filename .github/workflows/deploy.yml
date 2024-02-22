@@ -29,11 +29,18 @@ jobs:
             # Clear space
             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker image prune -f
 
-            # Build
+            # Build frontend
             cd frontend
             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S bash ./build-prod.sh
             cd ..
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker-compose -f ./docker-compose.prod.yml up -d
+
+            # Build backend
+            cd backend
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker build -t jermytan/treeckle-backend:production .
+            cd ..
+
+            # Deploy
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker-compose -f ./docker-compose.prod.yml up -d 
 
             # Restore changes
             git stash pop || true # Force return true in case no changes stashed
