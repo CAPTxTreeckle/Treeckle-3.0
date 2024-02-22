@@ -1,11 +1,11 @@
 name: Deploy to Beta
 
 on:
-  pull_request:
+  push:
     branches: ["master"]
-    types: ["opened"]
     paths:
       - frontend/**
+      - backend/**
   workflow_dispatch:
 
 jobs:
