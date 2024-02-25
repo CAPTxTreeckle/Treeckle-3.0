@@ -3,6 +3,10 @@
 .bookingBaseTable {
   @include base.table;
 
+  div {
+    box-shadow: none;
+  }
+
   .extraContentContainer {
     width: 100%;
   }

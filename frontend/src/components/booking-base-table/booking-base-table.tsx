@@ -34,12 +34,17 @@ type Props = Partial<TableProps<BookingViewProps>> & {
 };
 
 const RowRenderer: TableProps<BookingViewProps>["rowRenderer"] = ({
-  // eslint-disable-next-line react/prop-types
   rowData: { booking },
-  // eslint-disable-next-line react/prop-types
   cells,
+  columns,
+}: {
+  rowData: BookingViewProps;
+  cells: React.ReactNode[];
+  columns: ColumnShape<BookingViewProps>;
 }) =>
-  booking ? (
+  // Only render details if there are booking details
+  // and the column is not the frozen column
+  booking && columns.length > 1 ? (
     <Segment className={styles.extraContentContainer} basic>
       <BookingDetailsView
         className={styles.detailsContainer}
@@ -116,10 +121,10 @@ function BookingBaseTable({
             />
             <Column<BookingViewProps>
               key={ACTION}
-              title="Action"
+              title=""
               width={defaultActionColumnWidth}
               align="center"
-              resizable
+              frozen="right"
             />
           </Table>
         )}
