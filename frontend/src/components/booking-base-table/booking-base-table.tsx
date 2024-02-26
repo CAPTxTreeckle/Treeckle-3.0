@@ -1,5 +1,5 @@
-import { useCallback } from "react";
-import { AutoResizer, Column, ColumnShape } from "react-base-table";
+import { useCallback, useState } from "react";
+import { AutoResizer, Column, ColumnShape, RowKey } from "react-base-table";
 import { Segment } from "semantic-ui-react";
 
 import {
@@ -24,7 +24,7 @@ export type BookingViewProps = BookingData & {
   [END_DATE_TIME_STRING]: string;
   [CREATED_AT_STRING]: string;
   booking?: BookingData;
-  children: [{ [ID]: string; booking: BookingData }];
+  children: { [ID]: string; booking: BookingData }[];
 };
 
 type Props = Partial<TableProps<BookingViewProps>> & {
@@ -80,6 +80,14 @@ function BookingBaseTable({
       [adminView],
     );
 
+  const [expandedRowKeys, setExpandedRowKeys] = useState<RowKey[]>([]);
+  const loadBooking = async (id: string | number) => {
+    const booking = await getSingleBooking(id);
+    if (booking) {
+      dispatch(updateBookingsAction({ bookings: [booking] }));
+    }
+  };
+
   const onRowExpand: TableProps<BookingViewProps>["onRowExpand"] = async ({
     expanded,
     rowData: { id, formResponseData },
@@ -87,12 +95,7 @@ function BookingBaseTable({
     if (!expanded || formResponseData) {
       return;
     }
-
-    const booking = await getSingleBooking(id);
-
-    if (booking) {
-      dispatch(updateBookingsAction({ bookings: [booking] }));
-    }
+    loadBooking(id);
   };
 
   return (
@@ -107,6 +110,19 @@ function BookingBaseTable({
             fixed
             expandColumnKey={ACTION}
             onRowExpand={onRowExpand}
+            expandedRowKeys={expandedRowKeys}
+            rowEventHandlers={{
+              onClick: async ({ rowData, rowKey }) => {
+                if (!rowData.children || rowData.children.length === 0) return;
+                if (expandedRowKeys.includes(rowKey))
+                  setExpandedRowKeys(
+                    expandedRowKeys.filter((x) => x !== rowKey),
+                  );
+                else setExpandedRowKeys([...expandedRowKeys, rowKey]);
+
+                loadBooking(rowData.id);
+              },
+            }}
             {...props}
           >
             {children}
