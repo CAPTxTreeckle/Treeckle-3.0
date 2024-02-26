@@ -81,13 +81,6 @@ function BookingBaseTable({
     );
 
   const [expandedRowKeys, setExpandedRowKeys] = useState<RowKey[]>([]);
-  const loadBooking = async (id: string | number) => {
-    const booking = await getSingleBooking(id);
-    if (booking) {
-      dispatch(updateBookingsAction({ bookings: [booking] }));
-    }
-  };
-
   const onRowExpand: TableProps<BookingViewProps>["onRowExpand"] = async ({
     expanded,
     rowData: { id, formResponseData },
@@ -95,7 +88,10 @@ function BookingBaseTable({
     if (!expanded || formResponseData) {
       return;
     }
-    loadBooking(id);
+    const booking = await getSingleBooking(id);
+    if (booking) {
+      dispatch(updateBookingsAction({ bookings: [booking] }));
+    }
   };
 
   return (
@@ -112,15 +108,16 @@ function BookingBaseTable({
             onRowExpand={onRowExpand}
             expandedRowKeys={expandedRowKeys}
             rowEventHandlers={{
-              onClick: async ({ rowData, rowKey }) => {
+              onClick: async ({ rowData, rowKey, rowIndex }) => {
                 if (!rowData.children || rowData.children.length === 0) return;
                 if (expandedRowKeys.includes(rowKey))
                   setExpandedRowKeys(
                     expandedRowKeys.filter((x) => x !== rowKey),
                   );
-                else setExpandedRowKeys([...expandedRowKeys, rowKey]);
-
-                loadBooking(rowData.id);
+                else {
+                  setExpandedRowKeys([...expandedRowKeys, rowKey]);
+                  onRowExpand({ expanded: true, rowData, rowIndex, rowKey });
+                }
               },
             }}
             {...props}

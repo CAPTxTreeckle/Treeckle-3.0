@@ -24,7 +24,7 @@ const TABLE_COMPONENTS: TableComponents = {
     </div>
   ),
   // eslint-disable-next-line react/prop-types
-  ExpandIcon: ({ expandable, expanded, onExpand }) => {
+  ExpandIcon: ({ expandable, expanded }) => {
     if (!expandable) {
       return null;
     }
@@ -38,7 +38,6 @@ const TABLE_COMPONENTS: TableComponents = {
             link
             className={clsx(styles.expandIcon, expanded && styles.expanded)}
             name="angle down"
-            onClick={() => onExpand(!expanded)}
             fitted
           />
         }
