@@ -10,7 +10,7 @@ import {
 import styles from "./calendar-booking-repeat-modal.module.scss";
 import { CalendarBooking } from "../booking-calendar";
 
-const MAX_REPEAT_TIMES = 10;
+const MAX_REPEAT_TIMES = 15;
 
 type Props = {
   event: CalendarBooking | null;
@@ -18,6 +18,7 @@ type Props = {
 } & Pick<ReturnType<typeof useBookingCreationCalendarState>, "onRepeatSlot">;
 
 function CalendarBookingRepeatModal({ event, setEvent, onRepeatSlot }: Props) {
+  const [isError, setIsError] = useState(false);
   const [occurrences, setOccurrences] = useState("1");
 
   const repeatedTimeslots = useMemo(() => {
@@ -48,6 +49,9 @@ function CalendarBookingRepeatModal({ event, setEvent, onRepeatSlot }: Props) {
                 (re.test(value) && Number(value) <= MAX_REPEAT_TIMES)
               ) {
                 setOccurrences(value);
+                setIsError(false);
+              } else {
+                setIsError(true);
               }
             }}
             value={occurrences}
@@ -56,6 +60,11 @@ function CalendarBookingRepeatModal({ event, setEvent, onRepeatSlot }: Props) {
             <input className={styles.repeatInput} />
             <Label basic>times</Label>
           </Input>
+          {isError && (
+            <p className={styles.errorMsg}>
+              Enter a number between 1 and {MAX_REPEAT_TIMES}
+            </p>
+          )}
           <Header>Preview Repeated Dates</Header>
           <div className={styles.bookingPreviewGrid}>
             {repeatedTimeslots.map((range, index) => (
