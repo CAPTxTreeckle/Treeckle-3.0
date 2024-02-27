@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { toast } from "react-toastify";
-import { Button, Header, Input, Label, Modal, Popup } from "semantic-ui-react";
+import { Button, Header, Input, Label, Modal } from "semantic-ui-react";
 import useBookingCreationCalendarState from "../../custom-hooks/use-booking-creation-calendar-state";
 import { getRepeatedDateRanges } from "../../utils/calendar-utils";
 import {
