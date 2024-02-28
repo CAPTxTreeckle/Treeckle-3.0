@@ -5,9 +5,9 @@ import { Segment } from "semantic-ui-react";
 import {
   ACTION,
   CREATED_AT_STRING,
-  END_DATE_TIME_STRING,
+  EVENT_DATE,
+  EVENT_TIME_RANGE,
   ID,
-  START_DATE_TIME_STRING,
   STATUS,
 } from "../../constants";
 import { useGetSingleBooking } from "../../custom-hooks/api/bookings-api";
@@ -20,8 +20,8 @@ import Table, { TableProps } from "../table";
 import styles from "./booking-base-table.module.scss";
 
 export type BookingViewProps = BookingData & {
-  [START_DATE_TIME_STRING]: string;
-  [END_DATE_TIME_STRING]: string;
+  [EVENT_DATE]: string;
+  [EVENT_TIME_RANGE]: string;
   [CREATED_AT_STRING]: string;
   booking?: BookingData;
   children: { [ID]: string; booking: BookingData }[];

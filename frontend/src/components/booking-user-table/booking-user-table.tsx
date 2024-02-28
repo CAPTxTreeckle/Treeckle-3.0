@@ -5,13 +5,13 @@ import { Segment } from "semantic-ui-react";
 import {
   CREATED_AT,
   CREATED_AT_STRING,
-  END_DATE_TIME,
-  END_DATE_TIME_STRING,
+  DATE_FORMAT,
+  EVENT_DATE,
+  EVENT_TIME_RANGE,
   ID,
   NAME,
-  START_DATE_TIME,
-  START_DATE_TIME_STRING,
   STATUS,
+  TITLE,
   VENUE,
 } from "../../constants";
 import useTableState, {
@@ -23,7 +23,7 @@ import {
   selectBookingsLoadingState,
 } from "../../redux/slices/bookings-slice";
 import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
-import { displayDateTime } from "../../utils/transform-utils";
+import { displayDateTime, displayTimeRange } from "../../utils/transform-utils";
 import BookingBaseTable, { BookingViewProps } from "../booking-base-table";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../search-bar";
@@ -34,8 +34,8 @@ const BOOKING_ADMIN_TABLE_STATE_OPTIONS: TableStateOptions = {
   searchKeys: [
     ID,
     VENUE_NAME,
-    START_DATE_TIME_STRING,
-    END_DATE_TIME_STRING,
+    EVENT_DATE,
+    EVENT_TIME_RANGE,
     CREATED_AT_STRING,
     STATUS,
   ],
@@ -53,8 +53,11 @@ function BookingUserTable() {
     () =>
       userBookings.map((booking) => ({
         ...booking,
-        [START_DATE_TIME_STRING]: displayDateTime(booking.startDateTime),
-        [END_DATE_TIME_STRING]: displayDateTime(booking.endDateTime),
+        [EVENT_DATE]: displayDateTime(booking.startDateTime, DATE_FORMAT),
+        [EVENT_TIME_RANGE]: displayTimeRange(
+          booking.startDateTime,
+          booking.endDateTime,
+        ),
         [CREATED_AT_STRING]: displayDateTime(booking.createdAt),
         children: [{ [ID]: `${booking.id}-details`, booking }],
       })),
@@ -94,10 +97,10 @@ function BookingUserTable() {
         defaultActionColumnWidth={50}
       >
         <Column<BookingViewProps>
-          key={ID}
-          dataKey={ID}
-          title="ID"
-          width={80}
+          key={TITLE}
+          dataKey={TITLE}
+          title="Booking Title"
+          width={320}
           resizable
           sortable
           align="center"
@@ -106,23 +109,23 @@ function BookingUserTable() {
           key={VENUE_NAME}
           dataKey={VENUE_NAME}
           title="Venue"
-          width={230}
+          width={240}
           resizable
           sortable
         />
         <Column<BookingViewProps>
-          key={START_DATE_TIME}
-          dataKey={START_DATE_TIME_STRING}
-          title="Start"
-          width={230}
+          key={EVENT_DATE}
+          dataKey={EVENT_DATE}
+          title="Date"
+          width={150}
           resizable
           sortable
         />
         <Column<BookingViewProps>
-          key={END_DATE_TIME}
-          dataKey={END_DATE_TIME_STRING}
-          title="End"
-          width={230}
+          key={EVENT_TIME_RANGE}
+          dataKey={EVENT_TIME_RANGE}
+          title="Time"
+          width={200}
           resizable
           sortable
         />
@@ -130,7 +133,7 @@ function BookingUserTable() {
           key={CREATED_AT}
           dataKey={CREATED_AT_STRING}
           title="Created at"
-          width={230}
+          width={220}
           resizable
           sortable
         />

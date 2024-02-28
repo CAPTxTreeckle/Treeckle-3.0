@@ -54,6 +54,26 @@ export function displayDateTime(
   }
 }
 
+// displays time range given 2 date times
+export function displayTimeRange(
+  inputStartDateTime: string | number | Date,
+  inputEndDateTime: string | number | Date,
+) {
+  const startDateTime =
+    typeof inputStartDateTime === "string"
+      ? parseInt(inputStartDateTime, 10)
+      : inputStartDateTime;
+  const endDateTime =
+    typeof inputEndDateTime === "string"
+      ? parseInt(inputEndDateTime, 10)
+      : inputEndDateTime;
+
+  return `${displayDateTime(startDateTime, TIME_FORMAT)} - ${displayDateTime(
+    endDateTime,
+    TIME_FORMAT,
+  )}`;
+}
+
 export function displayDateTimeRange(
   inputStartDateTime: string | number | Date,
   inputEndDateTime: string | number | Date,
