@@ -17,6 +17,7 @@ function UserNameRenderer<T extends UserData>({ cellData, rowData }: Props<T>) {
       href={PROFILE_PATH.replace(`:${USER_ID}`, `${id}`)}
       target="_blank"
       rel="noopener noreferrer"
+      onClick={(e) => e.stopPropagation()}
     >
       {name}
     </a>
