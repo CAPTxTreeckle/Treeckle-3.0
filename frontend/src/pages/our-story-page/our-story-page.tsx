@@ -177,7 +177,7 @@ function OurStoryPage() {
           >
             Hong Shao Yi
           </a>{" "}
-          - Computer Science, NUS Computing
+          - Computer Science, NUS Computing (2020)
         </List.Item>
         <List.Item>
           <a
@@ -187,7 +187,7 @@ function OurStoryPage() {
           >
             Ng Yi Long Kester
           </a>{" "}
-          - Computer Science, NUS Computing
+          - Computer Science, NUS Computing (2020)
         </List.Item>
         <List.Item>
           <a
@@ -197,7 +197,17 @@ function OurStoryPage() {
           >
             Ooi Ming Sheng
           </a>{" "}
-          - Computer Science, NUS Computing
+          - Computer Science, NUS Computing (2020)
+        </List.Item>
+        <List.Item>
+          <a
+            rel="noopener noreferrer"
+            target="_blank"
+            href="https://github.com/jloh02"
+          >
+            Jonathan Loh
+          </a>{" "}
+          - Computer Science, NUS Computing (2023 - 2024)
         </List.Item>
       </List>
 
