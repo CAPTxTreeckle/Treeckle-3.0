@@ -203,6 +203,16 @@ function OurStoryPage() {
           <a
             rel="noopener noreferrer"
             target="_blank"
+            href="https://github.com/lynnetteeee"
+          >
+            Lynette Ong
+          </a>{" "}
+          - Computer Science, NUS Computing (2023 - 2024)
+        </List.Item>
+        <List.Item>
+          <a
+            rel="noopener noreferrer"
+            target="_blank"
             href="https://github.com/jloh02"
           >
             Jonathan Loh
