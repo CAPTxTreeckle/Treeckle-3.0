@@ -205,7 +205,7 @@ function OurStoryPage() {
             target="_blank"
             href="https://github.com/lynnetteeee"
           >
-            Lynette Ong
+            Lynnette Ong
           </a>{" "}
           - Computer Science, NUS Computing (2023 - 2024)
         </List.Item>
