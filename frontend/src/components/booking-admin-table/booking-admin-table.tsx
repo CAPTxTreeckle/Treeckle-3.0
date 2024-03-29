@@ -115,7 +115,6 @@ function BookingAdminTable() {
           width={210}
           resizable
           sortable
-          // align="center"
         />
         <Column<BookingViewProps>
           key={BOOKER_NAME}
