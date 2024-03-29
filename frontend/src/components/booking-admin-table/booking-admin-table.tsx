@@ -6,14 +6,14 @@ import {
   BOOKER,
   CREATED_AT,
   CREATED_AT_STRING,
+  DATE_FORMAT,
   EMAIL,
-  END_DATE_TIME,
-  END_DATE_TIME_STRING,
+  EVENT_DATE,
+  EVENT_TIME_RANGE,
   ID,
   NAME,
-  START_DATE_TIME,
-  START_DATE_TIME_STRING,
   STATUS,
+  TITLE,
   VENUE,
 } from "../../constants";
 import useTableState, {
@@ -24,7 +24,7 @@ import {
   selectAllBookings,
   selectBookingsLoadingState,
 } from "../../redux/slices/bookings-slice";
-import { displayDateTime } from "../../utils/transform-utils";
+import { displayDateTime, displayTimeRange } from "../../utils/transform-utils";
 import BookingBaseTable, { BookingViewProps } from "../booking-base-table";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../search-bar";
@@ -40,9 +40,9 @@ const BOOKING_ADMIN_TABLE_STATE_OPTIONS: TableStateOptions = {
     ID,
     BOOKER_NAME,
     BOOKER_EMAIL,
+    EVENT_DATE,
+    EVENT_TIME_RANGE,
     VENUE_NAME,
-    START_DATE_TIME_STRING,
-    END_DATE_TIME_STRING,
     CREATED_AT_STRING,
     STATUS,
   ],
@@ -56,8 +56,11 @@ function BookingAdminTable() {
     () =>
       allBookings.map((booking) => ({
         ...booking,
-        [START_DATE_TIME_STRING]: displayDateTime(booking.startDateTime),
-        [END_DATE_TIME_STRING]: displayDateTime(booking.endDateTime),
+        [EVENT_DATE]: displayDateTime(booking.startDateTime, DATE_FORMAT),
+        [EVENT_TIME_RANGE]: displayTimeRange(
+          booking.startDateTime,
+          booking.endDateTime,
+        ),
         [CREATED_AT_STRING]: displayDateTime(booking.createdAt),
         children: [{ [ID]: `${booking.id}-details`, booking }],
       })),
@@ -100,16 +103,24 @@ function BookingAdminTable() {
           key={ID}
           dataKey={ID}
           title="ID"
-          width={60}
+          width={70}
           resizable
           sortable
           align="center"
         />
         <Column<BookingViewProps>
+          key={TITLE}
+          dataKey={TITLE}
+          title="Booking Title"
+          width={210}
+          resizable
+          sortable
+        />
+        <Column<BookingViewProps>
           key={BOOKER_NAME}
           dataKey={BOOKER}
           title="Name"
-          width={150}
+          width={90}
           resizable
           sortable
           cellRenderer={UserNameRenderer}
@@ -118,7 +129,7 @@ function BookingAdminTable() {
           key={BOOKER_EMAIL}
           dataKey={BOOKER}
           title="Email"
-          width={180}
+          width={130}
           resizable
           sortable
           cellRenderer={UserEmailRenderer}
@@ -127,23 +138,23 @@ function BookingAdminTable() {
           key={VENUE_NAME}
           dataKey={VENUE_NAME}
           title="Venue"
-          width={180}
+          width={190}
           resizable
           sortable
         />
         <Column<BookingViewProps>
-          key={START_DATE_TIME}
-          dataKey={START_DATE_TIME_STRING}
-          title="Start"
-          width={160}
+          key={EVENT_DATE}
+          dataKey={EVENT_DATE}
+          title="Date"
+          width={100}
           resizable
           sortable
         />
         <Column<BookingViewProps>
-          key={END_DATE_TIME}
-          dataKey={END_DATE_TIME_STRING}
-          title="End"
-          width={160}
+          key={EVENT_TIME_RANGE}
+          dataKey={EVENT_TIME_RANGE}
+          title="Time"
+          width={150}
           resizable
           sortable
         />
@@ -151,7 +162,7 @@ function BookingAdminTable() {
           key={CREATED_AT}
           dataKey={CREATED_AT_STRING}
           title="Created at"
-          width={160}
+          width={165}
           resizable
           sortable
         />

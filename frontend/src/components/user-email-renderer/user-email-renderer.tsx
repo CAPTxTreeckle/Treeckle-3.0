@@ -17,6 +17,7 @@ function UserEmailRenderer<T extends UserInviteData>({
       className={styles.userEmailRenderer}
       rel="noopener noreferrer"
       href={`mailto:${email}`}
+      onClick={(e) => e.stopPropagation()}
     >
       {email}
     </a>

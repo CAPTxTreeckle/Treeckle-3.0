@@ -2,6 +2,11 @@
 
 .bookingBaseTable {
   @include base.table;
+  cursor: pointer;
+
+  div {
+    box-shadow: none;
+  }
 
   .extraContentContainer {
     width: 100%;

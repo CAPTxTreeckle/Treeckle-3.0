@@ -1,13 +1,13 @@
-import { useCallback } from "react";
-import { AutoResizer, Column, ColumnShape } from "react-base-table";
+import { useCallback, useState } from "react";
+import { AutoResizer, Column, ColumnShape, RowKey } from "react-base-table";
 import { Segment } from "semantic-ui-react";
 
 import {
   ACTION,
   CREATED_AT_STRING,
-  END_DATE_TIME_STRING,
+  EVENT_DATE,
+  EVENT_TIME_RANGE,
   ID,
-  START_DATE_TIME_STRING,
   STATUS,
 } from "../../constants";
 import { useGetSingleBooking } from "../../custom-hooks/api/bookings-api";
@@ -20,11 +20,11 @@ import Table, { TableProps } from "../table";
 import styles from "./booking-base-table.module.scss";
 
 export type BookingViewProps = BookingData & {
-  [START_DATE_TIME_STRING]: string;
-  [END_DATE_TIME_STRING]: string;
+  [EVENT_DATE]: string;
+  [EVENT_TIME_RANGE]: string;
   [CREATED_AT_STRING]: string;
   booking?: BookingData;
-  children: [{ [ID]: string; booking: BookingData }];
+  children: { [ID]: string; booking: BookingData }[];
 };
 
 type Props = Partial<TableProps<BookingViewProps>> & {
@@ -34,12 +34,17 @@ type Props = Partial<TableProps<BookingViewProps>> & {
 };
 
 const RowRenderer: TableProps<BookingViewProps>["rowRenderer"] = ({
-  // eslint-disable-next-line react/prop-types
   rowData: { booking },
-  // eslint-disable-next-line react/prop-types
   cells,
+  columns,
+}: {
+  rowData: BookingViewProps;
+  cells: React.ReactNode[];
+  columns: ColumnShape<BookingViewProps>;
 }) =>
-  booking ? (
+  // Only render details if there are booking details
+  // and the column is not the frozen column
+  booking && columns.length > 1 ? (
     <Segment className={styles.extraContentContainer} basic>
       <BookingDetailsView
         className={styles.detailsContainer}
@@ -75,6 +80,7 @@ function BookingBaseTable({
       [adminView],
     );
 
+  const [expandedRowKeys, setExpandedRowKeys] = useState<RowKey[]>([]);
   const onRowExpand: TableProps<BookingViewProps>["onRowExpand"] = async ({
     expanded,
     rowData: { id, formResponseData },
@@ -82,9 +88,7 @@ function BookingBaseTable({
     if (!expanded || formResponseData) {
       return;
     }
-
     const booking = await getSingleBooking(id);
-
     if (booking) {
       dispatch(updateBookingsAction({ bookings: [booking] }));
     }
@@ -102,6 +106,20 @@ function BookingBaseTable({
             fixed
             expandColumnKey={ACTION}
             onRowExpand={onRowExpand}
+            expandedRowKeys={expandedRowKeys}
+            rowEventHandlers={{
+              onClick: async ({ rowData, rowKey, rowIndex }) => {
+                if (!rowData.children || rowData.children.length === 0) return;
+                if (expandedRowKeys.includes(rowKey))
+                  setExpandedRowKeys(
+                    expandedRowKeys.filter((x) => x !== rowKey),
+                  );
+                else {
+                  setExpandedRowKeys([...expandedRowKeys, rowKey]);
+                  onRowExpand({ expanded: true, rowData, rowIndex, rowKey });
+                }
+              },
+            }}
             {...props}
           >
             {children}
@@ -116,10 +134,10 @@ function BookingBaseTable({
             />
             <Column<BookingViewProps>
               key={ACTION}
-              title="Action"
+              title=""
               width={defaultActionColumnWidth}
               align="center"
-              resizable
+              frozen="right"
             />
           </Table>
         )}

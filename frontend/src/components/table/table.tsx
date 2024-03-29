@@ -7,7 +7,7 @@ import BaseTable, {
   SortOrder,
   TableComponents,
 } from "react-base-table";
-import { Icon } from "semantic-ui-react";
+import { Icon, Popup } from "semantic-ui-react";
 
 import { SortBy } from "../../custom-hooks/use-table-state";
 import styles from "./table.module.scss";
@@ -24,18 +24,23 @@ const TABLE_COMPONENTS: TableComponents = {
     </div>
   ),
   // eslint-disable-next-line react/prop-types
-  ExpandIcon: ({ expandable, expanded, onExpand }) => {
+  ExpandIcon: ({ expandable, expanded }) => {
     if (!expandable) {
       return null;
     }
 
     return (
-      <Icon
-        link
-        className={clsx(styles.expandIcon, expanded && styles.expanded)}
-        name="plus circle"
-        onClick={() => onExpand(!expanded)}
-        fitted
+      <Popup
+        content={expanded ? "Hide details" : "View details"}
+        position="top center"
+        trigger={
+          <Icon
+            link
+            className={clsx(styles.expandIcon, expanded && styles.expanded)}
+            name="angle down"
+            fitted
+          />
+        }
       />
     );
   },
