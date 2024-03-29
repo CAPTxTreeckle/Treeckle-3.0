@@ -12,11 +12,17 @@ type Props = {
 
 function BookingDetailsView({
   className,
-  booking: { title, formResponseData },
+  booking: { id, title, formResponseData },
 }: Props) {
   return (
     <LinkifyTextViewer>
       <Grid className={className} padded="horizontally">
+        <Grid.Row>
+          <Grid.Column width="4">
+            <strong>Booking ID:</strong>
+          </Grid.Column>
+          <Grid.Column width="12">{id}</Grid.Column>
+        </Grid.Row>
         <Grid.Row>
           <Grid.Column width="4">
             <strong>Booking title:</strong>
