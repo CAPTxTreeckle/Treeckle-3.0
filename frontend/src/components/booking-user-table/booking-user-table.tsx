@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Column } from "react-base-table";
 import { Segment } from "semantic-ui-react";
+import styles from "./booking-user-table.module.scss";
 
 import {
   CREATED_AT,
@@ -100,16 +101,21 @@ function BookingUserTable() {
           key={TITLE}
           dataKey={TITLE}
           title="Booking Title"
-          width={320}
+          width={330}
           resizable
           sortable
-          align="center"
+          cellRenderer={({ cellData }) => (
+            <div className={styles.userTableCell}>{cellData}</div>
+          )}
+          headerRenderer={({ column }) => (
+            <div className={styles.userTableHeader}>{column.title}</div>
+          )}
         />
         <Column<BookingViewProps>
           key={VENUE_NAME}
           dataKey={VENUE_NAME}
           title="Venue"
-          width={240}
+          width={230}
           resizable
           sortable
         />
@@ -125,7 +131,7 @@ function BookingUserTable() {
           key={EVENT_TIME_RANGE}
           dataKey={EVENT_TIME_RANGE}
           title="Time"
-          width={200}
+          width={190}
           resizable
           sortable
         />
@@ -133,7 +139,7 @@ function BookingUserTable() {
           key={CREATED_AT}
           dataKey={CREATED_AT_STRING}
           title="Created at"
-          width={220}
+          width={210}
           resizable
           sortable
         />

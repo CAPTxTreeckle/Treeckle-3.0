@@ -112,10 +112,10 @@ function BookingAdminTable() {
           key={TITLE}
           dataKey={TITLE}
           title="Booking Title"
-          width={200}
+          width={210}
           resizable
           sortable
-          align="center"
+          // align="center"
         />
         <Column<BookingViewProps>
           key={BOOKER_NAME}
@@ -155,7 +155,7 @@ function BookingAdminTable() {
           key={EVENT_TIME_RANGE}
           dataKey={EVENT_TIME_RANGE}
           title="Time"
-          width={160}
+          width={150}
           resizable
           sortable
         />
@@ -163,7 +163,7 @@ function BookingAdminTable() {
           key={CREATED_AT}
           dataKey={CREATED_AT_STRING}
           title="Created at"
-          width={160}
+          width={165}
           resizable
           sortable
         />
