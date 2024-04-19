@@ -8,10 +8,12 @@ import {
   CREATED_AT_STRING,
   DATE_FORMAT,
   EMAIL,
-  EVENT_DATE,
+  EVENT_DATE_STRING,
   EVENT_TIME_RANGE,
   ID,
   NAME,
+  START_DATE_TIME,
+  START_DATE_TIME_STRING,
   STATUS,
   TITLE,
   VENUE,
@@ -40,7 +42,6 @@ const BOOKING_ADMIN_TABLE_STATE_OPTIONS: TableStateOptions = {
     ID,
     BOOKER_NAME,
     BOOKER_EMAIL,
-    EVENT_DATE,
     EVENT_TIME_RANGE,
     VENUE_NAME,
     CREATED_AT_STRING,
@@ -56,7 +57,11 @@ function BookingAdminTable() {
     () =>
       allBookings.map((booking) => ({
         ...booking,
-        [EVENT_DATE]: displayDateTime(booking.startDateTime, DATE_FORMAT),
+        [START_DATE_TIME_STRING]: displayDateTime(booking.startDateTime),
+        [EVENT_DATE_STRING]: displayDateTime(
+          booking.startDateTime,
+          DATE_FORMAT,
+        ),
         [EVENT_TIME_RANGE]: displayTimeRange(
           booking.startDateTime,
           booking.endDateTime,
@@ -143,8 +148,8 @@ function BookingAdminTable() {
           sortable
         />
         <Column<BookingViewProps>
-          key={EVENT_DATE}
-          dataKey={EVENT_DATE}
+          key={START_DATE_TIME}
+          dataKey={EVENT_DATE_STRING}
           title="Date"
           width={100}
           resizable
