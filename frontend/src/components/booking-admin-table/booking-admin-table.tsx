@@ -14,6 +14,7 @@ import {
   NAME,
   START_DATE_TIME,
   START_DATE_TIME_STRING,
+  START_TIME_MINS,
   STATUS,
   TITLE,
   VENUE,
@@ -26,7 +27,11 @@ import {
   selectAllBookings,
   selectBookingsLoadingState,
 } from "../../redux/slices/bookings-slice";
-import { displayDateTime, displayTimeRange } from "../../utils/transform-utils";
+import {
+  dateTimeToTimeMins,
+  displayDateTime,
+  displayTimeRange,
+} from "../../utils/transform-utils";
 import BookingBaseTable, { BookingViewProps } from "../booking-base-table";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../search-bar";
@@ -57,6 +62,7 @@ function BookingAdminTable() {
     () =>
       allBookings.map((booking) => ({
         ...booking,
+        [START_TIME_MINS]: dateTimeToTimeMins(booking.startDateTime),
         [START_DATE_TIME_STRING]: displayDateTime(booking.startDateTime),
         [EVENT_DATE_STRING]: displayDateTime(
           booking.startDateTime,
@@ -156,7 +162,7 @@ function BookingAdminTable() {
           sortable
         />
         <Column<BookingViewProps>
-          key={EVENT_TIME_RANGE}
+          key={START_TIME_MINS}
           dataKey={EVENT_TIME_RANGE}
           title="Time"
           width={150}

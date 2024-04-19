@@ -8,6 +8,7 @@ import {
   EVENT_TIME_RANGE,
   ID,
   START_DATE_TIME_STRING,
+  START_TIME_MINS,
   STATUS,
 } from "../../constants";
 import { useGetSingleBooking } from "../../custom-hooks/api/bookings-api";
@@ -20,6 +21,7 @@ import Table, { TableProps } from "../table";
 import styles from "./booking-base-table.module.scss";
 
 export type BookingViewProps = BookingData & {
+  [START_TIME_MINS]: number;
   [START_DATE_TIME_STRING]: string;
   [EVENT_TIME_RANGE]: string;
   [CREATED_AT_STRING]: string;

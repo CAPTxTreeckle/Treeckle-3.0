@@ -54,6 +54,7 @@ export const SIGN_UP_COUNT = "signUpCount";
 export const SIGN_UP_STATUS = "signUpStatus";
 export const SIGN_UPS = "signUps";
 export const START_DATE_TIME = "startDateTime";
+export const START_TIME_MINS = "startTime"; // Start time of event in minutes from midnight
 export const STATUS = "status";
 export const SUBSCRIBED_CATEGORIES = "subscribedCategories";
 export const TITLE = "title";
