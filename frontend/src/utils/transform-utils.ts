@@ -1,5 +1,5 @@
 import arraySort from "array-sort";
-import { format, isSameDay } from "date-fns";
+import { format, getHours, getMinutes, isSameDay } from "date-fns";
 import { StringifiableRecord } from "query-string";
 
 import { DATE_FORMAT, DATE_TIME_FORMAT, TIME_FORMAT } from "../constants";
@@ -93,6 +93,14 @@ export function displayDateTimeRange(
         TIME_FORMAT,
       )} - ${displayDateTime(endDateTime, TIME_FORMAT)}`
     : `${displayDateTime(startDateTime)} - ${displayDateTime(endDateTime)}`;
+}
+
+export function dateTimeToTimeMins(inputDateTime: string | number | Date) {
+  const dateTime =
+    typeof inputDateTime === "string"
+      ? parseInt(inputDateTime, 10)
+      : inputDateTime;
+  return getHours(dateTime) * 60 + getMinutes(dateTime);
 }
 
 export function changeKeyCase(

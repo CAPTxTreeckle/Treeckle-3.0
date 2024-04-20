@@ -8,10 +8,13 @@ import {
   CREATED_AT_STRING,
   DATE_FORMAT,
   EMAIL,
-  EVENT_DATE,
+  EVENT_DATE_STRING,
   EVENT_TIME_RANGE,
   ID,
   NAME,
+  START_DATE_TIME,
+  START_DATE_TIME_STRING,
+  START_TIME_MINS,
   STATUS,
   TITLE,
   VENUE,
@@ -24,7 +27,11 @@ import {
   selectAllBookings,
   selectBookingsLoadingState,
 } from "../../redux/slices/bookings-slice";
-import { displayDateTime, displayTimeRange } from "../../utils/transform-utils";
+import {
+  dateTimeToTimeMins,
+  displayDateTime,
+  displayTimeRange,
+} from "../../utils/transform-utils";
 import BookingBaseTable, { BookingViewProps } from "../booking-base-table";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../search-bar";
@@ -40,7 +47,6 @@ const BOOKING_ADMIN_TABLE_STATE_OPTIONS: TableStateOptions = {
     ID,
     BOOKER_NAME,
     BOOKER_EMAIL,
-    EVENT_DATE,
     EVENT_TIME_RANGE,
     VENUE_NAME,
     CREATED_AT_STRING,
@@ -56,7 +62,12 @@ function BookingAdminTable() {
     () =>
       allBookings.map((booking) => ({
         ...booking,
-        [EVENT_DATE]: displayDateTime(booking.startDateTime, DATE_FORMAT),
+        [START_TIME_MINS]: dateTimeToTimeMins(booking.startDateTime),
+        [START_DATE_TIME_STRING]: displayDateTime(booking.startDateTime),
+        [EVENT_DATE_STRING]: displayDateTime(
+          booking.startDateTime,
+          DATE_FORMAT,
+        ),
         [EVENT_TIME_RANGE]: displayTimeRange(
           booking.startDateTime,
           booking.endDateTime,
@@ -143,15 +154,15 @@ function BookingAdminTable() {
           sortable
         />
         <Column<BookingViewProps>
-          key={EVENT_DATE}
-          dataKey={EVENT_DATE}
+          key={START_DATE_TIME}
+          dataKey={EVENT_DATE_STRING}
           title="Date"
           width={100}
           resizable
           sortable
         />
         <Column<BookingViewProps>
-          key={EVENT_TIME_RANGE}
+          key={START_TIME_MINS}
           dataKey={EVENT_TIME_RANGE}
           title="Time"
           width={150}

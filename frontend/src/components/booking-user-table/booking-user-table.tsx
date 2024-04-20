@@ -7,10 +7,14 @@ import {
   CREATED_AT,
   CREATED_AT_STRING,
   DATE_FORMAT,
-  EVENT_DATE,
+  END_DATE_TIME_STRING,
+  EVENT_DATE_STRING,
   EVENT_TIME_RANGE,
   ID,
   NAME,
+  START_DATE_TIME,
+  START_DATE_TIME_STRING,
+  START_TIME_MINS,
   STATUS,
   TITLE,
   VENUE,
@@ -24,7 +28,11 @@ import {
   selectBookingsLoadingState,
 } from "../../redux/slices/bookings-slice";
 import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
-import { displayDateTime, displayTimeRange } from "../../utils/transform-utils";
+import {
+  dateTimeToTimeMins,
+  displayDateTime,
+  displayTimeRange,
+} from "../../utils/transform-utils";
 import BookingBaseTable, { BookingViewProps } from "../booking-base-table";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../search-bar";
@@ -32,14 +40,7 @@ import SearchBar from "../search-bar";
 const VENUE_NAME = `${VENUE}.${NAME}`;
 
 const BOOKING_ADMIN_TABLE_STATE_OPTIONS: TableStateOptions = {
-  searchKeys: [
-    ID,
-    VENUE_NAME,
-    EVENT_DATE,
-    EVENT_TIME_RANGE,
-    CREATED_AT_STRING,
-    STATUS,
-  ],
+  searchKeys: [ID, VENUE_NAME, EVENT_TIME_RANGE, CREATED_AT_STRING, STATUS],
 };
 
 function BookingUserTable() {
@@ -54,7 +55,13 @@ function BookingUserTable() {
     () =>
       userBookings.map((booking) => ({
         ...booking,
-        [EVENT_DATE]: displayDateTime(booking.startDateTime, DATE_FORMAT),
+        [START_TIME_MINS]: dateTimeToTimeMins(booking.startDateTime),
+        [START_DATE_TIME_STRING]: displayDateTime(booking.startDateTime),
+        [END_DATE_TIME_STRING]: displayDateTime(booking.endDateTime),
+        [EVENT_DATE_STRING]: displayDateTime(
+          booking.startDateTime,
+          DATE_FORMAT,
+        ),
         [EVENT_TIME_RANGE]: displayTimeRange(
           booking.startDateTime,
           booking.endDateTime,
@@ -120,15 +127,15 @@ function BookingUserTable() {
           sortable
         />
         <Column<BookingViewProps>
-          key={EVENT_DATE}
-          dataKey={EVENT_DATE}
+          key={START_DATE_TIME}
+          dataKey={EVENT_DATE_STRING}
           title="Date"
           width={150}
           resizable
           sortable
         />
         <Column<BookingViewProps>
-          key={EVENT_TIME_RANGE}
+          key={START_TIME_MINS}
           dataKey={EVENT_TIME_RANGE}
           title="Time"
           width={190}
