@@ -1,11 +1,12 @@
 from django.db import models
 
-from django_update_from_dict import UpdateFromDictMixin
-
-
-class TimestampedModel(UpdateFromDictMixin, models.Model):
+class TimestampedModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         abstract = True
+
+    def update_from_dict(self, update_dict):
+        for field, value in update_dict.items():
+            setattr(self, field, value)

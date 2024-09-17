@@ -2,7 +2,6 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import django_update_from_dict
 
 
 class Migration(migrations.Migration):
@@ -26,6 +25,6 @@ class Migration(migrations.Migration):
             options={
                 'abstract': False,
             },
-            bases=(django_update_from_dict.UpdateFromDictMixin, models.Model),
+            bases=(models.Model,),
         ),
     ]
