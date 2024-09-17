@@ -2,7 +2,6 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import django_update_from_dict
 
 
 class Migration(migrations.Migration):
@@ -27,7 +26,7 @@ class Migration(migrations.Migration):
             options={
                 'ordering': ['-created_at'],
             },
-            bases=(django_update_from_dict.UpdateFromDictMixin, models.Model),
+            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='CommentRead',
@@ -38,7 +37,7 @@ class Migration(migrations.Migration):
                 ('comment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='comments.comment')),
                 ('reader', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.user')),
             ],
-            bases=(django_update_from_dict.UpdateFromDictMixin, models.Model),
+            bases=(models.Model,),
         ),
         migrations.CreateModel(
             name='BookingComment',

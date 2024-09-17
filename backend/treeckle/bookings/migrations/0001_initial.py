@@ -3,7 +3,6 @@
 from django.db import migrations, models
 import django.db.models.deletion
 import django.db.models.expressions
-import django_update_from_dict
 
 
 class Migration(migrations.Migration):
@@ -32,7 +31,7 @@ class Migration(migrations.Migration):
             options={
                 'ordering': ['-created_at'],
             },
-            bases=(django_update_from_dict.UpdateFromDictMixin, models.Model),
+            bases=(models.Model,),
         ),
         migrations.AddConstraint(
             model_name='booking',
