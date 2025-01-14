@@ -7,6 +7,9 @@ class TimestampedModel(models.Model):
     class Meta:
         abstract = True
 
-    def update_from_dict(self, update_dict):
+    def update_from_dict(self, update_dict, commit=True):
         for field, value in update_dict.items():
             setattr(self, field, value)
+        
+        if commit:
+            self.save()
