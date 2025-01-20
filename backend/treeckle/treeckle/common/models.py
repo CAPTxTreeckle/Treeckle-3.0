@@ -15,7 +15,8 @@ class TimestampedModel(models.Model):
             field_instance = self._meta.get_field(field)
             if isinstance(field_instance, models.ForeignKey):
                 related_model = field_instance.related_model
-                value = related_model.objects.get(pk=value)
+                if not isinstance(value, related_model):
+                    value = related_model.objects.get(pk=value)
             
             setattr(self, field, value)
         
