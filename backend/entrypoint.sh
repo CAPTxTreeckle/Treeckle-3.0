@@ -16,6 +16,7 @@ fi
 
 python treeckle/manage.py migrate --no-input
 python treeckle/manage.py initsuperuser --username="$SUPERUSER" --email="$SUPERUSER_EMAIL" --password="$SUPERUSER_PASSWORD"
+python treeckle/manage.py loaddata treeckle/fixtures/seed_data.json
 python treeckle/manage.py collectstatic --no-input --clear
 
 exec "$@"
