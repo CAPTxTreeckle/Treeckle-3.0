@@ -36,6 +36,7 @@ class User(TimestampedModel):
     profile_image = models.ForeignKey(
         Image, null=True, blank=True, on_delete=models.SET_NULL
     )
+    last_login = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.name} | {self.email} ({self.organization})"

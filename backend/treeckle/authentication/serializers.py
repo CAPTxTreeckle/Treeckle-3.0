@@ -1,6 +1,8 @@
 import os
 import requests
 
+from django.utils.timezone import now
+
 from rest_framework import serializers, exceptions
 
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
@@ -178,6 +180,10 @@ class BaseAuthenticationSerializer(serializers.Serializer):
 
         if authenticated_user is None:
             self.raise_invalid_user()
+
+		# last attempted login?
+        authenticated_user.last_login = now()
+        authenticated_user.save()
 
         return get_authenticated_data(user=authenticated_user)
 
