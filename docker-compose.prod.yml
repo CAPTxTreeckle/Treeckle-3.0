@@ -43,6 +43,7 @@ services:
       - frontend
       - frontend-beta
       - backend
+      - backend-beta
     restart: always
     environment:
       - VIRTUAL_HOST=treeckle.com,beta.treeckle.com
@@ -83,12 +84,12 @@ services:
     volumes:
       - static-volume:/app/static
     networks:
-      - backend
+      - backend-beta
     restart: always
     env_file:
-      - .env.backend.prod
+      - .env.backend.staging
     depends_on:
-      - db
+      - db-staging
 
   ## can only be accessed within backend network
   db:
@@ -101,15 +102,27 @@ services:
       - .env.db.prod
     restart: always
 
+  db-staging:
+    image: postgres:13-alpine
+    networks:
+      - backend-beta
+    volumes:
+      - postgres-data-beta:/var/lib/postgresql/data/
+    env_file:
+      - .env.db.staging
+    restart: always
+
 networks:
   service:
   frontend:
   frontend-beta:
   backend:
+  backend-beta:
 
 volumes:
   nginx-certs:
   nginx-vhost:
   nginx-html:
   postgres-data:
+  postgres-data-beta:
   static-volume:
