@@ -181,7 +181,7 @@ class BaseAuthenticationSerializer(serializers.Serializer):
         if authenticated_user is None:
             self.raise_invalid_user()
 
-		# last attempted login?
+	# Last attempted login
         authenticated_user.last_login = now()
         authenticated_user.save()
 
