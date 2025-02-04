@@ -27,7 +27,7 @@ jobs:
             git pull
 
             # Clear space
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker image prune -f
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker system prune -f
 
             # Build frontend
             cd frontend
@@ -40,7 +40,7 @@ jobs:
             cd ..
 
             # Deploy
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker-compose -f ./docker-compose.prod.yml up -d 
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker-compose -f ./docker-compose.prod.yml up -d
 
             # Restore changes
             git stash pop || true # Force return true in case no changes stashed

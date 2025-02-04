@@ -1,4 +1,29 @@
-## Setup
+## Using Docker
+
+Ensure you have Docker installed on your local machine.
+
+Navigate to the root of the project directory where the `docker-compose.yml` file is located.
+
+Build and run the Docker containers:
+
+```
+docker-compose up --build
+```
+
+The backend should be running and accessible at `http://localhost:8000`
+
+## Using External PostgreSQL Database
+
+Update the `.env.backend.dev` file with the database credentials.
+
+```
+SQL_DATABASE=your_db_name
+SQL_USER=your_db_user
+SQL_PASSWORD=your_password
+SQL_HOST=your_db_host
+```
+
+### Setup
 
 Ensure you have [python 3.9](https://www.python.org/downloads/) installed on your local machine.
 
@@ -31,14 +56,14 @@ Finally, execute:
 
 To install all app dependencies.
 
-## Run Development Server
+### Run Development Server
 
 **`python treeckle/manage.py runserver`**
 
-## Create migration
+### Create migration
 
 **`python treeckle/manage.py makemigrations`**
 
-## Run migration
+### Run migration
 
 **`python treeckle/manage.py migrate`**

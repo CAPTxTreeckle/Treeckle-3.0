@@ -32,7 +32,7 @@ jobs:
             git pull
 
             # Clear space
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker image prune -f
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker system prune -f
 
             # Build frontend
             cd frontend
