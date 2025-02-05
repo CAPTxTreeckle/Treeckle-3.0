@@ -2,6 +2,8 @@
 
 Ensure you have Docker installed on your local machine.
 
+### Setup
+
 Navigate to the root of the project directory where the `docker-compose.yml` file is located.
 
 Build and run the Docker containers:
@@ -11,6 +13,30 @@ docker-compose up --build
 ```
 
 The backend should be running and accessible at `http://localhost:8000`
+
+### Seeding the database
+
+To load seed data into the database, run the following command:
+
+```
+docker exec -it backend-backend-1 python treeckle/manage.py loaddata treeckle/treeckle/fixtures/seed_data.json
+```
+
+This creates the following user accounts for the frontend:
+
+**Admin**
+
+Email: admin@capt.com
+
+Password: admin@capt.com
+
+**Resident**
+
+Email: resident#@capt.com
+
+Password: resident#
+
+where # is any integer between 1-5, i.e. resident1, resident2, resident3...
 
 ## Using External PostgreSQL Database
 
