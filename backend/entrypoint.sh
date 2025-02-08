@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# Keep the line endings for this file as LF. 
+# Keep the line endings for this file as LF.
 # https://stackoverflow.com/questions/44460825/entrypoint-file-not-found
 
 if [ "$DATABASE" = "postgres" ]

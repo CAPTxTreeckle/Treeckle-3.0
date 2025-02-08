@@ -4,7 +4,7 @@ Ensure you have Docker installed on your local machine.
 
 ### Setup
 
-Navigate to the root of the project directory where the `docker-compose.yml` file is located.
+Navigate to the root of the `backend` directory where the `docker-compose.yml` file is located.
 
 Build and run the Docker containers:
 
