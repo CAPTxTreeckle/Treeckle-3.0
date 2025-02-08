@@ -14,6 +14,10 @@ docker-compose up --build
 
 The backend should be running and accessible at `http://localhost:8000`
 
+> Backend admin page is accessible at http://localhost:8000/administration
+> Username: dev
+> Password: dev
+
 ### Seeding the database
 
 To load seed data into the database, run the following command:
