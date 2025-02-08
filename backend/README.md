@@ -23,7 +23,7 @@ The backend should be running and accessible at `http://localhost:8000`
 To load seed data into the database, run the following command:
 
 ```
-docker exec -it backend-backend-1 python treeckle/manage.py loaddata treeckle/treeckle/fixtures/seed_data.json
+docker-compose exec backend python treeckle/manage.py loaddata treeckle/treeckle/fixtures/seed_data.json
 ```
 
 This creates the following user accounts for the frontend:
