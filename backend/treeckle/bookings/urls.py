@@ -10,7 +10,6 @@ from .views import (
 from comments.views import BookingCommentsView
 
 urlpatterns = [
-    path('academic-weeks/', views.get_academic_weeks, name='academic-weeks'),
     path("", BookingsView.as_view(), name="bookings"),
     path("totalcount", TotalBookingCountView.as_view(), name="total_count"),
     path(
