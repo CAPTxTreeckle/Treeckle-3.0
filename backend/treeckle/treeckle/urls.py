@@ -19,4 +19,5 @@ from django.urls import path, include
 urlpatterns = [
     path("administration/", admin.site.urls),
     path("api/", include("treeckle.rest_api_urls")),
+    path('api/bookings/', include('bookings.urls')),
 ]
