@@ -17,9 +17,7 @@ import { errorHandlerWrapper, resolveApiError } from "../../utils/error-utils";
 import { changeKeyCase } from "../../utils/transform-utils";
 import { useAxiosWithTokenRefresh } from "./auth-api";
 
-function parseVenueFormProps(
-  venueFormProps: VenueFormProps,
-): VenuePostData | VenuePutData {
+function parseVenueFormProps(venueFormProps: VenueFormProps): VenuePostData {
   const {
     name,
     category,
@@ -29,7 +27,7 @@ function parseVenueFormProps(
     icContactNumber,
     bookingFormFields,
   } = venueFormProps;
-  const data: VenuePostData | VenuePutData = {
+  const data: VenuePostData = {
     name,
     category,
     capacity: capacity || null,

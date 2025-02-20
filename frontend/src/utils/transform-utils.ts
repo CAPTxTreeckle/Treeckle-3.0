@@ -18,10 +18,13 @@ export function deepTrim<T>(value: T): T {
   }
 
   if (isRecord(value)) {
-    return Object.keys(value).reduce((all, key) => {
-      all[key] = deepTrim(value[key]);
-      return all;
-    }, {} as Record<string, unknown>) as T;
+    return Object.keys(value).reduce(
+      (all, key) => {
+        all[key] = deepTrim(value[key]);
+        return all;
+      },
+      {} as Record<string, unknown>,
+    ) as T;
   }
 
   return trim(value) as T;

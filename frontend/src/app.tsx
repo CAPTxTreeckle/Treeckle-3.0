@@ -15,7 +15,9 @@ import PendingBookingCountManager from "./managers/pending-booking-count-manager
 import store from "./redux/store";
 import Routes from "./routes";
 
-configure({ axios: axios.create({ baseURL: process.env.REACT_APP_API_URL }) });
+configure({
+  axios: axios.create({ baseURL: import.meta.env.VITE_APP_API_URL }),
+});
 
 function App() {
   return (

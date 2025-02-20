@@ -61,7 +61,7 @@ function BookingBaseTable({
   adminView = false,
   defaultStatusColumnWidth = 100,
   defaultActionColumnWidth = 100,
-  // eslint-disable-next-line react/prop-types
+
   children,
   ...props
 }: Props) {

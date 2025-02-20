@@ -88,6 +88,10 @@ const FacebookLoginButton = () => {
   const onFacebookLogin = async (response: fb.StatusResponse) => {
     const { accessToken } = response.authResponse;
 
+    if (!accessToken) {
+      throw new Error("Failed to retrieve Facebook access token.");
+    }
+
     try {
       const authData = await facebookLogin({ accessToken });
 

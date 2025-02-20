@@ -127,7 +127,7 @@ export function useGoogleAuth(
   const [isAvailable, setAvailable] = useState(true);
 
   const { signIn, loaded } = useGoogleLoginClient({
-    clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID ?? "",
+    clientId: import.meta.env.VITE_APP_GOOGLE_CLIENT_ID ?? "",
     cookiePolicy: "single_host_origin",
     onSuccess: async (
       response: GoogleLoginResponse | GoogleLoginResponseOffline,
@@ -171,7 +171,7 @@ export function useFacebookAuth(
   callback: (response: fb.StatusResponse) => void,
 ) {
   const startFacebookAuth = useCallback(() => {
-    window.FB?.getLoginStatus((response) => {
+    window.FB?.getLoginStatus((response: fb.StatusResponse) => {
       console.log("Facebook Client get login status response:", response);
 
       if (isValidResponse(response)) {
@@ -181,7 +181,7 @@ export function useFacebookAuth(
 
       const startFacebookClientLogin = () =>
         window.FB?.login(
-          (response) => {
+          (response: fb.StatusResponse) => {
             console.log("Facebook Client login response:", response);
 
             if (isValidResponse(response)) {

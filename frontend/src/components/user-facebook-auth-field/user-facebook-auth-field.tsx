@@ -20,6 +20,11 @@ const LinkButton = () => {
   const onFacebookLogin = async (response: fb.StatusResponse) => {
     const { accessToken } = response.authResponse;
 
+    if (!accessToken) {
+      toast.error("Failed to link your facebook account.");
+      return;
+    }
+
     try {
       const updatedSelf = await updateSelf({
         action: SelfPatchAction.Facebook,
@@ -79,7 +84,7 @@ const UnlinkButton = () => {
 
         dispatch(updateCurrentUserAction({ user: updatedSelf }));
 
-        window.FB?.getLoginStatus(({ status }) => {
+        window.FB?.getLoginStatus(({ status }: fb.StatusResponse) => {
           status === "connected" && window.FB?.logout();
         });
       }

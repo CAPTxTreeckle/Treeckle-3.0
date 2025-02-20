@@ -48,9 +48,7 @@ function BookingsPage() {
   useScrollToTop();
 
   const getBookings = useCallback(
-    async (
-      bookingsAction: typeof setBookingsAction | typeof updateBookingsAction,
-    ) => {
+    async (bookingsAction: typeof setBookingsAction) => {
       dispatch(bookingsAction({ loading: true }));
       const bookings = await _getBookings({ queryParams: { userId } });
       dispatch(bookingsAction({ bookings, loading: false }));

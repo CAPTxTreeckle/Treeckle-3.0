@@ -35,9 +35,7 @@ function AdminBookingsPage() {
   useScrollToTop();
 
   const getBookings = useCallback(
-    async (
-      bookingsAction: typeof setBookingsAction | typeof updateBookingsAction,
-    ) => {
+    async (bookingsAction: typeof setBookingsAction) => {
       try {
         dispatch(bookingsAction({ loading: true }));
         const bookings = await _getBookings({

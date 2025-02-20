@@ -39,7 +39,6 @@ import styles from "./booking-notification-subscription-table.module.scss";
 
 type BookingNotificationSubscriptionViewProps =
   BookingNotificationSubscriptionData & {
-    // eslint-disable-next-line react/no-unused-prop-types
     [CREATED_AT_STRING]: string;
   };
 

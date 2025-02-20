@@ -58,7 +58,7 @@ export const resetAppState = () => {
   store.dispatch(resetPendingBookingCountAction());
   store.dispatch(updateCurrentUserAction(null));
 
-  window.FB?.getLoginStatus(({ status }) => {
+  window.FB?.getLoginStatus(({ status }: fb.StatusResponse) => {
     status === "connected" && window.FB?.logout();
   });
 };
