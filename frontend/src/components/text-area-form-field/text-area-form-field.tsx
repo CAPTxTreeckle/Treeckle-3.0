@@ -39,7 +39,7 @@ function TextAreaFormField({
     formState: { errors },
     register,
   } = useFormContext();
-  const error = get(errors, name);
+  const error = get(errors, name) as { message?: string };
 
   const { ref, ...otherRegisterProps } = register(
     name,

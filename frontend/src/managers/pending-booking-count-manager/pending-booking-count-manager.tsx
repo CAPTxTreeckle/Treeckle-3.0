@@ -22,14 +22,16 @@ function PendingBookingCountManager() {
       dispatch(setPendingBookingCountAction({ loading: true }));
       const count = await getPendingBookingCount();
       dispatch(setPendingBookingCountAction({ count, loading: false }));
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
+    } catch (error) {
+      console.warn(error);
       dispatch(setPendingBookingCountAction({ loading: false }));
     }
   }, [getPendingBookingCount, dispatch]);
 
   useInterval({
-    callback: updatePendingBookingCount,
+    callback: () => {
+      updatePendingBookingCount().catch((error) => console.error(error));
+    },
     delay,
     fireOnFirstTime: true,
   });

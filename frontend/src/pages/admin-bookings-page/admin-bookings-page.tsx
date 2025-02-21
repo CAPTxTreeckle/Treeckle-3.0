@@ -14,7 +14,7 @@ import {
   updateBookingsAction,
 } from "../../redux/slices/bookings-slice";
 import { refreshPendingBookingCountThunk } from "../../redux/slices/pending-booking-count-slice";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 
 const OPTIONS: TabOption[] = [
   {
@@ -35,9 +35,7 @@ function AdminBookingsPage() {
   useScrollToTop();
 
   const getBookings = useCallback(
-    async (
-      bookingsAction: typeof setBookingsAction | typeof updateBookingsAction,
-    ) => {
+    async (bookingsAction: typeof setBookingsAction) => {
       try {
         dispatch(bookingsAction({ loading: true }));
         const bookings = await _getBookings({
@@ -45,17 +43,16 @@ function AdminBookingsPage() {
         });
         dispatch(bookingsAction({ bookings, loading: false }));
         dispatch(refreshPendingBookingCountThunk());
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
+      } catch (error) {
         dispatch(bookingsAction({ loading: false }));
-        resolveApiError(error);
+        resolveApiError(error as ApiResponseError);
       }
     },
     [_getBookings, dispatch],
   );
 
   useEffect(() => {
-    getBookings(setBookingsAction);
+    getBookings(setBookingsAction).catch((error) => console.error(error));
   }, [getBookings]);
 
   return (
@@ -70,7 +67,11 @@ function AdminBookingsPage() {
               <Button
                 icon="redo alternate"
                 color="blue"
-                onClick={() => getBookings(updateBookingsAction)}
+                onClick={() => {
+                  getBookings(updateBookingsAction).catch((error) =>
+                    console.error(error),
+                  );
+                }}
                 loading={loading}
                 disabled={loading}
               />

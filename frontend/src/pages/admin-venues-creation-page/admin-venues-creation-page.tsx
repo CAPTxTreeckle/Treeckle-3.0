@@ -7,7 +7,7 @@ import { useCreateVenue } from "../../custom-hooks/api/venues-api";
 import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 import { ADMIN_VENUES_PATH } from "../../routes/paths";
 import { VenueFormProps } from "../../types/venues";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 
 function AdminVenuesCreationPage() {
   const history = useHistory();
@@ -20,9 +20,8 @@ function AdminVenuesCreationPage() {
       await createVenue(venueFormProps);
       toast.success("The new venue has been created successfully.");
       history.push(ADMIN_VENUES_PATH);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
     }
   };
 

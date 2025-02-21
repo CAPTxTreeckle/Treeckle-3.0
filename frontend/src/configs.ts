@@ -1,4 +1,4 @@
-export const isProduction = process.env.NODE_ENV === "production";
+export const isProduction = import.meta.env.PROD;
 
 if (isProduction) {
   console.log = () => {};

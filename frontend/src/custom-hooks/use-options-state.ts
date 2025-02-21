@@ -43,7 +43,7 @@ export default function useOptionsState(
           ({
             text: value,
             value,
-          } as DropdownItemProps),
+          }) as DropdownItemProps,
       )
       .concat(defaultOptions);
 

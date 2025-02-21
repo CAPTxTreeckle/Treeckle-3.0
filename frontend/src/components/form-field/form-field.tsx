@@ -37,7 +37,7 @@ function FormField({
     formState: { errors },
     register,
   } = useFormContext();
-  const error = get(errors, name);
+  const error = get(errors, name) as { message?: string };
 
   return (
     <Form.Input

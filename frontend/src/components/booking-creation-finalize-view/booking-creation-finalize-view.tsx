@@ -18,7 +18,7 @@ import {
 } from "../../redux/slices/booking-creation-slice";
 import { DASHBOARD_PATH } from "../../routes/paths";
 import { FieldType } from "../../types/venues";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import { displayDateTimeRange } from "../../utils/transform-utils";
 import BookingCreationErrorAlert from "../booking-creation-error-alert";
 import { ConfirmationModalPropsGetter } from "../confirmation-modal";
@@ -81,10 +81,8 @@ function BookingCreationFinalizeView() {
 
               dispatch(successBookingFormSubmissionAction(createdBookings));
               hideModal();
-
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            } catch (error: any) {
-              resolveApiError(error);
+            } catch (error) {
+              resolveApiError(error as ApiResponseError);
             }
           },
         },

@@ -1,7 +1,11 @@
 import { useCallback, useState } from "react";
 import { Area, Point } from "react-easy-crop/types";
 
-import { errorHandlerWrapper, resolveApiError } from "../utils/error-utils";
+import {
+  ApiResponseError,
+  errorHandlerWrapper,
+  resolveApiError,
+} from "../utils/error-utils";
 import { getCroppedImage } from "../utils/image-utils";
 
 export default function useImageCropperState({
@@ -45,9 +49,8 @@ export default function useImageCropperState({
         )()) ?? "";
 
       await onCropImage(croppedImage);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
     } finally {
       setCropping(false);
     }

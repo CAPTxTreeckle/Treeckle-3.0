@@ -61,7 +61,7 @@ function BookingBaseTable({
   adminView = false,
   defaultStatusColumnWidth = 100,
   defaultActionColumnWidth = 100,
-  // eslint-disable-next-line react/prop-types
+
   children,
   ...props
 }: Props) {
@@ -83,17 +83,22 @@ function BookingBaseTable({
     );
 
   const [expandedRowKeys, setExpandedRowKeys] = useState<RowKey[]>([]);
-  const onRowExpand: TableProps<BookingViewProps>["onRowExpand"] = async ({
+  const onRowExpand: TableProps<BookingViewProps>["onRowExpand"] = ({
     expanded,
     rowData: { id, formResponseData },
   }) => {
     if (!expanded || formResponseData) {
       return;
     }
-    const booking = await getSingleBooking(id);
-    if (booking) {
-      dispatch(updateBookingsAction({ bookings: [booking] }));
-    }
+    getSingleBooking(id)
+      .then((booking) => {
+        if (booking) {
+          dispatch(updateBookingsAction({ bookings: [booking] }));
+        } else {
+          console.error("Failed to update booking details for booking ID", id);
+        }
+      })
+      .catch((error) => console.error(error));
   };
 
   return (
@@ -110,7 +115,7 @@ function BookingBaseTable({
             onRowExpand={onRowExpand}
             expandedRowKeys={expandedRowKeys}
             rowEventHandlers={{
-              onClick: async ({ rowData, rowKey, rowIndex }) => {
+              onClick: ({ rowData, rowKey, rowIndex }) => {
                 if (!rowData.children || rowData.children.length === 0) return;
                 if (expandedRowKeys.includes(rowKey))
                   setExpandedRowKeys(

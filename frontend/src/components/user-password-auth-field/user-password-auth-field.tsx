@@ -10,7 +10,7 @@ import {
   updateCurrentUserAction,
 } from "../../redux/slices/current-user-slice";
 import { SelfPatchAction } from "../../types/users";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import styles from "./user-password-auth-field.module.scss";
 
@@ -48,14 +48,17 @@ function UserPasswordAuthField({ children }: Props) {
 
         toast.success("Your password has been updated successfully.");
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
     }
   };
 
   return isSettingPassword ? (
-    <form onSubmit={onSubmit}>
+    <form
+      onSubmit={(e) => {
+        onSubmit(e).catch((error) => console.error(error));
+      }}
+    >
       <HorizontalLayoutContainer>
         <Input
           size="mini"

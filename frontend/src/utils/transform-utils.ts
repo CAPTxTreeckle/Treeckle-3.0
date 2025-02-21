@@ -14,14 +14,17 @@ export function trim<T>(value: T) {
 
 export function deepTrim<T>(value: T): T {
   if (Array.isArray(value)) {
-    return value.map((item) => deepTrim(item)) as unknown as T;
+    return value.map((item) => deepTrim(item) as unknown) as unknown as T;
   }
 
   if (isRecord(value)) {
-    return Object.keys(value).reduce((all, key) => {
-      all[key] = deepTrim(value[key]);
-      return all;
-    }, {} as Record<string, unknown>) as T;
+    return Object.keys(value).reduce(
+      (all, key) => {
+        all[key] = deepTrim(value[key]);
+        return all;
+      },
+      {} as Record<string, unknown>,
+    ) as T;
   }
 
   return trim(value) as T;

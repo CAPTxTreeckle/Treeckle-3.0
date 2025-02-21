@@ -29,7 +29,7 @@ function UserAuthSection() {
       }
 
       dispatch(updateCurrentUserAction({ user: self }));
-    })();
+    })().catch(console.error);
   }, [getSelf, dispatch]);
 
   return (

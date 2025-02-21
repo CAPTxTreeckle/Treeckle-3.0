@@ -43,21 +43,23 @@ function BookingCreationTimeSlotSelector() {
 
   const { bookings: existingBookings, loading, getBookings } = useGetBookings();
 
-  const [showModal, hideModal] = useModal(({ in: open, onExited }) => (
-    <TransitionablePortal
-      transition={{ animation: "fade down" }}
-      open={open}
-      onHide={onExited}
-    >
-      <Modal basic open>
-        <PlaceholderWrapper
-          loading
-          loadingMessage="Retrieving booking periods"
-          inverted
-        />
-      </Modal>
-    </TransitionablePortal>
-  ));
+  const [showModal, hideModal] = useModal(
+    ({ in: open, onExited }: { in: boolean; onExited: () => void }) => (
+      <TransitionablePortal
+        transition={{ animation: "fade down" }}
+        open={open}
+        onHide={onExited}
+      >
+        <Modal basic open>
+          <PlaceholderWrapper
+            loading
+            loadingMessage="Retrieving booking periods"
+            inverted
+          />
+        </Modal>
+      </TransitionablePortal>
+    ),
+  );
 
   useEffect(() => {
     if (loading) {
@@ -114,7 +116,7 @@ function BookingCreationTimeSlotSelector() {
         startDateTime,
         endDateTime,
       },
-    });
+    }).catch((error) => console.error(error));
   }, [getBookings, venueId, visibleDateRange]);
 
   return (

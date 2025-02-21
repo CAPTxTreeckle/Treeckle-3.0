@@ -14,7 +14,7 @@ import {
   updateCurrentUserAction,
 } from "../../redux/slices/current-user-slice";
 import { SelfPatchAction } from "../../types/users";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 
 const LinkButton = () => {
@@ -42,9 +42,8 @@ const LinkButton = () => {
 
         dispatch(updateCurrentUserAction({ user: updatedSelf }));
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
     }
   };
 
@@ -52,7 +51,9 @@ const LinkButton = () => {
     startGoogleAuth,
     loading: googleAuthLoading,
     isAvailable,
-  } = useGoogleAuth(onLinkGoogle);
+  } = useGoogleAuth((res) => {
+    onLinkGoogle(res).catch((error) => console.error(error));
+  });
 
   const loading = googleAuthLoading || isLinking;
 
@@ -96,9 +97,8 @@ const UnlinkButton = () => {
 
         dispatch(updateCurrentUserAction({ user: updatedSelf }));
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
     }
   };
 
@@ -114,7 +114,9 @@ const UnlinkButton = () => {
           color="blue"
           icon="unlinkify"
           loading={isUnlinking}
-          onClick={onUnlinkGoogle}
+          onClick={() => {
+            onUnlinkGoogle().catch((error) => console.error(error));
+          }}
           disabled={isUnlinking}
         />
       }

@@ -6,7 +6,7 @@ import { VENUE_ID } from "../../constants";
 import { useDeleteVenue } from "../../custom-hooks/api/venues-api";
 import { ADMIN_VENUES_EDIT_PATH } from "../../routes/paths";
 import { VenueViewProps } from "../../types/venues";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import PopupActionsWrapper from "../pop-up-actions-wrapper";
 import VenueBookingDisplayForm from "../venue-booking-display-form";
 
@@ -20,11 +20,10 @@ function VenueFormGalleryItem({ id, venueFormProps, getVenues }: Props) {
   const onDelete = async () => {
     try {
       await deleteVenue(id);
-      getVenues();
+      await getVenues();
       toast.success("The venue has been deleted successfully.");
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
     }
   };
 
@@ -39,7 +38,9 @@ function VenueFormGalleryItem({ id, venueFormProps, getVenues }: Props) {
     <Button
       key="delete"
       content="Delete"
-      onClick={onDelete}
+      onClick={() => {
+        onDelete().catch((error) => console.error(error));
+      }}
       color="red"
       loading={loading}
       disabled={loading}

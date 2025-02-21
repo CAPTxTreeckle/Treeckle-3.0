@@ -64,7 +64,7 @@ const MiddleSection = ({
   labelFieldName: string;
   placeholderFieldName: string;
 }) => {
-  const type = useWatch({ name: typeFieldName });
+  const type = useWatch({ name: typeFieldName }) as FieldType;
 
   return (
     <Segment>
@@ -96,7 +96,7 @@ const RequiredFieldSection = ({
   typeFieldName: string;
   requiredFieldName: string;
 }) => {
-  const type = useWatch({ name: typeFieldName });
+  const type = useWatch({ name: typeFieldName }) as FieldType;
 
   return NO_REQUIRED_FIELD_TYPES.includes(type) ? null : (
     <Segment className={styles.requiredFieldContainer}>

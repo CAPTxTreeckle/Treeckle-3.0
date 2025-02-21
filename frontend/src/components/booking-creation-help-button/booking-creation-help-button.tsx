@@ -16,7 +16,7 @@ function BookingCreationHelpButton() {
   } = selectedVenue?.venueFormProps ?? {};
 
   const [showModal, hideModal] = useModal(
-    ({ in: open, onExited }) => (
+    ({ in: open, onExited }: { in: boolean; onExited: () => void }) => (
       <BaseModal
         open={open}
         onExited={onExited}

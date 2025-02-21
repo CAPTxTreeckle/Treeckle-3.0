@@ -8,7 +8,7 @@ import useImageUploadCropperState from "../../custom-hooks/use-image-upload-crop
 import { useAppDispatch } from "../../redux/hooks";
 import { updateCurrentUserAction } from "../../redux/slices/current-user-slice";
 import { SelfPatchAction } from "../../types/users";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import FileUploader from "../file-uploader";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import ImageCropper from "../image-cropper";
@@ -45,9 +45,8 @@ function UserProfileImageChanger({ children }: Props) {
 
           toast.success("Your profile photo has been updated successfully.");
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        resolveApiError(error);
+      } catch (error) {
+        resolveApiError(error as ApiResponseError);
       }
     },
     [updateSelf, setOriginalImage, dispatch],

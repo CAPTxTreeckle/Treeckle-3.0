@@ -36,8 +36,11 @@ const SCHEMA = yup.object().shape({
     .number()
     .positive("Capacity must be a positive number")
     .integer("Capacity must be an integer")
-    .transform((value, originalValue) =>
-      typeof originalValue === "string" && originalValue === "" ? null : value,
+    .transform(
+      (value, originalValue) =>
+        (typeof originalValue === "string" && originalValue === ""
+          ? null
+          : value) as number | null,
     )
     .nullable(),
   [IC_NAME]: yup.string().trim().notRequired(),
@@ -108,7 +111,7 @@ function VenueDetailsForm({
   const [isSubmitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    getVenueCategories();
+    getVenueCategories().catch((error) => console.error(error));
   }, [getVenueCategories]);
 
   const _onSubmit = async (formData: VenueFormProps) => {
@@ -120,7 +123,11 @@ function VenueDetailsForm({
 
   return (
     <FormProvider {...methods}>
-      <Form onSubmit={handleSubmit(_onSubmit)}>
+      <Form
+        onSubmit={() => {
+          handleSubmit(_onSubmit)().catch((error) => console.error(error));
+        }}
+      >
         <Segment.Group raised>
           <Segment>
             <Header as={Form.Field}>

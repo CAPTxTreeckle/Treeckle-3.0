@@ -16,7 +16,7 @@ import {
 } from "../../custom-hooks/api/auth-api";
 import { useAppDispatch } from "../../redux/hooks";
 import { updateCurrentUserAction } from "../../redux/slices/current-user-slice";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import styles from "./sign-in-options-section.module.scss";
 
 const PasswordLoginButton = () => {
@@ -51,9 +51,8 @@ const GoogleLoginButton = () => {
       toast.success("Signed in successfully.");
 
       dispatch(updateCurrentUserAction(authData));
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
     }
   };
 
@@ -61,7 +60,9 @@ const GoogleLoginButton = () => {
     startGoogleAuth,
     loading: googleAuthLoading,
     isAvailable,
-  } = useGoogleAuth(onGoogleLogin);
+  } = useGoogleAuth((callback) => {
+    onGoogleLogin(callback).catch((error) => console.error(error));
+  });
 
   const loading = isLoggingIn || googleAuthLoading;
 
@@ -88,19 +89,24 @@ const FacebookLoginButton = () => {
   const onFacebookLogin = async (response: fb.StatusResponse) => {
     const { accessToken } = response.authResponse;
 
+    if (!accessToken) {
+      throw new Error("Failed to retrieve Facebook access token.");
+    }
+
     try {
       const authData = await facebookLogin({ accessToken });
 
       toast.success("Signed in successfully.");
 
       dispatch(updateCurrentUserAction(authData));
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
     }
   };
 
-  const { startFacebookAuth } = useFacebookAuth(onFacebookLogin);
+  const { startFacebookAuth } = useFacebookAuth((response) => {
+    onFacebookLogin(response).catch((error) => console.error(error));
+  });
 
   return (
     <Button

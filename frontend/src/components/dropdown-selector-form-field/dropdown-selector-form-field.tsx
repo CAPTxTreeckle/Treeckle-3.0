@@ -1,5 +1,9 @@
 import { ReactNode, SyntheticEvent } from "react";
-import { useController } from "react-hook-form";
+import {
+  FieldValues,
+  UseControllerProps,
+  useController,
+} from "react-hook-form";
 import {
   DropdownItemProps,
   DropdownProps,
@@ -34,7 +38,7 @@ type Props = {
   fluid?: boolean;
 };
 
-function DropdownSelectorFormField({
+function DropdownSelectorFormField<T extends FieldValues>({
   className,
   required = false,
   label,
@@ -51,13 +55,13 @@ function DropdownSelectorFormField({
   onChangeEffect,
   width,
   fluid = false,
-}: Props) {
+}: Props & UseControllerProps<T>) {
   const { options, onSelect } = useOptionsState(defaultOptions);
 
   const {
     field: { onChange, onBlur, value, ref },
     fieldState: { error },
-  } = useController({
+  } = useController<T, typeof name>({
     name,
     defaultValue,
     rules: { required },
@@ -117,7 +121,9 @@ function DropdownSelectorFormField({
         multiple={multiple}
         clearable={clearable}
         width={width}
-        onChange={onSelectChange}
+        onChange={(e, data) => {
+          onSelectChange(e, data);
+        }}
         value={value}
         error={
           error &&

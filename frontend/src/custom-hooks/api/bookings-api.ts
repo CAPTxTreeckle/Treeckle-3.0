@@ -14,6 +14,7 @@ import {
 import { errorHandlerWrapper, resolveApiError } from "../../utils/error-utils";
 import { changeKeyCase } from "../../utils/transform-utils";
 import { useAxiosWithTokenRefresh } from "./auth-api";
+import { AxiosError } from "axios";
 
 export function useGetTotalBookingCount() {
   const [{ data: totalBookingCount = 0, loading }, apiCall] = useAxios<number>(
@@ -31,9 +32,12 @@ export function useGetTotalBookingCount() {
       console.log(`GET /bookings/totalcount success:`, totalBookingCount);
 
       return totalBookingCount;
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      console.log(`GET /bookings/totalcount error:`, error, error?.response);
+    } catch (error) {
+      console.log(
+        `GET /bookings/totalcount error:`,
+        error,
+        (error as AxiosError)?.response,
+      );
 
       return 0;
     }
@@ -106,14 +110,11 @@ export function useGetBookings() {
           },
           { logMessageLabel: `GET ${url} error:` },
         )();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
+      } catch (error) {
         if (!resolveError) {
           throw error;
         }
-
-        resolveApiError(error);
-
+        resolveApiError(error as AxiosError);
         return [];
       }
     },
@@ -187,10 +188,8 @@ export function useGetSingleBooking() {
           },
           { logMessageLabel: `GET ${url} error:` },
         )();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        resolveApiError(error);
-
+      } catch (error) {
+        resolveApiError(error as AxiosError);
         return undefined;
       }
     },

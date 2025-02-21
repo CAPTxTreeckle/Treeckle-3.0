@@ -4,7 +4,7 @@ import { Icon, Label } from "semantic-ui-react";
 
 import { SignInContext } from "../../contexts/sign-in-provider";
 import { usePasswordReset } from "../../custom-hooks/api/auth-api";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import styles from "./sign-in-password-reset-link.module.scss";
 
 function SignInPasswordResetLink() {
@@ -20,10 +20,8 @@ function SignInPasswordResetLink() {
       await passwordReset({ email });
 
       toast.info("An email has been sent to reset your password.");
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
     }
   };
 
@@ -34,7 +32,9 @@ function SignInPasswordResetLink() {
       as="a"
       className={styles.signInPasswordResetLink}
       basic
-      onClick={onPasswordReset}
+      onClick={() => {
+        onPasswordReset().catch((error) => console.error(error));
+      }}
     >
       Reset password
     </Label>

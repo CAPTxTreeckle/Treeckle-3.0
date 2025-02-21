@@ -10,9 +10,9 @@ const usersSlice = createSlice({
   initialState,
   reducers: {
     resetUsersAction: () => initialState,
-    setUsersAction: usersAdapter.setAll,
-    updateUserAction: usersAdapter.upsertOne,
-    deleteUserAction: usersAdapter.removeOne,
+    setUsersAction: (state, action) => usersAdapter.setAll(state, action),
+    updateUserAction: (state, action) => usersAdapter.upsertOne(state, action),
+    deleteUserAction: (state, action) => usersAdapter.removeOne(state, action),
   },
 });
 

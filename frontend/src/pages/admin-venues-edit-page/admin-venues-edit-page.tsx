@@ -12,7 +12,7 @@ import {
 import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 import { ADMIN_VENUES_PATH } from "../../routes/paths";
 import { VenueFormProps } from "../../types/venues";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 
 function AdminVenuesEditPage() {
   const history = useHistory();
@@ -23,7 +23,7 @@ function AdminVenuesEditPage() {
   useScrollToTop();
 
   useEffect(() => {
-    getSingleVenue(venueId);
+    getSingleVenue(venueId).catch((error) => console.error(error));
   }, [getSingleVenue, venueId]);
 
   const onSaveChanges = async (data: VenueFormProps) => {
@@ -31,9 +31,8 @@ function AdminVenuesEditPage() {
       await updateVenue(venue?.id ?? venueId, data);
       toast.success("The venue has been updated successfully.");
       history.push(ADMIN_VENUES_PATH);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
     }
   };
 

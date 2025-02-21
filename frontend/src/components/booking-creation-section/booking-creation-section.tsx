@@ -71,22 +71,24 @@ function BookingCreationSection() {
     currentCreationStep !== BookingCreationStep.Category,
   );
 
-  const [showModal, hideModal] = useModal(({ in: open, onExited }) => (
-    <ConfirmationModal
-      open={open}
-      onExited={onExited}
-      onClose={hideModal}
-      yesButtonProps={{ onClick: hideModal }}
-      noButtonProps={{
-        onClick: () => {
-          hideModal();
-          dispatch(resetBookingCreationAction());
-        },
-      }}
-      title="Draft Booking Found"
-      content="You have a previously unsubmitted booking. Do you want to continue?"
-    />
-  ));
+  const [showModal, hideModal] = useModal(
+    ({ in: open, onExited }: { in: boolean; onExited: () => void }) => (
+      <ConfirmationModal
+        open={open}
+        onExited={onExited}
+        onClose={hideModal}
+        yesButtonProps={{ onClick: hideModal }}
+        noButtonProps={{
+          onClick: () => {
+            hideModal();
+            dispatch(resetBookingCreationAction());
+          },
+        }}
+        title="Draft Booking Found"
+        content="You have a previously unsubmitted booking. Do you want to continue?"
+      />
+    ),
+  );
 
   useEffect(() => {
     if (hasIncompletedBookingsRef.current) {

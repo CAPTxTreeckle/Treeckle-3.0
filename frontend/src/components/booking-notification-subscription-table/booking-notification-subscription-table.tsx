@@ -26,7 +26,7 @@ import {
   setBookingNotificationSubscriptionsAction,
 } from "../../redux/slices/booking-notification-subscription-slice";
 import { BookingNotificationSubscriptionData } from "../../types/venues";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import { displayDateTime } from "../../utils/transform-utils";
 import { ConfirmationModalPropsGetter } from "../confirmation-modal";
 import ConfirmationModalButton from "../confirmation-modal-button";
@@ -39,7 +39,6 @@ import styles from "./booking-notification-subscription-table.module.scss";
 
 type BookingNotificationSubscriptionViewProps =
   BookingNotificationSubscriptionData & {
-    // eslint-disable-next-line react/no-unused-prop-types
     [CREATED_AT_STRING]: string;
   };
 
@@ -85,9 +84,8 @@ const ActionButton = ({
                 ),
               );
               hideModal();
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            } catch (error: any) {
-              resolveApiError(error);
+            } catch (error) {
+              resolveApiError(error as ApiResponseError);
             }
           },
         },
@@ -141,7 +139,9 @@ function BookingNotificationSubscriptionTable() {
   }, [_getBookingNotificationSubscriptions, dispatch]);
 
   useEffect(() => {
-    getBookingNotificationSubscriptions();
+    getBookingNotificationSubscriptions().catch((error) =>
+      console.error(error),
+    );
   }, [getBookingNotificationSubscriptions]);
 
   const { processedData, sortBy, setSortBy, onSearchValueChange } =
@@ -161,7 +161,11 @@ function BookingNotificationSubscriptionTable() {
               <Button
                 icon="redo alternate"
                 color="blue"
-                onClick={getBookingNotificationSubscriptions}
+                onClick={() => {
+                  getBookingNotificationSubscriptions().catch((error) =>
+                    console.error(error),
+                  );
+                }}
                 loading={loading}
                 disabled={loading}
               />

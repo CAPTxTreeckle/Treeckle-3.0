@@ -10,7 +10,7 @@ import {
   updateCurrentUserAction,
 } from "../../redux/slices/current-user-slice";
 import { SelfPatchAction } from "../../types/users";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import ConfirmationModal from "../confirmation-modal";
 
 type Props = {
@@ -42,16 +42,15 @@ function UserProfileImageOptionsPopup({ children, setSelectedImage }: Props) {
           toast.success("Your profile photo has been deleted successfully.");
           hideModal();
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        resolveApiError(error);
+      } catch (error) {
+        resolveApiError(error as ApiResponseError);
       }
     },
     [loading, updateSelf, dispatch],
   );
 
   const [showModal, hideModal] = useModal(
-    ({ in: open, onExited }) => (
+    ({ in: open, onExited }: { in: boolean; onExited: () => void }) => (
       <ConfirmationModal
         open={open}
         onExited={onExited}
@@ -61,7 +60,11 @@ function UserProfileImageOptionsPopup({ children, setSelectedImage }: Props) {
         icon={<Icon name="trash alternate outline" />}
         yesButtonProps={{
           loading,
-          onClick: onDeleteProfileImage(hideModal),
+          onClick: () => {
+            onDeleteProfileImage(hideModal)().catch((error) =>
+              console.error(error),
+            );
+          },
           disabled: loading,
         }}
         noButtonProps={{ onClick: hideModal }}

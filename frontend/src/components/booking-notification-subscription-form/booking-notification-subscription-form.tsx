@@ -13,7 +13,7 @@ import {
 import { useAppDispatch } from "../../redux/hooks";
 import { updateBookingNotificationSubscriptionAction } from "../../redux/slices/booking-notification-subscription-slice";
 import { BookingNotificationSubscriptionPostData } from "../../types/venues";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import { deepTrim, sort } from "../../utils/transform-utils";
 import DropdownSelectorFormField from "../dropdown-selector-form-field";
 import FormField from "../form-field";
@@ -66,7 +66,7 @@ function BookingNotificationSubscriptionForm() {
   );
 
   useEffect(() => {
-    getVenues();
+    getVenues().catch((error) => console.error(error));
   }, [getVenues]);
 
   const { handleSubmit, reset } = methods;
@@ -91,15 +91,14 @@ function BookingNotificationSubscriptionForm() {
       );
 
       reset();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
     }
   };
 
   return (
     <FormProvider {...methods}>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form onSubmit={() => handleSubmit(onSubmit)}>
         <Header as={Form.Field}>Add Subscribers</Header>
 
         <Form.Group className={styles.fieldsContainer} widths="equal">

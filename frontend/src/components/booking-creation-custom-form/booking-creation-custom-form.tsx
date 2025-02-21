@@ -72,7 +72,7 @@ function BookingCreationCustomForm() {
         const venue = await getSingleVenue(selectedVenue.id);
 
         dispatch(syncVenueAction(venue ?? null));
-      })();
+      })().catch((error) => console.error(error));
     }
   }, [getSingleVenue, dispatch, selectedVenue?.id]);
 
@@ -109,7 +109,13 @@ function BookingCreationCustomForm() {
         >
           <FormProvider {...methods}>
             <Ref innerRef={formRef}>
-              <Form onSubmit={handleSubmit(onSubmit)}>
+              <Form
+                onSubmit={() => {
+                  handleSubmit(onSubmit)().catch((error) =>
+                    console.error(error),
+                  );
+                }}
+              >
                 <FormField name={TITLE} label="Short Booking Title" required />
 
                 {fields.map(

@@ -48,9 +48,7 @@ function BookingsPage() {
   useScrollToTop();
 
   const getBookings = useCallback(
-    async (
-      bookingsAction: typeof setBookingsAction | typeof updateBookingsAction,
-    ) => {
+    async (bookingsAction: typeof setBookingsAction) => {
       dispatch(bookingsAction({ loading: true }));
       const bookings = await _getBookings({ queryParams: { userId } });
       dispatch(bookingsAction({ bookings, loading: false }));
@@ -59,7 +57,7 @@ function BookingsPage() {
   );
 
   useEffect(() => {
-    getBookings(setBookingsAction);
+    getBookings(setBookingsAction).catch((error) => console.error(error));
   }, [getBookings]);
 
   return (
@@ -81,7 +79,11 @@ function BookingsPage() {
               <Button
                 icon="redo alternate"
                 color="blue"
-                onClick={() => getBookings(updateBookingsAction)}
+                onClick={() => {
+                  getBookings(updateBookingsAction).catch((error) =>
+                    console.error(error),
+                  );
+                }}
                 loading={loading}
                 disabled={loading}
               />
