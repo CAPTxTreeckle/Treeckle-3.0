@@ -32,6 +32,7 @@ from .logic import (
 )
 from .middlewares import check_requester_booking_same_organization
 
+
 # Create your views here.
 class TotalBookingCountView(APIView):
     permission_classes = [AllowAny]
