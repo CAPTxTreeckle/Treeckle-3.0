@@ -1,5 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) template.
 
+> In Feb 2025, migrated from CRA to Vite
+
 ## Setup
 
 Ensure [yarn](https://yarnpkg.com/) is installed on your local machine.
