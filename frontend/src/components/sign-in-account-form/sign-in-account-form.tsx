@@ -11,7 +11,7 @@ import { usePasswordLogin } from "../../custom-hooks/api/auth-api";
 import { useAppDispatch } from "../../redux/hooks";
 import { updateCurrentUserAction } from "../../redux/slices/current-user-slice";
 import { PasswordLoginPostData } from "../../types/auth";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import { deepTrim } from "../../utils/transform-utils";
 import FormField from "../form-field";
 
@@ -51,9 +51,8 @@ function SignInAccountForm() {
       toast.success("Signed in successfully.");
 
       dispatch(updateCurrentUserAction(authData));
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
     }
   };
 
@@ -68,7 +67,12 @@ function SignInAccountForm() {
         onClick={() => setLoginDetails(undefined)}
       />
 
-      <Form className="full-width" onSubmit={handleSubmit(onSubmit)}>
+      <Form
+        className="full-width"
+        onSubmit={() => {
+          handleSubmit(onSubmit)().catch((error) => console.error(error));
+        }}
+      >
         {!name && <FormField name={NAME} label="Name" required autoFocus />}
 
         <FormField

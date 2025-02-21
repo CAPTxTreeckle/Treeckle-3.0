@@ -8,7 +8,7 @@ import { EMAIL } from "../../constants";
 import { SignInContext } from "../../contexts/sign-in-provider";
 import { useCheckAccount } from "../../custom-hooks/api/auth-api";
 import { CheckAccountPostData } from "../../types/auth";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import { deepTrim } from "../../utils/transform-utils";
 import FormField from "../form-field";
 
@@ -42,15 +42,19 @@ function SignInEmailForm() {
       const loginDetails = await checkAccount(deepTrim(formData));
       setLoginDetails(loginDetails);
       setInputEmail(loginDetails.email);
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
     }
   };
 
   return (
     <FormProvider {...methods}>
-      <Form className="full-width" onSubmit={handleSubmit(onSubmit)}>
+      <Form
+        className="full-width"
+        onSubmit={() => {
+          handleSubmit(onSubmit)().catch((error) => console.error(error));
+        }}
+      >
         <FormField name={EMAIL} type="email" label="Email" required autoFocus />
 
         <Form.Button

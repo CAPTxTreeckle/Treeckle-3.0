@@ -10,7 +10,7 @@ import {
   updateCurrentUserAction,
 } from "../../redux/slices/current-user-slice";
 import { SelfPatchAction } from "../../types/users";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 
 const LinkButton = () => {
@@ -36,13 +36,16 @@ const LinkButton = () => {
 
         dispatch(updateCurrentUserAction({ user: updatedSelf }));
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
     }
   };
 
-  const { startFacebookAuth } = useFacebookAuth(onFacebookLogin);
+  const { startFacebookAuth } = useFacebookAuth((response) => {
+    onFacebookLogin(response).catch((error) => {
+      console.log(error);
+    });
+  });
 
   return (
     <Popup
@@ -84,13 +87,14 @@ const UnlinkButton = () => {
 
         dispatch(updateCurrentUserAction({ user: updatedSelf }));
 
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         window.FB?.getLoginStatus(({ status }: fb.StatusResponse) => {
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
           status === "connected" && window.FB?.logout();
         });
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
     }
   };
 
@@ -106,7 +110,9 @@ const UnlinkButton = () => {
           color="blue"
           icon="unlinkify"
           loading={isUnlinking}
-          onClick={onUnlinkFacebook}
+          onClick={() => {
+            onUnlinkFacebook().catch((error) => console.log(error));
+          }}
           disabled={isUnlinking}
         />
       }

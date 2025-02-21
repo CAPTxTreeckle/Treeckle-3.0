@@ -13,7 +13,11 @@ import {
   VenuePutData,
   VenueViewProps,
 } from "../../types/venues";
-import { errorHandlerWrapper, resolveApiError } from "../../utils/error-utils";
+import {
+  ApiResponseError,
+  errorHandlerWrapper,
+  resolveApiError,
+} from "../../utils/error-utils";
 import { changeKeyCase } from "../../utils/transform-utils";
 import { useAxiosWithTokenRefresh } from "./auth-api";
 
@@ -94,9 +98,8 @@ export function useGetVenueCategories() {
         },
         { logMessageLabel: "GET /venues/categories error:" },
       )();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
 
       return [];
     }
@@ -136,9 +139,8 @@ export function useGetVenues() {
           },
           { logMessageLabel: `GET ${url} error:` },
         )();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        resolveApiError(error);
+      } catch (error) {
+        resolveApiError(error as ApiResponseError);
 
         setVenues([]);
         return [];
@@ -241,9 +243,8 @@ export function useGetSingleVenue() {
           },
           { logMessageLabel: `GET ${url} error:` },
         )();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        resolveApiError(error);
+      } catch (error) {
+        resolveApiError(error as ApiResponseError);
 
         setVenue(undefined);
         return undefined;
@@ -319,9 +320,8 @@ export function useGetBookingNotificationSubscriptions() {
         },
         { logMessageLabel: `GET /venues/subscriptions error:` },
       )();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
       return [];
     }
   }, [apiCall]);

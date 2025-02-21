@@ -27,7 +27,7 @@ import {
   USER_CREATION_STATUS_DETAILS,
   UserCreationStatus,
 } from "../../types/users";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import BaseModal from "../base-modal";
 import { ConfirmationModalPropsGetter } from "../confirmation-modal";
 import ConfirmationModalButton from "../confirmation-modal-button";
@@ -79,7 +79,7 @@ function UserCreationTable() {
   const { createUserInvites, loading } = useCreateUserInvites();
 
   const [showModal, hideModal] = useModal(
-    ({ in: open, onExited }) => (
+    ({ in: open, onExited }: { in: boolean; onExited: () => void }) => (
       <BaseModal
         open={open}
         onExited={onExited}
@@ -155,9 +155,8 @@ function UserCreationTable() {
           createdUserInvites.length === 1 ? "" : "s"
         } created successfully.`,
       );
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
     } finally {
       dispatch(updateUnsuccessfullyCreatedUsersAction());
     }
@@ -269,7 +268,9 @@ function UserCreationTable() {
           <Button
             content="Create Users"
             color="blue"
-            onClick={onCreateUsers}
+            onClick={() => {
+              onCreateUsers().catch((error) => console.log(error));
+            }}
             loading={loading}
             disabled={newPendingCreationUsers.length === 0 || loading}
           />

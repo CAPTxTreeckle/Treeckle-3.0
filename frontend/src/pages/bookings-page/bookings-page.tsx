@@ -57,7 +57,7 @@ function BookingsPage() {
   );
 
   useEffect(() => {
-    getBookings(setBookingsAction);
+    getBookings(setBookingsAction).catch((error) => console.error(error));
   }, [getBookings]);
 
   return (
@@ -79,7 +79,11 @@ function BookingsPage() {
               <Button
                 icon="redo alternate"
                 color="blue"
-                onClick={() => getBookings(updateBookingsAction)}
+                onClick={() => {
+                  getBookings(updateBookingsAction).catch((error) =>
+                    console.error(error),
+                  );
+                }}
                 loading={loading}
                 disabled={loading}
               />

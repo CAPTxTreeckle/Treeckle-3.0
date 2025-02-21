@@ -48,7 +48,11 @@ function UserCreationForm() {
     <>
       <h2>Manual Input</h2>
       <FormProvider {...methods}>
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form
+          onSubmit={() => {
+            handleSubmit(onSubmit)().catch((error) => console.error(error));
+          }}
+        >
           <DropdownSelectorFormField
             name={ROLE}
             label="Role"

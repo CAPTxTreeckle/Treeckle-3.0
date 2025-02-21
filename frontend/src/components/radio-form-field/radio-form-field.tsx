@@ -1,6 +1,10 @@
 import clsx from "clsx";
 import { ReactNode } from "react";
-import { useController } from "react-hook-form";
+import {
+  FieldValues,
+  UseControllerProps,
+  useController,
+} from "react-hook-form";
 import { Form, Ref } from "semantic-ui-react";
 
 import styles from "./radio-form-field.module.scss";
@@ -16,7 +20,7 @@ type Props = {
   readOnly?: boolean;
 };
 
-function RadioFormField({
+function RadioFormField<T extends FieldValues>({
   className,
   required = false,
   label,
@@ -25,11 +29,15 @@ function RadioFormField({
   type,
   defaultValue,
   readOnly = false,
-}: Props) {
+}: Props & UseControllerProps<T>) {
   const {
     field: { onChange, onBlur, value, ref },
     fieldState: { error },
-  } = useController({ name, defaultValue, rules: { required } });
+  } = useController<T, typeof name>({
+    name,
+    defaultValue,
+    rules: { required },
+  });
 
   return (
     <Ref

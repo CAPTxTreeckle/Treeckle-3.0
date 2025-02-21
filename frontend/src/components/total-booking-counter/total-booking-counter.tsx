@@ -51,7 +51,7 @@ function TotalBookingCounter() {
     triggerOnce: true,
     onChange: (inView) => {
       if (inView) {
-        getTotalBookingCount();
+        getTotalBookingCount().catch(console.error);
       }
     },
   });

@@ -16,7 +16,9 @@ import store from "./redux/store";
 import Routes from "./routes";
 
 configure({
-  axios: axios.create({ baseURL: import.meta.env.VITE_APP_API_URL }),
+  axios: axios.create({
+    baseURL: (import.meta.env.VITE_APP_API_URL as string) ?? "",
+  }),
 });
 
 function App() {

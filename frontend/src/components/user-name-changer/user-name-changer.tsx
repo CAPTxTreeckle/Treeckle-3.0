@@ -10,7 +10,7 @@ import {
   updateCurrentUserAction,
 } from "../../redux/slices/current-user-slice";
 import { SelfPatchAction } from "../../types/users";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 
 type Props = {
@@ -50,14 +50,17 @@ function UserNameChanger({ children }: Props) {
 
         toast.success("Your name has been updated successfully.");
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
     }
   };
 
   return isChangingName ? (
-    <form onSubmit={onSubmit}>
+    <form
+      onSubmit={(e) => {
+        onSubmit(e).catch((error) => console.error(error));
+      }}
+    >
       <HorizontalLayoutContainer>
         <Input
           size="small"

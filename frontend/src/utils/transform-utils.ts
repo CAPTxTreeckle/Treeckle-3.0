@@ -14,7 +14,7 @@ export function trim<T>(value: T) {
 
 export function deepTrim<T>(value: T): T {
   if (Array.isArray(value)) {
-    return value.map((item) => deepTrim(item)) as unknown as T;
+    return value.map((item) => deepTrim(item) as unknown) as unknown as T;
   }
 
   if (isRecord(value)) {

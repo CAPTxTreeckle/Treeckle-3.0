@@ -119,6 +119,12 @@ export function useAxiosWithTokenRefresh<TResponse, TBody = undefined>(
   return [{ ...responseValues, loading }, apiCallWithTokenRefresh, cancel];
 }
 
+interface GoogleFailureResponse {
+  error: string;
+  details?: string;
+  response?: unknown;
+}
+
 export function useGoogleAuth(
   callback: (
     response: GoogleLoginResponse | GoogleLoginResponseOffline,
@@ -127,16 +133,14 @@ export function useGoogleAuth(
   const [isAvailable, setAvailable] = useState(true);
 
   const { signIn, loaded } = useGoogleLoginClient({
-    clientId: import.meta.env.VITE_APP_GOOGLE_CLIENT_ID ?? "",
+    clientId: (import.meta.env.VITE_APP_GOOGLE_CLIENT_ID as string) ?? "",
     cookiePolicy: "single_host_origin",
-    onSuccess: async (
-      response: GoogleLoginResponse | GoogleLoginResponseOffline,
-    ) => {
+    onSuccess: (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
       console.log("Google Client login success:", response);
 
       callback(response);
     },
-    onFailure: (error) => {
+    onFailure: (error: GoogleFailureResponse) => {
       console.log("Google Client error:", error, error?.response);
       if (error?.error === "idpiframe_initialization_failed") {
         setAvailable(false);
@@ -171,6 +175,7 @@ export function useFacebookAuth(
   callback: (response: fb.StatusResponse) => void,
 ) {
   const startFacebookAuth = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     window.FB?.getLoginStatus((response: fb.StatusResponse) => {
       console.log("Facebook Client get login status response:", response);
 
@@ -179,7 +184,8 @@ export function useFacebookAuth(
         return;
       }
 
-      const startFacebookClientLogin = () =>
+      const startFacebookClientLogin = () => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
         window.FB?.login(
           (response: fb.StatusResponse) => {
             console.log("Facebook Client login response:", response);
@@ -211,8 +217,10 @@ export function useFacebookAuth(
             auth_type: "rerequest",
           },
         );
+      };
 
       if (response.status === "connected") {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
         window.FB?.logout(startFacebookClientLogin);
       } else {
         startFacebookClientLogin();

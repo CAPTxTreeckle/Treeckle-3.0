@@ -19,7 +19,7 @@ function VenueFormGallery() {
   );
 
   useEffect(() => {
-    getVenues();
+    getVenues().catch((error) => console.error(error));
   }, [getVenues]);
 
   return (

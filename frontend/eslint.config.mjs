@@ -14,7 +14,7 @@ export default tsEslint.config(
     },
   },
   {
-    files: ["src/**/*.{ts,tsx,js,jsx}"],
+    files: ["src/**/*.{js,jsx,ts,tsx}"],
     plugins: {
       simpleImportSort,
       react,
