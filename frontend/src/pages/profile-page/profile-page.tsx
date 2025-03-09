@@ -16,7 +16,7 @@ function ProfilePage() {
   useScrollToTop();
 
   useEffect(() => {
-    getSingleUser(userId);
+    getSingleUser(userId).catch((error) => console.error(error));
   }, [getSingleUser, userId]);
 
   const userData = user?.isSelf && currentUser ? currentUser : user;

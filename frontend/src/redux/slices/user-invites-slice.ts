@@ -10,9 +10,12 @@ const userInvitesSlice = createSlice({
   initialState,
   reducers: {
     resetUserInvitesAction: () => initialState,
-    setUserInvitesAction: userInvitesAdapter.setAll,
-    updateUserInviteAction: userInvitesAdapter.upsertOne,
-    deleteUserInviteAction: userInvitesAdapter.removeOne,
+    setUserInvitesAction: (state, action) =>
+      userInvitesAdapter.setAll(state, action),
+    updateUserInviteAction: (state, action) =>
+      userInvitesAdapter.upsertOne(state, action),
+    deleteUserInviteAction: (state, action) =>
+      userInvitesAdapter.removeOne(state, action),
   },
 });
 
