@@ -17,13 +17,12 @@ export type TableProps<T> = BaseTableProps<T> & {
 };
 
 const TABLE_COMPONENTS: TableComponents = {
-  // eslint-disable-next-line react/prop-types
   SortIndicator: ({ sortOrder, className }) => (
     <div className={className}>
       <Icon name={sortOrder === "asc" ? "caret up" : "caret down"} />
     </div>
   ),
-  // eslint-disable-next-line react/prop-types
+
   ExpandIcon: ({ expandable, expanded }) => {
     if (!expandable) {
       return null;

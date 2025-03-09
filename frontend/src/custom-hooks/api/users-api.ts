@@ -11,7 +11,11 @@ import {
   UserInvitePostData,
   UserPatchData,
 } from "../../types/users";
-import { errorHandlerWrapper, resolveApiError } from "../../utils/error-utils";
+import {
+  ApiResponseError,
+  errorHandlerWrapper,
+  resolveApiError,
+} from "../../utils/error-utils";
 import { useAxiosWithTokenRefresh } from "./auth-api";
 
 export function useGetUserInvites() {
@@ -34,10 +38,8 @@ export function useGetUserInvites() {
         },
         { logMessageLabel: "GET /users/invite error:" },
       )();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
-
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
       return [];
     }
   }, [apiCall]);
@@ -165,10 +167,8 @@ export function useGetUsers() {
         },
         { logMessageLabel: "GET /users/ error:" },
       )();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
-
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
       return [];
     }
   }, [apiCall]);
@@ -197,10 +197,8 @@ export function useGetSelf() {
         },
         { logMessageLabel: "GET /users/self error:" },
       )();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
-      resolveApiError(error);
-
+    } catch (error) {
+      resolveApiError(error as ApiResponseError);
       return undefined;
     }
   }, [apiCall]);
@@ -265,9 +263,8 @@ export function useGetSingleUser() {
           },
           { logMessageLabel: `GET ${url} error:` },
         )();
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        resolveApiError(error);
+      } catch (error) {
+        resolveApiError(error as ApiResponseError);
         return undefined;
       }
     },

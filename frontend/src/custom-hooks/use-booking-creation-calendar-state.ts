@@ -70,7 +70,7 @@ export default function useBookingCreationCalendarState({
   const onRangeChange = useCallback(
     (range: Date[] | { start: stringOrDate; end: stringOrDate }) => {
       const newVisibleRange: DateRange = Array.isArray(range)
-        ? getVisibleRange(range as Date[])
+        ? getVisibleRange(range)
         : { start: new Date(range.start), end: new Date(range.end) };
 
       const { start, end } = newVisibleRange;

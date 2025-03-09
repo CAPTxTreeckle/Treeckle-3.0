@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import ReactGA from "react-ga4";
 
-ReactGA.initialize(process.env.REACT_APP_GA_TRACKING_ID ?? "");
+ReactGA.initialize((import.meta.env.VITE_APP_GA_TRACKING_ID as string) ?? "");
 
 export default function GaProvider() {
   const location = useLocation();

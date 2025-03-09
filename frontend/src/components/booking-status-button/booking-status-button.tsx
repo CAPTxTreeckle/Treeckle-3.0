@@ -12,7 +12,7 @@ import {
   BookingStatus,
   BookingStatusAction,
 } from "../../types/bookings";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import styles from "./booking-status-button.module.scss";
 
 type Props = {
@@ -43,9 +43,8 @@ function BookingStatusButton({ bookingId, status, adminView }: Props) {
         if (action !== BookingStatusAction.Cancel) {
           dispatch(refreshPendingBookingCountThunk());
         }
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        resolveApiError(error);
+      } catch (error) {
+        resolveApiError(error as ApiResponseError);
       }
     };
 
@@ -54,7 +53,11 @@ function BookingStatusButton({ bookingId, status, adminView }: Props) {
         key="approve"
         content="Approve"
         color="green"
-        onClick={() => onUpdateStatus(BookingStatusAction.Approve)}
+        onClick={() => {
+          onUpdateStatus(BookingStatusAction.Approve).catch((error) => {
+            console.error(error);
+          });
+        }}
       />
     );
 
@@ -63,7 +66,11 @@ function BookingStatusButton({ bookingId, status, adminView }: Props) {
         key="revoke"
         content="Revoke"
         color="orange"
-        onClick={() => onUpdateStatus(BookingStatusAction.Revoke)}
+        onClick={() => {
+          onUpdateStatus(BookingStatusAction.Revoke).catch((error) => {
+            console.error(error);
+          });
+        }}
       />
     );
 
@@ -72,7 +79,11 @@ function BookingStatusButton({ bookingId, status, adminView }: Props) {
         key="reject"
         content="Reject"
         color="red"
-        onClick={() => onUpdateStatus(BookingStatusAction.Reject)}
+        onClick={() => {
+          onUpdateStatus(BookingStatusAction.Reject).catch((error) => {
+            console.error(error);
+          });
+        }}
       />
     );
 
@@ -81,7 +92,11 @@ function BookingStatusButton({ bookingId, status, adminView }: Props) {
         key="cancel"
         content="Cancel"
         color="grey"
-        onClick={() => onUpdateStatus(BookingStatusAction.Cancel)}
+        onClick={() => {
+          onUpdateStatus(BookingStatusAction.Cancel).catch((error) => {
+            console.error(error);
+          });
+        }}
       />
     );
 

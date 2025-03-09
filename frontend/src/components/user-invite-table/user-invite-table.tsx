@@ -27,7 +27,7 @@ import {
   setUserInvitesAction,
   updateUserInviteAction,
 } from "../../redux/slices/user-invites-slice";
-import { resolveApiError } from "../../utils/error-utils";
+import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import { displayDateTime } from "../../utils/transform-utils";
 import { ConfirmationModalPropsGetter } from "../confirmation-modal";
 import ConfirmationModalButton from "../confirmation-modal-button";
@@ -57,9 +57,8 @@ const ActionButtons = ({ id, role, email }: UserInviteViewProps) => {
         dispatch(updateUserInviteAction(updatedUserInvite));
 
         toast.success("The user's role has been updated successfully.");
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (error: any) {
-        resolveApiError(error);
+      } catch (error) {
+        resolveApiError(error as ApiResponseError);
       }
     },
     [dispatch, _updateUserInvite, id],
@@ -85,9 +84,8 @@ const ActionButtons = ({ id, role, email }: UserInviteViewProps) => {
 
               dispatch(deleteUserInviteAction(deletedUserInviteId));
               hideModal();
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            } catch (error: any) {
-              resolveApiError(error);
+            } catch (error) {
+              resolveApiError(error as ApiResponseError);
             }
           },
         },
@@ -127,7 +125,7 @@ function UserInviteTable() {
   }, [_getUserInvites, dispatch]);
 
   useEffect(() => {
-    getUserInvites();
+    getUserInvites().catch((error) => console.error(error));
   }, [getUserInvites]);
 
   const userInviteViewData: UserInviteViewProps[] = useMemo(
@@ -153,7 +151,9 @@ function UserInviteTable() {
               <Button
                 icon="redo alternate"
                 color="blue"
-                onClick={getUserInvites}
+                onClick={() => {
+                  getUserInvites().catch((error) => console.error(error));
+                }}
                 disabled={loading}
                 loading={loading}
               />

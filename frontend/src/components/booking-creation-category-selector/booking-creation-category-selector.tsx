@@ -16,7 +16,7 @@ function BookingCreationCategorySelector() {
   useScrollToTop();
 
   useEffect(() => {
-    getVenueCategories();
+    getVenueCategories().catch((error) => console.error(error));
   }, [getVenueCategories]);
 
   const sortedVenueCategories = useMemo(
