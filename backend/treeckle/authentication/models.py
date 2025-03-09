@@ -94,7 +94,9 @@ class PasswordAuthentication(AuthenticationMethod):
         try:
             validate_password(auth_data.auth_id)
         except ValidationError as e:
-            detail = "\n".join(e.messages) if type(e.messages) != str else e.message
+            detail = (
+                "\n".join(e.messages) if not isinstance(e.messages, str) else e.message
+            )
             raise BadRequest(detail=detail, code="bad_password")
 
         auth_data.auth_id = make_password(auth_data.auth_id)
