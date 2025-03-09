@@ -17,11 +17,15 @@ docker-restart:
 
 # Seed the database
 seed:
-    docker-compose exec backend python treeckle/manage.py loaddata treeckle/treeckle/fixtures/seed_data.json
+	docker-compose exec backend python treeckle/manage.py loaddata treeckle/treeckle/fixtures/seed_data.json
 
 # Format code using black
-format: 
+format:
 	black .
+
+# Lint code using ruff
+lint:
+	ruff check .
 
 # Run development server
 runserver:

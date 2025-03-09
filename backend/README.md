@@ -70,7 +70,7 @@ This creates the following user accounts for the frontend:
 
   where # is any integer between 1-5, i.e. resident1, resident2, resident3...
 
-### Restart Docker containers
+### Restart and Stop Docker containers
 
 To restart the Docker containers, run:
 
@@ -78,20 +78,24 @@ To restart the Docker containers, run:
 make docker-restart
 ```
 
-### Stop Docker containers
-
 To stop the Docker containers, run:
 
 ```
 make docker-down
 ```
 
-### Formatting
+### Formatting and Linting
 
 To format the code, run:
 
 ```
 make format
+```
+
+To lint the code, run:
+
+```
+make lint
 ```
 
 ### Run Development Server
