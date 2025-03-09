@@ -166,14 +166,14 @@ class AuthenticationData(ABC):
                 )
                 .get()
             )
-        except User.DoesNotExist as e:
+        except User.DoesNotExist:
             user = None
 
         try:
             user_invite = (
                 get_user_invites(email=self.email).select_related("organization").get()
             )
-        except UserInvite.DoesNotExist as e:
+        except UserInvite.DoesNotExist:
             user_invite = None
 
         ## no existing user nor user invite

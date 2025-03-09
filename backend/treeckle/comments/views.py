@@ -2,7 +2,7 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from treeckle.common.exceptions import InternalServerError, BadRequest
+from treeckle.common.exceptions import InternalServerError
 from users.permission_middlewares import check_access
 from users.models import Role, User
 from .serializers import PostCommentSerializer, PostReadCommentSerializer

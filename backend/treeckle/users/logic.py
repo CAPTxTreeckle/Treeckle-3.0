@@ -231,7 +231,7 @@ def update_requester(
         if payload is None:
             try:
                 auth_method = auth_method_class.objects.get(user=requester)
-            except auth_method_class.DoesNotExist as e:
+            except auth_method_class.DoesNotExist:
                 raise BadRequest(
                     detail=f"There is no {auth_name} account that is currently linked.",
                     code=f"no_linked_{auth_name}_account",

@@ -22,7 +22,7 @@ def check_requester_user_invite_same_organization(view_method):
         except (
             UserInvite.DoesNotExist,
             PermissionDenied,
-        ) as e:
+        ):
             raise NotFound(detail="No user invite found.", code="no_user_invite_found")
 
         return view_method(
@@ -57,7 +57,7 @@ def check_requester_user_same_organization(view_method):
         except (
             User.DoesNotExist,
             PermissionDenied,
-        ) as e:
+        ):
             raise NotFound(detail="No user found.", code="no_user_found")
 
         return view_method(

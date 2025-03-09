@@ -16,7 +16,7 @@ HOST = os.getenv("HOST")
 
 
 def send_password_reset_email(user: User, new_password: str):
-    subject = f"Reset your Treeckle password"
+    subject = "Reset your Treeckle password"
     html_message = render_to_string(
         "password_reset_email_template.html",
         context={
