@@ -7,16 +7,21 @@ import django.db.models.expressions
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('events', '0006_auto_20201215_1622'),
+        ("events", "0006_auto_20201215_1622"),
     ]
 
     operations = [
         migrations.RemoveConstraint(
-            model_name='event',
-            name='valid_event_start_end_date_time',
+            model_name="event",
+            name="valid_event_start_end_date_time",
         ),
         migrations.AddConstraint(
-            model_name='event',
-            constraint=models.CheckConstraint(check=models.Q(start_date_time__lte=django.db.models.expressions.F('end_date_time')), name='event_start_date_time_lte_end_date_time'),
+            model_name="event",
+            constraint=models.CheckConstraint(
+                check=models.Q(
+                    start_date_time__lte=django.db.models.expressions.F("end_date_time")
+                ),
+                name="event_start_date_time_lte_end_date_time",
+            ),
         ),
     ]

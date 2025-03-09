@@ -28,6 +28,7 @@ from .serializers import (
     PatchRequesterSerializer,
 )
 
+
 # Create your views here.
 class UserInvitesView(APIView):
     @check_access(Role.ADMIN)

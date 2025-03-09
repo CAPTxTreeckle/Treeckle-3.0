@@ -9,6 +9,7 @@ from .serializers import (
     PasswordResetSerializer,
 )
 
+
 # Create your views here.
 class GoogleLoginView(TokenViewBase):
     serializer_class = GoogleLoginSerializer

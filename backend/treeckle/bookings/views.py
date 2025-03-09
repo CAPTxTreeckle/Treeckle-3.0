@@ -32,6 +32,7 @@ from .logic import (
 )
 from .middlewares import check_requester_booking_same_organization
 
+
 # Create your views here.
 class TotalBookingCountView(APIView):
     permission_classes = [AllowAny]
@@ -72,12 +73,16 @@ class BookingsView(APIView):
             organization=requester.organization,
             user_id=validated_data.get("user_id", None),
             venue_id=validated_data.get("venue_id", None),
-            start_date_time=parse_ms_timestamp_to_datetime(start_date_time)
-            if start_date_time is not None
-            else make_aware(datetime.min),
-            end_date_time=parse_ms_timestamp_to_datetime(end_date_time)
-            if end_date_time is not None
-            else make_aware(datetime.max),
+            start_date_time=(
+                parse_ms_timestamp_to_datetime(start_date_time)
+                if start_date_time is not None
+                else make_aware(datetime.min)
+            ),
+            end_date_time=(
+                parse_ms_timestamp_to_datetime(end_date_time)
+                if end_date_time is not None
+                else make_aware(datetime.max)
+            ),
             statuses=validated_data.get("statuses", None),
         )
 

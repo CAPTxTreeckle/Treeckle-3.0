@@ -8,7 +8,5 @@ urlpatterns = [
         SingleCommentView.as_view(),
         name="comments",
     ),
-    path(
-        "read", ReadCommentsView.as_view(), name="read_comments"
-    )
+    path("read", ReadCommentsView.as_view(), name="read_comments"),
 ]

@@ -1,3 +1,3 @@
 # Format code using black
-format:
-    black .
+format: 
+	black .
