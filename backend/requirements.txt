@@ -11,3 +11,4 @@ django-cors-headers
 django-jazzmin
 django[argon2]
 django-json-widget
+black==25.1.0
