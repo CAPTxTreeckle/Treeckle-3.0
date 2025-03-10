@@ -5,6 +5,7 @@ export default defineConfig(() => {
   return {
     build: {
       outDir: "build",
+      emptyOutDir: true,
     },
     plugins: [react()],
     server: {
