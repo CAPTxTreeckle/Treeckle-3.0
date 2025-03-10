@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('authentication', '0006_auto_20210725_0530'),
+        ("authentication", "0006_auto_20210725_0530"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='facebookauthentication',
-            name='profile_image',
+            model_name="facebookauthentication",
+            name="profile_image",
             field=models.URLField(blank=True, max_length=500),
         ),
         migrations.AlterField(
-            model_name='googleauthentication',
-            name='profile_image',
+            model_name="googleauthentication",
+            name="profile_image",
             field=models.URLField(blank=True, max_length=500),
         ),
     ]

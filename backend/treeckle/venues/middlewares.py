@@ -23,7 +23,7 @@ def check_requester_venue_same_organization(view_method):
         except (
             Venue.DoesNotExist,
             PermissionDenied,
-        ) as e:
+        ):
             raise NotFound(detail="No venue found.", code="no_venue_found")
 
         return view_method(
@@ -55,7 +55,7 @@ def check_requester_booking_notification_subscription_same_organization(
         except (
             BookingNotificationSubscription.DoesNotExist,
             PermissionDenied,
-        ) as e:
+        ):
             raise NotFound(
                 detail="No booking notification subscription found.",
                 code="no_booking_notification_subscription_found",

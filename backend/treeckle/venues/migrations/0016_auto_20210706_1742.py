@@ -7,24 +7,39 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('venues', '0015_venue_unique_organization_venue_name'),
+        ("venues", "0015_venue_unique_organization_venue_name"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='VenueBookingNotificationSubscription',
+            name="VenueBookingNotificationSubscription",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=255)),
-                ('email', models.EmailField(max_length=254)),
-                ('venue', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='venues.venue')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=255)),
+                ("email", models.EmailField(max_length=254)),
+                (
+                    "venue",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="venues.venue"
+                    ),
+                ),
             ],
             bases=(models.Model,),
         ),
         migrations.AddConstraint(
-            model_name='venuebookingnotificationsubscription',
-            constraint=models.UniqueConstraint(fields=('email', 'venue_id'), name='unique_email_venue_subscription'),
+            model_name="venuebookingnotificationsubscription",
+            constraint=models.UniqueConstraint(
+                fields=("email", "venue_id"), name="unique_email_venue_subscription"
+            ),
         ),
     ]

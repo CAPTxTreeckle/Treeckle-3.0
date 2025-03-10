@@ -1,0 +1,10 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/backend"
+    schedule:
+      interval: "monthly"
+  - package-ecosystem: "yarn"
+    directory: "/frontend"
+    schedule:
+      interval: "monthly"

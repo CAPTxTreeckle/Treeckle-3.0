@@ -7,15 +7,19 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('organizations', '0004_delete_organizationlistener'),
-        ('content_delivery_service', '0001_initial'),
+        ("organizations", "0004_delete_organizationlistener"),
+        ("content_delivery_service", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='image',
-            name='organization',
-            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, to='organizations.organization'),
+            model_name="image",
+            name="organization",
+            field=models.ForeignKey(
+                default=0,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="organizations.organization",
+            ),
             preserve_default=False,
         ),
     ]

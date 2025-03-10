@@ -21,6 +21,7 @@ imagekit = ImageKit(
     url_endpoint=IMAGEKIT_BASE_URL,
 )
 
+
 # Create your models here.
 class Image(TimestampedModel):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)

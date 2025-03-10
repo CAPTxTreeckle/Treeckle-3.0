@@ -39,9 +39,9 @@ def user_to_json(user: User, requester: User = None) -> dict:
         EMAIL: user.email,
         ORGANIZATION: user.organization.name,
         ROLE: user.role,
-        PROFILE_IMAGE: None
-        if user.profile_image is None
-        else user.profile_image.image_url,
+        PROFILE_IMAGE: (
+            None if user.profile_image is None else user.profile_image.image_url
+        ),
         CREATED_AT: parse_datetime_to_ms_timestamp(user.created_at),
         UPDATED_AT: parse_datetime_to_ms_timestamp(user.updated_at),
     }
@@ -60,18 +60,22 @@ def requester_to_json(requester: User) -> dict:
             HAS_PASSWORD_AUTH: hasattr(
                 requester, PasswordAuthentication.get_related_name()
             ),
-            GOOGLE_AUTH: {
-                EMAIL: requester.googleauthentication.email,
-                PROFILE_IMAGE: requester.googleauthentication.profile_image,
-            }
-            if hasattr(requester, GoogleAuthentication.get_related_name())
-            else None,
-            FACEBOOK_AUTH: {
-                EMAIL: requester.facebookauthentication.email,
-                PROFILE_IMAGE: requester.facebookauthentication.profile_image,
-            }
-            if hasattr(requester, FacebookAuthentication.get_related_name())
-            else None,
+            GOOGLE_AUTH: (
+                {
+                    EMAIL: requester.googleauthentication.email,
+                    PROFILE_IMAGE: requester.googleauthentication.profile_image,
+                }
+                if hasattr(requester, GoogleAuthentication.get_related_name())
+                else None
+            ),
+            FACEBOOK_AUTH: (
+                {
+                    EMAIL: requester.facebookauthentication.email,
+                    PROFILE_IMAGE: requester.facebookauthentication.profile_image,
+                }
+                if hasattr(requester, FacebookAuthentication.get_related_name())
+                else None
+            ),
         }
     )
 
@@ -227,7 +231,7 @@ def update_requester(
         if payload is None:
             try:
                 auth_method = auth_method_class.objects.get(user=requester)
-            except auth_method_class.DoesNotExist as e:
+            except auth_method_class.DoesNotExist:
                 raise BadRequest(
                     detail=f"There is no {auth_name} account that is currently linked.",
                     code=f"no_linked_{auth_name}_account",

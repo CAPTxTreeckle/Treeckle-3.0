@@ -2,7 +2,7 @@ from typing import Iterable, Sequence, Optional
 from datetime import datetime
 from collections import namedtuple
 
-from django.db.models import QuerySet, Q
+from django.db.models import QuerySet
 from django.db import transaction
 
 from rest_framework.exceptions import PermissionDenied
@@ -18,7 +18,6 @@ from treeckle.common.constants import (
     END_DATE_TIME,
     STATUS,
     FORM_RESPONSE_DATA,
-    COMMENTS,
 )
 from treeckle.common.exceptions import BadRequest
 from treeckle.common.parsers import parse_datetime_to_ms_timestamp
@@ -28,7 +27,6 @@ from users.models import User, Role
 from venues.models import Venue
 from venues.logic import venue_to_json
 from .models import Booking, BookingStatusAction, BookingStatus
-from comments.logic import booking_comment_to_json, get_booking_comments
 
 DateTimeInterval = namedtuple(
     "DateTimeInterval", ["start", "end", "is_new"], defaults=[True]

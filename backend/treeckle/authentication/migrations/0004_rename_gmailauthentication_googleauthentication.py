@@ -6,13 +6,13 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0012_alter_user_name'),
-        ('authentication', '0003_auto_20210709_1926'),
+        ("users", "0012_alter_user_name"),
+        ("authentication", "0003_auto_20210709_1926"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='GmailAuthentication',
-            new_name='GoogleAuthentication',
+            old_name="GmailAuthentication",
+            new_name="GoogleAuthentication",
         ),
     ]

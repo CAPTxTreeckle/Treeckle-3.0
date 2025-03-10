@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('venues', '0010_auto_20210610_0711'),
+        ("venues", "0010_auto_20210610_0711"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='venue',
-            name='form_field_data',
+            model_name="venue",
+            name="form_field_data",
             field=models.JSONField(default=[]),
             preserve_default=False,
         ),

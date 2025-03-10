@@ -66,5 +66,5 @@ def update_user_event_category_subscriptions(
                 continue
 
             updated_category_subscriptions.add(category)
-        except (IntegrityError, EventCategoryType.DoesNotExist) as e:
+        except (IntegrityError, EventCategoryType.DoesNotExist):
             continue

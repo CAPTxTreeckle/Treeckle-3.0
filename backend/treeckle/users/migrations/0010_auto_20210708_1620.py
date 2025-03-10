@@ -6,19 +6,19 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0009_gmailauthentication'),
+        ("users", "0009_gmailauthentication"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='user',
-            name='third_party_authenticator',
+            model_name="user",
+            name="third_party_authenticator",
         ),
         migrations.RemoveField(
-            model_name='user',
-            name='third_party_id',
+            model_name="user",
+            name="third_party_id",
         ),
         migrations.DeleteModel(
-            name='GmailAuthentication',
+            name="GmailAuthentication",
         ),
     ]

@@ -7,7 +7,6 @@ class PostCommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = ["content"]
 
+
 class PostReadCommentSerializer(serializers.Serializer):
-    comment_ids = serializers.ListField(
-        child = serializers.IntegerField()
-    )
+    comment_ids = serializers.ListField(child=serializers.IntegerField())

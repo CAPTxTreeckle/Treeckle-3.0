@@ -6,16 +6,16 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('venues', '0011_alter_venue_form_field_data'),
+        ("venues", "0011_alter_venue_form_field_data"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='venue',
+            name="venue",
             options={},
         ),
         migrations.AlterModelOptions(
-            name='venuecategory',
+            name="venuecategory",
             options={},
         ),
     ]
