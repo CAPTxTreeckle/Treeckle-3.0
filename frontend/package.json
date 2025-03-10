@@ -101,7 +101,7 @@
     "prebuild": "yarn format && yarn lint --fix",
     "build": "vite build",
     "help": "vite --help",
-    "postbuild": "gzipper compress --verbose --brotli --remove-larger --exclude mp4,pdf ./dist",
+    "postbuild": "gzipper compress --verbose --brotli --remove-larger --exclude mp4,pdf ./build",
     "test": "vitest",
     "format": "prettier --write ./src",
     "lint": "tsc --noEmit && eslint src/**/*.{js,jsx,ts,tsx}",
