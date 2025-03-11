@@ -8,8 +8,5 @@ export default defineConfig(() => {
       emptyOutDir: true,
     },
     plugins: [react()],
-    server: {
-      port: 3000,
-    },
   };
 });

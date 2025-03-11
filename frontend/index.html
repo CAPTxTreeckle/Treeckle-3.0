@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -54,7 +54,7 @@
     <script>
       window.fbAsyncInit = () => {
         window.FB.init({
-          appId: import.meta.env.VITE_APP_FACEBOOK_APP_ID,
+          appId: %VITE_APP_FACEBOOK_APP_ID%,
           cookie: true,
           version: `v11.0`,
         });
