@@ -1,63 +1,13 @@
-## Using Docker
+## Requirements
 
-Ensure you have Docker installed on your local machine.
+Ensure you have the following installed on your local machine:
 
-### Setup
+- [Python 3.9](https://www.python.org/downloads/)
+- [Docker](https://docs.docker.com/desktop/)
 
-Navigate to the root of the `backend` directory where the `docker-compose.yml` file is located.
+## Setup
 
-Build and run the Docker containers:
-
-```
-docker-compose up --build
-```
-
-The backend should be running and accessible at `http://localhost:8000`
-
-> Backend admin page is accessible at http://localhost:8000/administration
-> Username: dev
-> Password: dev
-
-### Seeding the database
-
-To load seed data into the database, run the following command:
-
-```
-docker-compose exec backend python treeckle/manage.py loaddata treeckle/treeckle/fixtures/seed_data.json
-```
-
-This creates the following user accounts for the frontend:
-
-**Admin**
-
-Email: admin@capt.com
-
-Password: admin@capt.com
-
-**Resident**
-
-Email: resident#@capt.com
-
-Password: resident#
-
-where # is any integer between 1-5, i.e. resident1, resident2, resident3...
-
-## Using External PostgreSQL Database
-
-Update the `.env.backend.dev` file with the database credentials.
-
-```
-SQL_DATABASE=your_db_name
-SQL_USER=your_db_user
-SQL_PASSWORD=your_password
-SQL_HOST=your_db_host
-```
-
-### Setup
-
-Ensure you have [python 3.9](https://www.python.org/downloads/) installed on your local machine.
-
-Then execute:
+Navigate to the root of the `backend` directory, then execute:
 
 For mac, **`python3 -m venv venv`**
 
@@ -86,14 +36,93 @@ Finally, execute:
 
 To install all app dependencies.
 
+### Build and run the Docker containers
+
+```
+make docker-up
+```
+
+The backend should be running and accessible at `http://localhost:8000`
+
+> Backend admin page is accessible at http://localhost:8000/administration  
+> Username: dev  
+> Password: dev
+
+### Seeding the database
+
+To load seed data into the database, run the following command:
+
+```
+make seed
+```
+
+This creates the following user accounts for the frontend:
+
+- **Admin**
+
+  - Email: admin@capt.com
+  - Password: admin@capt.com
+
+- **Resident**
+
+  - Email: resident#@capt.com
+  - Password: resident#
+
+  where # is any integer between 1-5, i.e. resident1, resident2, resident3...
+
+### Restart and Stop Docker containers
+
+To restart the Docker containers, run:
+
+```
+make docker-restart
+```
+
+To stop the Docker containers, run:
+
+```
+make docker-down
+```
+
+### Formatting and Linting
+
+To format the code, run:
+
+```
+make format
+```
+
+To lint the code, run:
+
+```
+make lint
+```
+
 ### Run Development Server
 
-**`python treeckle/manage.py runserver`**
+```
+make runserver
+```
 
 ### Create migration
 
-**`python treeckle/manage.py makemigrations`**
+```
+make makemigrations
+```
 
 ### Run migration
 
-**`python treeckle/manage.py migrate`**
+```
+make migrate
+```
+
+## Using External PostgreSQL Database
+
+Update the `.env.backend.dev` file with the database credentials.
+
+```
+SQL_DATABASE=your_db_name
+SQL_USER=your_db_user
+SQL_PASSWORD=your_password
+SQL_HOST=your_db_host
+```

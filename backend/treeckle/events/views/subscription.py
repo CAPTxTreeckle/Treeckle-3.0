@@ -1,4 +1,3 @@
-from enum import Enum
 
 from django.db.models import Prefetch
 

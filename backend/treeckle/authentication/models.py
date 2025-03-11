@@ -94,7 +94,9 @@ class PasswordAuthentication(AuthenticationMethod):
         try:
             validate_password(auth_data.auth_id)
         except ValidationError as e:
-            detail = "\n".join(e.messages) if type(e.messages) != str else e.message
+            detail = (
+                "\n".join(e.messages) if not isinstance(e.messages, str) else e.message
+            )
             raise BadRequest(detail=detail, code="bad_password")
 
         auth_data.auth_id = make_password(auth_data.auth_id)
@@ -166,14 +168,14 @@ class AuthenticationData(ABC):
                 )
                 .get()
             )
-        except User.DoesNotExist as e:
+        except User.DoesNotExist:
             user = None
 
         try:
             user_invite = (
                 get_user_invites(email=self.email).select_related("organization").get()
             )
-        except UserInvite.DoesNotExist as e:
+        except UserInvite.DoesNotExist:
             user_invite = None
 
         ## no existing user nor user invite

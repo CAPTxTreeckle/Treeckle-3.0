@@ -38,7 +38,7 @@ def event_to_json(event: Event, user: User) -> dict:
 
     try:
         sign_up_status = EventSignUp.objects.get(event=event, user=user).status
-    except EventSignUp.DoesNotExist as e:
+    except EventSignUp.DoesNotExist:
         sign_up_status = None
 
     return {

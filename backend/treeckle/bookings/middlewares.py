@@ -29,7 +29,7 @@ def check_requester_booking_same_organization(view_method):
         except (
             Booking.DoesNotExist,
             PermissionDenied,
-        ) as e:
+        ):
             raise NotFound(detail="No booking found.", code="no_booking_found")
 
         return view_method(
@@ -54,7 +54,7 @@ def check_requester_is_booker_or_admin(view_method):
                     code="no_access_booking_permission",
                 )
 
-        except PermissionDenied as e:
+        except PermissionDenied:
             raise NotFound(detail="No booking found.", code="no_booking_found")
 
         return view_method(

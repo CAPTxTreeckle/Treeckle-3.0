@@ -6,31 +6,31 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('venues', '0009_alter_venue_form_field_data'),
+        ("venues", "0009_alter_venue_form_field_data"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='venue',
-            name='form_field_data',
+            model_name="venue",
+            name="form_field_data",
             field=models.JSONField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='venue',
-            name='ic_contact_number',
-            field=models.CharField(blank=True, default='', max_length=50),
+            model_name="venue",
+            name="ic_contact_number",
+            field=models.CharField(blank=True, default="", max_length=50),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='venue',
-            name='ic_email',
-            field=models.EmailField(blank=True, default='', max_length=254),
+            model_name="venue",
+            name="ic_email",
+            field=models.EmailField(blank=True, default="", max_length=254),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='venue',
-            name='ic_name',
-            field=models.CharField(blank=True, default='', max_length=255),
+            model_name="venue",
+            name="ic_name",
+            field=models.CharField(blank=True, default="", max_length=255),
             preserve_default=False,
         ),
     ]

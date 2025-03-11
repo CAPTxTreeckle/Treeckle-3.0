@@ -6,21 +6,21 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0006_auto_20210531_0422'),
+        ("users", "0006_auto_20210531_0422"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='user',
+            name="user",
             options={},
         ),
         migrations.AlterModelOptions(
-            name='userinvite',
+            name="userinvite",
             options={},
         ),
         migrations.AddField(
-            model_name='user',
-            name='profile_image',
+            model_name="user",
+            name="profile_image",
             field=models.URLField(null=True),
         ),
     ]

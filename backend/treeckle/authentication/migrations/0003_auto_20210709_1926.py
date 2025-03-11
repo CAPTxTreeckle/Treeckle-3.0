@@ -7,32 +7,45 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0011_auto_20210709_1926'),
-        ('authentication', '0002_openidauthentication'),
+        ("users", "0011_auto_20210709_1926"),
+        ("authentication", "0002_openidauthentication"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='gmailauthentication',
-            name='auth_id',
+            model_name="gmailauthentication",
+            name="auth_id",
             field=models.CharField(max_length=255, unique=True),
         ),
         migrations.AlterField(
-            model_name='openidauthentication',
-            name='auth_id',
+            model_name="openidauthentication",
+            name="auth_id",
             field=models.CharField(max_length=255, unique=True),
         ),
         migrations.CreateModel(
-            name='PasswordAuthentication',
+            name="PasswordAuthentication",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('auth_id', models.CharField(max_length=255, unique=True)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to='users.user')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("auth_id", models.CharField(max_length=255, unique=True)),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE, to="users.user"
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
             bases=(models.Model,),
         ),
