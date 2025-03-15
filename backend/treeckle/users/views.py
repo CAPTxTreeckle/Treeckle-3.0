@@ -1,7 +1,6 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.exceptions import NotFound
 
 from treeckle.common.exceptions import BadRequest
 from email_service.logic import send_user_invite_emails
@@ -27,6 +26,7 @@ from .serializers import (
     PatchSingleUserInviteSerializer,
     PatchRequesterSerializer,
 )
+
 
 # Create your views here.
 class UserInvitesView(APIView):

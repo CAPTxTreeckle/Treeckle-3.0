@@ -22,7 +22,7 @@ function BookingAdminCalendarsSection() {
   );
 
   useEffect(() => {
-    getVenues();
+    getVenues().catch((error) => console.error(error));
   }, [getVenues]);
 
   return (

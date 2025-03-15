@@ -2,7 +2,6 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from treeckle.common.exceptions import BadRequest
 from users.permission_middlewares import check_access
 from users.models import Role, User
 from events.middlewares import (

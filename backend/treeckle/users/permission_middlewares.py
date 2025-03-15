@@ -16,7 +16,7 @@ def check_access(*allowed_roles: Role):
                     .get()
                 )
 
-            except User.DoesNotExist as e:
+            except User.DoesNotExist:
                 raise AuthenticationFailed(
                     detail="Invalid user.",
                     code="invalid_user",

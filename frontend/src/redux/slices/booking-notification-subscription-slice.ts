@@ -10,12 +10,12 @@ const bookingNotificationSubscriptionsSlice = createSlice({
   initialState,
   reducers: {
     resetBookingNotificationSubscriptionsAction: () => initialState,
-    setBookingNotificationSubscriptionsAction:
-      bookingNotificationSubscriptionsAdapter.setAll,
-    updateBookingNotificationSubscriptionAction:
-      bookingNotificationSubscriptionsAdapter.upsertOne,
-    deleteBookingNotificationSubscriptionAction:
-      bookingNotificationSubscriptionsAdapter.removeOne,
+    setBookingNotificationSubscriptionsAction: (state, action) =>
+      bookingNotificationSubscriptionsAdapter.setAll(state, action),
+    updateBookingNotificationSubscriptionAction: (state, action) =>
+      bookingNotificationSubscriptionsAdapter.upsertOne(state, action),
+    deleteBookingNotificationSubscriptionAction: (state, action) =>
+      bookingNotificationSubscriptionsAdapter.removeOne(state, action),
   },
 });
 

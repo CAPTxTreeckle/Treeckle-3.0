@@ -28,7 +28,7 @@ def check_requester_is_commenter(view_method):
             Comment.DoesNotExist,
             Comment.MultipleObjectsReturned,
             PermissionDenied,
-        ) as e:
+        ):
             raise NotFound(detail="No comment found.", code="no_comment_found")
 
         return view_method(

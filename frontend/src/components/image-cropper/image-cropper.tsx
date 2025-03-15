@@ -103,7 +103,9 @@ function ImageCropper({
               className={styles.actionButton}
               icon="checkmark"
               color="green"
-              onClick={onCropConfirm}
+              onClick={() => {
+                onCropConfirm().catch(console.error);
+              }}
               loading={isCropping}
               disabled={isCropping}
             />

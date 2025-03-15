@@ -7,22 +7,27 @@ import django.db.models.expressions
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('bookings', '0001_initial'),
+        ("bookings", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveConstraint(
-            model_name='booking',
-            name='valid_booking_start_end_date_time',
+            model_name="booking",
+            name="valid_booking_start_end_date_time",
         ),
         migrations.AddField(
-            model_name='booking',
-            name='title',
-            field=models.CharField(default='Awesome', max_length=255),
+            model_name="booking",
+            name="title",
+            field=models.CharField(default="Awesome", max_length=255),
             preserve_default=False,
         ),
         migrations.AddConstraint(
-            model_name='booking',
-            constraint=models.CheckConstraint(check=models.Q(start_date_time__lt=django.db.models.expressions.F('end_date_time')), name='booking_start_date_time_lt_end_date_time'),
+            model_name="booking",
+            constraint=models.CheckConstraint(
+                check=models.Q(
+                    start_date_time__lt=django.db.models.expressions.F("end_date_time")
+                ),
+                name="booking_start_date_time_lt_end_date_time",
+            ),
         ),
     ]

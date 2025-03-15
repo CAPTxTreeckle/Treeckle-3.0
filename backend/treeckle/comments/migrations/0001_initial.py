@@ -9,50 +9,106 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('bookings', '0003_alter_booking_id'),
-        ('users', '0007_auto_20210609_1228'),
+        ("bookings", "0003_alter_booking_id"),
+        ("users", "0007_auto_20210609_1228"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Comment',
+            name="Comment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('content', models.TextField()),
-                ('commenter', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.user')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("content", models.TextField()),
+                (
+                    "commenter",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="users.user"
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-created_at'],
+                "ordering": ["-created_at"],
             },
             bases=(models.Model,),
         ),
         migrations.CreateModel(
-            name='CommentRead',
+            name="CommentRead",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('comment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='comments.comment')),
-                ('reader', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='users.user')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "comment",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="comments.comment",
+                    ),
+                ),
+                (
+                    "reader",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="users.user"
+                    ),
+                ),
             ],
             bases=(models.Model,),
         ),
         migrations.CreateModel(
-            name='BookingComment',
+            name="BookingComment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('booking', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='bookings.booking')),
-                ('comment', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='comments.comment')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "booking",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="bookings.booking",
+                    ),
+                ),
+                (
+                    "comment",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="comments.comment",
+                    ),
+                ),
             ],
         ),
         migrations.AddConstraint(
-            model_name='commentread',
-            constraint=models.UniqueConstraint(fields=('reader_id', 'comment_id'), name='unique_reader_comment'),
+            model_name="commentread",
+            constraint=models.UniqueConstraint(
+                fields=("reader_id", "comment_id"), name="unique_reader_comment"
+            ),
         ),
         migrations.AddConstraint(
-            model_name='bookingcomment',
-            constraint=models.UniqueConstraint(fields=('booking_id', 'comment_id'), name='unique_booking_comment'),
+            model_name="bookingcomment",
+            constraint=models.UniqueConstraint(
+                fields=("booking_id", "comment_id"), name="unique_booking_comment"
+            ),
         ),
     ]

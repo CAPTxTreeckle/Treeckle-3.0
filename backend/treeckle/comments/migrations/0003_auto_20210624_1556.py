@@ -7,17 +7,22 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('comments', '0002_auto_20210624_1546'),
+        ("comments", "0002_auto_20210624_1546"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='bookingcomment',
-            name='id',
+            model_name="bookingcomment",
+            name="id",
         ),
         migrations.AlterField(
-            model_name='bookingcomment',
-            name='comment',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='comments.comment'),
+            model_name="bookingcomment",
+            name="comment",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE,
+                primary_key=True,
+                serialize=False,
+                to="comments.comment",
+            ),
         ),
     ]

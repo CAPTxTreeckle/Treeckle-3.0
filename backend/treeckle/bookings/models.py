@@ -3,7 +3,6 @@ from django.db.models import Q, F
 
 # Create your models here.
 from treeckle.common.models import TimestampedModel
-from organizations.models import Organization
 from users.models import User
 from venues.models import Venue
 

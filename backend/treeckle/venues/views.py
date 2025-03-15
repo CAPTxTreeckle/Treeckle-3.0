@@ -12,7 +12,7 @@ from .serializers import (
     VenueSerializer,
     PostBookingNotificationSubscriptionSerializer,
 )
-from .models import Venue, VenueCategory, BookingNotificationSubscription
+from .models import Venue, BookingNotificationSubscription
 from .middlewares import (
     check_requester_venue_same_organization,
     check_requester_booking_notification_subscription_same_organization,
@@ -21,7 +21,6 @@ from .logic import (
     venue_to_json,
     booking_notification_subscription_to_json,
     get_venue_categories,
-    get_venues,
     get_booking_notification_subscriptions,
     get_requested_venues,
     create_venue,
@@ -76,7 +75,7 @@ class SingleVenueBookingNotificationSubscriptionsView(APIView):
                 email=validated_data.get("email", ""),
                 venue=venue,
             )
-        except IntegrityError as e:
+        except IntegrityError:
             raise Conflict(
                 detail="Booking notification subscription already exists.",
                 code="booking_notification_subscription_exists",
@@ -142,7 +141,7 @@ class VenuesView(APIView):
                 ic_contact_number=validated_data.get("ic_contact_number", ""),
                 form_field_data=validated_data.get("form_field_data", []),
             )
-        except IntegrityError as e:
+        except IntegrityError:
             raise Conflict(detail="Venue already exists.", code="venue_exists")
 
         data = venue_to_json(new_venue, full_details=True)
@@ -178,7 +177,7 @@ class SingleVenueView(APIView):
                 form_field_data=validated_data.get("form_field_data", []),
             )
 
-        except IntegrityError as e:
+        except IntegrityError:
             raise Conflict(detail="Venue already exists.", code="venue_exists")
 
         data = venue_to_json(updated_venue, full_details=True)

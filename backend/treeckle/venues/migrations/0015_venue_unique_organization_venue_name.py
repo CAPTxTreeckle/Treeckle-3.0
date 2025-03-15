@@ -6,12 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('venues', '0014_auto_20210622_1710'),
+        ("venues", "0014_auto_20210622_1710"),
     ]
 
     operations = [
         migrations.AddConstraint(
-            model_name='venue',
-            constraint=models.UniqueConstraint(fields=('organization_id', 'name'), name='unique_organization_venue_name'),
+            model_name="venue",
+            constraint=models.UniqueConstraint(
+                fields=("organization_id", "name"),
+                name="unique_organization_venue_name",
+            ),
         ),
     ]

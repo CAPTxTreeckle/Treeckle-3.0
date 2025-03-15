@@ -5,6 +5,7 @@ from treeckle.common.models import TimestampedModel
 from organizations.models import Organization
 from users.models import User
 
+
 # Create your models here.
 class Event(TimestampedModel):
     title = models.CharField(max_length=255)

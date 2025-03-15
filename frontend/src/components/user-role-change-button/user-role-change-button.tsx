@@ -29,7 +29,9 @@ function UserRoleChangeButton({ role, updateRole, ...buttonProps }: Props) {
         key="make-admin"
         content="Make Admin"
         color="blue"
-        onClick={() => onUpdateRole(Role.Admin)}
+        onClick={() => {
+          onUpdateRole(Role.Admin).catch((error) => console.error(error));
+        }}
       />
     );
 
@@ -38,7 +40,9 @@ function UserRoleChangeButton({ role, updateRole, ...buttonProps }: Props) {
         key="make-organizer"
         content="Make Organizer"
         color="blue"
-        onClick={() => onUpdateRole(Role.Organizer)}
+        onClick={() => {
+          onUpdateRole(Role.Organizer).catch((error) => console.error(error));
+        }}
       />
     );
 
@@ -47,7 +51,9 @@ function UserRoleChangeButton({ role, updateRole, ...buttonProps }: Props) {
         key="make-resident"
         content="Make Resident"
         color="blue"
-        onClick={() => onUpdateRole(Role.Resident)}
+        onClick={() => {
+          onUpdateRole(Role.Resident).catch((error) => console.error(error));
+        }}
       />
     );
 

@@ -3,6 +3,7 @@ from django.db import models
 from organizations.models import Organization
 from treeckle.common.models import TimestampedModel
 
+
 # Create your models here.
 class VenueCategory(TimestampedModel):
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)

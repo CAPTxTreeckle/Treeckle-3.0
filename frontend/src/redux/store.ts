@@ -34,7 +34,9 @@ const store = configureStore({
     pendingBookingCount: pendingBookingCountReducer,
   },
   preloadedState: {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     currentUser: loadFromLocalStorage("user"),
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     bookingCreation: loadFromLocalStorage("bookingCreation"),
   },
 });
@@ -58,7 +60,9 @@ export const resetAppState = () => {
   store.dispatch(resetPendingBookingCountAction());
   store.dispatch(updateCurrentUserAction(null));
 
-  window.FB?.getLoginStatus(({ status }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
+  window.FB?.getLoginStatus(({ status }: fb.StatusResponse) => {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     status === "connected" && window.FB?.logout();
   });
 };

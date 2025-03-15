@@ -6,30 +6,32 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('authentication', '0005_facebookauthentication'),
+        ("authentication", "0005_facebookauthentication"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='facebookauthentication',
-            name='email',
-            field=models.EmailField(default='', max_length=254, unique=True),
+            model_name="facebookauthentication",
+            name="email",
+            field=models.EmailField(default="", max_length=254, unique=True),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='facebookauthentication',
-            name='profile_image',
+            model_name="facebookauthentication",
+            name="profile_image",
             field=models.URLField(blank=True),
         ),
         migrations.AddField(
-            model_name='googleauthentication',
-            name='email',
-            field=models.EmailField(default='tan_kai_qun97@yahoo.com.sg', max_length=254, unique=True),
+            model_name="googleauthentication",
+            name="email",
+            field=models.EmailField(
+                default="tan_kai_qun97@yahoo.com.sg", max_length=254, unique=True
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='googleauthentication',
-            name='profile_image',
+            model_name="googleauthentication",
+            name="profile_image",
             field=models.URLField(blank=True),
         ),
     ]

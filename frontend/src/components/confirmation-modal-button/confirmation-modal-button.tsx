@@ -37,7 +37,7 @@ function ConfirmationModalButton({
   ...props
 }: Props) {
   const [showModal, hideModal] = useModal(
-    ({ in: open, onExited }) => (
+    ({ in: open, onExited }: { in: boolean; onExited: () => void }) => (
       <ConfirmationModal
         open={open}
         onExited={onExited}

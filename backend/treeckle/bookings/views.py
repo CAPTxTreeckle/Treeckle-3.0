@@ -6,7 +6,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 
-from treeckle.common.constants import COMMENTS
 from treeckle.common.exceptions import BadRequest
 from treeckle.common.parsers import parse_ms_timestamp_to_datetime
 from email_service.logic import send_created_booking_emails, send_updated_booking_emails
@@ -20,7 +19,6 @@ from .serializers import (
     PatchSingleBookingSerializer,
 )
 from .models import Booking, BookingStatus
-from comments.logic import get_booking_comments, booking_comment_to_json
 from .middlewares import check_requester_is_booker_or_admin
 from .logic import (
     get_bookings,
@@ -73,12 +71,16 @@ class BookingsView(APIView):
             organization=requester.organization,
             user_id=validated_data.get("user_id", None),
             venue_id=validated_data.get("venue_id", None),
-            start_date_time=parse_ms_timestamp_to_datetime(start_date_time)
-            if start_date_time is not None
-            else make_aware(datetime.min),
-            end_date_time=parse_ms_timestamp_to_datetime(end_date_time)
-            if end_date_time is not None
-            else make_aware(datetime.max),
+            start_date_time=(
+                parse_ms_timestamp_to_datetime(start_date_time)
+                if start_date_time is not None
+                else make_aware(datetime.min)
+            ),
+            end_date_time=(
+                parse_ms_timestamp_to_datetime(end_date_time)
+                if end_date_time is not None
+                else make_aware(datetime.max)
+            ),
             statuses=validated_data.get("statuses", None),
         )
 
@@ -103,7 +105,7 @@ class BookingsView(APIView):
                 id=validated_data.get("venue_id", None),
             ).get()
 
-        except Venue.DoesNotExist as e:
+        except Venue.DoesNotExist:
             raise BadRequest(detail="Invalid venue", code="invalid_venue")
 
         ## shape: [{start_date_time:, end_date_time:}]
