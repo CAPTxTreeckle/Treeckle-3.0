@@ -178,10 +178,11 @@ REST_FRAMEWORK = {
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_RENDERER_CLASSES": (
-        "rest_framework.renderers.JSONRenderer",  
+        "djangorestframework_camel_case.render.CamelCaseJSONRenderer",
+        "djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer",  
     ),
     "DEFAULT_PARSER_CLASSES": (
-        "rest_framework.parsers.JSONParser",
+        "djangorestframework_camel_case.parser.CamelCaseJSONParser",
     ),
     "JSON_UNDERSCOREIZE": {
         "no_underscore_before_number": True,

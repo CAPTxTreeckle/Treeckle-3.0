@@ -1,8 +1,7 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, renderer_classes, permission_classes
 from rest_framework.response import Response
-from rest_framework.decorators import permission_classes
 from rest_framework.permissions import AllowAny
-
+from djangorestframework_camel_case.render import CamelCaseJSONRenderer  
 
 import requests
 import datetime
@@ -24,7 +23,6 @@ def get_week_dates(sem_start_date, filtered_data):
                 print(f"Skipping invalid week value: {week}")
                 continue
                 
-                
             # Add a week after week 6 to account for recess week
             adjusted_week = week - 1 if week < 6 else week
             monday_date = sem_start_date + datetime.timedelta(weeks=adjusted_week)
@@ -34,14 +32,15 @@ def get_week_dates(sem_start_date, filtered_data):
                 friday_date = monday_date + datetime.timedelta(days=4)
                 week_dates.append({
                     "week": week,
-                    "start_date": monday_date.strftime("%d %b %Y"),
-                    "end_date": friday_date.strftime("%d %b %Y")
+                    "startDate": monday_date.strftime("%d %b %Y"),  
+                    "endDate": friday_date.strftime("%d %b %Y")     
                 })
     
     return sorted(week_dates, key=lambda x: x['week'])
 
 @api_view(['GET'])
 @permission_classes([AllowAny])
+@renderer_classes([CamelCaseJSONRenderer])  
 def get_academic_weeks(request):
     try:
         result = []
@@ -94,4 +93,4 @@ def get_academic_weeks(request):
         return Response(
             {"error": f"An unexpected error occurred: {str(e)}"},
             status=500
-        ) 
+        )
