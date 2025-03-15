@@ -179,7 +179,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_RENDERER_CLASSES": (
         "djangorestframework_camel_case.render.CamelCaseJSONRenderer",
-        "djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer",
+        "djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer",  
     ),
     "DEFAULT_PARSER_CLASSES": (
         "djangorestframework_camel_case.parser.CamelCaseJSONParser",
@@ -188,6 +188,7 @@ REST_FRAMEWORK = {
         "no_underscore_before_number": True,
     },
 }
+
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=14) if DEBUG else timedelta(minutes=10),

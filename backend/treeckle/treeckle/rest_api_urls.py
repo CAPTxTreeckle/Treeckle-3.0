@@ -8,4 +8,5 @@ urlpatterns = [
     path("venues/", include("venues.urls")),
     path("bookings/", include("bookings.urls")),
     path("comments/", include("comments.urls")),
+    path('api/nusmods/', include('nusmods.urls')),
 ]
