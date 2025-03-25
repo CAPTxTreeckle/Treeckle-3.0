@@ -80,7 +80,7 @@
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.1.0",
     "fs-extra": "^10.1.0",
-    "gzipper": "^7.1.0",
+    "gzipper": "^8.2.1",
     "prettier": "^3.5.1",
     "sass": "^1.52.3",
     "serve": "^14.2.4",
