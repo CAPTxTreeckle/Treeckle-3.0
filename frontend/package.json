@@ -29,7 +29,7 @@
     "react-countup": "^6.2.0",
     "react-dom": "^18.1.0",
     "react-dropzone": "^14.3.8",
-    "react-easy-crop": "^4.3.0",
+    "react-easy-crop": "^5.4.1",
     "react-ga4": "^2.1.0",
     "react-google-login": "^5.2.2",
     "react-hook-form": "^7.31.3",
