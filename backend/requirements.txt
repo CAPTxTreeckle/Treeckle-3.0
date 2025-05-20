@@ -1,5 +1,5 @@
 Django==4.2.20
-djangorestframework==3.12.4
+djangorestframework==3.14.0
 djangorestframework-simplejwt==4.8.0
 gunicorn==20.1.0
 imagekitio==2.2.8
@@ -13,3 +13,4 @@ django[argon2]
 django-json-widget
 black==25.1.0
 ruff==0.11.2
+pytz
