@@ -1,4 +1,4 @@
-FROM node:20-alpine AS build
+FROM node:23-alpine AS build
 ARG MODE
 ARG ENV_FILE
 
@@ -23,7 +23,7 @@ RUN yarn install
 ## build project
 RUN NODE_OPTIONS=--max_old_space_size=4096 yarn build --mode=${MODE}
 
-FROM busybox:1.35
+FROM busybox:1.37
 WORKDIR /app
 COPY --from=build /app/build .
 CMD ["busybox", "httpd", "-f", "-v", "-p", "3000"]
