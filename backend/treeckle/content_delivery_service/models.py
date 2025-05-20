@@ -6,6 +6,7 @@ from django.db.models.signals import post_delete
 from django.utils.crypto import get_random_string
 
 from imagekitio import ImageKit
+from imagekitio.models.UploadFileRequestOptions import UploadFileRequestOptions
 
 from treeckle.common.validators import is_url
 from treeckle.common.models import TimestampedModel
@@ -55,11 +56,13 @@ class Image(TimestampedModel):
         data = imagekit.upload(
             file=image_file,
             file_name=image_name,
-            options={"folder": self.organization.name},
-        ).get("response", {})
+            options=UploadFileRequestOptions(
+                folder=self.organization.name,
+            ),
+        )
 
-        self.image_url = data.get("url", "")
-        self.image_id = data.get("fileId", "")
+        self.image_url = data.url
+        self.image_id = data.file_id
 
 
 def image_cleanup(sender, instance: Image, **kwargs):
