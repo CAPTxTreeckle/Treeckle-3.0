@@ -82,7 +82,9 @@ from events.serializers import PatchEventSignUpSerializer
                     "created_at": 1735689600000,
                 },
             },
-            400: {"description": "Not signed up for this event or invalid status transition"},
+            400: {
+                "description": "Not signed up for this event or invalid status transition"
+            },
             401: {"description": "Authentication required"},
             403: {"description": "Not authorized to mark attendance for this event"},
             404: {"description": "Event not found"},

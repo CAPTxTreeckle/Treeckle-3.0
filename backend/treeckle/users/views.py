@@ -45,13 +45,13 @@ from .serializers import (
                         "role": "RESIDENT",
                         "organization": "Test Organization",
                         "createdAt": 1647875400000,
-                        "updatedAt": 1647875400000
+                        "updatedAt": 1647875400000,
                     }
-                ]
+                ],
             },
             401: {"description": "Authentication required"},
-            403: {"description": "Admin access required"}
-        }
+            403: {"description": "Admin access required"},
+        },
     ),
     post=extend_schema(
         summary="Create User Invitations",
@@ -61,14 +61,8 @@ from .serializers import (
             "application/json": {
                 "example": {
                     "invitations": [
-                        {
-                            "email": "newuser@example.com",
-                            "role": "RESIDENT"
-                        },
-                        {
-                            "email": "organizer@example.com", 
-                            "role": "ORGANIZER"
-                        }
+                        {"email": "newuser@example.com", "role": "RESIDENT"},
+                        {"email": "organizer@example.com", "role": "ORGANIZER"},
                     ]
                 }
             }
@@ -83,21 +77,22 @@ from .serializers import (
                         "role": "RESIDENT",
                         "organization": "Test Organization",
                         "createdAt": 1647875400000,
-                        "updatedAt": 1647875400000
+                        "updatedAt": 1647875400000,
                     }
-                ]
+                ],
             },
             400: {"description": "Invalid invitation data"},
             401: {"description": "Authentication required"},
-            403: {"description": "Admin access required"}        }
-    )
+            403: {"description": "Admin access required"},
+        },
+    ),
 )
 class UserInvitesView(APIView):
     @check_access(Role.ADMIN)
     def get(self, request, requester: User):
         """
         Retrieve all pending user invitations for the requester's organization.
-        
+
         Returns a list of user invitations that are pending acceptance,
         filtered by the requester's organization.
         """
@@ -116,7 +111,7 @@ class UserInvitesView(APIView):
     def post(self, request, requester: User):
         """
         Create user invitations and send invitation emails.
-        
+
         Validates invitation data, filters out existing users/invitations,
         creates new user invitations, and sends email invitations to valid users.
         """
@@ -147,13 +142,7 @@ class UserInvitesView(APIView):
         summary="Update User Invitation",
         description="Update a user invitation's role. Admin access required.",
         tags=["User Invitations"],
-        request={
-            "application/json": {
-                "example": {
-                    "role": "ORGANIZER"
-                }
-            }
-        },
+        request={"application/json": {"example": {"role": "ORGANIZER"}}},
         responses={
             200: {
                 "description": "User invitation updated successfully",
@@ -163,14 +152,14 @@ class UserInvitesView(APIView):
                     "role": "ORGANIZER",
                     "organization": "Test Organization",
                     "createdAt": 1647875400000,
-                    "updatedAt": 1647875500000
-                }
+                    "updatedAt": 1647875500000,
+                },
             },
             400: {"description": "Invalid role data"},
             401: {"description": "Authentication required"},
             403: {"description": "Admin access required"},
-            404: {"description": "User invitation not found"}
-        }
+            404: {"description": "User invitation not found"},
+        },
     ),
     delete=extend_schema(
         summary="Delete User Invitation",
@@ -185,13 +174,14 @@ class UserInvitesView(APIView):
                     "role": "RESIDENT",
                     "organization": "Test Organization",
                     "createdAt": 1647875400000,
-                    "updatedAt": 1647875400000
-                }
+                    "updatedAt": 1647875400000,
+                },
             },
             401: {"description": "Authentication required"},
             403: {"description": "Admin access required"},
-            404: {"description": "User invitation not found"}        }
-    )
+            404: {"description": "User invitation not found"},
+        },
+    ),
 )
 class SingleUserInviteView(APIView):
     @check_access(Role.ADMIN)
@@ -199,7 +189,7 @@ class SingleUserInviteView(APIView):
     def patch(self, request, requester: User, user_invite: UserInvite):
         """
         Update a user invitation's role.
-        
+
         Allows admins to modify the role of a pending user invitation
         within the same organization.
         """
@@ -218,7 +208,7 @@ class SingleUserInviteView(APIView):
     def delete(self, request, requester: User, user_invite: UserInvite):
         """
         Delete a pending user invitation.
-        
+
         Allows admins to cancel a user invitation that hasn't been accepted yet.
         Returns the deleted invitation data.
         """
@@ -246,7 +236,7 @@ class SingleUserInviteView(APIView):
                         "profileImage": "https://example.com/profile.jpg",
                         "isSelf": True,
                         "createdAt": 1647875400000,
-                        "updatedAt": 1647875400000
+                        "updatedAt": 1647875400000,
                     },
                     {
                         "id": 2,
@@ -257,13 +247,13 @@ class SingleUserInviteView(APIView):
                         "profileImage": None,
                         "isSelf": False,
                         "createdAt": 1647875500000,
-                        "updatedAt": 1647875500000
-                    }
-                ]
+                        "updatedAt": 1647875500000,
+                    },
+                ],
             },
             401: {"description": "Authentication required"},
-            403: {"description": "Admin access required"}
-        }
+            403: {"description": "Admin access required"},
+        },
     )
 )
 class UsersView(APIView):
@@ -271,7 +261,7 @@ class UsersView(APIView):
     def get(self, request, requester: User):
         """
         Retrieve all users within the organization.
-        
+
         Returns a list of all users belonging to the same organization as the requester.
         Includes user profile information and marks which user is the requester (isSelf).
         """
@@ -306,15 +296,15 @@ class UsersView(APIView):
                     "hasPasswordAuth": True,
                     "googleAuth": {
                         "email": "john@gmail.com",
-                        "profileImage": "https://google.com/profile.jpg"
+                        "profileImage": "https://google.com/profile.jpg",
                     },
                     "facebookAuth": None,
                     "createdAt": 1647875400000,
-                    "updatedAt": 1647875400000
-                }
+                    "updatedAt": 1647875400000,
+                },
             },
-            401: {"description": "Authentication required"}
-        }
+            401: {"description": "Authentication required"},
+        },
     ),
     patch=extend_schema(
         summary="Update User Profile",
@@ -325,46 +315,37 @@ class UsersView(APIView):
                 "examples": {
                     "update_name": {
                         "summary": "Update Name",
-                        "value": {
-                            "action": "NAME",
-                            "payload": {"name": "New Name"}
-                        }
+                        "value": {"action": "NAME", "payload": {"name": "New Name"}},
                     },
                     "update_password": {
                         "summary": "Update Password",
                         "value": {
                             "action": "PASSWORD",
-                            "payload": {"password": "newpassword123"}
-                        }
+                            "payload": {"password": "newpassword123"},
+                        },
                     },
                     "link_google": {
                         "summary": "Link Google Account",
                         "value": {
                             "action": "GOOGLE",
-                            "payload": {"token": "google_token_here"}
-                        }
+                            "payload": {"token": "google_token_here"},
+                        },
                     },
                     "unlink_google": {
                         "summary": "Unlink Google Account",
-                        "value": {
-                            "action": "GOOGLE",
-                            "payload": None
-                        }
+                        "value": {"action": "GOOGLE", "payload": None},
                     },
                     "update_profile_image": {
                         "summary": "Update Profile Image",
                         "value": {
                             "action": "PROFILE_IMAGE",
-                            "payload": {"profile_image": "base64_image_data"}
-                        }
+                            "payload": {"profile_image": "base64_image_data"},
+                        },
                     },
                     "remove_profile_image": {
                         "summary": "Remove Profile Image",
-                        "value": {
-                            "action": "PROFILE_IMAGE",
-                            "payload": None
-                        }
-                    }
+                        "value": {"action": "PROFILE_IMAGE", "payload": None},
+                    },
                 }
             }
         },
@@ -382,24 +363,24 @@ class UsersView(APIView):
                     "hasPasswordAuth": True,
                     "googleAuth": {
                         "email": "john@gmail.com",
-                        "profileImage": "https://google.com/profile.jpg"
+                        "profileImage": "https://google.com/profile.jpg",
                     },
                     "facebookAuth": None,
                     "createdAt": 1647875400000,
-                    "updatedAt": 1647875400000
-                }
+                    "updatedAt": 1647875400000,
+                },
             },
             400: {"description": "Invalid action or payload data"},
-            401: {"description": "Authentication required"}
-        }
-    )
+            401: {"description": "Authentication required"},
+        },
+    ),
 )
 class RequesterView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
     def get(self, request, requester: User):
         """
         Get the current user's detailed profile information.
-        
+
         Returns comprehensive profile data including authentication methods,
         profile image, and other user details for the authenticated user.
         """
@@ -411,10 +392,10 @@ class RequesterView(APIView):
     def patch(self, request, requester: User):
         """
         Update the current user's profile or authentication settings.
-        
+
         Supports various actions:
         - NAME: Update display name
-        - PROFILE_IMAGE: Upload/remove profile image  
+        - PROFILE_IMAGE: Upload/remove profile image
         - PASSWORD: Update password
         - GOOGLE: Link/unlink Google account
         - FACEBOOK: Link/unlink Facebook account
@@ -445,7 +426,7 @@ class RequesterView(APIView):
                 name="user_id",
                 type=int,
                 location=OpenApiParameter.PATH,
-                description="The ID of the user to retrieve"
+                description="The ID of the user to retrieve",
             )
         ],
         responses={
@@ -460,13 +441,13 @@ class RequesterView(APIView):
                     "profileImage": "https://example.com/profile.jpg",
                     "isSelf": False,
                     "createdAt": 1647875400000,
-                    "updatedAt": 1647875400000
-                }
+                    "updatedAt": 1647875400000,
+                },
             },
             401: {"description": "Authentication required"},
             403: {"description": "Access denied - insufficient permissions"},
-            404: {"description": "User not found or not in same organization"}
-        }
+            404: {"description": "User not found or not in same organization"},
+        },
     ),
     patch=extend_schema(
         summary="Update User",
@@ -477,7 +458,7 @@ class RequesterView(APIView):
                 name="user_id",
                 type=int,
                 location=OpenApiParameter.PATH,
-                description="The ID of the user to update"
+                description="The ID of the user to update",
             )
         ],
         request={
@@ -485,24 +466,24 @@ class RequesterView(APIView):
                 "examples": {
                     "update_name": {
                         "summary": "Update Name Only",
-                        "value": {"name": "Updated Name"}
+                        "value": {"name": "Updated Name"},
                     },
                     "update_email": {
                         "summary": "Update Email Only",
-                        "value": {"email": "newemail@example.com"}
+                        "value": {"email": "newemail@example.com"},
                     },
                     "update_role": {
                         "summary": "Update Role Only",
-                        "value": {"role": "ORGANIZER"}
+                        "value": {"role": "ORGANIZER"},
                     },
                     "update_multiple": {
                         "summary": "Update Multiple Fields",
                         "value": {
                             "name": "John Smith",
                             "email": "johnsmith@example.com",
-                            "role": "ADMIN"
-                        }
-                    }
+                            "role": "ADMIN",
+                        },
+                    },
                 }
             }
         },
@@ -518,14 +499,14 @@ class RequesterView(APIView):
                     "profileImage": "https://example.com/profile.jpg",
                     "isSelf": False,
                     "createdAt": 1647875400000,
-                    "updatedAt": 1647875400000
-                }
+                    "updatedAt": 1647875400000,
+                },
             },
             400: {"description": "Invalid data or cannot self-update role"},
             401: {"description": "Authentication required"},
             403: {"description": "Admin access required"},
-            404: {"description": "User not found or not in same organization"}
-        }
+            404: {"description": "User not found or not in same organization"},
+        },
     ),
     delete=extend_schema(
         summary="Delete User",
@@ -536,7 +517,7 @@ class RequesterView(APIView):
                 name="user_id",
                 type=int,
                 location=OpenApiParameter.PATH,
-                description="The ID of the user to delete"
+                description="The ID of the user to delete",
             )
         ],
         responses={
@@ -551,15 +532,15 @@ class RequesterView(APIView):
                     "profileImage": None,
                     "isSelf": False,
                     "createdAt": 1647875400000,
-                    "updatedAt": 1647875400000
-                }
+                    "updatedAt": 1647875400000,
+                },
             },
             400: {"description": "Cannot self-delete"},
             401: {"description": "Authentication required"},
             403: {"description": "Admin access required"},
-            404: {"description": "User not found or not in same organization"}
-        }
-    )
+            404: {"description": "User not found or not in same organization"},
+        },
+    ),
 )
 class SingleUserView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
@@ -567,7 +548,7 @@ class SingleUserView(APIView):
     def get(self, request, requester: User, user: User):
         """
         Retrieve detailed information about a specific user.
-        
+
         All authenticated users can view profile information of users
         within their organization.
         """
@@ -580,7 +561,7 @@ class SingleUserView(APIView):
     def patch(self, request, requester: User, user: User):
         """
         Update a user's profile information.
-        
+
         Allows admins to update name, email, and role of users within
         their organization. Admins cannot modify their own role.
         """
@@ -603,7 +584,7 @@ class SingleUserView(APIView):
     def delete(self, request, requester: User, user: User):
         """
         Delete a user from the organization.
-        
+
         Allows admins to remove users from their organization.
         Admins cannot delete themselves. Returns the deleted user data.
         """

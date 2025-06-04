@@ -36,7 +36,7 @@ from .logic import (
                 name="booking_id",
                 type=int,
                 location=OpenApiParameter.PATH,
-                description="The ID of the booking to retrieve comments for"
+                description="The ID of the booking to retrieve comments for",
             )
         ],
         responses={
@@ -55,18 +55,18 @@ from .logic import (
                             "profileImage": "https://example.com/profile.jpg",
                             "isSelf": False,
                             "createdAt": 1647875400000,
-                            "updatedAt": 1647875400000
+                            "updatedAt": 1647875400000,
                         },
                         "isActive": True,
                         "createdAt": 1647875400000,
-                        "updatedAt": 1647875400000
+                        "updatedAt": 1647875400000,
                     }
-                ]
+                ],
             },
             401: {"description": "Authentication required"},
             403: {"description": "Access denied - must be booker or admin"},
-            404: {"description": "Booking not found or not in same organization"}
-        }
+            404: {"description": "Booking not found or not in same organization"},
+        },
     ),
     post=extend_schema(
         summary="Create Booking Comment",
@@ -77,14 +77,12 @@ from .logic import (
                 name="booking_id",
                 type=int,
                 location=OpenApiParameter.PATH,
-                description="The ID of the booking to add a comment to"
+                description="The ID of the booking to add a comment to",
             )
         ],
         request={
             "application/json": {
-                "example": {
-                    "content": "This is a new comment on the booking"
-                }
+                "example": {"content": "This is a new comment on the booking"}
             }
         },
         responses={
@@ -102,20 +100,20 @@ from .logic import (
                         "profileImage": None,
                         "isSelf": True,
                         "createdAt": 1647875300000,
-                        "updatedAt": 1647875300000
+                        "updatedAt": 1647875300000,
                     },
                     "isActive": True,
                     "createdAt": 1647875500000,
-                    "updatedAt": 1647875500000
-                }
+                    "updatedAt": 1647875500000,
+                },
             },
             400: {"description": "Invalid comment data"},
             401: {"description": "Authentication required"},
             403: {"description": "Access denied - must be booker or admin"},
             404: {"description": "Booking not found or not in same organization"},
-            500: {"description": "Internal server error while creating comment"}
-        }
-    )
+            500: {"description": "Internal server error while creating comment"},
+        },
+    ),
 )
 # Not used
 class BookingCommentsView(APIView):
@@ -125,7 +123,7 @@ class BookingCommentsView(APIView):
     def get(self, request, requester: User, booking: Booking):
         """
         Retrieve all comments for a specific booking.
-        
+
         Returns a list of comments associated with the booking, including
         commenter information. Only accessible by the booker or admins.
         """
@@ -148,7 +146,7 @@ class BookingCommentsView(APIView):
     def post(self, request, requester: User, booking: Booking):
         """
         Create a new comment on a booking.
-        
+
         Allows the booker or admins to add comments to the booking.
         The comment will be associated with the requester as the commenter.
         """
@@ -180,14 +178,12 @@ class BookingCommentsView(APIView):
                 name="comment_id",
                 type=int,
                 location=OpenApiParameter.PATH,
-                description="The ID of the comment to update"
+                description="The ID of the comment to update",
             )
         ],
         request={
             "application/json": {
-                "example": {
-                    "content": "This is the updated comment content"
-                }
+                "example": {"content": "This is the updated comment content"}
             }
         },
         responses={
@@ -205,18 +201,18 @@ class BookingCommentsView(APIView):
                         "profileImage": None,
                         "isSelf": True,
                         "createdAt": 1647875400000,
-                        "updatedAt": 1647875400000
+                        "updatedAt": 1647875400000,
                     },
                     "isActive": True,
                     "createdAt": 1647875400000,
-                    "updatedAt": 1647875600000
-                }
+                    "updatedAt": 1647875600000,
+                },
             },
             400: {"description": "Invalid comment data"},
             401: {"description": "Authentication required"},
             403: {"description": "Access denied - only commenter can update"},
-            404: {"description": "Comment not found or inactive"}
-        }
+            404: {"description": "Comment not found or inactive"},
+        },
     ),
     delete=extend_schema(
         summary="Delete Comment",
@@ -227,7 +223,7 @@ class BookingCommentsView(APIView):
                 name="comment_id",
                 type=int,
                 location=OpenApiParameter.PATH,
-                description="The ID of the comment to delete"
+                description="The ID of the comment to delete",
             )
         ],
         responses={
@@ -245,19 +241,19 @@ class BookingCommentsView(APIView):
                         "profileImage": None,
                         "isSelf": True,
                         "createdAt": 1647875400000,
-                        "updatedAt": 1647875400000
+                        "updatedAt": 1647875400000,
                     },
                     "isActive": False,
                     "createdAt": 1647875400000,
-                    "updatedAt": 1647875700000
-                }
+                    "updatedAt": 1647875700000,
+                },
             },
             401: {"description": "Authentication required"},
             403: {"description": "Access denied - only commenter can delete"},
             404: {"description": "Comment not found or inactive"},
-            500: {"description": "Internal server error while deleting comment"}
-        }
-    )
+            500: {"description": "Internal server error while deleting comment"},
+        },
+    ),
 )
 class SingleCommentView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
@@ -266,7 +262,7 @@ class SingleCommentView(APIView):
     def put(self, request, requester: User, comment: Comment):
         """
         Update the content of an existing comment.
-        
+
         Allows the original commenter to modify their comment content.
         Only active comments can be updated.
         """
@@ -286,7 +282,7 @@ class SingleCommentView(APIView):
     def delete(self, request, requester: User, comment: Comment):
         """
         Soft delete a comment by marking it as inactive.
-        
+
         The comment content will be replaced with a deletion message
         but the comment record is preserved for audit purposes.
         """
@@ -304,13 +300,7 @@ class SingleCommentView(APIView):
         summary="Mark Comments as Read",
         description="Mark multiple comments as read by the current user. Creates read records for comment tracking.",
         tags=["Comment Reads"],
-        request={
-            "application/json": {
-                "example": {
-                    "comment_ids": [1, 2, 3, 5, 8]
-                }
-            }
-        },
+        request={"application/json": {"example": {"comment_ids": [1, 2, 3, 5, 8]}}},
         responses={
             201: {
                 "description": "Comments marked as read successfully",
@@ -327,11 +317,11 @@ class SingleCommentView(APIView):
                             "profileImage": None,
                             "isSelf": False,
                             "createdAt": 1647875300000,
-                            "updatedAt": 1647875300000
+                            "updatedAt": 1647875300000,
                         },
                         "isActive": True,
                         "createdAt": 1647875400000,
-                        "updatedAt": 1647875400000
+                        "updatedAt": 1647875400000,
                     },
                     {
                         "id": 2,
@@ -345,17 +335,17 @@ class SingleCommentView(APIView):
                             "profileImage": "https://example.com/bob.jpg",
                             "isSelf": False,
                             "createdAt": 1647875200000,
-                            "updatedAt": 1647875200000
+                            "updatedAt": 1647875200000,
                         },
                         "isActive": True,
                         "createdAt": 1647875500000,
-                        "updatedAt": 1647875500000
-                    }
-                ]
+                        "updatedAt": 1647875500000,
+                    },
+                ],
             },
             400: {"description": "Invalid comment IDs data"},
-            401: {"description": "Authentication required"}
-        }
+            401: {"description": "Authentication required"},
+        },
     )
 )
 class ReadCommentsView(APIView):
@@ -363,7 +353,7 @@ class ReadCommentsView(APIView):
     def post(self, request, requester: User):
         """
         Mark multiple comments as read by the current user.
-        
+
         Creates CommentRead records to track which comments have been
         read by the user. Used for notification and unread count features.
         """

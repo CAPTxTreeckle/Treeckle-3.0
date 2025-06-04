@@ -30,21 +30,17 @@ from events.logic.subscription import (
             200: {
                 "description": "User's event category subscription information",
                 "example": {
-                    "subscribed_categories": [
-                        "Sports",
-                        "Academic",
-                        "Workshop"
-                    ],
+                    "subscribed_categories": ["Sports", "Academic", "Workshop"],
                     "non_subscribed_categories": [
                         "Social",
                         "Arts",
-                        "Community Service"
-                    ]
-                }
+                        "Community Service",
+                    ],
+                },
             },
-            401: {"description": "Authentication required"}
+            401: {"description": "Authentication required"},
         },
-        tags=["Event Subscriptions"]
+        tags=["Event Subscriptions"],
     ),
     patch=extend_schema(
         summary="Update Event Category Subscriptions",
@@ -54,35 +50,25 @@ from events.logic.subscription import (
             200: {
                 "description": "Subscriptions updated successfully",
                 "example": {
-                    "subscribed_categories": [
-                        "Sports",
-                        "Academic",
-                        "Workshop",
-                        "Arts"
-                    ],
-                    "non_subscribed_categories": [
-                        "Social",
-                        "Community Service"
-                    ]
-                }
+                    "subscribed_categories": ["Sports", "Academic", "Workshop", "Arts"],
+                    "non_subscribed_categories": ["Social", "Community Service"],
+                },
             },
             400: {
                 "description": "Invalid subscription data",
-                "example": {
-                    "actions": ["Invalid action or category not found"]
-                }
+                "example": {"actions": ["Invalid action or category not found"]},
             },
-            401: {"description": "Authentication required"}
+            401: {"description": "Authentication required"},
         },
-        tags=["Event Subscriptions"]
-    )
+        tags=["Event Subscriptions"],
+    ),
 )
 class OwnEventCategoryTypeSubscriptionsView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
     def get(self, request, requester: User):
         """
         Get the current user's event category subscriptions.
-        
+
         Returns two lists: categories the user is subscribed to and categories
         available for subscription within their organization.
         """
@@ -102,7 +88,7 @@ class OwnEventCategoryTypeSubscriptionsView(APIView):
     def patch(self, request, requester: User):
         """
         Update the current user's event category subscriptions.
-        
+
         Processes a list of subscription actions, allowing the user to subscribe
         to new categories or unsubscribe from existing ones. Each action specifies
         a category name and the desired action (SUBSCRIBE or UNSUBSCRIBE).
@@ -142,7 +128,7 @@ class OwnEventCategoryTypeSubscriptionsView(APIView):
                         "creator": {
                             "id": 12,
                             "name": "Sports Coordinator",
-                            "profile_image_url": "https://example.com/coordinator.jpg"
+                            "profile_image_url": "https://example.com/coordinator.jpg",
                         },
                         "organized_by": "Sports Club",
                         "venue_name": "Basketball Court",
@@ -157,7 +143,7 @@ class OwnEventCategoryTypeSubscriptionsView(APIView):
                         "categories": ["Sports"],
                         "sign_up_count": 24,
                         "can_modify": False,
-                        "can_view_sign_ups": False
+                        "can_view_sign_ups": False,
                     },
                     {
                         "id": 16,
@@ -165,7 +151,7 @@ class OwnEventCategoryTypeSubscriptionsView(APIView):
                         "creator": {
                             "id": 8,
                             "name": "CS Professor",
-                            "profile_image_url": "https://example.com/professor.jpg"
+                            "profile_image_url": "https://example.com/professor.jpg",
                         },
                         "organized_by": "Computer Science Department",
                         "venue_name": "Lab 101",
@@ -180,13 +166,13 @@ class OwnEventCategoryTypeSubscriptionsView(APIView):
                         "categories": ["Academic", "Workshop"],
                         "sign_up_count": 18,
                         "can_modify": False,
-                        "can_view_sign_ups": False
-                    }
-                ]
+                        "can_view_sign_ups": False,
+                    },
+                ],
             },
-            401: {"description": "Authentication required"}
+            401: {"description": "Authentication required"},
         },
-        tags=["Event Subscriptions"]
+        tags=["Event Subscriptions"],
     )
 )
 class SubscribedEventsView(APIView):
@@ -194,7 +180,7 @@ class SubscribedEventsView(APIView):
     def get(self, request, requester: User):
         """
         Get all published events from subscribed categories.
-        
+
         Returns events that are published and belong to categories the user
         has subscribed to. This helps users discover relevant events based
         on their interests without having to browse all available events.

@@ -12,11 +12,11 @@ import json
 def get_week_dates(sem_start_date, filtered_data):
     """
     Calculate week dates for a semester based on start date and timetable data.
-    
+
     Args:
         sem_start_date: The Monday of the first week of the semester
         filtered_data: List of timetable entries with week information
-        
+
     Returns:
         List of week objects with week number, start date, and end date
     """
@@ -68,24 +68,24 @@ def get_week_dates(sem_start_date, filtered_data):
                                 {
                                     "week": 1,
                                     "startDate": "05 Aug 2024",
-                                    "endDate": "09 Aug 2024"
+                                    "endDate": "09 Aug 2024",
                                 },
                                 {
                                     "week": 2,
                                     "startDate": "12 Aug 2024",
-                                    "endDate": "16 Aug 2024"
+                                    "endDate": "16 Aug 2024",
                                 },
                                 {
                                     "week": 3,
                                     "startDate": "19 Aug 2024",
-                                    "endDate": "23 Aug 2024"
+                                    "endDate": "23 Aug 2024",
                                 },
                                 {
                                     "week": 13,
                                     "startDate": "25 Nov 2024",
-                                    "endDate": "29 Nov 2024"
-                                }
-                            ]
+                                    "endDate": "29 Nov 2024",
+                                },
+                            ],
                         },
                         {
                             "semester": 2,
@@ -93,18 +93,18 @@ def get_week_dates(sem_start_date, filtered_data):
                                 {
                                     "week": 1,
                                     "startDate": "13 Jan 2025",
-                                    "endDate": "17 Jan 2025"
+                                    "endDate": "17 Jan 2025",
                                 },
                                 {
                                     "week": 2,
                                     "startDate": "20 Jan 2025",
-                                    "endDate": "24 Jan 2025"
-                                }
-                            ]
-                        }
+                                    "endDate": "24 Jan 2025",
+                                },
+                            ],
+                        },
                     ]
                 }
-            ]
+            ],
         ),
         500: OpenApiResponse(
             description="Server error - Failed to fetch data or process request",
@@ -118,12 +118,12 @@ def get_week_dates(sem_start_date, filtered_data):
                     "value": {
                         "error": "An unexpected error occurred: Invalid date format"
                     }
-                }
-            ]
-        )
+                },
+            ],
+        ),
     },
     tags=["Academic Calendar"],
-    auth=[]  # No authentication required
+    auth=[],  # No authentication required
 )
 @api_view(["GET"])
 @permission_classes([AllowAny])
@@ -131,14 +131,14 @@ def get_week_dates(sem_start_date, filtered_data):
 def get_academic_weeks(request):
     """
     Get academic week dates for all semesters.
-    
+
     Fetches module data from the NUSMods API to determine semester structures
     and calculates the date ranges for each academic week. Accounts for recess
     weeks and provides formatted date ranges for frontend calendar integration.
-    
+
     The function uses a reference module (CS1010S) to extract semester timing
     information and maps this to actual calendar dates for academic year 2024-2025.
-    
+
     Returns:
         Response: List of semesters with their respective week date ranges
     """

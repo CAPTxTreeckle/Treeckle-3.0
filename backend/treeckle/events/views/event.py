@@ -34,17 +34,12 @@ from events.middlewares import (
         responses={
             200: {
                 "description": "List of event category types",
-                "example": [
-                    "Sports",
-                    "Academic",
-                    "Social",
-                    "Workshop"
-                ]
+                "example": ["Sports", "Academic", "Social", "Workshop"],
             },
             401: {"description": "Authentication required"},
-            403: {"description": "Insufficient permissions"}
+            403: {"description": "Insufficient permissions"},
         },
-        tags=["Events"]
+        tags=["Events"],
     )
 )
 class EventCategoryTypesView(APIView):
@@ -52,7 +47,7 @@ class EventCategoryTypesView(APIView):
     def get(self, request, requester: User):
         """
         Get all event category types available in the user's organization.
-        
+
         Returns a list of category type names that can be used when creating or filtering events.
         Only includes category types from the same organization as the requesting user.
         """
@@ -82,7 +77,7 @@ class EventCategoryTypesView(APIView):
                         "creator": {
                             "id": 2,
                             "name": "John Organizer",
-                            "profile_image_url": "https://example.com/image.jpg"
+                            "profile_image_url": "https://example.com/image.jpg",
                         },
                         "organized_by": "Sports Committee",
                         "venue_name": "Sports Complex",
@@ -97,14 +92,14 @@ class EventCategoryTypesView(APIView):
                         "categories": ["Sports", "Recreation"],
                         "sign_up_count": 45,
                         "can_modify": True,
-                        "can_view_sign_ups": True
+                        "can_view_sign_ups": True,
                     }
-                ]
+                ],
             },
             401: {"description": "Authentication required"},
-            403: {"description": "Admin access required"}
+            403: {"description": "Admin access required"},
         },
-        tags=["Events"]
+        tags=["Events"],
     ),
     post=extend_schema(
         summary="Create New Event",
@@ -119,7 +114,7 @@ class EventCategoryTypesView(APIView):
                     "creator": {
                         "id": 3,
                         "name": "Jane Organizer",
-                        "profile_image_url": "https://example.com/jane.jpg"
+                        "profile_image_url": "https://example.com/jane.jpg",
                     },
                     "organized_by": "HR Department",
                     "venue_name": "Conference Room A",
@@ -134,27 +129,29 @@ class EventCategoryTypesView(APIView):
                     "categories": ["Workshop", "Professional Development"],
                     "sign_up_count": 0,
                     "can_modify": True,
-                    "can_view_sign_ups": True
-                }
+                    "can_view_sign_ups": True,
+                },
             },
             400: {
                 "description": "Invalid input data",
                 "example": {
-                    "end_date_time": ["Event end date/time cannot be before start date/time"]
-                }
+                    "end_date_time": [
+                        "Event end date/time cannot be before start date/time"
+                    ]
+                },
             },
             401: {"description": "Authentication required"},
-            403: {"description": "Organizer or admin access required"}
+            403: {"description": "Organizer or admin access required"},
         },
-        tags=["Events"]
-    )
+        tags=["Events"],
+    ),
 )
 class EventsView(APIView):
     @check_access(Role.ADMIN)
     def get(self, request, requester: User):
         """
         Get all events within the organization.
-        
+
         Admin-only endpoint that returns comprehensive details about all events
         in the organization, including sign-up counts, categories, and permissions.
         """
@@ -178,7 +175,7 @@ class EventsView(APIView):
     def post(self, request, requester: User):
         """
         Create a new event.
-        
+
         Creates a new event with the provided details. Event categories specified
         in the request will be automatically created if they don't exist in the organization.
         Only organizers and admins can create events.
@@ -229,7 +226,7 @@ class EventsView(APIView):
                         "creator": {
                             "id": 3,
                             "name": "Current User",
-                            "profile_image_url": "https://example.com/user.jpg"
+                            "profile_image_url": "https://example.com/user.jpg",
                         },
                         "organized_by": "Management Team",
                         "venue_name": "Meeting Room B",
@@ -244,14 +241,14 @@ class EventsView(APIView):
                         "categories": ["Workshop", "Team Building"],
                         "sign_up_count": 18,
                         "can_modify": True,
-                        "can_view_sign_ups": True
+                        "can_view_sign_ups": True,
                     }
-                ]
+                ],
             },
             401: {"description": "Authentication required"},
-            403: {"description": "Organizer or admin access required"}
+            403: {"description": "Organizer or admin access required"},
         },
-        tags=["Events"]
+        tags=["Events"],
     )
 )
 class OwnEventsView(APIView):
@@ -259,7 +256,7 @@ class OwnEventsView(APIView):
     def get(self, request, requester: User):
         """
         Get all events created by the current user.
-        
+
         Returns events where the current user is the creator, along with
         complete event details including sign-up information and categories.
         """
@@ -294,7 +291,7 @@ class OwnEventsView(APIView):
                         "creator": {
                             "id": 7,
                             "name": "Photo Club Admin",
-                            "profile_image_url": "https://example.com/admin.jpg"
+                            "profile_image_url": "https://example.com/admin.jpg",
                         },
                         "organized_by": "Photography Club",
                         "venue_name": "Art Studio",
@@ -309,13 +306,13 @@ class OwnEventsView(APIView):
                         "categories": ["Photography", "Arts"],
                         "sign_up_count": 15,
                         "can_modify": False,
-                        "can_view_sign_ups": False
+                        "can_view_sign_ups": False,
                     }
-                ]
+                ],
             },
-            401: {"description": "Authentication required"}
+            401: {"description": "Authentication required"},
         },
-        tags=["Events"]
+        tags=["Events"],
     )
 )
 class SignedUpEventsView(APIView):
@@ -323,7 +320,7 @@ class SignedUpEventsView(APIView):
     def get(self, request, requester: User):
         """
         Get all published events the current user has signed up for.
-        
+
         Returns only published events where the user has an active sign-up,
         regardless of the sign-up status (pending, confirmed, or attended).
         """
@@ -353,7 +350,7 @@ class SignedUpEventsView(APIView):
                         "creator": {
                             "id": 4,
                             "name": "Community Leader",
-                            "profile_image_url": "https://example.com/leader.jpg"
+                            "profile_image_url": "https://example.com/leader.jpg",
                         },
                         "organized_by": "Green Initiative Committee",
                         "venue_name": "Campus Grounds",
@@ -368,13 +365,13 @@ class SignedUpEventsView(APIView):
                         "categories": ["Community Service", "Environment"],
                         "sign_up_count": 87,
                         "can_modify": False,
-                        "can_view_sign_ups": False
+                        "can_view_sign_ups": False,
                     }
-                ]
+                ],
             },
-            401: {"description": "Authentication required"}
+            401: {"description": "Authentication required"},
         },
-        tags=["Events"]
+        tags=["Events"],
     )
 )
 class PublishedEventsView(APIView):
@@ -382,7 +379,7 @@ class PublishedEventsView(APIView):
     def get(self, request, requester: User):
         """
         Get all published events in the organization.
-        
+
         Returns events that have been marked as published and are visible
         to all organization members. Includes complete event details and
         current sign-up counts.
@@ -417,7 +414,7 @@ class PublishedEventsView(APIView):
                 description="Unique identifier of the event",
                 required=True,
                 type=int,
-                location=OpenApiParameter.PATH
+                location=OpenApiParameter.PATH,
             )
         ],
         responses={
@@ -430,7 +427,7 @@ class PublishedEventsView(APIView):
                         "creator": {
                             "id": 8,
                             "name": "Conference Organizer",
-                            "profile_image_url": "https://example.com/organizer.jpg"
+                            "profile_image_url": "https://example.com/organizer.jpg",
                         },
                         "organized_by": "Academic Committee",
                         "venue_name": "Main Auditorium",
@@ -445,7 +442,7 @@ class PublishedEventsView(APIView):
                         "categories": ["Academic", "Conference"],
                         "sign_up_count": 156,
                         "can_modify": False,
-                        "can_view_sign_ups": True
+                        "can_view_sign_ups": True,
                     },
                     "sign_ups": [
                         {
@@ -454,19 +451,19 @@ class PublishedEventsView(APIView):
                                 "id": 23,
                                 "name": "Jane Participant",
                                 "email": "jane@university.edu",
-                                "profile_image_url": "https://example.com/jane-participant.jpg"
+                                "profile_image_url": "https://example.com/jane-participant.jpg",
                             },
                             "status": "CONFIRMED",
-                            "created_at": 1735689600000
+                            "created_at": 1735689600000,
                         }
-                    ]
-                }
+                    ],
+                },
             },
             401: {"description": "Authentication required"},
             403: {"description": "Not authorized to view this event"},
-            404: {"description": "Event not found"}
+            404: {"description": "Event not found"},
         },
-        tags=["Events"]
+        tags=["Events"],
     ),
     put=extend_schema(
         summary="Update Event",
@@ -477,7 +474,7 @@ class PublishedEventsView(APIView):
                 description="Unique identifier of the event to update",
                 required=True,
                 type=int,
-                location=OpenApiParameter.PATH
+                location=OpenApiParameter.PATH,
             )
         ],
         request=EventSerializer,
@@ -490,7 +487,7 @@ class PublishedEventsView(APIView):
                     "creator": {
                         "id": 8,
                         "name": "Conference Organizer",
-                        "profile_image_url": "https://example.com/organizer.jpg"
+                        "profile_image_url": "https://example.com/organizer.jpg",
                     },
                     "organized_by": "Academic Committee",
                     "venue_name": "Updated Venue",
@@ -505,20 +502,22 @@ class PublishedEventsView(APIView):
                     "categories": ["Academic", "Conference", "Updated"],
                     "sign_up_count": 156,
                     "can_modify": True,
-                    "can_view_sign_ups": True
-                }
+                    "can_view_sign_ups": True,
+                },
             },
             400: {
                 "description": "Invalid input data",
                 "example": {
-                    "end_date_time": ["Event end date/time cannot be before start date/time"]
-                }
+                    "end_date_time": [
+                        "Event end date/time cannot be before start date/time"
+                    ]
+                },
             },
             401: {"description": "Authentication required"},
             403: {"description": "Not authorized to modify this event"},
-            404: {"description": "Event not found"}
+            404: {"description": "Event not found"},
         },
-        tags=["Events"]
+        tags=["Events"],
     ),
     delete=extend_schema(
         summary="Delete Event",
@@ -529,17 +528,17 @@ class PublishedEventsView(APIView):
                 description="Unique identifier of the event to delete",
                 required=True,
                 type=int,
-                location=OpenApiParameter.PATH
+                location=OpenApiParameter.PATH,
             )
         ],
         responses={
             204: {"description": "Event deleted successfully"},
             401: {"description": "Authentication required"},
             403: {"description": "Not authorized to delete this event"},
-            404: {"description": "Event not found"}
+            404: {"description": "Event not found"},
         },
-        tags=["Events"]
-    )
+        tags=["Events"],
+    ),
 )
 class SingleEventView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
@@ -548,7 +547,7 @@ class SingleEventView(APIView):
     def get(self, request, requester: User, event: Event):
         """
         Get detailed information about a specific event.
-        
+
         Returns comprehensive event details along with all sign-ups if the user
         has permission to view them. Access is controlled by organization membership
         and event visibility settings.
@@ -570,7 +569,7 @@ class SingleEventView(APIView):
     def put(self, request, requester: User, event: Event):
         """
         Update an existing event.
-        
+
         Updates event details with the provided data. Only users with modification
         permissions (event creator, organizers, admins) can update events.
         Event categories will be updated accordingly.
@@ -612,7 +611,7 @@ class SingleEventView(APIView):
     def delete(self, request, requester: User, event: Event):
         """
         Delete an existing event.
-        
+
         Permanently removes the event and all associated data. Also cleans up
         any unused event category types within the organization. Only users
         with modification permissions can delete events.

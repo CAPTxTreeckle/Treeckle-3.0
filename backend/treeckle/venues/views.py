@@ -41,16 +41,16 @@ from .logic import (
                 "description": "List of venue categories",
                 "example": [
                     "Conference Rooms",
-                    "Sports Facilities", 
+                    "Sports Facilities",
                     "Study Rooms",
                     "Event Halls",
-                    "Outdoor Spaces"
-                ]
+                    "Outdoor Spaces",
+                ],
             },
             401: {"description": "Authentication required"},
-            403: {"description": "Insufficient permissions"}
+            403: {"description": "Insufficient permissions"},
         },
-        tags=["Venues"]
+        tags=["Venues"],
     )
 )
 class VenueCategoriesView(APIView):
@@ -58,7 +58,7 @@ class VenueCategoriesView(APIView):
     def get(self, request, requester: User):
         """
         Get all venue categories in the user's organization.
-        
+
         Returns a list of category names that can be used for filtering venues
         or creating new venues. Only includes categories from the same organization.
         """
@@ -88,8 +88,8 @@ class VenueCategoriesView(APIView):
                         "venue": {
                             "id": 5,
                             "name": "Main Conference Room",
-                            "category": "Conference Rooms"
-                        }
+                            "category": "Conference Rooms",
+                        },
                     },
                     {
                         "id": 2,
@@ -98,15 +98,15 @@ class VenueCategoriesView(APIView):
                         "venue": {
                             "id": 8,
                             "name": "Basketball Court A",
-                            "category": "Sports Facilities"
-                        }
-                    }
-                ]
+                            "category": "Sports Facilities",
+                        },
+                    },
+                ],
             },
             401: {"description": "Authentication required"},
-            403: {"description": "Admin access required"}
+            403: {"description": "Admin access required"},
         },
-        tags=["Venue Notifications"]
+        tags=["Venue Notifications"],
     )
 )
 class BookingNotificationSubscriptionsView(APIView):
@@ -114,7 +114,7 @@ class BookingNotificationSubscriptionsView(APIView):
     def get(self, request, requester: User):
         """
         Get all booking notification subscriptions in the organization.
-        
+
         Returns subscriptions for all venues in the organization, showing
         who should be notified when bookings are made for each venue.
         """
@@ -140,7 +140,7 @@ class BookingNotificationSubscriptionsView(APIView):
                 description="Unique identifier of the venue to create subscription for",
                 required=True,
                 type=int,
-                location=OpenApiParameter.PATH
+                location=OpenApiParameter.PATH,
             )
         ],
         request=PostBookingNotificationSubscriptionSerializer,
@@ -154,9 +154,9 @@ class BookingNotificationSubscriptionsView(APIView):
                     "venue": {
                         "id": 12,
                         "name": "Auditorium",
-                        "category": "Event Halls"
-                    }
-                }
+                        "category": "Event Halls",
+                    },
+                },
             },
             400: {"description": "Invalid input data"},
             401: {"description": "Authentication required"},
@@ -166,11 +166,11 @@ class BookingNotificationSubscriptionsView(APIView):
                 "description": "Subscription already exists",
                 "example": {
                     "detail": "Booking notification subscription already exists.",
-                    "code": "booking_notification_subscription_exists"
-                }
-            }
+                    "code": "booking_notification_subscription_exists",
+                },
+            },
         },
-        tags=["Venue Notifications"]
+        tags=["Venue Notifications"],
     )
 )
 class SingleVenueBookingNotificationSubscriptionsView(APIView):
@@ -179,7 +179,7 @@ class SingleVenueBookingNotificationSubscriptionsView(APIView):
     def post(self, request, requester: User, venue: Venue):
         """
         Create a booking notification subscription for a venue.
-        
+
         Creates a new subscription that will send notifications to the specified
         email address when bookings are made for this venue. Each email can only
         have one subscription per venue.
@@ -216,7 +216,7 @@ class SingleVenueBookingNotificationSubscriptionsView(APIView):
                 description="Unique identifier of the subscription to delete",
                 required=True,
                 type=int,
-                location=OpenApiParameter.PATH
+                location=OpenApiParameter.PATH,
             )
         ],
         responses={
@@ -229,15 +229,15 @@ class SingleVenueBookingNotificationSubscriptionsView(APIView):
                     "venue": {
                         "id": 12,
                         "name": "Auditorium",
-                        "category": "Event Halls"
-                    }
-                }
+                        "category": "Event Halls",
+                    },
+                },
             },
             401: {"description": "Authentication required"},
             403: {"description": "Admin access required"},
-            404: {"description": "Subscription not found"}
+            404: {"description": "Subscription not found"},
         },
-        tags=["Venue Notifications"]
+        tags=["Venue Notifications"],
     )
 )
 class SingleBookingNotificationSubscriptionView(APIView):
@@ -251,7 +251,7 @@ class SingleBookingNotificationSubscriptionView(APIView):
     ):
         """
         Delete a booking notification subscription.
-        
+
         Permanently removes the subscription, stopping future notifications
         for bookings made to the associated venue.
         """
@@ -271,15 +271,15 @@ class SingleBookingNotificationSubscriptionView(APIView):
                 description="Filter venues by category name",
                 required=False,
                 type=str,
-                location=OpenApiParameter.QUERY
+                location=OpenApiParameter.QUERY,
             ),
             OpenApiParameter(
                 name="full_details",
                 description="Include full venue details including form fields and contact information",
                 required=False,
                 type=bool,
-                location=OpenApiParameter.QUERY
-            )
+                location=OpenApiParameter.QUERY,
+            ),
         ],
         responses={
             200: {
@@ -288,10 +288,7 @@ class SingleBookingNotificationSubscriptionView(APIView):
                     {
                         "id": 15,
                         "name": "Conference Room A",
-                        "category": {
-                            "id": 3,
-                            "name": "Conference Rooms"
-                        },
+                        "category": {"id": 3, "name": "Conference Rooms"},
                         "capacity": 25,
                         "ic_name": "John Manager",
                         "ic_email": "john.manager@university.edu",
@@ -300,26 +297,23 @@ class SingleBookingNotificationSubscriptionView(APIView):
                             {
                                 "field_name": "Purpose",
                                 "field_type": "text",
-                                "is_required": True
+                                "is_required": True,
                             },
                             {
                                 "field_name": "Equipment Needed",
                                 "field_type": "checkbox",
                                 "is_required": False,
-                                "options": ["Projector", "Microphone", "Whiteboard"]
-                            }
+                                "options": ["Projector", "Microphone", "Whiteboard"],
+                            },
                         ],
-                        "organization": {
-                            "id": 1,
-                            "name": "University College"
-                        }
+                        "organization": {"id": 1, "name": "University College"},
                     }
-                ]
+                ],
             },
             400: {"description": "Invalid query parameters"},
-            401: {"description": "Authentication required"}
+            401: {"description": "Authentication required"},
         },
-        tags=["Venues"]
+        tags=["Venues"],
     ),
     post=extend_schema(
         summary="Create New Venue",
@@ -331,10 +325,7 @@ class SingleBookingNotificationSubscriptionView(APIView):
                 "example": {
                     "id": 20,
                     "name": "Study Room B",
-                    "category": {
-                        "id": 5,
-                        "name": "Study Rooms"
-                    },
+                    "category": {"id": 5, "name": "Study Rooms"},
                     "capacity": 8,
                     "ic_name": "Library Staff",
                     "ic_email": "library@university.edu",
@@ -343,35 +334,29 @@ class SingleBookingNotificationSubscriptionView(APIView):
                         {
                             "field_name": "Number of Students",
                             "field_type": "number",
-                            "is_required": True
+                            "is_required": True,
                         }
                     ],
-                    "organization": {
-                        "id": 1,
-                        "name": "University College"
-                    }
-                }
+                    "organization": {"id": 1, "name": "University College"},
+                },
             },
             400: {"description": "Invalid input data"},
             401: {"description": "Authentication required"},
             403: {"description": "Admin access required"},
             409: {
                 "description": "Venue already exists",
-                "example": {
-                    "detail": "Venue already exists.",
-                    "code": "venue_exists"
-                }
-            }
+                "example": {"detail": "Venue already exists.", "code": "venue_exists"},
+            },
         },
-        tags=["Venues"]
-    )
+        tags=["Venues"],
+    ),
 )
 class VenuesView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
     def get(self, request, requester: User):
         """
         Get venues in the organization.
-        
+
         Returns venues filtered by optional category parameter. The full_details
         parameter controls whether to include complete venue information including
         form fields and contact details, or just basic venue data.
@@ -399,7 +384,7 @@ class VenuesView(APIView):
     def post(self, request, requester: User):
         """
         Create a new venue.
-        
+
         Creates a venue with the provided details including custom form fields
         for booking requirements. Venue categories will be automatically created
         if they don't exist in the organization.
@@ -438,7 +423,7 @@ class VenuesView(APIView):
                 description="Unique identifier of the venue",
                 required=True,
                 type=int,
-                location=OpenApiParameter.PATH
+                location=OpenApiParameter.PATH,
             )
         ],
         responses={
@@ -447,10 +432,7 @@ class VenuesView(APIView):
                 "example": {
                     "id": 25,
                     "name": "Main Auditorium",
-                    "category": {
-                        "id": 8,
-                        "name": "Event Halls"
-                    },
+                    "category": {"id": 8, "name": "Event Halls"},
                     "capacity": 500,
                     "ic_name": "Events Manager",
                     "ic_email": "events.manager@university.edu",
@@ -460,30 +442,32 @@ class VenuesView(APIView):
                             "field_name": "Event Type",
                             "field_type": "select",
                             "is_required": True,
-                            "options": ["Conference", "Seminar", "Performance", "Graduation"]
+                            "options": [
+                                "Conference",
+                                "Seminar",
+                                "Performance",
+                                "Graduation",
+                            ],
                         },
                         {
                             "field_name": "Expected Attendance",
                             "field_type": "number",
-                            "is_required": True
+                            "is_required": True,
                         },
                         {
                             "field_name": "Technical Requirements",
                             "field_type": "textarea",
-                            "is_required": False
-                        }
+                            "is_required": False,
+                        },
                     ],
-                    "organization": {
-                        "id": 1,
-                        "name": "University College"
-                    }
-                }
+                    "organization": {"id": 1, "name": "University College"},
+                },
             },
             401: {"description": "Authentication required"},
             403: {"description": "Not authorized to view this venue"},
-            404: {"description": "Venue not found"}
+            404: {"description": "Venue not found"},
         },
-        tags=["Venues"]
+        tags=["Venues"],
     ),
     put=extend_schema(
         summary="Update Venue",
@@ -494,7 +478,7 @@ class VenuesView(APIView):
                 description="Unique identifier of the venue to update",
                 required=True,
                 type=int,
-                location=OpenApiParameter.PATH
+                location=OpenApiParameter.PATH,
             )
         ],
         request=VenueSerializer,
@@ -504,10 +488,7 @@ class VenuesView(APIView):
                 "example": {
                     "id": 25,
                     "name": "Updated Auditorium Name",
-                    "category": {
-                        "id": 8,
-                        "name": "Event Halls"
-                    },
+                    "category": {"id": 8, "name": "Event Halls"},
                     "capacity": 450,
                     "ic_name": "New Events Manager",
                     "ic_email": "new.events@university.edu",
@@ -517,14 +498,17 @@ class VenuesView(APIView):
                             "field_name": "Event Type",
                             "field_type": "select",
                             "is_required": True,
-                            "options": ["Conference", "Seminar", "Performance", "Graduation", "Workshop"]
+                            "options": [
+                                "Conference",
+                                "Seminar",
+                                "Performance",
+                                "Graduation",
+                                "Workshop",
+                            ],
                         }
                     ],
-                    "organization": {
-                        "id": 1,
-                        "name": "University College"
-                    }
-                }
+                    "organization": {"id": 1, "name": "University College"},
+                },
             },
             400: {"description": "Invalid input data"},
             401: {"description": "Authentication required"},
@@ -532,13 +516,10 @@ class VenuesView(APIView):
             404: {"description": "Venue not found"},
             409: {
                 "description": "Venue name already exists",
-                "example": {
-                    "detail": "Venue already exists.",
-                    "code": "venue_exists"
-                }
-            }
+                "example": {"detail": "Venue already exists.", "code": "venue_exists"},
+            },
         },
-        tags=["Venues"]
+        tags=["Venues"],
     ),
     delete=extend_schema(
         summary="Delete Venue",
@@ -549,7 +530,7 @@ class VenuesView(APIView):
                 description="Unique identifier of the venue to delete",
                 required=True,
                 type=int,
-                location=OpenApiParameter.PATH
+                location=OpenApiParameter.PATH,
             )
         ],
         responses={
@@ -558,27 +539,21 @@ class VenuesView(APIView):
                 "example": {
                     "id": 25,
                     "name": "Deleted Venue",
-                    "category": {
-                        "id": 8,
-                        "name": "Event Halls"
-                    },
+                    "category": {"id": 8, "name": "Event Halls"},
                     "capacity": 450,
                     "ic_name": "Events Manager",
                     "ic_email": "events@university.edu",
                     "ic_contact_number": "+65 9333 4444",
                     "form_field_data": [],
-                    "organization": {
-                        "id": 1,
-                        "name": "University College"
-                    }
-                }
+                    "organization": {"id": 1, "name": "University College"},
+                },
             },
             401: {"description": "Authentication required"},
             403: {"description": "Admin access required"},
-            404: {"description": "Venue not found"}
+            404: {"description": "Venue not found"},
         },
-        tags=["Venues"]
-    )
+        tags=["Venues"],
+    ),
 )
 class SingleVenueView(APIView):
     @check_access(Role.RESIDENT, Role.ORGANIZER, Role.ADMIN)
@@ -586,7 +561,7 @@ class SingleVenueView(APIView):
     def get(self, request, requester: User, venue: Venue):
         """
         Get detailed information about a specific venue.
-        
+
         Returns complete venue details including form fields, contact information,
         and organization details. Accessible to all authenticated users in the
         same organization.
@@ -600,7 +575,7 @@ class SingleVenueView(APIView):
     def put(self, request, requester: User, venue: Venue):
         """
         Update an existing venue.
-        
+
         Updates venue details including name, category, capacity, contact information,
         and custom form fields. Venue categories will be created if they don't exist.
         Only admins can update venues.
@@ -634,7 +609,7 @@ class SingleVenueView(APIView):
     def delete(self, request, requester: User, venue: Venue):
         """
         Delete an existing venue.
-        
+
         Permanently removes the venue and all associated data including bookings
         and notification subscriptions. Also cleans up any unused venue categories
         within the organization. Only admins can delete venues.
