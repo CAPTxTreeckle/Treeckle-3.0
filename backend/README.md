@@ -48,6 +48,14 @@ The backend should be running and accessible at `http://localhost:8000`
 > Username: dev  
 > Password: dev
 
+### API Documentation
+
+The API documentation is available at the following endpoints:
+
+- **Swagger UI**: http://localhost:8000/api/swagger/ - Interactive API documentation
+- **ReDoc**: http://localhost:8000/api/redoc/ - Alternative documentation format
+- **OpenAPI Schema**: http://localhost:8000/api/schema/ - Raw OpenAPI schema JSON
+
 ### Seeding the database
 
 To load seed data into the database, run the following command:

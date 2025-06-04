@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     "django.contrib.flatpages",
     "anymail",
+    "drf_spectacular",
     "treeckle",
     "organizations",
     "email_service",
@@ -187,6 +188,14 @@ REST_FRAMEWORK = {
     "JSON_UNDERSCOREIZE": {
         "no_underscore_before_number": True,
     },
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Treeckle API',
+    'DESCRIPTION': 'API documentation for Treeckle booking system',
+    'VERSION': '3.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
 }
 
 
