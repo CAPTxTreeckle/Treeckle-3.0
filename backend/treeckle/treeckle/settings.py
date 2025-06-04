@@ -180,7 +180,7 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_RENDERER_CLASSES": (
         "djangorestframework_camel_case.render.CamelCaseJSONRenderer",
-        "djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer",  
+        "djangorestframework_camel_case.render.CamelCaseBrowsableAPIRenderer",
     ),
     "DEFAULT_PARSER_CLASSES": (
         "djangorestframework_camel_case.parser.CamelCaseJSONParser",
@@ -192,10 +192,10 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Treeckle API',
-    'DESCRIPTION': 'API documentation for Treeckle booking system',
-    'VERSION': '3.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
+    "TITLE": "Treeckle API",
+    "DESCRIPTION": "API documentation for Treeckle booking system",
+    "VERSION": "3.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 
