@@ -12,6 +12,6 @@ django-jazzmin
 django[argon2]
 django-json-widget
 black==25.1.0
-ruff==0.11.2
+ruff==0.12.11
 pytz
 drf-spectacular
