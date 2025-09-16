@@ -37,11 +37,15 @@ function SignInEmailForm() {
     if (loading) {
       return;
     }
-
     try {
-      const loginDetails = await checkAccount(deepTrim(formData));
+      // Normalise email to lowercase
+      const normalizedFormData = {
+        ...deepTrim(formData),
+        email: formData.email.toLowerCase(),
+      };
+      const loginDetails = await checkAccount(normalizedFormData);
       setLoginDetails(loginDetails);
-      setInputEmail(loginDetails.email);
+      setInputEmail(loginDetails.email.toLowerCase());
     } catch (error) {
       resolveApiError(error as ApiResponseError);
     }
