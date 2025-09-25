@@ -33,6 +33,7 @@ DEBUG = bool(int(os.getenv("DEBUG", 0)))
 CORS_ALLOW_ALL_ORIGINS = DEBUG
 
 ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS").split(" ")
+CSRF_TRUSTED_ORIGINS = ['https://treeckle.com', 'https://beta.treeckle.com']
 
 SITE_ID = 1
 
