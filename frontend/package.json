@@ -104,7 +104,7 @@
     "postbuild": "gzipper compress --verbose --brotli --remove-larger --exclude mp4,pdf ./build",
     "test": "vitest",
     "format": "prettier --write ./src",
-    "lint": "tsc --noEmit && eslint src/**/*.{js,jsx,ts,tsx}",
+    "lint": "tsc --noEmit && eslint src/**/*.{ts,tsx}",
     "create-component": "node component-creator.js",
     "analyze": "vite build --mode analyze && source-map-explorer 'dist/assets/*.js'",
     "serve": "vite preview --host"
