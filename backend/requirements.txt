@@ -3,7 +3,7 @@ djangorestframework==3.14.0
 djangorestframework-simplejwt==4.8.0
 gunicorn==23.0.0
 imagekitio==4.1.0
-psycopg2-binary==2.9.1
+psycopg2-binary==2.9.10
 python-dotenv==1.1.0
 django-anymail[sendinblue]==8.4
 djangorestframework-camel-case
