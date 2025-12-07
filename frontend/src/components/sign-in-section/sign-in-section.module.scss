@@ -6,3 +6,55 @@
   flex-direction: column;
   align-items: center;
 }
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+}
+
+.tooltipContainer {
+  position: relative;
+  display: inline-block;
+
+  .tooltipIcon {
+    cursor: pointer;
+    font-weight: bold;
+    background: #444;
+    color: #fff;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    margin-left: 8px;
+  }
+
+  .tooltipText {
+    visibility: hidden;
+    opacity: 0;
+    background: #333;
+    color: #fff;
+    padding: 7px 16px;
+    border-radius: 6px;
+    position: absolute;
+    left: 120%;
+    top: 50%;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    font-size: 0.95rem;
+    transition: opacity 0.2s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.13);
+    z-index: 10;
+  }
+
+  &:hover .tooltipText,
+  .tooltipIcon:hover + .tooltipText {
+    visibility: visible;
+    opacity: 1;
+  }
+}
