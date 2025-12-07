@@ -44,7 +44,7 @@ function SignInSection() {
         <span>{title}</span>
         <div className={styles.tooltipContainer}>
           <span className={styles.tooltipIcon}>i</span>
-          <span className={styles.tooltipText}>Log in with your NUS email first, to link your Google account under your profile.</span>
+          <span className={styles.tooltipText}>Log in with your NUS email first <br />Link Google account under profile</span>
         </div>
       </Modal.Header>
       <Modal.Content className={styles.signInSection}>

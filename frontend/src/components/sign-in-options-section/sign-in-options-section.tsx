@@ -24,7 +24,7 @@ const PasswordLoginButton = () => {
 
   return (
     <Button
-      content="Sign in with password"
+      content="Sign in with NUS email"
       icon="key"
       fluid
       onClick={() => setPasswordSignIn(true)}
