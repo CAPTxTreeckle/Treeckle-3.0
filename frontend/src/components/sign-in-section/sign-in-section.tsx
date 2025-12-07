@@ -40,8 +40,12 @@ function SignInSection() {
 
   return (
     <>
-      <Modal.Header as={Header} textAlign="center">
-        {title}
+      <Modal.Header as={Header} textAlign="center" className={styles.headerRow}>
+        <span>{title}</span>
+        <div className={styles.tooltipContainer}>
+          <span className={styles.tooltipIcon}>i</span>
+          <span className={styles.tooltipText}>Log in with your NUS email first, to link your Google account under your profile.</span>
+        </div>
       </Modal.Header>
       <Modal.Content className={styles.signInSection}>
         {section}
