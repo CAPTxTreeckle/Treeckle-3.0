@@ -8,7 +8,7 @@ import {
   updateCurrentUserAction,
 } from "../../redux/slices/current-user-slice";
 import PlaceholderWrapper from "../placeholder-wrapper";
-import UserFacebookAuthField from "../user-facebook-auth-field";
+// import UserFacebookAuthField from "../user-facebook-auth-field";
 import UserGoogleAuthField from "../user-google-auth-field";
 import UserPasswordAuthField from "../user-password-auth-field";
 import styles from "./user-auth-section.module.scss";
@@ -109,7 +109,7 @@ function UserAuthSection() {
             </Grid.Column>
           </Grid.Row>
 
-          <Grid.Row>
+          {/* <Grid.Row>
             <Grid.Column
               mobile="5"
               tablet="5"
@@ -138,7 +138,7 @@ function UserAuthSection() {
                 </span>
               </UserFacebookAuthField>
             </Grid.Column>
-          </Grid.Row>
+          </Grid.Row> */}
         </Grid>
       </PlaceholderWrapper>
     </>

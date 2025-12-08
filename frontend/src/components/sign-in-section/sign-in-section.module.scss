@@ -15,47 +15,35 @@
   position: relative;
 }
 
-.tooltipContainer {
-  position: relative;
-  display: inline-block;
+.headerInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
 
-  .tooltipIcon {
-    cursor: pointer;
-    font-weight: bold;
-    background: #444;
-    color: #fff;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    margin-left: 8px;
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+
+  @media (min-width: 769px) {
+    font-size: 1.75rem;
   }
+}
 
-  .tooltipText {
-    visibility: hidden;
-    opacity: 0;
-    background: #333;
-    color: #fff;
-    padding: 7px 16px;
-    border-radius: 6px;
-    text-align: left;
-    position: absolute;
-    left: 120%;
-    top: 50%;
-    transform: translateY(-50%);
-    white-space: nowrap;
-    font-size: 0.95rem;
-    transition: opacity 0.2s;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.13);
-    z-index: 10;
-  }
+.helperText {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  color: #666;
+  text-align: center;
+  max-width: 260px;
+  line-height: 1.2;
+}
 
-  &:hover .tooltipText,
-  .tooltipIcon:hover + .tooltipText {
-    visibility: visible;
-    opacity: 1;
+@media (min-width: 769px) {
+  .helperText {
+    font-size: 0.8rem;
+    max-width: none;
   }
 }
