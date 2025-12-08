@@ -9,8 +9,8 @@ import { Button } from "semantic-ui-react";
 
 import { SignInContext } from "../../contexts/sign-in-provider";
 import {
-  useFacebookAuth,
-  useFacebookLogin,
+  // useFacebookAuth,
+  // useFacebookLogin,
   useGoogleAuth,
   useGoogleLogin,
 } from "../../custom-hooks/api/auth-api";
@@ -24,7 +24,7 @@ const PasswordLoginButton = () => {
 
   return (
     <Button
-      content="Sign in with password"
+      content="Sign in with NUS email"
       icon="key"
       fluid
       onClick={() => setPasswordSignIn(true)}
@@ -82,51 +82,51 @@ const GoogleLoginButton = () => {
   );
 };
 
-const FacebookLoginButton = () => {
-  const dispatch = useAppDispatch();
-  const { loading: isLoggingIn, facebookLogin } = useFacebookLogin();
+// const FacebookLoginButton = () => {
+//   const dispatch = useAppDispatch();
+//   const { loading: isLoggingIn, facebookLogin } = useFacebookLogin();
 
-  const onFacebookLogin = async (response: fb.StatusResponse) => {
-    const { accessToken } = response.authResponse;
+//   const onFacebookLogin = async (response: fb.StatusResponse) => {
+//     const { accessToken } = response.authResponse;
 
-    if (!accessToken) {
-      throw new Error("Failed to retrieve Facebook access token.");
-    }
+//     if (!accessToken) {
+//       throw new Error("Failed to retrieve Facebook access token.");
+//     }
 
-    try {
-      const authData = await facebookLogin({ accessToken });
+//     try {
+//       const authData = await facebookLogin({ accessToken });
 
-      toast.success("Signed in successfully.");
+//       toast.success("Signed in successfully.");
 
-      dispatch(updateCurrentUserAction(authData));
-    } catch (error) {
-      resolveApiError(error as ApiResponseError);
-    }
-  };
+//       dispatch(updateCurrentUserAction(authData));
+//     } catch (error) {
+//       resolveApiError(error as ApiResponseError);
+//     }
+//   };
 
-  const { startFacebookAuth } = useFacebookAuth((response) => {
-    onFacebookLogin(response).catch((error) => console.error(error));
-  });
+//   const { startFacebookAuth } = useFacebookAuth((response) => {
+//     onFacebookLogin(response).catch((error) => console.error(error));
+//   });
 
-  return (
-    <Button
-      icon="facebook"
-      color="facebook"
-      onClick={startFacebookAuth}
-      content="Sign in with Facebook"
-      fluid
-      loading={isLoggingIn}
-      disabled={isLoggingIn}
-    />
-  );
-};
+//   return (
+//     <Button
+//       icon="facebook"
+//       color="facebook"
+//       onClick={startFacebookAuth}
+//       content="Sign in with Facebook"
+//       fluid
+//       loading={isLoggingIn}
+//       disabled={isLoggingIn}
+//     />
+//   );
+// };
 
 function SignInOptionsSection() {
   return (
     <div className={clsx(styles.signInOptionsSection, styles.important)}>
       <PasswordLoginButton />
       <GoogleLoginButton />
-      <FacebookLoginButton />
+      {/* <FacebookLoginButton /> */}
 
       {/* <Button
         content="Sign in with NUSNET"
