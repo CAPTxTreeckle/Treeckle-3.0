@@ -56,6 +56,7 @@ function BookingCalendar(props: Props) {
     <div className={styles.calendarWrapper}>
       <Calendar
         localizer={dateLocalizer}
+        selectable={true}
         toolbar
         titleAccessor="title"
         startAccessor="start"
