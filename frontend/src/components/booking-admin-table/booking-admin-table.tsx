@@ -15,13 +15,10 @@ import {
   START_DATE_TIME,
   START_DATE_TIME_STRING,
   START_TIME_MINS,
-  STATUS,
   TITLE,
   VENUE,
 } from "../../constants";
-import useTableState, {
-  TableStateOptions,
-} from "../../custom-hooks/use-table-state";
+import useTableState from "../../custom-hooks/use-table-state-admin";
 import { useAppSelector } from "../../redux/hooks";
 import {
   selectAllBookings,
@@ -34,25 +31,13 @@ import {
 } from "../../utils/transform-utils";
 import BookingBaseTable, { BookingViewProps } from "../booking-base-table";
 import PlaceholderWrapper from "../placeholder-wrapper";
-import SearchBar from "../search-bar";
+import SearchBar from "../admin-search-bar";
 import UserEmailRenderer from "../user-email-renderer";
 import UserNameRenderer from "../user-name-renderer";
 
 const BOOKER_NAME = `${BOOKER}.${NAME}`;
 const BOOKER_EMAIL = `${BOOKER}.${EMAIL}`;
 const VENUE_NAME = `${VENUE}.${NAME}`;
-
-const BOOKING_ADMIN_TABLE_STATE_OPTIONS: TableStateOptions = {
-  searchKeys: [
-    ID,
-    BOOKER_NAME,
-    BOOKER_EMAIL,
-    EVENT_TIME_RANGE,
-    VENUE_NAME,
-    CREATED_AT_STRING,
-    STATUS,
-  ],
-};
 
 function BookingAdminTable() {
   const allBookings = useAppSelector(selectAllBookings);
@@ -78,13 +63,13 @@ function BookingAdminTable() {
     [allBookings],
   );
 
-  const { processedData, sortBy, setSortBy, onSearchValueChange } =
-    useTableState(bookingViewData, BOOKING_ADMIN_TABLE_STATE_OPTIONS);
+  const { processedData, sortBy, setSortBy, onFilterChange } =
+    useTableState(bookingViewData);
 
   return (
     <Segment.Group raised>
       <Segment secondary>
-        <SearchBar fluid onSearchValueChange={onSearchValueChange} />
+        <SearchBar fluid onFilterChange={onFilterChange} />
       </Segment>
 
       <BookingBaseTable
