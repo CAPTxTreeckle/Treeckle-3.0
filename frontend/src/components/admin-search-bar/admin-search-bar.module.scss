@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+.input {
+  min-width: 0;
+}
+
+.title {
+  flex: 2 1 0;
+}
+
+.small {
+  flex: 1 1 0;
+}
+
+.fluid {
+  width: 100%;
+}
+
+@media (max-width: 520px) {
+  .container {
+    flex-direction: column;
+  }
+  .title,
+  .small {
+    flex: none;
+    width: 100%;
+  }
+}
