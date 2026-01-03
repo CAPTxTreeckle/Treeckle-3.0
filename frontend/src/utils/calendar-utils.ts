@@ -30,7 +30,8 @@ import { END, START } from "../constants";
 import { sort } from "./transform-utils";
 
 export const CURRENT_LOCALE = "en-US";
-export const DAY_HEADER_FORMAT = "EEEE dd MMMM";
+export const DAY_HEADER_FORMAT = "EEE dd MMMM";
+export const WEEKDAY_FORMAT = "EEE";
 
 const locales = {
   [CURRENT_LOCALE]: enUS,

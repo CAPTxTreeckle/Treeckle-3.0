@@ -1,3 +1,4 @@
+from asyncio.log import logger
 import os
 from typing import Iterable
 from datetime import timedelta
@@ -33,7 +34,9 @@ def send_password_reset_email(user: User, new_password: str):
     email.attach_alternative(html_message, "text/html")
 
     connection = get_connection(fail_silently=True)
-    connection.send_messages([email])
+    sent = connection.send_messages([email])
+    if sent != 1:
+        logger.warning("Password reset email not sent; expected 1, got %s", sent)
 
 
 def send_user_invite_emails(user_invites: Iterable[UserInvite]):
