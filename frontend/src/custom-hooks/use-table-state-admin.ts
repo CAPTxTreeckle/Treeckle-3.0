@@ -1,3 +1,4 @@
+import { endOfDay, isWithinInterval, parseISO, startOfDay } from "date-fns";
 import throttle from "lodash/throttle";
 import { Key, useMemo, useState } from "react";
 import { SortOrder } from "react-base-table";
@@ -14,7 +15,17 @@ export type TableStateOptions = {
   defaultSortBy?: SortBy;
 };
 
-export default function useTableState<T>(
+interface FilterableItem {
+  title?: string;
+  venue?: {
+    name?: string;
+  } | null;
+  eventDateString?: string;
+  startDateTime?: number | string;
+  status?: string;
+}
+
+export default function useTableState<T extends FilterableItem>(
   data: T[],
   { defaultSortBy }: TableStateOptions = {},
 ) {
@@ -23,6 +34,7 @@ export default function useTableState<T>(
     title: "",
     venue: "",
     date: "",
+    status: ""
   });
 
   const onFilterChange = useMemo(
@@ -31,24 +43,17 @@ export default function useTableState<T>(
   );
 
   const filteredData = useMemo(() => {
-    const { title, venue, date } = activeFilters;
-
+    const { title, venue, date, status } = activeFilters;
     if (
         data.length === 0 || 
-        (!title && !venue && !date)
+        (!title && !venue && !date && !status)
     ) {
       return data;
     }
 
-    const formattedDate = date
-    ? new Date(date).toLocaleDateString("en-GB", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-      })
-    : "";
-    
-    return data.filter((item: any) => {
+    return data.filter((datum) => {
+      const item = datum;
+
       const titleMatch =
         !title ||
         (item.title &&
@@ -59,11 +64,29 @@ export default function useTableState<T>(
         (item.venue?.name &&
           item.venue.name.toLowerCase().includes(venue.toLowerCase()));
 
-      const dateMatch =
-        !date ||
-        (item.eventDateString && item.eventDateString.includes(formattedDate));
+      const dateMatch = (() => {
+        if (!date) {
+          return true;
+        }
 
-      return titleMatch && venueMatch && dateMatch;
+        if (!item.startDateTime) {
+          return false;
+        }
+
+        const filterDate = parseISO(date);
+        const today = new Date();
+        const start = startOfDay(filterDate < today ? filterDate : today);
+        const end = endOfDay(filterDate > today ? filterDate : today);
+
+        return isWithinInterval(new Date(item.startDateTime), { start, end });
+      })();
+
+      const statusMatch =
+        !status ||
+        (item.status &&
+          item.status.toLowerCase() === status.toLowerCase());
+
+      return titleMatch && venueMatch && dateMatch && statusMatch;
     });
   }, [data, activeFilters]);
 
