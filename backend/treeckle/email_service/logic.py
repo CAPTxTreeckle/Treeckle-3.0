@@ -1,5 +1,3 @@
-import logging
-logger = logging.getLogger(__name__)
 import os
 from typing import Iterable
 from datetime import timedelta
@@ -34,8 +32,9 @@ def send_password_reset_email(user: User, new_password: str):
     email = EmailMultiAlternatives(subject=subject, body=plain_message, to=[user.email])
     email.attach_alternative(html_message, "text/html")
 
-    connection = get_connection(fail_silently=False)
-    sent = connection.send_messages([email])
+    connection = get_connection(fail_silently=True)
+    connection.send_messages([email])
+
 
 def send_user_invite_emails(user_invites: Iterable[UserInvite]):
     if not user_invites:
