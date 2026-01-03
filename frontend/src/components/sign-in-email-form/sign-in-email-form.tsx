@@ -59,7 +59,7 @@ function SignInEmailForm() {
           handleSubmit(onSubmit)().catch((error) => console.error(error));
         }}
       >
-        <FormField name={EMAIL} type="email" label="Email" required autoFocus />
+        <FormField name={EMAIL} type="email" label="NUS email (e.g: e1234567@u.nus.edu)" required autoFocus />
 
         <Form.Button
           type="submit"
