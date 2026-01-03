@@ -25,3 +25,15 @@
 .cancelled {
   background-color: base.$light-grey-color !important;
 }
+
+:global(.rbc-month-view .rbc-date-cell) {
+  padding: 0;
+}
+
+:global(.rbc-month-view .rbc-date-cell .rbc-button-link) {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0.25rem 0.5rem;
+  text-align: left;
+}

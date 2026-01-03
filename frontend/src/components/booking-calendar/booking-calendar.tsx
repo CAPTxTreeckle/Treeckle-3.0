@@ -15,6 +15,7 @@ import {
   CURRENT_LOCALE,
   dateLocalizer,
   DAY_HEADER_FORMAT,
+  WEEKDAY_FORMAT,
   dayPropGetter,
   slotPropGetter,
   weekRangeFormat,
@@ -55,6 +56,7 @@ function BookingCalendar(props: Props) {
     <div className={styles.calendarWrapper}>
       <Calendar
         localizer={dateLocalizer}
+        selectable={true}
         toolbar
         titleAccessor="title"
         startAccessor="start"
@@ -74,6 +76,7 @@ function BookingCalendar(props: Props) {
         culture={CURRENT_LOCALE}
         formats={{
           dayHeaderFormat: DAY_HEADER_FORMAT,
+          weekdayFormat: WEEKDAY_FORMAT,
           dayRangeHeaderFormat: weekRangeFormat,
         }}
         dayPropGetter={dayPropGetter}
