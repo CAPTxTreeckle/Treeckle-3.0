@@ -1,9 +1,8 @@
-import { parseISO, parse, isWithinInterval, startOfDay, endOfDay } from "date-fns";
+import { endOfDay, isWithinInterval, parseISO, startOfDay } from "date-fns";
 import throttle from "lodash/throttle";
 import { Key, useMemo, useState } from "react";
 import { SortOrder } from "react-base-table";
 import { Filters } from "../components/admin-search-bar/admin-search-bar";
-import { DATE_FORMAT } from "../constants";
 
 import { sort } from "../utils/transform-utils";
 
@@ -21,7 +20,8 @@ interface FilterableItem {
   venue?: {
     name?: string;
   } | null;
-  date?: string;
+  eventDateString?: string;
+  startDateTime?: number | string;
   status?: string;
 }
 
@@ -65,19 +65,20 @@ export default function useTableState<T extends FilterableItem>(
           item.venue.name.toLowerCase().includes(venue.toLowerCase()));
 
       const dateMatch = (() => {
-        if (!date) return true;
+        if (!date) {
+          return true;
+        }
+
+        if (!item.startDateTime) {
+          return false;
+        }
 
         const filterDate = parseISO(date);
         const today = new Date();
-
-        if (!item.date) return false;
-
-        const itemDate = parse(item.date, DATE_FORMAT, new Date());
-
         const start = startOfDay(filterDate < today ? filterDate : today);
         const end = endOfDay(filterDate > today ? filterDate : today);
 
-        return isWithinInterval(itemDate, { start, end });
+        return isWithinInterval(new Date(item.startDateTime), { start, end });
       })();
 
       const statusMatch =
