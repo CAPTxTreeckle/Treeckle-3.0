@@ -50,6 +50,7 @@ const statusOptions = [
 ];
 
 const dateOptions = [
+  { key: "today", text: "Today", value: "today" },
   { key: "tomorrow", text: "Tomorrow", value: "tomorrow" },
   { key: "next3days", text: "Next 3 days", value: "next3days" },
   { key: "nextweek", text: "Next week", value: "nextweek" },
@@ -109,6 +110,9 @@ function SearchBar({ className, onFilterChange, fluid = false }: Props) {
     let newDate = today;
 
     switch (value) {
+      case "today":
+        newDate = today
+        break;
       case "tomorrow":
         newDate = addDays(today, 1);
         break;
