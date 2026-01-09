@@ -93,7 +93,7 @@ services:
 
   ## can only be accessed within backend network
   db:
-    image: postgres:13-alpine
+    image: postgres:18-alpine
     networks:
       - backend
     volumes:
@@ -103,7 +103,7 @@ services:
     restart: always
 
   db-staging:
-    image: postgres:13-alpine
+    image: postgres:18-alpine
     networks:
       - backend-beta
     volumes:
