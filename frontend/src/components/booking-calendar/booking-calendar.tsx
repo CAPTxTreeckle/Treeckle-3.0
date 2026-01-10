@@ -51,12 +51,20 @@ type Props = Omit<CalendarProps<CalendarBooking>, "localizer"> &
   }>;
 
 function BookingCalendar(props: Props) {
-  const { onRepeatSlot } = props;
+  const { onRepeatSlot, onSelectSlot, longPressThreshold, ...calendarProps } =
+    props;
+
+  const handleSelectSlot = (slotInfo: any) => {
+    if (onSelectSlot) {
+      onSelectSlot(slotInfo);
+    }
+  };
   return (
     <div className={styles.calendarWrapper}>
       <Calendar
         localizer={dateLocalizer}
         selectable={true}
+        longPressThreshold={longPressThreshold ?? 50}
         toolbar
         titleAccessor="title"
         startAccessor="start"
@@ -82,7 +90,8 @@ function BookingCalendar(props: Props) {
         dayPropGetter={dayPropGetter}
         slotPropGetter={slotPropGetter}
         eventPropGetter={eventPropGetter}
-        {...props}
+        onSelectSlot={handleSelectSlot}
+        {...calendarProps}
       />
     </div>
   );

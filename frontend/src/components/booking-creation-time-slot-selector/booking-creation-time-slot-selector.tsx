@@ -223,6 +223,7 @@ function BookingCreationTimeSlotSelector() {
           onDrillDown={onDrillDown}
           onRepeatSlot={onRepeatSlot}
           selectable
+          longPressThreshold={50}
         />
       </Segment>
 
