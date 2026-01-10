@@ -27,8 +27,8 @@
 }
 
 :global(.rbc-month-view .rbc-date-cell) {
-  min-height: 50px; /* Adjust height based on your design */
-  padding-bottom: 10px; /* Ensures space below existing events is clickable */
+  min-height: 50px;
+  padding-bottom: 10px;
 }
 
 :global(.rbc-month-view .rbc-date-cell .rbc-button-link) {
