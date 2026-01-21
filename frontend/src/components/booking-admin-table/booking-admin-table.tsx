@@ -1,6 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Column } from "react-base-table";
-import { Segment } from "semantic-ui-react";
+import { Segment, Button } from "semantic-ui-react";
 
 import {
   BOOKER,
@@ -29,7 +29,7 @@ import {
   displayDateTime,
   displayTimeRange,
 } from "../../utils/transform-utils";
-import BookingBaseTable, { BookingViewProps } from "../booking-base-table";
+import BookingBaseTable, { BookingViewProps } from "../admin-booking-base-table";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../admin-search-bar";
 import UserEmailRenderer from "../user-email-renderer";
@@ -42,6 +42,7 @@ const VENUE_NAME = `${VENUE}.${NAME}`;
 function BookingAdminTable() {
   const allBookings = useAppSelector(selectAllBookings);
   const loading = useAppSelector(selectBookingsLoadingState);
+  const [selectedBookingIds, setSelectedBookingIds] = useState<Set<number>>(new Set());
 
   const bookingViewData: BookingViewProps[] = useMemo(
     () =>
@@ -94,6 +95,8 @@ function BookingAdminTable() {
         setSortBy={setSortBy}
         defaultStatusColumnWidth={110}
         adminView
+        selectedBookingIds={selectedBookingIds}
+        onSelectionChange={setSelectedBookingIds}
       >
         <Column<BookingViewProps>
           key={ID}
@@ -163,6 +166,32 @@ function BookingAdminTable() {
           sortable
         />
       </BookingBaseTable>
+
+      {selectedBookingIds.size > 0 && (
+        <Segment attached="bottom" basic style={{ display: "flex", gap: "1rem", justifyContent: "flex-end", padding: "1rem" }}>
+          <div style={{ marginRight: "auto" }}>
+            {selectedBookingIds.size} booking{selectedBookingIds.size !== 1 ? "s" : ""} selected
+          </div>
+          <Button
+            color="green"
+            onClick={() => {
+              // TODO: Handle accept all
+              console.log("Accept All:", selectedBookingIds);
+            }}
+          >
+            Accept All
+          </Button>
+          <Button
+            color="red"
+            onClick={() => {
+              // TODO: Handle decline all
+              console.log("Decline All:", selectedBookingIds);
+            }}
+          >
+            Decline All
+          </Button>
+        </Segment>
+      )}
     </Segment.Group>
   );
 }
