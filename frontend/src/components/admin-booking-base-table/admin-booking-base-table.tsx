@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState, useRef, useEffect } from "react";
 import { AutoResizer, Column, ColumnShape, RowKey } from "react-base-table";
 import { Segment, Checkbox } from "semantic-ui-react";
 
@@ -65,16 +65,12 @@ function BookingBaseTable({
   defaultActionColumnWidth = 100,
   selectedBookingIds = new Set(),
   onSelectionChange,
-
+  
   children,
   ...props
 }: Props) {
   const { getSingleBooking } = useGetSingleBooking();
   const dispatch = useAppDispatch();
-  const [localSelectedIds, setLocalSelectedIds] = useState<Set<number>>(selectedBookingIds);
-
-  // Sync external prop changes
-  const selected = onSelectionChange ? selectedBookingIds : localSelectedIds;
 
   const StatusButtonRenderer: ColumnShape<BookingViewProps>["cellRenderer"] =
     useCallback(
@@ -89,34 +85,37 @@ function BookingBaseTable({
         ),
       [adminView],
     );
+  
+  const selectedIdsRef = useRef(selectedBookingIds);
+
+  useEffect(() => {
+    selectedIdsRef.current = selectedBookingIds;
+  }, [selectedBookingIds]);
 
   const CheckboxRenderer: ColumnShape<BookingViewProps>["cellRenderer"] =
-    useCallback(
-      ({ rowData: { id } }: { rowData: BookingViewProps }) => {
-        if (id === undefined) return null;
-        const isChecked = selected.has(id);
-        return (
+    ({ rowData: { id } }: { rowData: BookingViewProps }) => {
+      if (id === undefined) return null;
+      const isChecked = selectedBookingIds.has(id);
+      return (
+        <div onClick={(e) => e.stopPropagation()}>
           <Checkbox
             checked={isChecked}
-            onClick={(e) => {
-              e.stopPropagation();
-              const newSelected = new Set(selected);
-              if (isChecked) {
+            onChange={() => {
+              const currentSet = selectedIdsRef.current; 
+              const newSelected = new Set(currentSet);
+              if (currentSet.has(id)) {
                 newSelected.delete(id);
               } else {
                 newSelected.add(id);
               }
               if (onSelectionChange) {
                 onSelectionChange(newSelected);
-              } else {
-                setLocalSelectedIds(newSelected);
               }
             }}
           />
-        );
-      },
-      [selected, onSelectionChange],
-    );
+        </div>
+      );
+    };
 
   const [expandedRowKeys, setExpandedRowKeys] = useState<RowKey[]>([]);
   const onRowExpand: TableProps<BookingViewProps>["onRowExpand"] = ({
@@ -144,6 +143,7 @@ function BookingBaseTable({
           <Table<BookingViewProps>
             width={width}
             height={height}
+            ignoreFunctionInColumnCompare={false}
             rowRenderer={RowRenderer}
             estimatedRowHeight={50}
             fixed
@@ -199,6 +199,3 @@ function BookingBaseTable({
 }
 
 export default BookingBaseTable;
-
-// Checkbox -> Change state of filter bar 
-// -> Research how Status column updates backend? Use a loop to call function to delete backend data OR define new function to remove all at once
