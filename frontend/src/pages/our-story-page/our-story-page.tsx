@@ -219,6 +219,26 @@ function OurStoryPage() {
           </a>{" "}
           - Computer Science, NUS Computing (2023 - 2024)
         </List.Item>
+        <List.Item>
+          <a
+            rel="noopener noreferrer"
+            target="_blank"
+            href="https://github.com/zachchong"
+          >
+            Zach Chong Zhuang Hong
+          </a>{" "}
+          - Computer Science, NUS Computing (2025 - 2026)
+        </List.Item>
+        <List.Item>
+          <a
+            rel="noopener noreferrer"
+            target="_blank"
+            href="https://github.com/Shum-ster"
+          >
+            Shum Xian You
+          </a>{" "}
+          - Mathematics, NUS Science (2025 - 2026)
+        </List.Item>
       </List>
 
       <h2>Milestones</h2>
