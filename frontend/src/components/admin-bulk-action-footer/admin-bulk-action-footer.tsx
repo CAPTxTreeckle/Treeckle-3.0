@@ -7,7 +7,7 @@ import { useUpdateBookingStatus } from "../../custom-hooks/api/bookings-api";
 import { useAppDispatch } from "../../redux/hooks";
 import { updateBookingsAction } from "../../redux/slices/bookings-slice";
 import { refreshPendingBookingCountThunk } from "../../redux/slices/pending-booking-count-slice";
-import { BookingStatusAction, BookingStatus } from "../../types/bookings";
+import { BookingStatusAction, BookingStatus, BookingData } from "../../types/bookings";
 import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import { BookingViewProps } from "../admin-booking-base-table";
 
@@ -67,7 +67,7 @@ const BookingSelectionFooter = ({ selectedIds, processedData, onSelectionChange 
       }
 
       // looped API calls
-      const allUpdatedBookings: any[] = [];
+      const allUpdatedBookings: BookingData[] = [];
 
       for (const booking of validBookingsToUpdate) {
         if (!booking.id) continue;
@@ -117,7 +117,7 @@ const BookingSelectionFooter = ({ selectedIds, processedData, onSelectionChange 
         <Button 
           size="small" 
           color="green" 
-          onClick={() => handleBulkAction (BookingStatusAction.Approve)}
+          onClick={() => { handleBulkAction(BookingStatusAction.Approve); }}
           className={styles.actionBtn}
           loading={processing}
           disabled={processing}
@@ -128,7 +128,7 @@ const BookingSelectionFooter = ({ selectedIds, processedData, onSelectionChange 
         <Button 
           size="small" 
           color="red" 
-          onClick={() => handleBulkAction (BookingStatusAction.Reject)}
+          onClick={() => { handleBulkAction(BookingStatusAction.Reject); }}
           className={styles.actionBtn}
           loading={processing}
           disabled={processing}

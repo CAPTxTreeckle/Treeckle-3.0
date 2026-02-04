@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState, useRef, useEffect } from "react";
+import { useCallback, useState, useRef, useEffect } from "react";
 import { AutoResizer, Column, ColumnShape, RowKey } from "react-base-table";
 import { Segment, Checkbox } from "semantic-ui-react";
 
@@ -93,29 +93,32 @@ function BookingBaseTable({
   }, [selectedBookingIds]);
 
   const CheckboxRenderer: ColumnShape<BookingViewProps>["cellRenderer"] =
-    ({ rowData: { id } }: { rowData: BookingViewProps }) => {
-      if (id === undefined) return null;
-      const isChecked = selectedBookingIds.has(id);
-      return (
-        <div onClick={(e) => e.stopPropagation()}>
-          <Checkbox
-            checked={isChecked}
-            onChange={() => {
-              const currentSet = selectedIdsRef.current; 
-              const newSelected = new Set(currentSet);
-              if (currentSet.has(id)) {
-                newSelected.delete(id);
-              } else {
-                newSelected.add(id);
-              }
-              if (onSelectionChange) {
-                onSelectionChange(newSelected);
-              }
-            }}
-          />
-        </div>
-      );
-    };
+    useCallback(
+      ({ rowData: { id } }: { rowData: BookingViewProps }) => {
+        if (id === undefined) return null;
+        const isChecked = selectedBookingIds.has(id);
+        return (
+          <div onClick={(e) => e.stopPropagation()}>
+            <Checkbox
+              checked={isChecked}
+              onChange={() => {
+                const currentSet = selectedIdsRef.current; 
+                const newSelected = new Set(currentSet);
+                if (currentSet.has(id)) {
+                  newSelected.delete(id);
+                } else {
+                  newSelected.add(id);
+                }
+                if (onSelectionChange) {
+                  onSelectionChange(newSelected);
+                }
+              }}
+            />
+          </div>
+        );
+      },
+      [selectedBookingIds, onSelectionChange],
+    );
 
   const [expandedRowKeys, setExpandedRowKeys] = useState<RowKey[]>([]);
   const onRowExpand: TableProps<BookingViewProps>["onRowExpand"] = ({
