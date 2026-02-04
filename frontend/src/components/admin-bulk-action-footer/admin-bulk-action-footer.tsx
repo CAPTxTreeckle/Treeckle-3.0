@@ -117,7 +117,7 @@ const BookingSelectionFooter = ({ selectedIds, processedData, onSelectionChange 
         <Button 
           size="small" 
           color="green" 
-          onClick={() => { handleBulkAction(BookingStatusAction.Approve); }}
+          onClick={() => { void handleBulkAction(BookingStatusAction.Approve); }}
           className={styles.actionBtn}
           loading={processing}
           disabled={processing}
@@ -128,7 +128,7 @@ const BookingSelectionFooter = ({ selectedIds, processedData, onSelectionChange 
         <Button 
           size="small" 
           color="red" 
-          onClick={() => { handleBulkAction(BookingStatusAction.Reject); }}
+          onClick={() => { void handleBulkAction(BookingStatusAction.Reject); }}
           className={styles.actionBtn}
           loading={processing}
           disabled={processing}
