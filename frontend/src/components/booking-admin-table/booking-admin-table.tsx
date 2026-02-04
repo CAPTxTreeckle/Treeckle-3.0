@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Column } from "react-base-table";
-import { Segment, Button } from "semantic-ui-react";
+import { Segment } from "semantic-ui-react";
 
 import {
   BOOKER,
@@ -34,6 +34,7 @@ import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../admin-search-bar";
 import UserEmailRenderer from "../user-email-renderer";
 import UserNameRenderer from "../user-name-renderer";
+import BookingSelectionFooter from "../admin-bulk-action-footer";
 
 const BOOKER_NAME = `${BOOKER}.${NAME}`;
 const BOOKER_EMAIL = `${BOOKER}.${EMAIL}`;
@@ -66,7 +67,7 @@ function BookingAdminTable() {
 
   const { processedData, sortBy, setSortBy, onFilterChange } =
     useTableState(bookingViewData);
-
+  
   return (
     <Segment.Group raised>
       <Segment secondary>
@@ -167,31 +168,11 @@ function BookingAdminTable() {
         />
       </BookingBaseTable>
 
-      {selectedBookingIds.size > 0 && (
-        <Segment attached="bottom" basic style={{ display: "flex", gap: "1rem", justifyContent: "flex-end", padding: "1rem" }}>
-          <div style={{ marginRight: "auto" }}>
-            {selectedBookingIds.size} booking{selectedBookingIds.size !== 1 ? "s" : ""} selected
-          </div>
-          <Button
-            color="green"
-            onClick={() => {
-              // TODO: Handle accept all
-              console.log("Accept All:", selectedBookingIds);
-            }}
-          >
-            Accept All
-          </Button>
-          <Button
-            color="red"
-            onClick={() => {
-              // TODO: Handle decline all
-              console.log("Decline All:", selectedBookingIds);
-            }}
-          >
-            Decline All
-          </Button>
-        </Segment>
-      )}
+      <BookingSelectionFooter 
+        selectedIds={selectedBookingIds} 
+        processedData={processedData}
+        onSelectionChange={setSelectedBookingIds}
+      />
     </Segment.Group>
   );
 }
