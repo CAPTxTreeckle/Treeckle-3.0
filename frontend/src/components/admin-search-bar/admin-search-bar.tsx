@@ -26,6 +26,7 @@ type Props = {
   className?: string;
   onFilterChange: (newFilters: Filters) => void;
   fluid?: boolean;
+  disabled?: boolean;
 };
 
 const venueOptions = [
@@ -67,7 +68,7 @@ const dateOptions = [
   { key: "lastyear", text: "Last year", value: "lastyear" },
 ];
 
-function SearchBar({ className, onFilterChange, fluid = false }: Props) {
+function SearchBar({ className, onFilterChange, fluid = false, disabled = false }: Props) {
   const [filters, setFilters] = useState<Filters>({
     title: "",
     venue: "",
@@ -76,6 +77,7 @@ function SearchBar({ className, onFilterChange, fluid = false }: Props) {
   });
 
   const setField = (field: keyof Filters, value: string) => {
+    if (disabled) return;
     const next = { ...filters, [field]: value };
     setFilters(next);
     onFilterChange(next);
@@ -184,7 +186,7 @@ function SearchBar({ className, onFilterChange, fluid = false }: Props) {
   }, [filters.date]);
 
   return (
-    <div className={clsx(styles.container, fluid && styles.fluid, className)}>
+    <div className={clsx(styles.container, fluid && styles.fluid, className, disabled && styles.disabled)}>
       <Input
         fluid
         className={clsx(styles.input, styles.title)}
@@ -198,6 +200,7 @@ function SearchBar({ className, onFilterChange, fluid = false }: Props) {
         iconPosition="left"
         value={filters.title}
         onChange={(_, { value }) => setField("title", value)}
+        disabled={disabled}
         placeholder="Search title..."
       />
 
@@ -211,6 +214,7 @@ function SearchBar({ className, onFilterChange, fluid = false }: Props) {
         options={venueOptions}
         value={filters.venue}
         onChange={handleVenueChange}
+        disabled={disabled}
       />
 
       <Dropdown
@@ -222,6 +226,7 @@ function SearchBar({ className, onFilterChange, fluid = false }: Props) {
         options={dateOptions}
         value={currentShortcutValue}
         onChange={handleDateChange}
+        disabled={disabled}
       />
 
       <Dropdown
@@ -234,6 +239,7 @@ function SearchBar({ className, onFilterChange, fluid = false }: Props) {
         options={statusOptions}
         value={filters.status}
         onChange={handleStatusChange}
+        disabled={disabled}
       />
     </div>
   );

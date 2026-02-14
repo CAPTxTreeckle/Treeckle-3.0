@@ -4,6 +4,7 @@ import { Segment, Checkbox } from "semantic-ui-react";
 
 import {
   ACTION,
+  CHECKBOX,
   CREATED_AT_STRING,
   EVENT_TIME_RANGE,
   ID,
@@ -169,7 +170,7 @@ function BookingBaseTable({
             {...props}
           >
             <Column<BookingViewProps>
-              key="checkbox" // hmm change to a constant?
+              key={CHECKBOX}
               title=""
               width={50}
               align="center"

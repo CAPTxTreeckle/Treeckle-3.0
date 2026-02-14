@@ -71,7 +71,7 @@ function BookingAdminTable() {
   return (
     <Segment.Group raised>
       <Segment secondary>
-        <SearchBar fluid onFilterChange={onFilterChange} />
+        <SearchBar fluid onFilterChange={onFilterChange} disabled={selectedBookingIds.size !== 0} />
       </Segment>
 
       <BookingBaseTable
