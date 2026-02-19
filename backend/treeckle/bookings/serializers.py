@@ -56,3 +56,10 @@ class PostBookingSerializer(serializers.ModelSerializer):
 
 class PatchSingleBookingSerializer(serializers.Serializer):
     action = serializers.ChoiceField(choices=BookingStatusAction.choices)
+
+class PatchBulkBookingSerializer(serializers.Serializer):
+    booking_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        allow_empty=False
+    )
+    action = serializers.ChoiceField(choices=BookingStatusAction.choices)

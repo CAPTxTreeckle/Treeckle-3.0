@@ -291,6 +291,28 @@ def update_booking_status(
 
     return updated_bookings, id_to_previous_booking_status_mapping
 
+@transaction.atomic
+def bulk_update_booking_status(
+    booking_ids: list[int], action: BookingStatusAction, user: User
+) -> tuple[list[Booking], dict[int, BookingStatus]]:
+    
+    bookings_to_update = get_bookings(id__in=booking_ids)
+    
+    all_updated_bookings_dict = {}
+    master_status_mapping = {}
+
+    for booking in bookings_to_update:
+        # reuse single update_booking_status
+        updated_bookings, status_mapping = update_booking_status(
+            booking=booking, action=action, user=user
+        )
+        
+        for updated_booking in updated_bookings:
+            all_updated_bookings_dict[updated_booking.id] = updated_booking
+            
+        master_status_mapping.update(status_mapping)
+
+    return list(all_updated_bookings_dict.values()), master_status_mapping
 
 def delete_bookings(
     booking_ids_to_be_deleted: Iterable[int], organization: Organization

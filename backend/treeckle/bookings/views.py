@@ -20,6 +20,7 @@ from .serializers import (
     GetBookingSerializer,
     PostBookingSerializer,
     PatchSingleBookingSerializer,
+    PatchBulkBookingSerializer,
 )
 from .models import Booking, BookingStatus
 from .middlewares import check_requester_is_booker_or_admin
@@ -30,6 +31,7 @@ from .logic import (
     create_bookings,
     DateTimeInterval,
     update_booking_status,
+    bulk_update_booking_status,
 )
 from .middlewares import check_requester_booking_same_organization
 
@@ -364,5 +366,39 @@ class SingleBookingView(APIView):
         data = booking_to_json(booking, full_details=True)
 
         booking.delete()
+
+        return Response(data, status=status.HTTP_200_OK)
+    
+class BulkBookingView(APIView):
+    """
+    Bulk booking management endpoint.
+
+    PATCH: Update status for multiple bookings
+    - Actions: APPROVE, REJECT
+    - Runs in a single atomic transaction
+    - Returns updated booking(s) information
+    """
+
+    @check_access(Role.ADMIN)
+    def patch(self, request, requester: User):
+        serializer = PatchBulkBookingSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        booking_ids = serializer.validated_data.get("booking_ids")
+        action = serializer.validated_data.get("action")
+
+        (
+            updated_bookings,
+            master_status_mapping,
+        ) = bulk_update_booking_status(
+            booking_ids=booking_ids, action=action, user=requester
+        )
+
+        send_updated_booking_emails(
+            bookings=updated_bookings,
+            id_to_previous_booking_status_mapping=master_status_mapping,
+        )
+
+        data = [booking_to_json(booking) for booking in updated_bookings]
 
         return Response(data, status=status.HTTP_200_OK)

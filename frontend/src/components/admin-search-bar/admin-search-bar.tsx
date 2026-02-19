@@ -47,7 +47,8 @@ const venueOptions = [
 const statusOptions = [
   { key: "app", text: "Approved", value: "Approved" },
   { key: "pen", text: "Pending", value: "Pending" },
-  { key: "rej", text: "Rejected", value: "Rejected" }
+  { key: "rej", text: "Rejected", value: "Rejected" },
+  { key: "cnl", text: "Cancelled", value: "Cancelled" }
 ];
 
 const dateOptions = [

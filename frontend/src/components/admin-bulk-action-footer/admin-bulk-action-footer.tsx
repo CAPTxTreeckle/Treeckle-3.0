@@ -3,11 +3,11 @@ import { Button } from "semantic-ui-react";
 import { toast } from "react-toastify";
 import styles from "./admin-bulk-action-footer.module.scss";
 
-import { useUpdateBookingStatus } from "../../custom-hooks/api/bookings-api";
+import { useUpdateBulkBookingStatus } from "../../custom-hooks/api/bookings-api";
 import { useAppDispatch } from "../../redux/hooks";
 import { updateBookingsAction } from "../../redux/slices/bookings-slice";
 import { refreshPendingBookingCountThunk } from "../../redux/slices/pending-booking-count-slice";
-import { BookingStatusAction, BookingStatus, BookingData } from "../../types/bookings";
+import { BookingStatusAction, BookingStatus } from "../../types/bookings";
 import { ApiResponseError, resolveApiError } from "../../utils/error-utils";
 import { BookingViewProps } from "../admin-booking-base-table";
 
@@ -19,7 +19,7 @@ type Props = {
 
 const BookingSelectionFooter = ({ selectedIds, processedData, onSelectionChange }: Props) => {
   const dispatch = useAppDispatch();
-  const { updateBookingStatus } = useUpdateBookingStatus();
+  const { updateBulkBookingStatus } = useUpdateBulkBookingStatus();
   const [processing, setProcessing] = useState(false);
 
   // extracts booking Ids to select all
@@ -48,10 +48,11 @@ const BookingSelectionFooter = ({ selectedIds, processedData, onSelectionChange 
 
     setProcessing(true);
     
-    // filter out clashes in booking
+    // filter out cancelled bookings and clashes e.g. accepting an already accepted booking
     try {
       const validBookingsToUpdate = processedData.filter((booking) => {
         if (!booking.id || !selectedIds.has(booking.id)) return false;
+        
         if (action === BookingStatusAction.Approve) {
           return booking.status !== BookingStatus.Approved && booking.status !== BookingStatus.Cancelled;
         } else {
@@ -60,26 +61,23 @@ const BookingSelectionFooter = ({ selectedIds, processedData, onSelectionChange 
       });
 
       if (validBookingsToUpdate.length === 0) {
-        toast.info("All selected bookings are already in the target state.");
+        toast.info("No bookings were updated.");
         setProcessing(false);
         onSelectionChange(new Set());
         return;
       }
 
-      // looped API calls
-      const allUpdatedBookings: BookingData[] = [];
+      const validBookingIds = validBookingsToUpdate
+        .map((b) => b.id)
+        .filter((id): id is number => id !== undefined);
 
-      for (const booking of validBookingsToUpdate) {
-        if (!booking.id) continue;
-        const result = await updateBookingStatus(booking.id, action);
-        allUpdatedBookings.push(...result);
-      }
+      const allUpdatedBookings = await updateBulkBookingStatus(validBookingIds, action);
 
       dispatch(updateBookingsAction({ bookings: allUpdatedBookings }));
       dispatch(refreshPendingBookingCountThunk());
 
       toast.success(
-        `Successfully ${action === BookingStatusAction.Approve ? "approved" : "rejected"} ${allUpdatedBookings.length} bookings.`
+        `Successfully updated ${allUpdatedBookings.length} bookings.`
       );
 
       onSelectionChange(new Set());
