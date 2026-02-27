@@ -6,6 +6,7 @@ export const BOOKING_ID = "bookingId";
 export const CAPACITY = "capacity";
 export const CATEGORIES = "categories";
 export const CATEGORY = "category";
+export const CHECKBOX = "checkbox";
 export const NON_COMMA_SPACE_REGEX = /[^,\s]+/g;
 export const CREATED_AT = "createdAt";
 export const CREATED_AT_STRING = "createdAtString";

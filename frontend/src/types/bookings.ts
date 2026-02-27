@@ -65,6 +65,11 @@ export type BookingPatchData = {
   [ACTION]: BookingStatusAction;
 };
 
+export type BulkBookingPatchData = {
+  booking_ids: number[]; 
+  [ACTION]: BookingStatusAction; 
+};
+
 export enum BookingStatusAction {
   Revoke = "REVOKE",
   Approve = "APPROVE",

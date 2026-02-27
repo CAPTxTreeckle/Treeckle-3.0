@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { Column } from "react-base-table";
 import { Segment } from "semantic-ui-react";
 
@@ -29,11 +29,12 @@ import {
   displayDateTime,
   displayTimeRange,
 } from "../../utils/transform-utils";
-import BookingBaseTable, { BookingViewProps } from "../booking-base-table";
+import BookingBaseTable, { BookingViewProps } from "../admin-booking-base-table";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import SearchBar from "../admin-search-bar";
 import UserEmailRenderer from "../user-email-renderer";
 import UserNameRenderer from "../user-name-renderer";
+import BookingSelectionFooter from "../admin-bulk-action-footer";
 
 const BOOKER_NAME = `${BOOKER}.${NAME}`;
 const BOOKER_EMAIL = `${BOOKER}.${EMAIL}`;
@@ -42,6 +43,7 @@ const VENUE_NAME = `${VENUE}.${NAME}`;
 function BookingAdminTable() {
   const allBookings = useAppSelector(selectAllBookings);
   const loading = useAppSelector(selectBookingsLoadingState);
+  const [selectedBookingIds, setSelectedBookingIds] = useState<Set<number>>(new Set());
 
   const bookingViewData: BookingViewProps[] = useMemo(
     () =>
@@ -65,11 +67,11 @@ function BookingAdminTable() {
 
   const { processedData, sortBy, setSortBy, onFilterChange } =
     useTableState(bookingViewData);
-
+  
   return (
     <Segment.Group raised>
       <Segment secondary>
-        <SearchBar fluid onFilterChange={onFilterChange} />
+        <SearchBar fluid onFilterChange={onFilterChange} disabled={selectedBookingIds.size !== 0} />
       </Segment>
 
       <BookingBaseTable
@@ -94,6 +96,8 @@ function BookingAdminTable() {
         setSortBy={setSortBy}
         defaultStatusColumnWidth={110}
         adminView
+        selectedBookingIds={selectedBookingIds}
+        onSelectionChange={setSelectedBookingIds}
       >
         <Column<BookingViewProps>
           key={ID}
@@ -163,6 +167,12 @@ function BookingAdminTable() {
           sortable
         />
       </BookingBaseTable>
+
+      <BookingSelectionFooter 
+        selectedIds={selectedBookingIds} 
+        processedData={processedData}
+        onSelectionChange={setSelectedBookingIds}
+      />
     </Segment.Group>
   );
 }

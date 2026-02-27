@@ -17,6 +17,11 @@
   flex: 0.5 1 0;
 }
 
+.disabled {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
 .fluid {
   width: 100%;
 }

@@ -8,6 +8,7 @@ import {
   BookingData,
   BookingGetQueryParams,
   BookingPatchData,
+  BulkBookingPatchData,
   BookingPostData,
   BookingStatusAction,
 } from "../../types/bookings";
@@ -236,6 +237,49 @@ export function useUpdateBookingStatus() {
   );
 
   return { updateBookingStatus, loading };
+}
+
+export function useUpdateBulkBookingStatus() {
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<
+    BookingData[],
+    BulkBookingPatchData
+  >(
+    {
+      method: "patch",
+    },
+    { manual: true },
+  );
+
+  const updateBulkBookingStatus = useMemo(
+    () =>
+      errorHandlerWrapper(
+        async (bookingIds: number[], action: BookingStatusAction) => {
+          const url = `/bookings/bulk`; 
+          
+          const data: BulkBookingPatchData = { 
+            booking_ids: bookingIds, 
+            action 
+          };
+
+          const { data: updatedBookings = [] } = await apiCall({
+            url,
+            data,
+          });
+
+          console.log(`PATCH ${url} success:`, updatedBookings);
+
+          if (updatedBookings.length === 0) {
+            throw new Error("No booking statuses were updated.");
+          }
+
+          return updatedBookings;
+        },
+        { logMessageLabel: "PATCH /bookings/bulk error:" },
+      ),
+    [apiCall],
+  );
+
+  return { updateBulkBookingStatus, loading };
 }
 
 export function useDeleteBooking() {
