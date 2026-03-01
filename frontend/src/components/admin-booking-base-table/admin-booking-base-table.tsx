@@ -95,8 +95,8 @@ function BookingBaseTable({
 
   const CheckboxRenderer: ColumnShape<BookingViewProps>["cellRenderer"] =
     useCallback(
-      ({ rowData: { id } }: { rowData: BookingViewProps }) => {
-        if (id === undefined) return null;
+      ({ rowData: { id, booking } }: { rowData: BookingViewProps }) => {
+        if (id === undefined || booking) return null;
         const isChecked = selectedBookingIds.has(id);
         return (
           <div onClick={(e) => e.stopPropagation()}>
