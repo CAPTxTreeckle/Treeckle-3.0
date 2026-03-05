@@ -169,6 +169,12 @@ function BookingAdminTable() {
           sortable
         />
       </BookingBaseTable>
+
+      <BookingSelectionFooter 
+        selectedIds={selectedBookingIds} 
+        processedData={processedData}
+        onSelectionChange={setSelectedBookingIds}
+      />
     </Segment.Group>
 
     <BookingSelectionFooter 
