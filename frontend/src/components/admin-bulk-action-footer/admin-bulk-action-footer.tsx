@@ -95,6 +95,16 @@ const BookingSelectionFooter = ({ selectedIds, processedData, onSelectionChange 
     <div className={styles.footerContainer}>
       
       <div className={styles.selectionGroup}>
+        <Button 
+            className={styles.deselectIconBtn} 
+            onClick={() => onSelectionChange(new Set())}
+            title="Deselect all"
+        >
+            ✕
+        </Button>
+        
+        <span className={styles.separator}>|</span>
+
         <div className={styles.countBadge}>
           {selectedIds.size}
         </div>
