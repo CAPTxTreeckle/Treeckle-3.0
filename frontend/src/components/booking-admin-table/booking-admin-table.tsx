@@ -69,6 +69,7 @@ function BookingAdminTable() {
     useTableState(bookingViewData);
   
   return (
+    <>
     <Segment.Group raised>
       <Segment secondary>
         <SearchBar fluid onFilterChange={onFilterChange} disabled={selectedBookingIds.size !== 0} />
@@ -98,6 +99,7 @@ function BookingAdminTable() {
         adminView
         selectedBookingIds={selectedBookingIds}
         onSelectionChange={setSelectedBookingIds}
+        footerHeight={selectedBookingIds.size > 0 ? 25 : 0}
       >
         <Column<BookingViewProps>
           key={ID}
@@ -174,6 +176,13 @@ function BookingAdminTable() {
         onSelectionChange={setSelectedBookingIds}
       />
     </Segment.Group>
+
+    <BookingSelectionFooter 
+        selectedIds={selectedBookingIds} 
+        processedData={processedData}
+        onSelectionChange={setSelectedBookingIds}
+      />
+    </>
   );
 }
 

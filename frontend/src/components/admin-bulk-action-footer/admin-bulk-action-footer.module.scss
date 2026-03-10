@@ -1,29 +1,25 @@
 .footerContainer {
-  /* Positioning */
   position: fixed !important;
-  bottom: 40px !important;
+  bottom: 24px !important;
   left: 50% !important;
   transform: translateX(-50%) !important;
   
-  /* Layout constraints */
   top: auto !important;
   height: auto !important;
   width: auto !important;
   min-width: 0 !important;
-  
-  /* Visuals */
+
   background-color: #ffffff;
   border: 1px solid #dfe1e6;
   box-shadow: 0 4px 12px rgba(9, 30, 66, 0.15), 0 0 1px rgba(9, 30, 66, 0.31);
   border-radius: 6px;
-  
-  /* Flexbox settings */
+
   display: flex;
   align-items: center;
   justify-content: center;
   
   gap: 20px; 
-  padding: 14px 24px; 
+  padding: 14px 18px; 
   
   z-index: 9999;
   animation: slideUp 0.3s ease-out;
@@ -32,7 +28,7 @@
 .selectionGroup {
   display: flex;
   align-items: center;
-  gap: 6px; 
+  gap: 4px; 
   padding-right: 20px; 
   border-right: 1px solid #dfe1e6;
 }
@@ -46,41 +42,50 @@
   justify-content: center;
 }
 
+.deselectIconBtn {
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    cursor: pointer;
+
+    color: #172b4d !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    margin-right: 4px !important;
+    line-height: 1 !important;
+}
+
 .selectionText {
   color: #172b4d;
   font-size: 14px;
   font-weight: 500;
 }
 
-/* --- NEW STYLES --- */
-
 .separator {
-  color: #dfe1e6; /* Subtle grey divider */
+  color: #dfe1e6;
   margin: 0 8px;
-  font-size: 18px; /* Slightly taller than text */
+  font-size: 18px;
   line-height: 1;
 }
 
 .selectAllBtn {
-  /* Override default Button styles to look like a link */
   background: none !important;
   border: none !important;
   padding: 0 !important;
   margin: 0 !important;
   box-shadow: none !important;
   
-  color: #0052cc !important; /* Standard "Link Blue" */
+  color: #0052cc !important;
   font-weight: 600 !important;
   font-size: 14px !important;
   cursor: pointer;
 
   &:hover {
     text-decoration: underline;
-    background: none !important;
   }
 }
-
-/* ------------------ */
 
 .buttonGroup {
   display: flex;
@@ -96,4 +101,15 @@
 @keyframes slideUp {
   from { transform: translate(-50%, 100%); opacity: 0; }
   to { transform: translate(-50%, 0); opacity: 1; }
+}
+
+// mobile view
+@media (max-width: 768px) {
+  .footerContainer {
+    overflow-x: auto;
+    white-space: nowrap;
+    width: 97vw !important;
+    padding: 12px 16px;
+    justify-content: flex-start;
+  }
 }
