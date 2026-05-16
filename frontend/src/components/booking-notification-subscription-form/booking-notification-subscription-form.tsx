@@ -98,7 +98,11 @@ function BookingNotificationSubscriptionForm() {
 
   return (
     <FormProvider {...methods}>
-      <Form onSubmit={handleSubmit(onSubmit)}>
+      <Form
+        onSubmit={() => {
+          handleSubmit(onSubmit)().catch((error) => console.error(error));
+        }}
+      >
         <Header as={Form.Field}>Add Subscribers</Header>
 
         <Form.Group className={styles.fieldsContainer} widths="equal">
