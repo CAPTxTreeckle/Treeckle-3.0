@@ -98,7 +98,7 @@ function BookingNotificationSubscriptionForm() {
 
   return (
     <FormProvider {...methods}>
-      <Form onSubmit={() => handleSubmit(onSubmit)}>
+      <Form onSubmit={handleSubmit(onSubmit)}>
         <Header as={Form.Field}>Add Subscribers</Header>
 
         <Form.Group className={styles.fieldsContainer} widths="equal">
