@@ -79,7 +79,7 @@
     "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.1.0",
-    "fs-extra": "^10.1.0",
+    "fs-extra": "^11.3.2",
     "gzipper": "^8.2.1",
     "prettier": "^3.5.1",
     "sass": "^1.52.3",
