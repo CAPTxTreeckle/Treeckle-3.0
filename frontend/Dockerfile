@@ -1,4 +1,4 @@
-FROM node:23-alpine AS build
+FROM node:25-alpine AS build
 ARG MODE
 ARG ENV_FILE
 
