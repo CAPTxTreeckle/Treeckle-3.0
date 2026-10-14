@@ -23,11 +23,11 @@ function BookingCreationShortNoticeWarning({ open, onExited, onClose }: Props) {
       content={
         <>
           <p>
-            Some of your selected time slots are within the next 3 days, so your
+            Some of your selected time slots are within the next week, so your
             booking may not be approved in time.
           </p>
           <p>
-            Next time, please book at least <strong>2 weeks in advance</strong>.
+            Next time, please book at least <strong>a week in advance</strong>.
           </p>
         </>
       }

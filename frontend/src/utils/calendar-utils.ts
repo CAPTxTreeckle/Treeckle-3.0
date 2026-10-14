@@ -125,10 +125,10 @@ export function mergeDateRanges(dateRanges: DateRange[]): DateRange[] {
   return mergedDateRanges;
 }
 
-const SHORT_NOTICE_DAYS = 3;
+const SHORT_NOTICE_DAYS = 7;
 
 export function isShortNoticeBooking({ start }: DateRange): boolean {
-  return differenceInCalendarDays(start, startOfToday()) <= SHORT_NOTICE_DAYS;
+  return differenceInCalendarDays(start, startOfToday()) < SHORT_NOTICE_DAYS;
 }
 
 export function getRepeatedDateRanges(

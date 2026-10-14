@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useModal } from "react-modal-hook";
 import {
   Button,
@@ -118,8 +118,11 @@ function BookingCreationTimeSlotSelector() {
     ),
   );
 
+  const hasShownShortNoticeWarning = useRef(false);
+
   useEffect(() => {
-    if (hasShortNoticeBookings) {
+    if (hasShortNoticeBookings && !hasShownShortNoticeWarning.current) {
+      hasShownShortNoticeWarning.current = true;
       showShortNoticeWarning();
     }
   }, [hasShortNoticeBookings, showShortNoticeWarning]);
