@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useModal } from "react-modal-hook";
 import {
   Button,
@@ -25,8 +25,10 @@ import {
 } from "../../redux/slices/booking-creation-slice";
 import { selectCurrentUserDisplayInfo } from "../../redux/slices/current-user-slice";
 import { BookingStatus } from "../../types/bookings";
+import { isShortNoticeBooking } from "../../utils/calendar-utils";
 import { displayDateTimeRange } from "../../utils/transform-utils";
 import BookingCalendar, { CalendarBooking } from "../booking-calendar";
+import BookingCreationShortNoticeWarning from "../booking-creation-short-notice-warning";
 import HorizontalLayoutContainer from "../horizontal-layout-container";
 import PlaceholderWrapper from "../placeholder-wrapper";
 import styles from "./booking-creation-time-slot-selector.module.scss";
@@ -103,6 +105,27 @@ function BookingCreationTimeSlotSelector() {
     user,
     didUpdateNewBookingPeriods,
   });
+
+  const hasShortNoticeBookings = newBookings.some(isShortNoticeBooking);
+
+  const [showShortNoticeWarning, hideShortNoticeWarning] = useModal(
+    ({ in: open, onExited }: { in: boolean; onExited: () => void }) => (
+      <BookingCreationShortNoticeWarning
+        open={open}
+        onExited={onExited}
+        onClose={hideShortNoticeWarning}
+      />
+    ),
+  );
+
+  const hasShownShortNoticeWarning = useRef(false);
+
+  useEffect(() => {
+    if (hasShortNoticeBookings && !hasShownShortNoticeWarning.current) {
+      hasShownShortNoticeWarning.current = true;
+      showShortNoticeWarning();
+    }
+  }, [hasShortNoticeBookings, showShortNoticeWarning]);
 
   useEffect(() => {
     const { start, end } = visibleDateRange;
