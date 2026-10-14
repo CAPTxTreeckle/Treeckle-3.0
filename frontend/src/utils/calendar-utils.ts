@@ -1,5 +1,6 @@
 import {
   addDays,
+  differenceInCalendarDays,
   endOfDay,
   endOfMonth,
   endOfWeek,
@@ -122,6 +123,12 @@ export function mergeDateRanges(dateRanges: DateRange[]): DateRange[] {
   });
 
   return mergedDateRanges;
+}
+
+const SHORT_NOTICE_DAYS = 3;
+
+export function isShortNoticeBooking({ start }: DateRange): boolean {
+  return differenceInCalendarDays(start, startOfToday()) <= SHORT_NOTICE_DAYS;
 }
 
 export function getRepeatedDateRanges(
