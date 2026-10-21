@@ -1,17 +1,21 @@
 import {
   addDays,
+  areIntervalsOverlapping,
   differenceInCalendarDays,
+  eachDayOfInterval,
   endOfDay,
   endOfMonth,
   endOfWeek,
   format,
   getDay,
+  getHours,
   isBefore,
   isPast,
   isSameMonth,
   max,
   min,
   parse,
+  setHours,
   startOfDay,
   startOfMonth,
   startOfToday,
@@ -63,8 +67,27 @@ export const dayPropGetter: DayPropGetter = (date: Date) => {
     : {};
 };
 
+// bookings are not allowed from 12am to 7am
+const BLOCKED_END_HOUR = 7;
+
+export function isBlockedTime(date: Date): boolean {
+  return getHours(date) < BLOCKED_END_HOUR;
+}
+
+export function overlapsBlockedHours({ start, end }: DateRange): boolean {
+  return eachDayOfInterval({ start, end }).some((day) =>
+    areIntervalsOverlapping(
+      { start, end },
+      { start: day, end: setHours(day, BLOCKED_END_HOUR) },
+      { inclusive: false },
+    ),
+  );
+}
+
 export const slotPropGetter: SlotPropGetter = (date: Date) => {
-  return isPast(date) ? { style: { backgroundColor: "#f2f2f2" } } : {};
+  return isPast(date) || isBlockedTime(date)
+    ? { style: { backgroundColor: "#f2f2f2" } }
+    : {};
 };
 
 function getFirstVisibleDateInCalendarMonth(date: Date): Date {

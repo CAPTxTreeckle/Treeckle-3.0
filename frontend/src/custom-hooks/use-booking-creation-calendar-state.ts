@@ -17,6 +17,7 @@ import {
   getVisibleRange,
   getVisibleRangeInCalendarMonth,
   mergeDateRanges,
+  overlapsBlockedHours,
 } from "../utils/calendar-utils";
 import useBookingCalendarState from "./use-booking-calendar-state";
 
@@ -95,6 +96,7 @@ export default function useBookingCreationCalendarState({
       return (
         isFuture(selectingRange.start) &&
         isFuture(selectingRange.end) &&
+        !overlapsBlockedHours(selectingRange) &&
         !allBookings.some(
           ({ start, end, status }) =>
             (!status || status === BookingStatus.Approved) &&
@@ -114,7 +116,11 @@ export default function useBookingCreationCalendarState({
       const mergedDateRanges = mergeDateRanges(
         newBookings
           .map(({ start, end }) => ({ start, end }))
-          .concat(getRepeatedDateRanges(start, end, occurrences)),
+          .concat(
+            getRepeatedDateRanges(start, end, occurrences).filter(
+              (dateRange) => !overlapsBlockedHours(dateRange),
+            ),
+          ),
       );
 
       const updatedNewBookings = mergedDateRanges.map((dateRange) => ({
