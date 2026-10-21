@@ -1,5 +1,5 @@
 from typing import Iterable, Sequence, Optional
-from datetime import datetime
+from datetime import datetime, time, timedelta, timezone
 from collections import namedtuple
 
 from django.db.models import QuerySet
@@ -32,11 +32,32 @@ DateTimeInterval = namedtuple(
     "DateTimeInterval", ["start", "end", "is_new"], defaults=[True]
 )
 
+## bookings are not allowed from 12am to 7am local (Singapore) time
+LOCAL_TIMEZONE = timezone(timedelta(hours=8))
+BLOCKED_END_TIME = time(hour=7)
+
 
 def is_intersecting(interval_A: DateTimeInterval, interval_B: DateTimeInterval) -> bool:
     return not (
         interval_A.end <= interval_B.start or interval_A.start >= interval_B.end
     )
+
+
+def overlaps_blocked_hours(date_time_interval: DateTimeInterval) -> bool:
+    start = date_time_interval.start.astimezone(LOCAL_TIMEZONE)
+    end = date_time_interval.end.astimezone(LOCAL_TIMEZONE)
+
+    day = start.date()
+    while day <= end.date():
+        blocked_interval = DateTimeInterval(
+            datetime.combine(day, time.min, tzinfo=LOCAL_TIMEZONE),
+            datetime.combine(day, BLOCKED_END_TIME, tzinfo=LOCAL_TIMEZONE),
+        )
+        if is_intersecting(blocked_interval, DateTimeInterval(start, end)):
+            return True
+        day += timedelta(days=1)
+
+    return False
 
 
 def get_non_overlapping_date_time_intervals(
@@ -175,6 +196,15 @@ def create_bookings(
 ) -> Sequence[Booking]:
     if not new_date_time_intervals:
         return []
+
+    if any(
+        overlaps_blocked_hours(date_time_interval)
+        for date_time_interval in new_date_time_intervals
+    ):
+        raise BadRequest(
+            detail="Bookings cannot be made from 12am to 7am.",
+            code="blocked_booking_hours",
+        )
 
     valid_new_date_time_intervals = get_valid_new_date_time_intervals(
         venue=venue, new_date_time_intervals=new_date_time_intervals
