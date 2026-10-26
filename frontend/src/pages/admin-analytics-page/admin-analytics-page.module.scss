@@ -1,0 +1,51 @@
+.chartSegment,
+.adoptionSegment {
+  color: #1b1c1d !important;
+  min-height: 440px;
+}
+
+.adoptionSegment {
+  margin-top: 1rem !important;
+}
+
+.chartHeader {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+
+  h2 {
+    margin: 0;
+  }
+}
+
+.chart {
+  height: 340px;
+  margin-top: 1rem;
+
+  :global(.recharts-text),
+  :global(.recharts-legend-item-text) {
+    fill: #1b1c1d;
+  }
+}
+
+.frequencyChart {
+  height: 300px;
+  margin-top: 1rem;
+
+  :global(.recharts-text) {
+    fill: #1b1c1d;
+  }
+}
+
+.emptyMessage {
+  margin: 3rem 0;
+  text-align: center;
+}
+
+@media only screen and (max-width: 767px) {
+  .chartHeader {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+}

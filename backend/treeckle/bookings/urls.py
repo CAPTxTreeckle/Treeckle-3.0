@@ -3,6 +3,7 @@ from django.urls import path
 from .views import (
     TotalBookingCountView,
     PendingBookingCountView,
+    BookingAnalyticsView,
     BookingsView,
     SingleBookingView,
     BulkBookingView,
@@ -13,6 +14,7 @@ urlpatterns = [
     path("", BookingsView.as_view(), name="bookings"),
     path("totalcount", TotalBookingCountView.as_view(), name="total_count"),
     path("pendingcount", PendingBookingCountView.as_view(), name="pending_count"),
+    path("analytics", BookingAnalyticsView.as_view(), name="analytics"),
     path("bulk", BulkBookingView.as_view(), name="bulk-bookings"),
     path("<int:booking_id>", SingleBookingView.as_view(), name="single-booking"),
     path(

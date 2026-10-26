@@ -30,6 +30,37 @@ export type BookingGetQueryParams = {
   [FULL_DETAILS]?: boolean | string | number | null;
 };
 
+export type BookingAnalyticsDirection = "past" | "future";
+
+export type BookingAnalyticsQueryParams = {
+  direction: BookingAnalyticsDirection;
+  periodDays: 1 | 7 | 14 | 30 | 90 | 180 | 365 | 730 | 1095 | 1825;
+};
+
+export type VenueBookingAnalytics = {
+  venueId: number;
+  venueName: string;
+  approvedCount: number;
+  pendingCount: number;
+  rejectedCount: number;
+  cancelledCount: number;
+};
+
+export type BookerFrequencyAnalytics = {
+  label: string;
+  count: number;
+};
+
+export type BookingAnalyticsData = {
+  direction: BookingAnalyticsDirection;
+  periodDays: number;
+  startDateTime: number;
+  endDateTime: number;
+  venueBreakdown: VenueBookingAnalytics[];
+  uniqueBookers: number;
+  bookerFrequency: BookerFrequencyAnalytics[];
+};
+
 export type BookingPostData = {
   [TITLE]: string;
   [VENUE_ID]: number;

@@ -12,6 +12,7 @@ export const EVENTS_SINGLE_VIEW_PATH = `/events/:${EVENT_ID}`;
 export const EVENTS_EDIT_PATH = `/events/:${EVENT_ID}/edit`;
 export const EVENTS_QR_CODE_PATH = `/events/${EVENT_ID}/qrcode`;
 export const ADMIN_BOOKINGS_PATH = "/admin/bookings";
+export const ADMIN_ANALYTICS_PATH = "/admin/analytics";
 export const ADMIN_VENUES_PATH = "/admin/venues";
 export const ADMIN_VENUES_CREATION_PATH = "/admin/venues/create";
 export const ADMIN_VENUES_EDIT_PATH = `/admin/venues/:${VENUE_ID}`;

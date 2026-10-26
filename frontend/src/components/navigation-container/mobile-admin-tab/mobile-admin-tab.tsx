@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { Accordion, MenuItem } from "semantic-ui-react";
 
 import {
+  ADMIN_ANALYTICS_PATH,
   ADMIN_BOOKINGS_PATH,
   ADMIN_SETTINGS_PATH,
   ADMIN_USERS_PATH,
@@ -37,6 +38,12 @@ function MobileAdminTab({ onTabClick }: Props) {
       />
 
       <Accordion.Content active={isExpanded}>
+        <TabItem
+          label="Analytics"
+          redirectPath={ADMIN_ANALYTICS_PATH}
+          onTabClick={onTabClick}
+          icon="chart bar"
+        />
         <TabItem
           label="Bookings"
           redirectPath={ADMIN_BOOKINGS_PATH}

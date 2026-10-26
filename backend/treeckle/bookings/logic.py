@@ -4,6 +4,7 @@ from collections import namedtuple
 
 from django.db.models import QuerySet
 from django.db import transaction
+from django.utils import timezone
 
 from rest_framework.exceptions import PermissionDenied
 
@@ -151,6 +152,79 @@ def get_requested_bookings(
     return filtered_bookings.select_related(
         "booker__organization", "booker__profile_image", "venue"
     )
+
+
+def get_booking_analytics(
+    organization: Organization, direction: str, period_days: int
+) -> dict:
+    """Return compact, organization-scoped booking analytics for a time window."""
+    now = timezone.now()
+    duration = timedelta(days=period_days)
+
+    if direction == "past":
+        start_date_time, end_date_time = now - duration, now
+    else:
+        start_date_time, end_date_time = now, now + duration
+
+    bookings = list(
+        get_bookings(
+            venue__organization=organization,
+            start_date_time__gte=start_date_time,
+            start_date_time__lt=end_date_time,
+        ).select_related("venue")
+    )
+
+    venue_breakdown_by_id = {}
+    booker_booking_counts = {}
+
+    for booking in bookings:
+        booker_booking_counts[booking.booker_id] = (
+            booker_booking_counts.get(booking.booker_id, 0) + 1
+        )
+        venue = booking.venue
+        venue_data = venue_breakdown_by_id.setdefault(
+            venue.id,
+            {
+                "venue_id": venue.id,
+                "venue_name": venue.name,
+                "approved_count": 0,
+                "pending_count": 0,
+                "rejected_count": 0,
+                "cancelled_count": 0,
+            },
+        )
+        venue_data[f"{booking.status.lower()}_count"] += 1
+
+    venue_breakdown = sorted(
+        venue_breakdown_by_id.values(),
+        key=lambda venue: -sum(
+            venue[f"{status.lower()}_count"] for status in BookingStatus
+        ),
+    )
+    booker_frequency = [
+        {
+            "label": "1 booking",
+            "count": sum(count == 1 for count in booker_booking_counts.values()),
+        },
+        {
+            "label": "2–3 bookings",
+            "count": sum(2 <= count <= 3 for count in booker_booking_counts.values()),
+        },
+        {
+            "label": "4+ bookings",
+            "count": sum(count >= 4 for count in booker_booking_counts.values()),
+        },
+    ]
+
+    return {
+        "direction": direction,
+        "period_days": period_days,
+        "start_date_time": parse_datetime_to_ms_timestamp(start_date_time),
+        "end_date_time": parse_datetime_to_ms_timestamp(end_date_time),
+        "venue_breakdown": venue_breakdown,
+        "unique_bookers": len(booker_booking_counts),
+        "booker_frequency": booker_frequency,
+    }
 
 
 def get_valid_new_date_time_intervals(
@@ -321,13 +395,14 @@ def update_booking_status(
 
     return updated_bookings, id_to_previous_booking_status_mapping
 
+
 @transaction.atomic
 def bulk_update_booking_status(
     booking_ids: list[int], action: BookingStatusAction, user: User
 ) -> tuple[list[Booking], dict[int, BookingStatus]]:
-    
+
     bookings_to_update = get_bookings(id__in=booking_ids)
-    
+
     all_updated_bookings_dict = {}
     master_status_mapping = {}
 
@@ -336,13 +411,14 @@ def bulk_update_booking_status(
         updated_bookings, status_mapping = update_booking_status(
             booking=booking, action=action, user=user
         )
-        
+
         for updated_booking in updated_bookings:
             all_updated_bookings_dict[updated_booking.id] = updated_booking
-            
+
         master_status_mapping.update(status_mapping)
 
     return list(all_updated_bookings_dict.values()), master_status_mapping
+
 
 def delete_bookings(
     booking_ids_to_be_deleted: Iterable[int], organization: Organization
