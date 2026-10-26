@@ -211,9 +211,7 @@ function AdminAnalyticsPage() {
               <Button
                 icon="redo alternate"
                 color="blue"
-                onClick={() => {
-                  void refresh().catch((error) => console.error(error));
-                }}
+                onClick={() => refresh().catch((error) => console.error(error))}
                 loading={loading}
                 disabled={loading}
               />
