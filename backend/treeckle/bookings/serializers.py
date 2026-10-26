@@ -29,6 +29,13 @@ class GetBookingSerializer(serializers.Serializer):
         return data
 
 
+class BookingAnalyticsSerializer(serializers.Serializer):
+    direction = serializers.ChoiceField(choices=["past", "future"])
+    period_days = serializers.ChoiceField(
+        choices=[1, 7, 14, 30, 90, 180, 365, 730, 1095, 1825]
+    )
+
+
 class DateTimeRangeSerializer(serializers.Serializer):
     start_date_time = serializers.IntegerField(min_value=0)
     end_date_time = serializers.IntegerField(min_value=0)
@@ -57,9 +64,9 @@ class PostBookingSerializer(serializers.ModelSerializer):
 class PatchSingleBookingSerializer(serializers.Serializer):
     action = serializers.ChoiceField(choices=BookingStatusAction.choices)
 
+
 class PatchBulkBookingSerializer(serializers.Serializer):
     booking_ids = serializers.ListField(
-        child=serializers.IntegerField(),
-        allow_empty=False
+        child=serializers.IntegerField(), allow_empty=False
     )
     action = serializers.ChoiceField(choices=BookingStatusAction.choices)

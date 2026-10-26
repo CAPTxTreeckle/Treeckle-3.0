@@ -6,6 +6,8 @@ import { useCallback, useMemo } from "react";
 import { DEFAULT_ARRAY } from "../../constants";
 import {
   BookingData,
+  BookingAnalyticsData,
+  BookingAnalyticsQueryParams,
   BookingGetQueryParams,
   BookingPatchData,
   BulkBookingPatchData,
@@ -123,6 +125,41 @@ export function useGetBookings() {
   );
 
   return { bookings, loading, getBookings };
+}
+
+export function useGetBookingAnalytics() {
+  const [{ loading }, apiCall] = useAxiosWithTokenRefresh<BookingAnalyticsData>(
+    {
+      method: "get",
+    },
+    { manual: true },
+  );
+
+  const getBookingAnalytics = useCallback(
+    async (queryParams: BookingAnalyticsQueryParams) => {
+      const url = stringifyUrl({
+        url: "/bookings/analytics",
+        query: changeKeyCase(snakeCase, queryParams),
+      });
+
+      try {
+        return await errorHandlerWrapper(
+          async () => {
+            const { data } = await apiCall({ url });
+            console.log(`GET ${url} success:`, data);
+            return data;
+          },
+          { logMessageLabel: `GET ${url} error:` },
+        )();
+      } catch (error) {
+        resolveApiError(error as AxiosError);
+        return undefined;
+      }
+    },
+    [apiCall],
+  );
+
+  return { loading, getBookingAnalytics };
 }
 
 export function useCreateBookings() {

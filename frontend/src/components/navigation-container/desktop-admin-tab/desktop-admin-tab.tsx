@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Dropdown } from "semantic-ui-react";
 
 import {
+  ADMIN_ANALYTICS_PATH,
   ADMIN_BOOKINGS_PATH,
   ADMIN_SETTINGS_PATH,
   ADMIN_USERS_PATH,
@@ -23,6 +24,13 @@ function DesktopAdminTab() {
       floating
     >
       <Dropdown.Menu>
+        <Dropdown.Item
+          as={Link}
+          to={ADMIN_ANALYTICS_PATH}
+          active={pathname.startsWith(ADMIN_ANALYTICS_PATH)}
+          text="Analytics"
+          icon="chart bar"
+        />
         <Dropdown.Item
           className="flex-display"
           as={Link}

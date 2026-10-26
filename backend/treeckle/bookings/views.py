@@ -17,6 +17,7 @@ from users.models import Role, User
 from venues.logic import get_venues
 from venues.models import Venue
 from .serializers import (
+    BookingAnalyticsSerializer,
     GetBookingSerializer,
     PostBookingSerializer,
     PatchSingleBookingSerializer,
@@ -26,6 +27,7 @@ from .models import Booking, BookingStatus
 from .middlewares import check_requester_is_booker_or_admin
 from .logic import (
     get_bookings,
+    get_booking_analytics,
     get_requested_bookings,
     booking_to_json,
     create_bookings,
@@ -97,6 +99,52 @@ class PendingBookingCountView(APIView):
         data = get_bookings(
             status=BookingStatus.PENDING, venue__organization=requester.organization
         ).count()
+
+        return Response(data, status=status.HTTP_200_OK)
+
+
+@extend_schema_view(
+    get=extend_schema(
+        summary="Get Booking Analytics",
+        description=(
+            "Get organization-scoped booking demand and venue utilization metrics "
+            "for a past or future scheduled-time window."
+        ),
+        tags=["Bookings - Statistics"],
+        parameters=[
+            OpenApiParameter(
+                name="direction",
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.QUERY,
+                required=True,
+                enum=["past", "future"],
+            ),
+            OpenApiParameter(
+                name="period_days",
+                type=OpenApiTypes.INT,
+                location=OpenApiParameter.QUERY,
+                required=True,
+                enum=[1, 7, 14, 30, 90, 180, 365, 730, 1095, 1825],
+            ),
+        ],
+        responses={
+            200: OpenApiResponse(description="Booking analytics returned successfully"),
+            400: OpenApiResponse(description="Invalid analytics query parameters"),
+            403: OpenApiResponse(description="Admin access required"),
+        },
+    )
+)
+class BookingAnalyticsView(APIView):
+    @check_access(Role.ADMIN)
+    def get(self, request, requester: User):
+        serializer = BookingAnalyticsSerializer(data=request.query_params)
+        serializer.is_valid(raise_exception=True)
+
+        data = get_booking_analytics(
+            organization=requester.organization,
+            direction=serializer.validated_data["direction"],
+            period_days=int(serializer.validated_data["period_days"]),
+        )
 
         return Response(data, status=status.HTTP_200_OK)
 
@@ -368,7 +416,8 @@ class SingleBookingView(APIView):
         booking.delete()
 
         return Response(data, status=status.HTTP_200_OK)
-    
+
+
 class BulkBookingView(APIView):
     """
     Bulk booking management endpoint.

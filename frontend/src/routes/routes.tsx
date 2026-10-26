@@ -20,6 +20,7 @@ import {
   // EVENTS_SINGLE_VIEW_PATH,
   // EVENTS_EDIT_PATH,
   // EVENTS_QR_CODE_PATH,
+  ADMIN_ANALYTICS_PATH,
   ADMIN_BOOKINGS_PATH,
   ADMIN_SETTINGS_PATH,
   ADMIN_USERS_CREATION_PATH,
@@ -44,6 +45,7 @@ import GaProvider from "../components/ga-provider";
 // const EventsPage = lazy(() => import("../pages/events-page"));
 const BookingsPage = lazy(() => import("../pages/bookings-page"));
 const AdminBookingsPage = lazy(() => import("../pages/admin-bookings-page"));
+const AdminAnalyticsPage = lazy(() => import("../pages/admin-analytics-page"));
 const AdminUsersPage = lazy(() => import("../pages/admin-users-page"));
 const AdminSettingsPage = lazy(() => import("../pages/admin-settings-page"));
 const ProfilePage = lazy(() => import("../pages/profile-page"));
@@ -178,6 +180,15 @@ function Routes() {
                 strict
               >
                 <AdminBookingsPage />
+              </RoleRestrictedRoute>
+
+              <RoleRestrictedRoute
+                allowedRoles={[Role.Admin]}
+                path={ADMIN_ANALYTICS_PATH}
+                exact
+                strict
+              >
+                <AdminAnalyticsPage />
               </RoleRestrictedRoute>
 
               <RoleRestrictedRoute
