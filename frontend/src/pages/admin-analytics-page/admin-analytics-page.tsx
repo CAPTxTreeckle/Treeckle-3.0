@@ -187,6 +187,10 @@ function AdminAnalyticsPage() {
     refresh().catch((error) => console.error(error));
   }, [refresh]);
 
+  const onRefreshClick = () => {
+    void refresh().catch((error) => console.error(error));
+  };
+
   const chartProps = {
     analytics,
     loading,
@@ -211,7 +215,7 @@ function AdminAnalyticsPage() {
               <Button
                 icon="redo alternate"
                 color="blue"
-                onClick={() => refresh().catch((error) => console.error(error))}
+                onClick={onRefreshClick}
                 loading={loading}
                 disabled={loading}
               />
