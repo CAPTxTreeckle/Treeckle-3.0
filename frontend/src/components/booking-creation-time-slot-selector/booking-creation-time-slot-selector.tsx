@@ -13,6 +13,7 @@ import {
 
 import { DEFAULT_ARRAY } from "../../constants";
 import { useGetBookings } from "../../custom-hooks/api/bookings-api";
+import { DEFAULT_SHORT_NOTICE_WARNING } from "../../custom-hooks/api/venues-api";
 import useBookingCreationCalendarState from "../../custom-hooks/use-booking-creation-calendar-state";
 import useScrollToTop from "../../custom-hooks/use-scroll-to-top";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -106,7 +107,19 @@ function BookingCreationTimeSlotSelector() {
     didUpdateNewBookingPeriods,
   });
 
-  const hasShortNoticeBookings = newBookings.some(isShortNoticeBooking);
+  // drafts saved before venues had these settings fall back to the defaults
+  const {
+    shortNoticeEnabled = DEFAULT_SHORT_NOTICE_WARNING.shortNoticeEnabled,
+    shortNoticeDays = DEFAULT_SHORT_NOTICE_WARNING.shortNoticeDays,
+    shortNoticeTitle = DEFAULT_SHORT_NOTICE_WARNING.shortNoticeTitle,
+    shortNoticeMessage = DEFAULT_SHORT_NOTICE_WARNING.shortNoticeMessage,
+  } = venueFormProps ?? {};
+
+  const hasShortNoticeBookings =
+    shortNoticeEnabled &&
+    newBookings.some((booking) =>
+      isShortNoticeBooking(booking, shortNoticeDays),
+    );
 
   const [showShortNoticeWarning, hideShortNoticeWarning] = useModal(
     ({ in: open, onExited }: { in: boolean; onExited: () => void }) => (
@@ -114,8 +127,11 @@ function BookingCreationTimeSlotSelector() {
         open={open}
         onExited={onExited}
         onClose={hideShortNoticeWarning}
+        title={shortNoticeTitle}
+        message={shortNoticeMessage}
       />
     ),
+    [shortNoticeTitle, shortNoticeMessage],
   );
 
   const hasShownShortNoticeWarning = useRef(false);

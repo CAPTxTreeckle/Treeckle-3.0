@@ -6,6 +6,7 @@ import { DEFAULT_ARRAY } from "../../constants";
 import {
   BookingNotificationSubscriptionData,
   BookingNotificationSubscriptionPostData,
+  ShortNoticeWarningProps,
   VenueData,
   VenueFormProps,
   VenueGetQueryParams,
@@ -21,6 +22,14 @@ import {
 import { changeKeyCase } from "../../utils/transform-utils";
 import { useAxiosWithTokenRefresh } from "./auth-api";
 
+export const DEFAULT_SHORT_NOTICE_WARNING: ShortNoticeWarningProps = {
+  shortNoticeEnabled: true,
+  shortNoticeDays: 7,
+  shortNoticeTitle: "Warning",
+  shortNoticeMessage:
+    "Some of your selected time slots are coming up soon, so your booking may not be approved in time.\n\nNext time, please book further in advance.",
+};
+
 function parseVenueFormProps(venueFormProps: VenueFormProps): VenuePostData {
   const {
     name,
@@ -30,6 +39,10 @@ function parseVenueFormProps(venueFormProps: VenueFormProps): VenuePostData {
     icEmail,
     icContactNumber,
     bookingFormFields,
+    shortNoticeEnabled,
+    shortNoticeDays,
+    shortNoticeTitle,
+    shortNoticeMessage,
   } = venueFormProps;
   const data: VenuePostData = {
     name,
@@ -39,6 +52,10 @@ function parseVenueFormProps(venueFormProps: VenueFormProps): VenuePostData {
     icEmail,
     icContactNumber,
     formFieldData: bookingFormFields ?? [],
+    shortNoticeEnabled,
+    shortNoticeDays,
+    shortNoticeTitle,
+    shortNoticeMessage,
   };
 
   return data;
@@ -57,6 +74,10 @@ function parseVenueData(venueData: VenueData): VenueViewProps {
     icContactNumber = "",
     formFieldData,
     organization = "",
+    shortNoticeEnabled = DEFAULT_SHORT_NOTICE_WARNING.shortNoticeEnabled,
+    shortNoticeDays = DEFAULT_SHORT_NOTICE_WARNING.shortNoticeDays,
+    shortNoticeTitle = DEFAULT_SHORT_NOTICE_WARNING.shortNoticeTitle,
+    shortNoticeMessage = DEFAULT_SHORT_NOTICE_WARNING.shortNoticeMessage,
   } = venueData;
 
   const venueViewProps: VenueViewProps = {
@@ -72,6 +93,10 @@ function parseVenueData(venueData: VenueData): VenueViewProps {
       icEmail,
       icContactNumber,
       bookingFormFields: formFieldData,
+      shortNoticeEnabled,
+      shortNoticeDays,
+      shortNoticeTitle,
+      shortNoticeMessage,
     },
   };
 

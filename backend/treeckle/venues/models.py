@@ -1,7 +1,16 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from organizations.models import Organization
 from treeckle.common.models import TimestampedModel
+
+DEFAULT_SHORT_NOTICE_DAYS = 7
+DEFAULT_SHORT_NOTICE_TITLE = "Warning"
+DEFAULT_SHORT_NOTICE_MESSAGE = (
+    "Some of your selected time slots are coming up soon, so your booking "
+    "may not be approved in time.\n\n"
+    "Next time, please book further in advance."
+)
 
 
 # Create your models here.
@@ -30,6 +39,15 @@ class Venue(TimestampedModel):
     ic_email = models.EmailField(blank=True)
     ic_contact_number = models.CharField(max_length=50, blank=True)
     form_field_data = models.JSONField()
+    short_notice_enabled = models.BooleanField(default=True)
+    short_notice_days = models.PositiveIntegerField(
+        default=DEFAULT_SHORT_NOTICE_DAYS,
+        validators=[MinValueValidator(1), MaxValueValidator(365)],
+    )
+    short_notice_title = models.CharField(
+        max_length=255, default=DEFAULT_SHORT_NOTICE_TITLE
+    )
+    short_notice_message = models.TextField(default=DEFAULT_SHORT_NOTICE_MESSAGE)
 
     class Meta:
         constraints = [

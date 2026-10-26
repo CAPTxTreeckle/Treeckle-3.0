@@ -13,6 +13,10 @@ import {
   ORGANIZATION,
   PLACEHOLDER,
   REQUIRED,
+  SHORT_NOTICE_DAYS,
+  SHORT_NOTICE_ENABLED,
+  SHORT_NOTICE_MESSAGE,
+  SHORT_NOTICE_TITLE,
   TYPE,
   VENUE,
 } from "../constants";
@@ -31,7 +35,7 @@ export type VenuePostData = {
   [IC_EMAIL]: string;
   [IC_CONTACT_NUMBER]: string;
   [FORM_FIELD_DATA]: BookingFormFieldProps[];
-};
+} & ShortNoticeWarningProps;
 
 export type VenuePutData = VenuePostData;
 
@@ -56,6 +60,13 @@ export type BookingFormFieldProps = {
   [REQUIRED]: boolean;
 };
 
+export type ShortNoticeWarningProps = {
+  [SHORT_NOTICE_ENABLED]: boolean;
+  [SHORT_NOTICE_DAYS]: number;
+  [SHORT_NOTICE_TITLE]: string;
+  [SHORT_NOTICE_MESSAGE]: string;
+};
+
 export type VenueFormProps = {
   [NAME]: string;
   [CATEGORY]: string;
@@ -64,7 +75,7 @@ export type VenueFormProps = {
   [IC_EMAIL]: string;
   [IC_CONTACT_NUMBER]: string;
   [BOOKING_FORM_FIELDS]?: BookingFormFieldProps[];
-};
+} & ShortNoticeWarningProps;
 
 export type VenueViewProps = BaseData & {
   [ORGANIZATION]: string;
