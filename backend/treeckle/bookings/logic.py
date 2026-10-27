@@ -1,5 +1,5 @@
 from typing import Iterable, Sequence, Optional
-from datetime import datetime, time, timedelta, timezone
+from datetime import datetime, time, timedelta, timezone as datetime_timezone
 from collections import namedtuple
 
 from django.db.models import QuerySet
@@ -34,7 +34,7 @@ DateTimeInterval = namedtuple(
 )
 
 ## bookings are not allowed from 12am to 7am local (Singapore) time
-LOCAL_TIMEZONE = timezone(timedelta(hours=8))
+LOCAL_TIMEZONE = datetime_timezone(timedelta(hours=8))
 BLOCKED_END_TIME = time(hour=7)
 
 
