@@ -8,6 +8,7 @@ import {
   IC_CONTACT_NUMBER,
   IC_EMAIL,
   IC_NAME,
+  IC_TELEGRAM_HANDLE,
   LABEL,
   NAME,
   ORGANIZATION,
@@ -34,6 +35,7 @@ export type VenuePostData = {
   [IC_NAME]: string;
   [IC_EMAIL]: string;
   [IC_CONTACT_NUMBER]: string;
+  [IC_TELEGRAM_HANDLE]: string;
   [FORM_FIELD_DATA]: BookingFormFieldProps[];
 } & ShortNoticeWarningProps;
 
@@ -74,6 +76,7 @@ export type VenueFormProps = {
   [IC_NAME]: string;
   [IC_EMAIL]: string;
   [IC_CONTACT_NUMBER]: string;
+  [IC_TELEGRAM_HANDLE]: string;
   [BOOKING_FORM_FIELDS]?: BookingFormFieldProps[];
 } & ShortNoticeWarningProps;
 

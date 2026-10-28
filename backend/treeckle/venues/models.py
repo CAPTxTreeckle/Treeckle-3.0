@@ -1,4 +1,8 @@
-from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.validators import (
+    MaxValueValidator,
+    MinValueValidator,
+    RegexValidator,
+)
 from django.db import models
 
 from organizations.models import Organization
@@ -38,6 +42,17 @@ class Venue(TimestampedModel):
     ic_name = models.CharField(max_length=255, blank=True)
     ic_email = models.EmailField(blank=True)
     ic_contact_number = models.CharField(max_length=50, blank=True)
+    # stored without the leading "@"; Telegram usernames are 5-32 letters, digits or underscores
+    ic_telegram_handle = models.CharField(
+        max_length=32,
+        blank=True,
+        validators=[
+            RegexValidator(
+                r"^[A-Za-z0-9_]{5,32}$",
+                "Telegram handle must be 5-32 letters, numbers or underscores.",
+            )
+        ],
+    )
     form_field_data = models.JSONField()
     short_notice_enabled = models.BooleanField(default=True)
     short_notice_days = models.PositiveIntegerField(

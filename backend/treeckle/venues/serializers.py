@@ -20,6 +20,7 @@ class VenueSerializer(serializers.ModelSerializer):
             "ic_name",
             "ic_email",
             "ic_contact_number",
+            "ic_telegram_handle",
             "form_field_data",
             "short_notice_enabled",
             "short_notice_days",
