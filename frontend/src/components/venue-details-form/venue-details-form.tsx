@@ -12,6 +12,7 @@ import {
   IC_CONTACT_NUMBER,
   IC_EMAIL,
   IC_NAME,
+  IC_TELEGRAM_HANDLE,
   LABEL,
   NAME,
   PHONE_NUM_REGEX,
@@ -21,6 +22,7 @@ import {
   SHORT_NOTICE_ENABLED,
   SHORT_NOTICE_MESSAGE,
   SHORT_NOTICE_TITLE,
+  TELEGRAM_HANDLE_REGEX,
   TYPE,
 } from "../../constants";
 import {
@@ -67,6 +69,16 @@ const SCHEMA = yup.object().shape({
     .string()
     .trim()
     .matches(PHONE_NUM_REGEX, "Input must be a valid phone number")
+    .notRequired(),
+  [IC_TELEGRAM_HANDLE]: yup
+    .string()
+    .trim()
+    // admins may type "@handle"; it is stored without the "@"
+    .transform((value?: string) => value?.replace(/^@/, ""))
+    .matches(TELEGRAM_HANDLE_REGEX, {
+      message: "Handle must be 5-32 letters, numbers or underscores",
+      excludeEmptyString: true,
+    })
     .notRequired(),
   [BOOKING_FORM_FIELDS]: yup
     .array(
@@ -170,6 +182,7 @@ const DEFAULT_VALUES: VenueFormProps = {
   [IC_NAME]: "",
   [IC_EMAIL]: "",
   [IC_CONTACT_NUMBER]: "",
+  [IC_TELEGRAM_HANDLE]: "",
   [BOOKING_FORM_FIELDS]: [],
   ...DEFAULT_SHORT_NOTICE_WARNING,
 };
@@ -266,6 +279,12 @@ function VenueDetailsForm({
                 label="Venue IC Contact Number"
                 name={IC_CONTACT_NUMBER}
                 type="tel"
+              />
+
+              <FormField
+                label="Venue IC Telegram Handle"
+                name={IC_TELEGRAM_HANDLE}
+                placeholder="@username"
               />
             </Form.Group>
           </Segment>

@@ -29,6 +29,7 @@ class VenueShortNoticeTestCase(TestCase):
             ic_name="",
             ic_email="",
             ic_contact_number="",
+            ic_telegram_handle="",
             form_field_data=[],
             short_notice_settings=short_notice_settings,
         )
@@ -53,6 +54,7 @@ class VenueShortNoticeTestCase(TestCase):
             ic_name="",
             ic_email="",
             ic_contact_number="",
+            ic_telegram_handle="",
             form_field_data=[],
             short_notice_settings={"short_notice_enabled": False},
         )
@@ -66,6 +68,20 @@ class VenueShortNoticeTestCase(TestCase):
             serializer = VenueSerializer(data={**VENUE_DATA, "short_notice_days": days})
             self.assertFalse(serializer.is_valid())
             self.assertIn("short_notice_days", serializer.errors)
+
+    def test_serializer_validates_telegram_handle(self):
+        for handle in ("venue_ic", ""):
+            serializer = VenueSerializer(
+                data={**VENUE_DATA, "ic_telegram_handle": handle}
+            )
+            self.assertTrue(serializer.is_valid(), serializer.errors)
+
+        for handle in ("@venue_ic", "abc", "has space", "a" * 33):
+            serializer = VenueSerializer(
+                data={**VENUE_DATA, "ic_telegram_handle": handle}
+            )
+            self.assertFalse(serializer.is_valid())
+            self.assertIn("ic_telegram_handle", serializer.errors)
 
     def test_serializer_omits_missing_settings(self):
         serializer = VenueSerializer(data=VENUE_DATA)

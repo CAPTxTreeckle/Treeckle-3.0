@@ -34,6 +34,7 @@ export const FORM_RESPONSE_DATA = "formResponseData";
 export const IC_CONTACT_NUMBER = "icContactNumber";
 export const IC_EMAIL = "icEmail";
 export const IC_NAME = "icName";
+export const IC_TELEGRAM_HANDLE = "icTelegramHandle";
 export const ID = "id";
 export const IDS = "ids";
 export const IMAGE = "image";
@@ -47,6 +48,7 @@ export const ORGANIZED_BY = "organizedBy";
 export const PHONE_NUM_REGEX =
   /^(\s*|(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?)$/;
 export const PLACEHOLDER = "placeholder";
+export const TELEGRAM_HANDLE_REGEX = /^[A-Za-z0-9_]{5,32}$/;
 export const POSITIVE_NUM_REGEX = /^(\s*|[1-9]\d*)$/;
 export const REFRESH = "refresh";
 export const REQUIRED = "required";

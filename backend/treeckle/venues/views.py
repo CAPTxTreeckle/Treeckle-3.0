@@ -314,6 +314,7 @@ class SingleBookingNotificationSubscriptionView(APIView):
                         "ic_name": "John Manager",
                         "ic_email": "john.manager@university.edu",
                         "ic_contact_number": "+65 9123 4567",
+                        "ic_telegram_handle": "venue_ic",
                         "form_field_data": [
                             {
                                 "field_name": "Purpose",
@@ -351,6 +352,7 @@ class SingleBookingNotificationSubscriptionView(APIView):
                     "ic_name": "Library Staff",
                     "ic_email": "library@university.edu",
                     "ic_contact_number": "+65 9876 5432",
+                    "ic_telegram_handle": "venue_ic",
                     "form_field_data": [
                         {
                             "field_name": "Number of Students",
@@ -424,6 +426,7 @@ class VenuesView(APIView):
                 ic_name=validated_data.get("ic_name", ""),
                 ic_email=validated_data.get("ic_email", ""),
                 ic_contact_number=validated_data.get("ic_contact_number", ""),
+                ic_telegram_handle=validated_data.get("ic_telegram_handle", ""),
                 form_field_data=validated_data.get("form_field_data", []),
                 short_notice_settings=get_short_notice_settings(validated_data),
             )
@@ -459,6 +462,7 @@ class VenuesView(APIView):
                     "ic_name": "Events Manager",
                     "ic_email": "events.manager@university.edu",
                     "ic_contact_number": "+65 9111 2222",
+                    "ic_telegram_handle": "venue_ic",
                     "form_field_data": [
                         {
                             "field_name": "Event Type",
@@ -515,6 +519,7 @@ class VenuesView(APIView):
                     "ic_name": "New Events Manager",
                     "ic_email": "new.events@university.edu",
                     "ic_contact_number": "+65 9333 4444",
+                    "ic_telegram_handle": "venue_ic",
                     "form_field_data": [
                         {
                             "field_name": "Event Type",
@@ -566,6 +571,7 @@ class VenuesView(APIView):
                     "ic_name": "Events Manager",
                     "ic_email": "events@university.edu",
                     "ic_contact_number": "+65 9333 4444",
+                    "ic_telegram_handle": "venue_ic",
                     "form_field_data": [],
                     "organization": {"id": 1, "name": "University College"},
                 },
@@ -616,6 +622,7 @@ class SingleVenueView(APIView):
                 ic_name=validated_data.get("ic_name", ""),
                 ic_email=validated_data.get("ic_email", ""),
                 ic_contact_number=validated_data.get("ic_contact_number", ""),
+                ic_telegram_handle=validated_data.get("ic_telegram_handle", ""),
                 form_field_data=validated_data.get("form_field_data", []),
                 short_notice_settings=get_short_notice_settings(validated_data),
             )

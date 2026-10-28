@@ -13,6 +13,7 @@ from treeckle.common.constants import (
     IC_NAME,
     IC_EMAIL,
     IC_CONTACT_NUMBER,
+    IC_TELEGRAM_HANDLE,
     FORM_FIELD_DATA,
     ORGANIZATION,
     EMAIL,
@@ -44,6 +45,7 @@ def venue_to_json(venue: Venue, full_details: bool = False) -> dict:
                 IC_NAME: venue.ic_name,
                 IC_EMAIL: venue.ic_email,
                 IC_CONTACT_NUMBER: venue.ic_contact_number,
+                IC_TELEGRAM_HANDLE: venue.ic_telegram_handle,
                 FORM_FIELD_DATA: venue.form_field_data,
                 SHORT_NOTICE_ENABLED: venue.short_notice_enabled,
                 SHORT_NOTICE_DAYS: venue.short_notice_days,
@@ -116,6 +118,7 @@ def create_venue(
     ic_name: str,
     ic_email: str,
     ic_contact_number: str,
+    ic_telegram_handle: str,
     form_field_data: list[dict],
     short_notice_settings: Optional[dict] = None,
 ) -> Venue:
@@ -132,6 +135,7 @@ def create_venue(
         ic_name=ic_name,
         ic_email=ic_email,
         ic_contact_number=ic_contact_number,
+        ic_telegram_handle=ic_telegram_handle,
         form_field_data=form_field_data,
         **(short_notice_settings or {}),
     )
@@ -148,6 +152,7 @@ def update_venue(
     ic_name: str,
     ic_email: str,
     ic_contact_number: str,
+    ic_telegram_handle: str,
     form_field_data: list[dict],
     short_notice_settings: Optional[dict] = None,
 ) -> Venue:
@@ -164,6 +169,7 @@ def update_venue(
             "ic_name": ic_name,
             "ic_email": ic_email,
             "ic_contact_number": ic_contact_number,
+            "ic_telegram_handle": ic_telegram_handle,
             "form_field_data": form_field_data,
             **(short_notice_settings or {}),
         },
