@@ -21,6 +21,10 @@ class VenueSerializer(serializers.ModelSerializer):
             "ic_email",
             "ic_contact_number",
             "form_field_data",
+            "short_notice_enabled",
+            "short_notice_days",
+            "short_notice_title",
+            "short_notice_message",
         ]
 
 

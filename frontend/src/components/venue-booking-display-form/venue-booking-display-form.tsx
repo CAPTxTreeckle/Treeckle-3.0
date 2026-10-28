@@ -1,5 +1,5 @@
 import { FormProvider, useForm } from "react-hook-form";
-import { Card, Form, Header } from "semantic-ui-react";
+import { Card, Form, Header, Label } from "semantic-ui-react";
 
 import { BOOKING_FORM_FIELDS } from "../../constants";
 import { BookingFormFieldProps, VenueFormProps } from "../../types/venues";
@@ -12,7 +12,13 @@ type Props = {
 };
 
 function VenueBookingDisplayForm({ venueFormProps }: Props) {
-  const { name, category, [BOOKING_FORM_FIELDS]: fields = [] } = venueFormProps;
+  const {
+    name,
+    category,
+    [BOOKING_FORM_FIELDS]: fields = [],
+    shortNoticeEnabled,
+    shortNoticeDays,
+  } = venueFormProps;
   const methods = useForm<BookingFormFieldProps[]>();
 
   return (
@@ -24,6 +30,26 @@ function VenueBookingDisplayForm({ venueFormProps }: Props) {
               {name}
               <Header.Subheader>{category}</Header.Subheader>
             </Header>
+            <div className={styles.shortNoticeLabel}>
+              {shortNoticeEnabled ? (
+                <Label
+                  basic
+                  color="orange"
+                  size="small"
+                  icon="warning sign"
+                  content={`Warns within ${shortNoticeDays} day${
+                    shortNoticeDays === 1 ? "" : "s"
+                  }`}
+                />
+              ) : (
+                <Label
+                  basic
+                  size="small"
+                  icon="bell slash"
+                  content="No short notice warning"
+                />
+              )}
+            </div>
           </Card.Content>
           <Card.Content>
             <PlaceholderWrapper

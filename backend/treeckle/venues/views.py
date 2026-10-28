@@ -5,6 +5,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from drf_spectacular.utils import extend_schema, extend_schema_view, OpenApiParameter
 
+from treeckle.common.constants import (
+    SHORT_NOTICE_ENABLED,
+    SHORT_NOTICE_DAYS,
+    SHORT_NOTICE_TITLE,
+    SHORT_NOTICE_MESSAGE,
+)
 from treeckle.common.exceptions import Conflict
 from users.permission_middlewares import check_access
 from users.models import Role, User
@@ -30,6 +36,21 @@ from .logic import (
 )
 
 # Create your views here.
+
+SHORT_NOTICE_FIELDS = (
+    SHORT_NOTICE_ENABLED,
+    SHORT_NOTICE_DAYS,
+    SHORT_NOTICE_TITLE,
+    SHORT_NOTICE_MESSAGE,
+)
+
+
+def get_short_notice_settings(validated_data: dict) -> dict:
+    return {
+        field: validated_data[field]
+        for field in SHORT_NOTICE_FIELDS
+        if field in validated_data
+    }
 
 
 @extend_schema_view(
@@ -404,6 +425,7 @@ class VenuesView(APIView):
                 ic_email=validated_data.get("ic_email", ""),
                 ic_contact_number=validated_data.get("ic_contact_number", ""),
                 form_field_data=validated_data.get("form_field_data", []),
+                short_notice_settings=get_short_notice_settings(validated_data),
             )
         except IntegrityError:
             raise Conflict(detail="Venue already exists.", code="venue_exists")
@@ -595,6 +617,7 @@ class SingleVenueView(APIView):
                 ic_email=validated_data.get("ic_email", ""),
                 ic_contact_number=validated_data.get("ic_contact_number", ""),
                 form_field_data=validated_data.get("form_field_data", []),
+                short_notice_settings=get_short_notice_settings(validated_data),
             )
 
         except IntegrityError:
