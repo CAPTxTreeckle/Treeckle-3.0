@@ -15,6 +15,7 @@ import { useGetSingleBooking } from "../../custom-hooks/api/bookings-api";
 import { useAppDispatch } from "../../redux/hooks";
 import { updateBookingsAction } from "../../redux/slices/bookings-slice";
 import { BookingData } from "../../types/bookings";
+import { displayDateTimeRange } from "../../utils/transform-utils";
 import BookingDetailsView from "../booking-details-view";
 import BookingStatusButton from "../booking-status-button";
 import Table, { TableProps } from "../table";
@@ -70,13 +71,21 @@ function BookingBaseTable({
 
   const StatusButtonRenderer: ColumnShape<BookingViewProps>["cellRenderer"] =
     useCallback(
-      ({ rowData: { status, id } }: { rowData: BookingViewProps }) =>
+      ({
+        rowData: { status, id, venue, startDateTime, endDateTime },
+      }: {
+        rowData: BookingViewProps;
+      }) =>
         status &&
         id !== undefined && (
           <BookingStatusButton
             bookingId={id}
             status={status}
             adminView={adminView}
+            details={`${venue.name} · ${displayDateTimeRange(
+              startDateTime,
+              endDateTime,
+            )}`}
           />
         ),
       [adminView],
