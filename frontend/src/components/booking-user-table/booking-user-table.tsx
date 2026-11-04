@@ -101,7 +101,7 @@ function BookingUserTable() {
         }
         sortBy={sortBy}
         setSortBy={setSortBy}
-        defaultStatusColumnWidth={110}
+        defaultStatusColumnWidth={210}
         defaultActionColumnWidth={50}
       >
         <Column<BookingViewProps>
