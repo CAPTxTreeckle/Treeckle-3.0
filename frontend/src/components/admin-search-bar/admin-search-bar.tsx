@@ -1,24 +1,14 @@
 import clsx from "clsx";
-import {
-  addDays,
-  addMonths,
-  addWeeks,
-  addYears,
-  format,
-  subDays,
-  subMonths,
-  subWeeks,
-  subYears,
-} from "date-fns";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Icon, Input, Dropdown, DropdownProps } from "semantic-ui-react";
 
+import { BookingDateFilter } from "../../types/bookings";
 import styles from "./admin-search-bar.module.scss";
 
 export type Filters = {
   title: string;
   venue: string;
-  date: string;
+  date: BookingDateFilter | "";
   status: string;
 };
 
@@ -109,82 +99,8 @@ function SearchBar({ className, onFilterChange, fluid = false, disabled = false 
       return;
     }
 
-    const today = new Date();
-    let newDate = today;
-
-    switch (value) {
-      case "today":
-        newDate = today
-        break;
-      case "tomorrow":
-        newDate = addDays(today, 1);
-        break;
-      case "next3days":
-        newDate = addDays(today, 3);
-        break;
-      case "nextweek":
-        newDate = addWeeks(today, 1);
-        break;
-      case "next2weeks":
-        newDate = addWeeks(today, 2);
-        break;
-      case "nextmonth":
-        newDate = addMonths(today, 1);
-        break;
-      case "next3months":
-        newDate = addMonths(today, 3);
-        break;
-      case "nextyear":
-        newDate = addYears(today, 1);
-        break;
-      case "yesterday":
-        newDate = subDays(today, 1);
-        break;
-      case "last3days":
-        newDate = subDays(today, 3);
-        break;
-      case "lastweek":
-        newDate = subWeeks(today, 1);
-        break;
-      case "last2weeks":
-        newDate = subWeeks(today, 2);
-        break;
-      case "lastmonth":
-        newDate = subMonths(today, 1);
-        break;
-      case "last3months":
-        newDate = subMonths(today, 3);
-        break;
-      case "lastyear":
-        newDate = subYears(today, 1);
-        break;
-    }
-
-    setField("date", format(newDate, "yyyy-MM-dd"));
+    setField("date", value as BookingDateFilter);
   };
-
-  const currentShortcutValue = useMemo(() => {
-    if (!filters.date) return "";
-    const today = new Date();
-    const target = filters.date;
-
-    if (target === format(addDays(today, 1), "yyyy-MM-dd")) return "tomorrow";
-    if (target === format(addDays(today, 3), "yyyy-MM-dd")) return "next3days";
-    if (target === format(addWeeks(today, 1), "yyyy-MM-dd")) return "nextweek";
-    if (target === format(addWeeks(today, 2), "yyyy-MM-dd")) return "next2weeks";
-    if (target === format(addMonths(today, 1), "yyyy-MM-dd")) return "nextmonth";
-    if (target === format(addMonths(today, 3), "yyyy-MM-dd")) return "next3months";
-    if (target === format(addYears(today, 1), "yyyy-MM-dd")) return "nextyear";
-    if (target === format(subDays(today, 1), "yyyy-MM-dd")) return "yesterday";
-    if (target === format(subDays(today, 3), "yyyy-MM-dd")) return "last3days";
-    if (target === format(subWeeks(today, 1), "yyyy-MM-dd")) return "lastweek";
-    if (target === format(subWeeks(today, 2), "yyyy-MM-dd")) return "last2weeks";
-    if (target === format(subMonths(today, 1), "yyyy-MM-dd")) return "lastmonth";
-    if (target === format(subMonths(today, 3), "yyyy-MM-dd")) return "last3months";
-    if (target === format(subYears(today, 1), "yyyy-MM-dd")) return "lastyear";
-
-    return "";
-  }, [filters.date]);
 
   return (
     <div className={clsx(styles.container, fluid && styles.fluid, className, disabled && styles.disabled)}>
@@ -225,7 +141,7 @@ function SearchBar({ className, onFilterChange, fluid = false, disabled = false 
         className={clsx(styles.input, styles.small)}
         placeholder="Date"
         options={dateOptions}
-        value={currentShortcutValue}
+        value={filters.date}
         onChange={handleDateChange}
         disabled={disabled}
       />
