@@ -24,11 +24,31 @@ import { BookingFormFieldProps, VenueData } from "./venues";
 export type BookingGetQueryParams = {
   [USER_ID]?: number | string | null;
   [VENUE_ID]?: number | string | null;
+  venueName?: string | null;
+  title?: string | null;
+  dateFilter?: BookingDateFilter | null;
   [START_DATE_TIME]?: number | string | null;
   [END_DATE_TIME]?: number | string | null;
   [STATUSES]?: BookingStatus[] | null;
   [FULL_DETAILS]?: boolean | string | number | null;
 };
+
+export type BookingDateFilter =
+  | "today"
+  | "tomorrow"
+  | "next3days"
+  | "nextweek"
+  | "next2weeks"
+  | "nextmonth"
+  | "next3months"
+  | "nextyear"
+  | "yesterday"
+  | "last3days"
+  | "lastweek"
+  | "last2weeks"
+  | "lastmonth"
+  | "last3months"
+  | "lastyear";
 
 export type BookingAnalyticsDirection = "past" | "future";
 
