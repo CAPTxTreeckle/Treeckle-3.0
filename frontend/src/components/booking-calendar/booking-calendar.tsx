@@ -48,10 +48,11 @@ const VIEWS = [Views.MONTH, Views.WEEK, Views.DAY];
 type Props = Omit<CalendarProps<CalendarBooking>, "localizer"> &
   Partial<{
     onRepeatSlot: (start: Date, end: Date, occurrences: number) => void;
+    onRemoveEvent: (event: CalendarBooking) => void;
   }>;
 
 function BookingCalendar(props: Props) {
-  const { onRepeatSlot } = props;
+  const { onRepeatSlot, onRemoveEvent } = props;
   return (
     <div className={styles.calendarWrapper}>
       <Calendar
@@ -69,7 +70,11 @@ function BookingCalendar(props: Props) {
         views={VIEWS}
         components={{
           event: (eventProps) => (
-            <CalendarBookingEvent onRepeatSlot={onRepeatSlot} {...eventProps} />
+            <CalendarBookingEvent
+              onRepeatSlot={onRepeatSlot}
+              onRemoveEvent={onRemoveEvent}
+              {...eventProps}
+            />
           ),
           toolbar: CalendarToolbar,
         }}

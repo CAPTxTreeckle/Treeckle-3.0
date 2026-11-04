@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Popup } from "semantic-ui-react";
+import { Button, Icon, Popup } from "semantic-ui-react";
 import useBookingCreationCalendarState from "../../custom-hooks/use-booking-creation-calendar-state";
 
 import { displayDateTimeRange } from "../../utils/transform-utils";
@@ -11,15 +11,33 @@ import styles from "./calendar-booking-event.module.scss";
 type Props = {
   title: string;
   event: CalendarBooking;
+  onRemoveEvent?: (event: CalendarBooking) => void;
 } & Partial<
   Pick<ReturnType<typeof useBookingCreationCalendarState>, "onRepeatSlot">
 >;
 
-function CalendarBookingEvent({ title, event, onRepeatSlot }: Props) {
+function CalendarBookingEvent({
+  title,
+  event,
+  onRepeatSlot,
+  onRemoveEvent,
+}: Props) {
   const [modalEvent, setModalEvent] = useState<CalendarBooking | null>(null);
 
   return (
     <>
+      {onRemoveEvent && !event.status && (
+        <Icon
+          name="close"
+          link
+          className={styles.removeIcon}
+          aria-label="Remove time slot"
+          onClick={(e: React.MouseEvent) => {
+            e.stopPropagation();
+            onRemoveEvent(event);
+          }}
+        />
+      )}
       <Popup
         onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
           e.stopPropagation()

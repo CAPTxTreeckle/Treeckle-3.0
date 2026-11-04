@@ -3,6 +3,21 @@
   width: 100%;
 }
 
+.removeIcon {
+  // anchored to the event box (.rbc-event) so the gap to both borders is equal
+  position: absolute;
+  top: 0.65rem;
+  right: 0.65rem;
+  margin: 0 !important;
+  z-index: 1;
+  color: white;
+}
+
+// month view slots are too short for the X
+:global(.rbc-month-view) .removeIcon {
+  display: none;
+}
+
 .repeatButton {
   margin-top: 1rem !important;
 }

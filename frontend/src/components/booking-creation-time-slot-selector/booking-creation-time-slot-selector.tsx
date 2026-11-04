@@ -259,6 +259,7 @@ function BookingCreationTimeSlotSelector() {
           onSelectEvent={onSelectEvent}
           onSelecting={onSelecting}
           onDoubleClickEvent={removeNewBooking}
+          onRemoveEvent={removeNewBooking}
           onDrillDown={onDrillDown}
           onRepeatSlot={onRepeatSlot}
           selectable
