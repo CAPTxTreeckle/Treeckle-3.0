@@ -13,10 +13,15 @@ from treeckle.common.constants import (
     IC_NAME,
     IC_EMAIL,
     IC_CONTACT_NUMBER,
+    IC_TELEGRAM_HANDLE,
     FORM_FIELD_DATA,
     ORGANIZATION,
     EMAIL,
     VENUE,
+    SHORT_NOTICE_ENABLED,
+    SHORT_NOTICE_DAYS,
+    SHORT_NOTICE_TITLE,
+    SHORT_NOTICE_MESSAGE,
 )
 from treeckle.common.parsers import parse_datetime_to_ms_timestamp
 from organizations.models import Organization
@@ -40,7 +45,12 @@ def venue_to_json(venue: Venue, full_details: bool = False) -> dict:
                 IC_NAME: venue.ic_name,
                 IC_EMAIL: venue.ic_email,
                 IC_CONTACT_NUMBER: venue.ic_contact_number,
+                IC_TELEGRAM_HANDLE: venue.ic_telegram_handle,
                 FORM_FIELD_DATA: venue.form_field_data,
+                SHORT_NOTICE_ENABLED: venue.short_notice_enabled,
+                SHORT_NOTICE_DAYS: venue.short_notice_days,
+                SHORT_NOTICE_TITLE: venue.short_notice_title,
+                SHORT_NOTICE_MESSAGE: venue.short_notice_message,
             }
         )
 
@@ -108,7 +118,9 @@ def create_venue(
     ic_name: str,
     ic_email: str,
     ic_contact_number: str,
+    ic_telegram_handle: str,
     form_field_data: list[dict],
+    short_notice_settings: Optional[dict] = None,
 ) -> Venue:
 
     venue_category = get_or_create_venue_category(
@@ -123,7 +135,9 @@ def create_venue(
         ic_name=ic_name,
         ic_email=ic_email,
         ic_contact_number=ic_contact_number,
+        ic_telegram_handle=ic_telegram_handle,
         form_field_data=form_field_data,
+        **(short_notice_settings or {}),
     )
 
     return new_venue
@@ -138,7 +152,9 @@ def update_venue(
     ic_name: str,
     ic_email: str,
     ic_contact_number: str,
+    ic_telegram_handle: str,
     form_field_data: list[dict],
+    short_notice_settings: Optional[dict] = None,
 ) -> Venue:
 
     venue_category = get_or_create_venue_category(
@@ -153,7 +169,9 @@ def update_venue(
             "ic_name": ic_name,
             "ic_email": ic_email,
             "ic_contact_number": ic_contact_number,
+            "ic_telegram_handle": ic_telegram_handle,
             "form_field_data": form_field_data,
+            **(short_notice_settings or {}),
         },
         commit=True,
     )

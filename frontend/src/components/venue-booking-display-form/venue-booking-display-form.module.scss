@@ -17,4 +17,10 @@
   .header {
     flex-grow: 0 !important;
   }
+
+  .shortNoticeLabel {
+    display: flex;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
 }

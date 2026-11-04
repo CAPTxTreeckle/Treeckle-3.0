@@ -13,6 +13,7 @@ function BookingCreationHelpButton() {
     icName,
     icEmail,
     icContactNumber,
+    icTelegramHandle,
   } = selectedVenue?.venueFormProps ?? {};
 
   const [showModal, hideModal] = useModal(
@@ -26,7 +27,7 @@ function BookingCreationHelpButton() {
           <LinkifyTextViewer>
             <h3>For any queries, do contact:</h3>
 
-            {icName || icEmail || icContactNumber ? (
+            {icName || icEmail || icContactNumber || icTelegramHandle ? (
               <>
                 {icName && (
                   <p>
@@ -43,6 +44,18 @@ function BookingCreationHelpButton() {
                     <strong>Contact Number:</strong> {icContactNumber}
                   </p>
                 )}
+                {icTelegramHandle && (
+                  <p>
+                    <strong>Telegram:</strong>{" "}
+                    <a
+                      href={`https://t.me/${icTelegramHandle}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      @{icTelegramHandle}
+                    </a>
+                  </p>
+                )}
               </>
             ) : (
               <p>
@@ -53,7 +66,7 @@ function BookingCreationHelpButton() {
         }
       />
     ),
-    [venueName, icName, icEmail, icContactNumber],
+    [venueName, icName, icEmail, icContactNumber, icTelegramHandle],
   );
 
   return (
