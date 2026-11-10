@@ -1,8 +1,10 @@
+from calendar import monthrange
 from typing import Iterable, Sequence, Optional
-from datetime import datetime, time, timedelta, timezone as datetime_timezone
+from datetime import date, datetime, time, timedelta, timezone as datetime_timezone
 from collections import namedtuple
 
 from django.db.models import QuerySet
+from django.db.models.functions import TruncDate
 from django.db import transaction
 from django.utils import timezone
 
@@ -133,12 +135,23 @@ def get_requested_bookings(
     start_date_time: datetime,
     end_date_time: datetime,
     statuses: Optional[Iterable[BookingStatus]],
+    venue_name: Optional[str] = None,
+    title: Optional[str] = None,
+    match_start_date_time: bool = False,
 ) -> QuerySet[Booking]:
-    filtered_bookings = (
-        get_bookings(venue__organization=organization)
-        .exclude(end_date_time__lte=start_date_time)
-        .exclude(start_date_time__gte=end_date_time)
-    )
+    filtered_bookings = get_bookings(venue__organization=organization)
+
+    if match_start_date_time:
+        filtered_bookings = filtered_bookings.annotate(
+            booking_start_date=TruncDate("start_date_time", tzinfo=LOCAL_TIMEZONE)
+        ).filter(
+            booking_start_date__gte=start_date_time.date(),
+            booking_start_date__lt=end_date_time.date(),
+        )
+    else:
+        filtered_bookings = filtered_bookings.exclude(
+            end_date_time__lte=start_date_time
+        ).exclude(start_date_time__gte=end_date_time)
 
     if user_id is not None:
         filtered_bookings = filtered_bookings.filter(booker_id=user_id)
@@ -146,11 +159,72 @@ def get_requested_bookings(
     if venue_id is not None:
         filtered_bookings = filtered_bookings.filter(venue_id=venue_id)
 
+    if venue_name is not None:
+        filtered_bookings = filtered_bookings.filter(venue__name__iexact=venue_name)
+
+    if title is not None:
+        filtered_bookings = filtered_bookings.filter(title__icontains=title)
+
     if statuses is not None:
         filtered_bookings = filtered_bookings.filter(status__in=statuses)
 
     return filtered_bookings.select_related(
         "booker__organization", "booker__profile_image", "venue"
+    )
+
+
+def add_months_to_date(current_date: date, months: int) -> date:
+    month = current_date.month - 1 + months
+    year = current_date.year + month // 12
+    month = month % 12 + 1
+    day = min(current_date.day, monthrange(year, month)[1])
+    return date(year, month, day)
+
+
+def get_booking_date_filter_interval(date_filter: str) -> tuple[datetime, datetime]:
+    """Return the Singapore-local half-open interval for an admin date shortcut."""
+    today = timezone.now().astimezone(LOCAL_TIMEZONE).date()
+
+    if date_filter == "today":
+        start, end = today, today + timedelta(days=1)
+    elif date_filter == "tomorrow":
+        start, end = today + timedelta(days=1), today + timedelta(days=2)
+    elif date_filter == "next3days":
+        start, end = today + timedelta(days=1), today + timedelta(days=4)
+    elif date_filter == "nextweek":
+        start, end = today + timedelta(days=1), today + timedelta(days=8)
+    elif date_filter == "next2weeks":
+        start, end = today + timedelta(days=1), today + timedelta(days=15)
+    elif date_filter == "nextmonth":
+        start, end = today + timedelta(days=1), add_months_to_date(
+            today, 1
+        ) + timedelta(days=1)
+    elif date_filter == "next3months":
+        start, end = today + timedelta(days=1), add_months_to_date(
+            today, 3
+        ) + timedelta(days=1)
+    elif date_filter == "nextyear":
+        start, end = today + timedelta(days=1), add_months_to_date(
+            today, 12
+        ) + timedelta(days=1)
+    elif date_filter == "yesterday":
+        start, end = today - timedelta(days=1), today
+    elif date_filter == "last3days":
+        start, end = today - timedelta(days=3), today
+    elif date_filter == "lastweek":
+        start, end = today - timedelta(days=7), today
+    elif date_filter == "last2weeks":
+        start, end = today - timedelta(days=14), today
+    elif date_filter == "lastmonth":
+        start, end = add_months_to_date(today, -1), today
+    elif date_filter == "last3months":
+        start, end = add_months_to_date(today, -3), today
+    else:  # lastyear
+        start, end = add_months_to_date(today, -12), today
+
+    return (
+        datetime.combine(start, time.min, tzinfo=LOCAL_TIMEZONE),
+        datetime.combine(end, time.min, tzinfo=LOCAL_TIMEZONE),
     )
 
 

@@ -28,6 +28,7 @@ from .middlewares import check_requester_is_booker_or_admin
 from .logic import (
     get_bookings,
     get_booking_analytics,
+    get_booking_date_filter_interval,
     get_requested_bookings,
     booking_to_json,
     create_bookings,
@@ -170,6 +171,27 @@ class BookingAnalyticsView(APIView):
                 required=False,
             ),
             OpenApiParameter(
+                name="venue_name",
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.QUERY,
+                description="Filter by an exact venue name",
+                required=False,
+            ),
+            OpenApiParameter(
+                name="title",
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.QUERY,
+                description="Filter booking titles case-insensitively",
+                required=False,
+            ),
+            OpenApiParameter(
+                name="date_filter",
+                type=OpenApiTypes.STR,
+                location=OpenApiParameter.QUERY,
+                description="Named Singapore-local date range, such as today or nextweek",
+                required=False,
+            ),
+            OpenApiParameter(
                 name="start_date_time",
                 type=OpenApiTypes.INT,
                 location=OpenApiParameter.QUERY,
@@ -220,7 +242,7 @@ class BookingsView(APIView):
     Bookings management endpoint.
 
     GET: Retrieve bookings with optional filtering
-    - Supports filtering by user_id, venue_id, date range, statuses
+    - Supports filtering by user, venue, title, date range, date shortcut, and status
     - Returns basic or full details based on full_details parameter
     - Accessible by residents, organizers, and admins
 
@@ -244,22 +266,34 @@ class BookingsView(APIView):
 
         start_date_time = validated_data.get("start_date_time", None)
         end_date_time = validated_data.get("end_date_time", None)
+        match_start_date_time = "date_filter" in validated_data
+
+        if match_start_date_time:
+            start_date_time, end_date_time = get_booking_date_filter_interval(
+                validated_data["date_filter"]
+            )
+        else:
+            start_date_time = (
+                parse_ms_timestamp_to_datetime(start_date_time)
+                if start_date_time is not None
+                else make_aware(datetime.min)
+            )
+            end_date_time = (
+                parse_ms_timestamp_to_datetime(end_date_time)
+                if end_date_time is not None
+                else make_aware(datetime.max)
+            )
 
         bookings = get_requested_bookings(
             organization=requester.organization,
             user_id=validated_data.get("user_id", None),
             venue_id=validated_data.get("venue_id", None),
-            start_date_time=(
-                parse_ms_timestamp_to_datetime(start_date_time)
-                if start_date_time is not None
-                else make_aware(datetime.min)
-            ),
-            end_date_time=(
-                parse_ms_timestamp_to_datetime(end_date_time)
-                if end_date_time is not None
-                else make_aware(datetime.max)
-            ),
+            start_date_time=start_date_time,
+            end_date_time=end_date_time,
             statuses=validated_data.get("statuses", None),
+            venue_name=validated_data.get("venue_name", None),
+            title=validated_data.get("title", None),
+            match_start_date_time=match_start_date_time,
         )
 
         full_details = validated_data.get("full_details", False)

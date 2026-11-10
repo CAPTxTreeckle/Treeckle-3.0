@@ -35,12 +35,17 @@ import SearchBar from "../admin-search-bar";
 import UserEmailRenderer from "../user-email-renderer";
 import UserNameRenderer from "../user-name-renderer";
 import BookingSelectionFooter from "../admin-bulk-action-footer";
+import { Filters } from "../admin-search-bar/admin-search-bar";
 
 const BOOKER_NAME = `${BOOKER}.${NAME}`;
 const BOOKER_EMAIL = `${BOOKER}.${EMAIL}`;
 const VENUE_NAME = `${VENUE}.${NAME}`;
 
-function BookingAdminTable() {
+type Props = {
+  onFilterChange: (filters: Filters) => void;
+};
+
+function BookingAdminTable({ onFilterChange }: Props) {
   const allBookings = useAppSelector(selectAllBookings);
   const loading = useAppSelector(selectBookingsLoadingState);
   const [selectedBookingIds, setSelectedBookingIds] = useState<Set<number>>(new Set());
@@ -65,8 +70,7 @@ function BookingAdminTable() {
     [allBookings],
   );
 
-  const { processedData, sortBy, setSortBy, onFilterChange } =
-    useTableState(bookingViewData);
+  const { processedData, sortBy, setSortBy } = useTableState(bookingViewData);
   
   return (
     <>

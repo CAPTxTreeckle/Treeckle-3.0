@@ -6,6 +6,28 @@ from .models import Booking, BookingStatus, BookingStatusAction
 class GetBookingSerializer(serializers.Serializer):
     user_id = serializers.IntegerField(required=False)
     venue_id = serializers.IntegerField(required=False)
+    venue_name = serializers.CharField(max_length=255, required=False)
+    title = serializers.CharField(max_length=255, required=False)
+    date_filter = serializers.ChoiceField(
+        choices=[
+            "today",
+            "tomorrow",
+            "next3days",
+            "nextweek",
+            "next2weeks",
+            "nextmonth",
+            "next3months",
+            "nextyear",
+            "yesterday",
+            "last3days",
+            "lastweek",
+            "last2weeks",
+            "lastmonth",
+            "last3months",
+            "lastyear",
+        ],
+        required=False,
+    )
     start_date_time = serializers.IntegerField(min_value=0, required=False)
     end_date_time = serializers.IntegerField(min_value=0, required=False)
     statuses = serializers.MultipleChoiceField(
