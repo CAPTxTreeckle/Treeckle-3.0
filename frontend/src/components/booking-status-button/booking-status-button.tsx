@@ -1,7 +1,7 @@
 import { capitalCase } from "change-case";
 import { useMemo, useState } from "react";
 import { toast } from "react-toastify";
-import { Button, Popup } from "semantic-ui-react";
+import { Button, Icon, Label, Popup } from "semantic-ui-react";
 
 import { useUpdateBookingStatus } from "../../custom-hooks/api/bookings-api";
 import { useAppDispatch } from "../../redux/hooks";
@@ -19,9 +19,16 @@ type Props = {
   bookingId: number;
   status: BookingStatus;
   adminView?: boolean;
+  // shown in the user's cancel confirmation, e.g. "MPSH · 19/11/2026 7.00 PM - 10.30 PM"
+  details?: string;
 };
 
-function BookingStatusButton({ bookingId, status, adminView }: Props) {
+function BookingStatusButton({
+  bookingId,
+  status,
+  adminView,
+  details,
+}: Props) {
   const { updateBookingStatus, loading } = useUpdateBookingStatus();
   const [isPopupOpened, setPopupOpened] = useState(false);
   const dispatch = useAppDispatch();
@@ -90,8 +97,10 @@ function BookingStatusButton({ bookingId, status, adminView }: Props) {
     const cancelButton = (
       <Button
         key="cancel"
-        content="Cancel"
-        color="grey"
+        content="Cancel booking"
+        color="red"
+        compact
+        size="tiny"
         onClick={() => {
           onUpdateStatus(BookingStatusAction.Cancel).catch((error) => {
             console.error(error);
@@ -119,6 +128,73 @@ function BookingStatusButton({ bookingId, status, adminView }: Props) {
         return [];
     }
   }, [bookingId, status, adminView, updateBookingStatus, dispatch]);
+
+  if (!adminView) {
+    return (
+      // stop clicks (incl. inside the portalled popup) from toggling the row's details
+      <div className={styles.userView} onClick={(e) => e.stopPropagation()}>
+        <Label
+          className={styles.statusLabel}
+          color={BOOKING_STATUS_DETAILS.get(status)?.color}
+          content={capitalCase(status)}
+        />
+        {actionButtons.length > 0 && (
+          <Popup
+            trigger={
+              <Button
+                basic
+                compact
+                size="tiny"
+                color="red"
+                icon="close"
+                content="Cancel"
+                loading={loading}
+                disabled={loading}
+              />
+            }
+            position="top center"
+            className={styles.confirmPopup}
+            content={
+              <>
+                <div className={styles.confirmBody}>
+                  <Icon
+                    circular
+                    name="exclamation"
+                    color="red"
+                    className={styles.confirmIcon}
+                  />
+                  <div>
+                    <div className={styles.confirmTitle}>
+                      Cancel this booking?
+                    </div>
+                    <div className={styles.confirmText}>
+                      {details && <div>{details}</div>}
+                      You can&apos;t undo this.
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.confirmButtons}>
+                  <Button
+                    basic
+                    compact
+                    size="tiny"
+                    content="Keep booking"
+                    onClick={() => setPopupOpened(false)}
+                  />
+                  {actionButtons}
+                </div>
+              </>
+            }
+            on="click"
+            open={isPopupOpened}
+            onOpen={() => setPopupOpened(true)}
+            onClose={() => setPopupOpened(false)}
+            hideOnScroll
+          />
+        )}
+      </div>
+    );
+  }
 
   return (
     <Popup
