@@ -11,6 +11,10 @@ services:
     networks:
       - service
     restart: always
+    environment:
+      # Temporary mitigation for NGINX HTTP/2 vulnerabilities. Re-enable only
+      # after deploying a patched NGINX image and verifying the running digest.
+      ENABLE_HTTP2: "false"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./core-reverse-proxy/client_max_body_size.conf:/etc/nginx/conf.d/client_max_body_size.conf:ro
